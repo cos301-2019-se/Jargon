@@ -1,13 +1,13 @@
 swagger: "2.0"
 info:
-  description: This is the swagger file that goes with our server code
+  description: Endpoint definition for the Neural Network Microservice
   version: "1.0.0"
-  title: Swagger Rest Article
+  title: Neural Network Microservice
 tags:
     - name: "evaluate"
-      description: "Eval stuff"
+      description: "Evaluate data"
     - name: "train"
-      description: "Train stuff"
+      description: "Train data"
 consumes:
   - application/json
 produces:
@@ -22,17 +22,18 @@ paths:
       operationId: operations.evaluate
       tags:
           - "evaluate"
-      summary: Return a rating of the given data
-      description: Evaluate sentiment of the given data
+      summary: Return sentiment value of the given data
+      description: Evaluate the sentiment of the given data
       parameters:
         - in: body
-          name: Name
+          name: Data
           required: true
           schema:
             $ref: '#/definitions/DataStream'
       responses:
         200:
-          description: Successfully read people list operation
+          description: Successfully return sentiment value of the given data
+          # Default Swagger data. This will need to change
           schema:
             type: array
             items:
@@ -50,16 +51,17 @@ paths:
       tags:
         - "train"
       summary: Train the Neural Network on the given data stream
-      description: Train the Neural Network on the given data stream
+      description: Train the Neural Network after evaluating the sentiment of the data
       parameters:
         - in: body
-          name: Name
+          name: Data
           required: true
           schema:
               $ref: '#/definitions/DataStream'
       responses:
         200:
-          description: Description
+          description: Successfully return sentiment value of the given data
+          # Default Swagger data. This will need to change
           schema:
             type: array
             items:
