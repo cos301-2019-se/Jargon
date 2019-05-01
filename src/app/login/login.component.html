@@ -1,3 +1,61 @@
-<p>
-  login works!
-</p>
+<!-- <mat-card>
+<mat-grid-list cols="2" rowHeight="1:1">
+  <mat-grid-tile id="left" [rowspan]="1">
+      <div class="example-container">
+          <mat-form-field>
+            <input matInput placeholder="Input">
+          </mat-form-field>
+       
+          <mat-form-field>
+            <textarea matInput placeholder="Textarea"></textarea>
+          </mat-form-field>
+          
+          <mat-form-field>
+            <mat-select placeholder="Select">
+              <mat-option value="option">Option</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+  </mat-grid-tile>
+  <mat-grid-tile id="right" [rowspan]="1">2</mat-grid-tile>
+</mat-grid-list>
+</mat-card>
+ -->
+
+<div class="container" id="container">
+	<div class="form-container sign-up-container">
+		<form action="#">
+      <h1 style="padding-bottom:45px">Create Account</h1>
+      <br><br><br>
+			<input type="text" placeholder="Name" />
+			<input type="email" placeholder="Email" />
+			<input type="password" placeholder="Password" />
+			<button>Sign Up</button>
+		</form>
+	</div>
+	<div class="form-container sign-in-container">
+		<form action="#">
+      <h1 style="padding-bottom:45px">Sign in</h1>
+			<input type="email" placeholder="Email" />
+			<input type="password" placeholder="Password" />
+			<a href="#">Forgot your password?</a>
+			<button>Sign In</button>
+		</form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-left">
+        <div><img src="../../assets/images/logo-white.png" id="logo"></div>
+				<h1 class="heading">Jargon</h1>
+				<p>To keep connected with us please login with your personal info</p>
+				<button class="ghost" id="signIn">Sign In</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+        <div><img src="../../assets/images/logo-white.png" id="logo2"></div>
+				<h1 class="heading">Jargon</h1>
+				<p>Enter your personal details and start journey with us</p>
+				<button class="ghost" id="signUp">Sign Up</button>
+			</div>
+		</div>
+	</div>
+</div>
