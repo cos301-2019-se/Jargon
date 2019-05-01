@@ -10,3 +10,5 @@ const server = http.createServer(app);
 
 server.listen(port);
 
+const db = require('./db/db');
+db();
