@@ -4,6 +4,22 @@ class twitterListener{
         this.trackingDuration = trackingDuration_;
     }
 
+    get keyword(){
+        return this._keyword;
+    }
+
+    get trackingDuration(){
+        return this._trackingDuration;
+    }
+
+    set keyword(val){
+        this._keyword = val;
+    }
+
+    set trackingDuration(val){
+        this._trackingDuration = val;
+    }
+
     trackTweets(){
         const Twitter = require("node-tweet-stream")
         , t = new Twitter({
