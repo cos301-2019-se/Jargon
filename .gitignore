@@ -41,6 +41,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+/backend/db/dbconfig.js
 
 # System Files
 .DS_Store

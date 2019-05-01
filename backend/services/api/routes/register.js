@@ -1,17 +1,34 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 
 router.post('/', (req, res, next) => {
-    const user = {
-        username: req.body.username,
+    const user = new User({
+        _id: new mongoose.Types.ObjectId(),
+        name: req.body.name,
+        surname: req.body.surname,
         email: req.body.email,
-        pass: req.body.password
-    }
-
-    res.status(200).json({
-        message: "Handled post request to /register",
-        user: user
+        username: req.body.username,
+        password: req.body.password,
+        admin: req.body.admin,
+        projects: null
     });
+
+    user
+    .save()
+    .then(result => {
+        console.log(result);
+        res.status(200).json({
+            message: "Handled post request to /register",
+            createdProduct: result
+        });
+    })
+    .catch(err =>{
+        console.log(err),
+        res.status(500).json({
+            error: err
+        })
+    })
 });
 
 
