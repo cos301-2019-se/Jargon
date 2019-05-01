@@ -23,7 +23,7 @@ router.get('/', (req, res, next) => {
 router.post('/create', (req, res, next) => {
     const project = new Project({
         _id: new mongoose.Types.ObjectId(),
-        project_name: req.body.name,
+        project_name: req.body.project_name,
         whitelist: req.body.whitelist,
         blacklist: req.body.blacklist,
         source: req.body.source,
@@ -51,13 +51,24 @@ router.post('/create', (req, res, next) => {
 });
 
 router.post('/edit', (req, res, next) => {
-    const project = {
-        project_name: req.body.name,
-        project_results: req.body.result
+    const id = req.body.id;
+
+    let updateVals = {};
+    for (const vals of req.body.updateValues)
+    {
+        updateVals[vals.propName] = vals.value;
     }
-    res.status(200).json({
-        message: "edit project",
-        project: project
+    Project.update({ _id: id }, { $set: updateVals })
+    .exec()
+    .then(result => {
+      console.log(result);
+      res.status(200).json(result);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
     });
 });
 
