@@ -20,6 +20,41 @@ router.get('/', (req, res, next) => {
     });
 });
 
+router.get('/search', (req, res, next) => {
+  const type = req.body.searchType;
+  const input = req.body.input;
+  if (type === 'title')
+  {
+    Project.find({
+      project_name: new RegExp(input, "i")
+    })
+    .exec()
+    .then(result => {
+      console.log(result);
+      res.status(200).json(result);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: err });
+    });
+  }
+  else if (type === 'user')
+  {
+    Project.find({
+      createdBy: new RegExp(input, "i")
+    })
+    .exec()
+    .then(result => {
+      console.log(result);
+      res.status(200).json(result);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: err });
+    });
+  }
+});
+
 router.post('/create', (req, res, next) => {
     const project = new Project({
         _id: new mongoose.Types.ObjectId(),
@@ -72,11 +107,19 @@ router.post('/edit', (req, res, next) => {
     });
 });
 
-router.post('/', (req, res, next) => {
-    res.status(200).json({
-        message: "Handled post request to /project",
-       
-    });
+router.post('/delete', (req, res, next) => {
+  const id = req.body.id;
+  Project.remove({ _id: id })
+    .exec()
+    .then(result => {
+      res.status(200).json(result);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+  });
 });
 
 
