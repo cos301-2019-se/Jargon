@@ -1,0 +1,80 @@
+swagger: "2.0"
+info:
+  description: This is the swagger file that goes with our server code
+  version: "1.0.0"
+  title: Swagger Rest Article
+tags:
+    - name: "evaluate"
+      description: "Eval stuff"
+    - name: "train"
+      description: "Train stuff"
+consumes:
+  - application/json
+produces:
+  - application/json
+
+basePath: /api
+
+# Paths supported by the server application
+paths:
+  /evaluate:
+    post:
+      operationId: operations.evaluate
+      tags:
+          - "evaluate"
+      summary: Return a rating of the given data
+      description: Evaluate sentiment of the given data
+      parameters:
+        - in: body
+          name: Name
+          required: true
+          schema:
+            $ref: '#/definitions/DataStream'
+      responses:
+        200:
+          description: Successfully read people list operation
+          schema:
+            type: array
+            items:
+              properties:
+                fname:
+                  type: string
+                lname:
+                  type: string
+                timestamp:
+                  type: string
+
+  /train:
+    post:
+      operationId: operations.train
+      tags:
+        - "train"
+      summary: Train the Neural Network on the given data stream
+      description: Train the Neural Network on the given data stream
+      parameters:
+        - in: body
+          name: Name
+          required: true
+          schema:
+              $ref: '#/definitions/DataStream'
+      responses:
+        200:
+          description: Description
+          schema:
+            type: array
+            items:
+              properties:
+                fname:
+                  type: string
+                lname:
+                  type: string
+                timestamp:
+                  type: string
+
+definitions:
+    DataStream:
+        type: "object"
+        properties:
+            data:
+                type: string
+
