@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:16.04
 RUN apt-get update && apt install -y git
 # FROM node:alpine as builder
 COPY package.json ./
