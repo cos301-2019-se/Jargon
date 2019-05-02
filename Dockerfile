@@ -5,8 +5,9 @@ RUN curl -sL https://deb.nodesource.com/setup_11.x | bash - \
 
 COPY package.json package.json
 RUN npm install
-RUN npm run-script build
+# RUN npm run-script build
 
 # Add your source files
 COPY . .
+CMD ["npm","build"]
 CMD ["npm","start"]
