@@ -7,7 +7,7 @@ RUN node -v
 RUN npm install && mkdir /jargon && mv ./node_modules ./jargon
 WORKDIR /jargon
 COPY . .
-RUN ng build --prod --build-optimizer
+RUN npm build
 # CMD ["npm","start"]
 #RUN cd backend
 CMD ["npm","start"]
