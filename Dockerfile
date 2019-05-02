@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-RUN apt install -y git
+RUN apt-get update && apt install -y git
 FROM node:alpine as builder
 COPY package.json ./
 RUN yarn install && mkdir /jargon && mv ./node_modules ./jargon
