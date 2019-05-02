@@ -4,7 +4,9 @@ RUN apt-get update && apt install -y git
 COPY package.json ./
 RUN curl -sL https://deb.nodesource.com/setup_11.x | bash - \
 	&& apt-get install -y nodejs
-RUN npm install && mkdir /jargon && mv ./node_modules ./jargon
+RUN node -v
+RUN npm -v
+RUN yarn install && mkdir /jargon && mv ./node_modules ./jargon
 WORKDIR /jargon
 COPY . .
 RUN ng build --prod --build-optimizer
