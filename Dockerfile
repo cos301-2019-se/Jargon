@@ -1,6 +1,6 @@
 FROM node:alpine as builder
 COPY package.json ./
-RUN sudo apt-get install -y git
+RUN apt-get install -y git
 RUN yarn install && mkdir /jargon && mv ./node_modules ./jargon
 WORKDIR /jargon
 COPY . .
