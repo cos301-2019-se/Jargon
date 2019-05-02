@@ -1,11 +1,11 @@
 FROM ubuntu:18.04
 RUN apt-get update && apt install -y git
-FROM node:alpine as builder
+# FROM node:alpine as builder
 COPY package.json ./
-RUN yarn install && mkdir /jargon && mv ./node_modules ./jargon
+RUN npm install && mkdir /jargon && mv ./node_modules ./jargon
 WORKDIR /jargon
 COPY . .
-RUN yarn run build --prod --build-optimizer
+RUN ng build --prod --build-optimizer
 # CMD ["npm","start"]
 #RUN cd backend
 CMD ["npm","start"]
