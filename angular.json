@@ -58,7 +58,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Jargon:build"
+            "browserTarget": "Jargon:build",
+            "host":"0.0.0.0"
           },
           "configurations": {
             "production": {
