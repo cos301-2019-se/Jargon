@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {HttpParams} from  "@angular/common/http";
 import { Projects } from './projects';
 
 @Injectable({
@@ -27,11 +28,15 @@ export class ApiRequesterService {
 
   }
 
-  public updateProject(name: string, type: string){
-
+  public updateProject(id: string, list: string[]){
+    console.log(this.httpClient.get(`${this.apiURL}/projects/edit`));
   }
 
   public deleteProject(name: string, type: string){
 
+  }
+
+  public getTweets(){
+    return this.httpClient.get(`${this.apiURL}/projects`);
   }
 }
