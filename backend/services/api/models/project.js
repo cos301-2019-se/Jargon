@@ -16,7 +16,11 @@ const projectSchema = mongoose.Schema({
     source: String,
     startTime: Number,
     trackTime: Number,
-    data: String,
+    data: [
+        {
+            type : Object
+        }
+    ],
     created: {
         type: Date,
         default: Date.now
