@@ -3,6 +3,7 @@ const router = express.Router();
 
 const mongoose = require('mongoose');
 const Project = require('../models/project');
+const twitterListener = require('../../listeners/twitterListener');
 
 
 router.get('/', (req, res, next) => {
@@ -122,5 +123,44 @@ router.post('/delete', (req, res, next) => {
   });
 });
 
+router.post('/start', (req, res, next) => {
+  const id = req.body.id;
+  Project.find({ _id: id })
+    .exec()
+    .then(results => {
+      if(results[0].source==='Twitter'){
+        tl = new twitterListener(results[0].whitelist, results[0].trackTime);
+        tl.startTracking(res, results[0].id, returnListenerData);
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+  });
+});
+
+function returnListenerData(res, projID, tempArray){
+  let updateVals = {};
+  updateVals["data"] = tempArray;
+  Project.find({_id : projID})
+  .exec()
+  .then((result)=>{
+    result[0].data = tempArray;
+    result[0].save().then(
+      (result)=>{
+        res.status(200).json(result);
+      }
+    )
+  }).catch((err) => {
+    console.log(typeof result[0].data);
+  })
+
+  // let doc = await Project.findOne({_id : projID});
+  // doc.data = tempArray;
+  // await doc.save();
+  // res.status(200).json(tempArray);
+}
 
 module.exports = router;
