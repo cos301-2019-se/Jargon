@@ -1,13 +1,17 @@
-FROM heroku/heroku:16
-
-RUN curl -sL https://deb.nodesource.com/setup_11.x | bash - \
-	&& apt-get install -y nodejs cmake build-essential libx11-dev libpng-dev libdlib-dev
-
-COPY package.json package.json
-RUN npm install
-# RUN npm run-script build
-
-# Add your source files
+FROM node:alpine as builder
+COPY package.json ./
+RUN yarn install && mkdir /jargon && mv ./node_modules ./jargon
+WORKDIR /jargon
 COPY . .
-CMD ["npm","build"]
+RUN yarn run build --prod --build-optimizer
+# CMD ["npm","start"]
+#RUN cd backend
 CMD ["npm","start"]
+# FROM nginx:alpine
+# COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+#
+# RUN rm -rf /usr/share/nginx/html/*
+# COPY --from=builder /jargon/dist /usr/share/nginx/html
+# COPY --from=builder /jargon/entrypoint.sh /usr/share/nginx/
+# RUN chmod +x /usr/share/nginx/entrypoint.sh
+# CMD ["/bin/sh", "/usr/share/nginx/entrypoint.sh"]
