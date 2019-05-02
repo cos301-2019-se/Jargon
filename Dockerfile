@@ -1,6 +1,7 @@
+FROM ubuntu:18.04
+RUN apt-get install -y git
 FROM node:alpine as builder
 COPY package.json ./
-RUN apt-get install -y git
 RUN yarn install && mkdir /jargon && mv ./node_modules ./jargon
 WORKDIR /jargon
 COPY . .
