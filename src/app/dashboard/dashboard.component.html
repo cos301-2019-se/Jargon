@@ -87,8 +87,9 @@
           <div  *ngFor="let i of projectData; index as in; trackBy : trackByFn" class="card-body">
             <div class="border rounded-lg card-body m-1 p-3">
               <div class="row">
-                <div class="col-8 pt-2">{{i.project_name}}</div>
-                <div class="col-4"><button  data-toggle="modal" [attr.data-target]="'#a'+in" class="btn bg-primary text-light float-right ">View</button></div>
+                <div class="col-9 pt-2">{{i.project_name}}</div>
+                <div class="col-1"><button  data-toggle="modal" [attr.data-target]="'#a'+in" class="btn bg-primary text-light float-right ">View</button></div>
+                <div class="col-2"><button  data-toggle="modal" [attr.data-target]="'#b'+in" class="btn bg-warning text-light float-right ">Edit</button></div>
                 
                 <!-- Modal -->
                 <div class="modal fade" [attr.id]='"a"+in' tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -117,6 +118,39 @@
                   </div>
                 </div>
 
+                <div class="modal fade" [attr.id]='"b"+in' tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Project</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col-3 pt-2">Name: </div>
+                          <div class="col-9">
+                              <input class="form-control" placeholder={{i.project_name}}>
+                          </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-3 pt-2">ID: </div>
+                            <div class="col-9">
+                                <input class="form-control" placeholder={{i._id}}>
+                            </div>
+                          </div>
+                        
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Edit</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
 
               </div>
             </div>
@@ -127,18 +161,9 @@
         <div class="card">
           <div class="card-header">Twitter Data</div>
           <div class="card-body">
-              <ul class="list-group">
-                <li class="list-group-item">
-                  twitter Data
-                </li>
-                <li class="list-group-item">
-                  twitter Data
-                </li>
-                <li class="list-group-item">
-                  twitter Data
-                </li>
-                <li class="list-group-item">
-                  twitter Data twitter Data twitter Datatwitter Datatwitter Datatwitter Datatwitter Datatwitter Datatwitter Datatwitter Datatwitter Datatwitter Data
+              <ul class="list-group" *ngFor="let i of tweetData; index as in; trackBy : trackByFn">
+                <li class="list-group-item mb-2">
+                  {{i.text}}
                 </li>
               </ul>
           </div>
