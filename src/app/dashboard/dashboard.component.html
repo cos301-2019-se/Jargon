@@ -84,32 +84,43 @@
       <div class="col-6 border-right">
         <div class="card">
           <div class="card-header">Projects</div>
-          <div class="card-body">
-              <div class=" border rounded-lg card-body m-1 p-3">
-                <div class="row">
-                  <div class="col-8 pt-2">Project1</div>
-                  <div class="col-4"><button class="btn bg-primary text-light float-right ">View</button></div>
+          <div  *ngFor="let i of projectData; index as in; trackBy : trackByFn" class="card-body">
+            <div class="border rounded-lg card-body m-1 p-3">
+              <div class="row">
+                <div class="col-8 pt-2">{{i.project_name}}</div>
+                <div class="col-4"><button  data-toggle="modal" [attr.data-target]="'#a'+in" class="btn bg-primary text-light float-right ">View</button></div>
+                
+                <!-- Modal -->
+                <div class="modal fade" [attr.id]='"a"+in' tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Project Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div>Project Name: {{i.project_name }}</div>
+                        <div>ID: {{ i._id }}</div>
+                        <div>Whitelisted words: {{i.whitelist }}</div>
+                        <div>Blacklisted words: {{i.blacklist }}</div>
+                        <div>Source: {{i.source }}</div>
+                        <div>Created by: {{i.createdBy }}</div>
+                        <div>Date created: {{i.created }}</div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class=" border rounded-lg card-body m-1 p-3">
-                <div class="row">
-                  <div class="col-8 pt-2">Project1</div>
-                  <div class="col-4"><button class="btn bg-primary text-light float-right ">View</button></div>
-                </div>
-              </div>
-              <div class=" border rounded-lg card-body m-1 p-3">
-                <div class="row">
-                  <div class="col-8 pt-2">Project1</div>
-                  <div class="col-4"><button class="btn bg-primary text-light float-right ">View</button></div>
-                </div>
-              </div>
-              <div class=" border rounded-lg card-body m-1 p-3">
-                <div class="row">
-                  <div class="col-8 pt-2">Project1</div>
-                  <div class="col-4"><button class="btn bg-primary text-light float-right ">View</button></div>
-                </div>
+
+
               </div>
             </div>
+          </div>
         </div>
       </div>
       <div class="col-6">
@@ -167,5 +178,4 @@
     </div>
   </div>
 </div>
-
 

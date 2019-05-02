@@ -10,13 +10,19 @@ import {MatNativeDateModule,MatDatepickerModule,MatIconModule,MatButtonModule,Ma
 import {MatSelectModule} from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { DashboardComponent } from './dashboard/dashboard.component';
+// import { Injectable} from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     DashboardComponent
+    // Injectable
   ],
   imports: [
+    HttpClientModule,
+    // Injectable,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
