@@ -1,0 +1,82 @@
+swagger: "2.0"
+info:
+  description: Endpoint definition for the Neural Network Microservice
+  version: "1.0.0"
+  title: Neural Network Microservice
+tags:
+    - name: "evaluate"
+      description: "Evaluate data"
+    - name: "train"
+      description: "Train data"
+consumes:
+  - application/json
+produces:
+  - application/json
+
+basePath: /api
+
+# Paths supported by the server application
+paths:
+  /evaluate:
+    post:
+      operationId: operations.evaluate
+      tags:
+          - "evaluate"
+      summary: Return sentiment value of the given data
+      description: Evaluate the sentiment of the given data
+      parameters:
+        - in: body
+          name: Data
+          required: true
+          schema:
+            $ref: '#/definitions/DataStream'
+      responses:
+        200:
+          description: Successfully return sentiment value of the given data
+          # Default Swagger data. This will need to change
+          schema:
+            type: array
+            items:
+              properties:
+                fname:
+                  type: string
+                lname:
+                  type: string
+                timestamp:
+                  type: string
+
+  /train:
+    post:
+      operationId: operations.train
+      tags:
+        - "train"
+      summary: Train the Neural Network on the given data stream
+      description: Train the Neural Network after evaluating the sentiment of the data
+      parameters:
+        - in: body
+          name: Data
+          required: true
+          schema:
+              $ref: '#/definitions/DataStream'
+      responses:
+        200:
+          description: Successfully return sentiment value of the given data
+          # Default Swagger data. This will need to change
+          schema:
+            type: array
+            items:
+              properties:
+                fname:
+                  type: string
+                lname:
+                  type: string
+                timestamp:
+                  type: string
+
+definitions:
+    DataStream:
+        type: "object"
+        properties:
+            data:
+                type: string
+
