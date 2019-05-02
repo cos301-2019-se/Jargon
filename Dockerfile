@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 RUN apt-get update && apt install -y git
 # FROM node:alpine as builder
 COPY package.json ./
-RUN apt update && sudo apt install nodejs npm
+RUN apt update && apt install nodejs npm
 RUN node -v
 RUN npm install && mkdir /jargon && mv ./node_modules ./jargon
 WORKDIR /jargon
