@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "8.10.0"
+  - "11.14.0"
 addons:
 apt:
   sources:
@@ -13,7 +13,7 @@ services:
   - docker
 
 env:
-  - DOCKER_COMPOSE_VERSION=1.16.1
+  - DOCKER_COMPOSE_VERSION=18.09.5
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
@@ -27,9 +27,9 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 script:
-  - yarn test --watch=false 
+  - yarn test --watch=false
 
 after_success:
   - sudo docker login --username $HEROKU_DOCKER_USERNAME --password $HEROKU_AUTH_TOKEN registry.heroku.com
-  - sudo docker tag myangularapp:latest registry.heroku.com/adam-myangularapp/web
-  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_PULL_REQUEST = "false" ]; then sudo docker push registry.heroku.com/adam-myangularapp/web; fi
+  - sudo docker tag jargon:latest registry.heroku.com/jargiax/web
+  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_PULL_REQUEST = "false" ]; then sudo docker push registry.heroku.com/jargiax/web; fi
