@@ -5,10 +5,10 @@
     "ng": "ng",
     "start": "ng serve --port $PORT --disableHostCheck true",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng test --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "ci": "npm run test:once",
+    "ci": "npm run test",
     "heroku-postbuild": "ng build --prod --aot --build-optimizer"
   },
   "private": true,
