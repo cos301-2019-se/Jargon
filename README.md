@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.com/cos301-2019-se/Jargon.svg?branch=master)](https://travis-ci.com/cos301-2019-se/Jargon)
+[![Build Status](https://travis-ci.com/cos301-2019-se/Jargon.svg?branch=development)](https://travis-ci.com/cos301-2019-se/Jargon)
+
 
 # Jargon
 
