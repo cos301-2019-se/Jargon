@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiRequesterService } from '../api-requester.service';
 
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-dashboard',
