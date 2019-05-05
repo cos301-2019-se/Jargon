@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/cos301-2019-se/Botic.svg?branch=master)](https://travis-ci.com/cos301-2019-se/Botic)
+
 # Jargon
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.8.
