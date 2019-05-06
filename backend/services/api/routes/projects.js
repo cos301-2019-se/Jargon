@@ -1,3 +1,4 @@
+var http = require("http");
 const express = require('express');
 const router = express.Router();
 
@@ -124,43 +125,29 @@ router.post('/delete', (req, res, next) => {
 });
 
 router.post('/start', (req, res, next) => {
-  const id = req.body.id;
-  Project.find({ _id: id })
-    .exec()
-    .then(results => {
-      if(results[0].source==='Twitter'){
-        tl = new twitterListener(results[0].whitelist, results[0].trackTime);
-        tl.startTracking(res, results[0].id, returnListenerData);
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
-  });
+    const id = req.body.id;
+    const platform = req.body.platform;
+    if(platform === "twitter"){
+        var options = {
+            host: "localhost:3001",
+            path: "/twitter",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        };
+    }
+    var listenerReq = http.request(options, (listenerRes)=>{
+        var responseString = "";
+        listenerRes.on("data", (data) => {
+            responseString += data;
+        });
+        listenerRes.on("end", () => {
+            res.status(200).json(responseString);
+        });
+    });
+    listenerReq.write("{id : " + id + "}");
+    listenerReq.end();
 });
-
-function returnListenerData(res, projID, tempArray){
-  let updateVals = {};
-  updateVals["data"] = tempArray;
-  Project.find({_id : projID})
-  .exec()
-  .then((result)=>{
-    result[0].data = tempArray;
-    result[0].save().then(
-      (result)=>{
-        res.status(200).json(result);
-      }
-    )
-  }).catch((err) => {
-    console.log(typeof result[0].data);
-  })
-
-  // let doc = await Project.findOne({_id : projID});
-  // doc.data = tempArray;
-  // await doc.save();
-  // res.status(200).json(tempArray);
-}
 
 module.exports = router;
