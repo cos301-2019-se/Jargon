@@ -4,8 +4,6 @@ const router = express.Router();
 
 const mongoose = require('mongoose');
 const Project = require('../models/project');
-const twitterListener = require('../../listeners/twitterListener');
-
 
 router.get('/', (req, res, next) => {
     Project.find()

@@ -41,3 +41,5 @@ function returnListenerData(res, projID, tempArray){
       console.log(typeof result[0].data);
     })
 }
+
+module.exports = router;
