@@ -29,12 +29,14 @@ class twitterListener{
 
     
     trackTweets(){
+        const twitterConsumerSecret = require('twitterConfig').consumer_secret;
+        const twitterTokenSecret = require('twitterConfig').token_secret;
         const Twitter = require("node-tweet-stream")
         , t = new Twitter({
             consumer_key: 'DnXz3QBEptjCkSCXoKmj690GQ',
-            consumer_secret: '08KQEcV5oSROZR3EvQzMKeH9fxlqn05tK0bl4rpNuVtgDJUqLX',
+            consumer_secret: twitterConsumerSecret,
             token: '1122433281465700352-bPVkrTzBiwMyenSqHfePpi2QNU4t3e',
-            token_secret: 'IEqjQrY1FKpfSQ4p0XITpedbZEyHQZRK9UK9ZxtwfVWG9'
+            token_secret: twitterTokenSecret
         })
         // let promises = [];
         let trackResults = [];
