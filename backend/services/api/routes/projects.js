@@ -4,6 +4,7 @@ const router = express.Router();
 
 const mongoose = require('mongoose');
 const Project = require('../models/project');
+// const querystring = require('querystring');
 
 router.get('/', (req, res, next) => {
     Project.find()
@@ -125,12 +126,19 @@ router.post('/delete', (req, res, next) => {
 router.post('/start', (req, res, next) => {
     const id = req.body.id;
     const platform = req.body.platform;
+    let postBody = {
+        'id' : id,
+        'platform' : platform
+    }
+    let postBodyString = JSON.stringify(postBody);
     if(platform === "twitter"){
         var options = {
-            host: "localhost:3001",
-            path: "/twitter",
+            host: "localhost",
+            port: 3001,
+            path: "/twitter/",
             method: "POST",
             headers: {
+                'Content-Length': Buffer.byteLength(postBodyString),
                 "Content-Type": "application/json"
             }
         };
@@ -141,10 +149,17 @@ router.post('/start', (req, res, next) => {
             responseString += data;
         });
         listenerRes.on("end", () => {
+            responseString = JSON.parse(responseString);
+            console.log(responseString);
             res.status(200).json(responseString);
         });
     });
-    listenerReq.write("{id : " + id + "}");
+
+    // const postBody = querystring.stringify({
+    //     'id': id
+    // });
+    // listenerReq.write(JSON.stringify(postBody));
+    listenerReq.write(postBodyString);
     listenerReq.end();
 });
 

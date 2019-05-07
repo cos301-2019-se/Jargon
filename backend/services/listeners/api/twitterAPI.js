@@ -34,7 +34,7 @@ function returnListenerData(res, projID, tempArray){
         result[0].data = tempArray;
         result[0].save().then(
             (result)=>{
-                res.status(200).json(result);
+                res.status(200).json(result.data);
             }
         )
     }).catch((err) => {
