@@ -150,7 +150,7 @@ router.post('/start', (req, res, next) => {
         });
         listenerRes.on("end", () => {
             responseString = JSON.parse(responseString);
-            console.log(responseString);
+            // console.log(responseString);
             res.status(200).json(responseString);
         });
     });
