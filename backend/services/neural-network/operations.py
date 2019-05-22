@@ -1,11 +1,15 @@
 import neural_network as nno
+import json
 
-rnn = nno.NeuralNetwork()
+cnn = nno.NeuralNetwork()
 
-def evaluate():
-    print("evaluate")
-    return rnn.evaluate('')
+def evaluate(data):
+    print(data)
+    results = [cnn.evaluate(sentiment) for sentiment in data['data']]#, 200
+    res = {}
+    res['sentiments'] = results
+    return res
 
-def train():
-    print("train")
-    return rnn.train('')
+def train(data):
+    print(data)
+    return cnn.train('')
