@@ -1,3 +1,7 @@
+import { EditProjectComponent } from './components/view-projects/edit-project/edit-project.component';
+import { CreateProjectComponent } from './components/create-project/create-project.component';
+import { ViewProjectsComponent } from './components/view-projects/view-projects.component';
+import { Routes, RouterModule } from '@angular/router';
 import { ProjectsComponent } from './components/home/projects/projects.component';
 import { ChartsComponent } from './components/home/charts/charts.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,6 +18,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 
+const appRoutes: Routes = [
+  { path: '' , component: HomeComponent},
+  { path: 'view-projects', component: ViewProjectsComponent },
+  { path: 'create-project', component: CreateProjectComponent }
+];
+
 
 @NgModule({
   declarations: [
@@ -22,11 +32,15 @@ import { HomeComponent } from './components/home/home.component';
     HomeComponent,
     HeaderComponent,
     ChartsComponent,
-    ProjectsComponent
+    ProjectsComponent,
+    ViewProjectsComponent,
+    CreateProjectComponent,
+    EditProjectComponent
   ],
   exports: [
     ChartsComponent,
-    ProjectsComponent
+    ProjectsComponent,
+    EditProjectComponent
   ],
   imports: [
     HttpClientModule,
@@ -35,6 +49,7 @@ import { HomeComponent } from './components/home/home.component';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,5 @@
 .dash {
-  height: 70vh;
+  height: 80vh;
   overflow-y: auto;
 }
 
@@ -31,9 +31,48 @@
 }
 
 .dashboard {
-  height: 60vh;
+  height: 70vh;
 }
 
-#defualt {
-  height:80vh;
+#page-icon {
+  height: 30vh;
+  font-size: 30vh;
+  padding-top: 15vh;
+  color: gray;
+  opacity: 0.2;
+}
+
+#icon-holder {
+  text-align: center;
+}
+
+#no-proj {
+  margin-top: 4vh;
+}
+
+#no-proj-heading {
+  color: gray;
+  opacity: 0.6;
+}
+
+h1 {
+  text-align: center;
+  font-family: Georgia;
+  color: rgba(8,162,233,1);
+}
+
+.round {
+  border-radius: 0px 50px 50px 0px;
+}
+
+.center {
+  text-align: center;
+}
+
+#heading {
+  text-shadow: 1px 1px 2px #000000;
+}
+
+span {
+  font-weight: 400 !important;
 }

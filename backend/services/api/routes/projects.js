@@ -63,7 +63,7 @@ router.post('/create', (req, res, next) => {
         whitelist: req.body.whitelist,
         blacklist: req.body.blacklist,
         source: req.body.source,
-        startTime: req.body.startTime,
+        // startTime: req.body.startTime,
         trackTime: req.body.trackTime,
         data: null,
         createdBy: "Test User"
@@ -72,7 +72,6 @@ router.post('/create', (req, res, next) => {
     project
     .save()
     .then(result => {
-      console.log(result);
       res.status(201).json({
         message: "Handling POST requests to /projects/create",
         createdProduct: result
@@ -150,7 +149,7 @@ router.post('/start', (req, res, next) => {
         });
         listenerRes.on("end", () => {
             responseString = JSON.parse(responseString);
-            console.log(responseString);
+            // console.log(responseString);
             res.status(200).json(responseString);
         });
     });

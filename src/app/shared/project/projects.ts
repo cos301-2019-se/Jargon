@@ -1,8 +1,8 @@
-import { Timestamp } from "rxjs";
+import { Timestamp } from 'rxjs/internal/operators/timestamp';
 
 export class Projects {
-    projectName: string;
-    whiteList : string[];
+    project_name: string;
+    whiteList: string[];
     blacklist: string[];
     source: string;
     startTime: Timestamp<BigInteger>;
