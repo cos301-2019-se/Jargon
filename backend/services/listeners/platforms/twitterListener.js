@@ -1,36 +1,63 @@
+"use strict";
+
 class twitterListener{
-    constructor(keywords_, trackingDuration_){
-        this.keywords = "";
+    constructor(whitelist_, blacklist_, trackingDuration_){
+        this.whitelist = "";
+        this.blacklist = "";
+        this.blacklistArray = blacklist_;
+        this.whitelistArray = whitelist_;
         this.trackingDuration = trackingDuration_;
-        for(var x = 0; x < keywords_.length; x++){
+        for(var x = 0; x < whitelist_.length; x++){
             if(x==0){
-                this.keywords = keywords_[x];
+                this.whitelist = whitelist_[x];
             }else{
-                this.keywords = "," + keywords_[x];
+                this.whitelist += "," + whitelist_[x];
+            }
+        }
+        for(var x = 0; x < blacklist_.length; x++){
+            if(x==0){
+                this.blacklist = blacklist_[x];
+            }else{
+                this.blacklist += "," + blacklist_[x];
             }
         }
     }
-    
-    get keywords(){
-        return this._keywords;
+   
+    get blacklistArray(){
+        return this._blacklistArray;
+    }
+
+    get blacklist(){
+        return this._blacklist;
+    }
+
+    get whitelist(){
+        return this._whitelist;
     }
 
     get trackingDuration(){
         return this._trackingDuration;
     }
 
-    set keywords(vals){
-        this._keywords = vals;
+    set blacklistArray(vals){
+        this._blacklistArray = vals;
+    }
+
+    set blacklist(vals){
+        this._blacklist = vals;
+    }
+
+    set whitelist(vals){
+        this._whitelist = vals;
     }
 
     set trackingDuration(val){
         this._trackingDuration = val;
     }
 
-    
-    trackTweets(){
-        const twitterConsumerSecret = require('twitterConfig').consumer_secret;
-        const twitterTokenSecret = require('twitterConfig').token_secret;
+    startTracking(res, projID, callback){
+        const twitterConsumerSecret = require('./twitterConfig').consumer_secret;
+        const twitterTokenSecret = require('./twitterConfig').token_secret;
         const Twitter = require("node-tweet-stream")
         , t = new Twitter({
             consumer_key: 'DnXz3QBEptjCkSCXoKmj690GQ',
@@ -38,58 +65,21 @@ class twitterListener{
             token: '1122433281465700352-bPVkrTzBiwMyenSqHfePpi2QNU4t3e',
             token_secret: twitterTokenSecret
         })
-        // let promises = [];
-        let trackResults = [];
-        message = "";
-        // this.keywords.forEach(element => {
-        //     promises.push(new Promise((resolve, reject)=>{
-                let tempArray = [];
-                t.on('tweet', function(tweet){
-                    tempArray.push(tweet);
-                })
-        //         // setTimeout(()=>{
-        //         //     message += "ja";
-        //         //     resolve(message)
-        //         // }, )
-                
-        //         t.track(element); 
-        //         setTimeout(()=>{
-        //             t.untrack(element);
-        //             trackResults.push(tempArray);
-        //             resolve(trackResults);
-        //         }, 3);
-        //     }))  
-        // }); 
-        promises.push(new Promise((resolve, reject) => {
-            t.track("Trump,javascript"); 
-            setTimeout(()=>{
-                t.untrack(element);
-                trackResults.push(tempArray);
-                resolve(trackResults);
-            }, 5000);
-        })) 
-        Promise.all(promises).then((results)=>{
-            //TODO: save to mongoDB
-
-            return results;
-        });
-    }
-
-    startTracking(res, projID, callback){
-        const Twitter = require("node-tweet-stream")
-        , t = new Twitter({
-            consumer_key: 'DnXz3QBEptjCkSCXoKmj690GQ',
-            consumer_secret: '08KQEcV5oSROZR3EvQzMKeH9fxlqn05tK0bl4rpNuVtgDJUqLX',
-            token: '1122433281465700352-bPVkrTzBiwMyenSqHfePpi2QNU4t3e',
-            token_secret: 'IEqjQrY1FKpfSQ4p0XITpedbZEyHQZRK9UK9ZxtwfVWG9'
-        })
         let tempArray = [];
         t.on('tweet', function(tweet){
-            tempArray.push(tweet);
-        })
-        t.track(this.keywords); 
+            let found = false;
+            this.blacklistArray.forEach(element=>{
+                if(tweet.text.indexOf(element)>-1){
+                    found = true;
+                }
+            })
+            if(!found){
+                tempArray.push(tweet);
+            }
+        }.bind(this))
+        t.track(this.whitelist); 
         setTimeout(()=>{
-            t.untrack(this.keywords);
+            t.untrack(this.whitelist);
             if(typeof callback == 'function'){
                 callback(res, projID, tempArray);
             }else{
@@ -99,14 +89,16 @@ class twitterListener{
     }
 
     hardStopTweets(){
+        const twitterConsumerSecret = require('./twitterConfig').consumer_secret;
+        const twitterTokenSecret = require('./twitterConfig').token_secret;
         const Twitter = require("node-tweet-stream")
         , t = new Twitter({
             consumer_key: 'DnXz3QBEptjCkSCXoKmj690GQ',
-            consumer_secret: '08KQEcV5oSROZR3EvQzMKeH9fxlqn05tK0bl4rpNuVtgDJUqLX',
+            consumer_secret: twitterConsumerSecret,
             token: '1122433281465700352-bPVkrTzBiwMyenSqHfePpi2QNU4t3e',
-            token_secret: 'IEqjQrY1FKpfSQ4p0XITpedbZEyHQZRK9UK9ZxtwfVWG9'
+            token_secret: twitterTokenSecret
         })
-        this.keywords.forEach(element => {
+        this.whitelistArray.forEach(element => {
             t.untrack(element); 
         }); 
     }

@@ -11,7 +11,7 @@ router.post('/', (req, res, next) => {
     .exec()
     .then(results => {
         if(results[0].source==='Twitter'){
-            tl = new twitterListener(results[0].whitelist, results[0].trackTime);
+            tl = new twitterListener(results[0].whitelist, results[0].blacklist, results[0].trackTime);
             tl.startTracking(res, results[0].id, returnListenerData);
         }else{
             console.log("Platform does not match project's chosen platform.");
