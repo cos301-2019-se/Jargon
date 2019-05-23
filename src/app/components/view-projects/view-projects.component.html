@@ -82,7 +82,7 @@
                   <div><h6 class="display-6">Date created: <span>{{ projectData[i].created }}</span></h6></div>
                   <div class="row mt-3">
                     <div class="col-md-4 col-12">
-                      <div *ngIf="editMode==false" class="form-control btn btn-warning">Start</div>
+                      <div *ngIf="editMode==false" class="form-control btn btn-warning" (click)='start(projectData[i]._id)'>Start</div>
                     </div>
                     <div class="col-md-4 col-12 mt-md-0 mt-3">
                       <input *ngIf="editMode==false" class="form-control btn btn-secondary" (click)='changeMode(g, projectData[i]._id); assignArrays(i);' value='Edit'>
