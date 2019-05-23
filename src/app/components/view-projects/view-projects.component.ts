@@ -59,8 +59,6 @@ export class ViewProjectsComponent implements OnInit {
 
   removeWhitelistWord(index: number) {
     this.whitelist.splice(index, 1);
-    console.log(this.projectData);
-    console.log(this.projectDataBackup);
   }
 
   removeBlacklistWord(index: number) {
@@ -98,19 +96,28 @@ export class ViewProjectsComponent implements OnInit {
   }
 
   update(form: NgForm, id: number) {
-    const values = form.value;
-    this.reset(form);
-    console.log(values);
-    this.requester.updateProject(id, values.name, values.source, values.track, this.whitelist, this.blacklist).subscribe((res: any) => {
-      console.log(res);
-    });
+    let pos = 0;
+    for (let i = 0; i < this.projectData.length; i++) {
+      if (this.projectData[i]._id === id) {
+        pos = i;
+      }
+    }
 
-    location.reload();
+    const values = form.value;
+
+    this.projectDataBackup[pos].project_name = values.name;
+    this.projectDataBackup[pos].source = values.source;
+    this.projectDataBackup[pos].trackTime = values.track;
+    this.projectDataBackup[pos].whitelist = this.whitelist;
+    this.projectDataBackup[pos].blacklist = this.blacklist;
+
+    this.reset(form);
+    this.requester.updateProject(id, values.name, values.source, values.track, this.whitelist, this.blacklist).subscribe((res: any) => {
+    });
   }
 
   remove(form: NgForm, id: number) {
     this.requester.deleteProject(id).subscribe((res: any) => {
-      console.log(res);
     });
     this.router.navigate(['/']);
   }
