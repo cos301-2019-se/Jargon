@@ -26,7 +26,7 @@ export class ChartsComponent implements OnInit {
   {
     backgroundColor: ['green', 'red', 'orange']
   }
-]
+];
 
   ngOnInit() {
   }

@@ -88,7 +88,7 @@ export class ViewProjectsComponent implements OnInit {
 
   resetData(form: NgForm) {
 
-    if(this.editMode === true) {
+    if (this.editMode === true) {
       this.projectData = JSON.parse(JSON.stringify(this.projectDataBackup));
     }
 
