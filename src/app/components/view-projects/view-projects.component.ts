@@ -121,4 +121,11 @@ export class ViewProjectsComponent implements OnInit {
     });
     this.router.navigate(['/']);
   }
+
+  start(id: number) {
+    console.log(id);
+    // this.requester.start(id).subscribe((res: any) => {
+    //   console.log(res);
+    // });
+  }
 }
