@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as Chart from 'chart.js';
 
 @Component({
   selector: 'app-charts',
@@ -10,28 +9,26 @@ export class ChartsComponent implements OnInit {
 
   constructor() { }
 
+  public barChartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  };
+
+  public barChartLabels = ['Positive', 'Negative', 'Nuetral'];
+  public barChartType = 'doughnut';
+  public barChartLegend = true;
+
+  public barChartData = [
+    {data: [65, 20, 15]},
+  ];
+
+  public chartColors: Array<any> = [
+  {
+    backgroundColor: ['green', 'red', 'orange']
+  }
+]
+
   ngOnInit() {
-    // var ctx1 = document.getElementById('myChart1');
-    var myChart1 = new Chart('myChart1', {
-      type: 'doughnut',
-      data: {
-          labels: ['Negative', 'Neutral', 'Positive'],
-          datasets: [{
-              label: 'Analysis',
-              data: [20, 10, 90,],
-              backgroundColor: [
-                'red', 'yellow', 'green'
-              ],
-              borderColor: [
-                'red', 'yellow', 'green'
-              ],
-              borderWidth: 0
-          }]
-      },
-      options: {
-        cutoutPercentage: 70
-      }
-    });
   }
 
 }
