@@ -2,3 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+geckodriver.log
+.data/
+.vector_cache/
+nn-model.pt
