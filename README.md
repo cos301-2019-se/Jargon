@@ -10,14 +10,14 @@ Jargon is a sentiment analysis application that intelligently determines sentime
 ## Project Links
 Link | Description
 --- | ---
-<a href="https://drive.google.com/uc?view&id=1HPhJksitj9bZL6KIlYapfWxEdkZg9Zzs" target="blank">SRS Document</a> | System requirements specification document
+<a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/srs/srs.pdf" target="blank">SRS Document</a> | System requirements specification document
 [Trello](https://trello.com/b/3q7zGrE5/jargon) | Project management tool
 [Slack](https://www.google.com) | Project communications tool
 
 ## Meet the team
 Syntactic sugar, the term is one that is commonly known within the programming community.It is a term that loosely refers to the writing of easy to understand, clear and concise code.  All members of the team are passionate about programming and technology in general, thus we takegreat pride in the work we produce.  Even the most complex of problems can be broken downinto more simple and easier to solve problems.
 
-![alt text](https://github.com/cos301-2019-se/Jargon/blob/development/doc/group-photo.jpg "Group Photo")
+![alt text](https://github.com/cos301-2019-se/Jargon/blob/development/documentation/images/group-photo.jpg "Group Photo")
 
 ### Ethan Lindeman (Team Leader)
 Bachelor of Information Technology (3rd year)
