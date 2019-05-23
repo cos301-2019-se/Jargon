@@ -1,3 +1,6 @@
+import { LoginNavbarComponent } from './components/login/login-navbar/login-navbar.component';
+import { RegisterNavbarComponent } from './components/register/register-navbar/register-navbar.component';
+import { RegisterComponent } from './components/register/register.component';
 import { EditProjectComponent } from './components/view-projects/edit-project/edit-project.component';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
 import { ViewProjectsComponent } from './components/view-projects/view-projects.component';
@@ -9,7 +12,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './components/login/login.component';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -19,9 +22,12 @@ import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 
 const appRoutes: Routes = [
-  { path: '' , component: HomeComponent},
+  { path: '' , component: LoginComponent},
+  { path: 'home', component: HomeComponent },
   { path: 'view-projects', component: ViewProjectsComponent },
-  { path: 'create-project', component: CreateProjectComponent }
+  { path: 'create-project', component: CreateProjectComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent }
 ];
 
 
@@ -35,12 +41,18 @@ const appRoutes: Routes = [
     ProjectsComponent,
     ViewProjectsComponent,
     CreateProjectComponent,
-    EditProjectComponent
+    EditProjectComponent,
+    RegisterComponent,
+    LoginNavbarComponent,
+    RegisterNavbarComponent
   ],
   exports: [
     ChartsComponent,
     ProjectsComponent,
-    EditProjectComponent
+    EditProjectComponent,
+    HomeComponent,
+    LoginNavbarComponent,
+    RegisterNavbarComponent
   ],
   imports: [
     HttpClientModule,
