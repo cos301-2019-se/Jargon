@@ -63,9 +63,11 @@ router.post('/create', (req, res, next) => {
         whitelist: req.body.whitelist,
         blacklist: req.body.blacklist,
         source: req.body.source,
+        status : false,
         // startTime: req.body.startTime,
         trackTime: req.body.trackTime,
         data: null,
+        dataSentiment: null,
         createdBy: "Test User"
     });
 
@@ -125,81 +127,99 @@ router.post('/delete', (req, res, next) => {
 router.post('/start', (req, res, next) => {
     const id = req.body.id;
     const platform = req.body.platform;
-    let postBody = {
-        'id' : id,
-        'platform' : platform
-    }
-    let postBodyString = JSON.stringify(postBody);
-    if(platform === "twitter"){
-        var options = {
-            host: "localhost",
-            port: 3001,
-            path: "/twitter/",
-            method: "POST",
-            headers: {
-                'Content-Length': Buffer.byteLength(postBodyString),
-                "Content-Type": "application/json"
-            }
-        };
-    }
-    let responseString;
-    var listenerReq = http.request(options, (listenerRes)=>{
-        responseString = "";
-        listenerRes.on("data", (data) => {
-            responseString += data;
-        });
-        listenerRes.on("end", () => {
-            responseString = JSON.parse(responseString);
-            // console.log(responseString);
-            let messages = '{"data" : []}';
-            messages = JSON.parse(messages);
-            responseString.forEach((element)=>{
-                messages['data'].push(element['text']);
-            });
-            messages = JSON.stringify(messages);
-            var nnOptions = {
-                host: "localhost",
-                port: 5000,
-                path: "/api/evaluate",
-                method: "POST",
-                headers: {
-                    'Content-Length': Buffer.byteLength(messages),
-                    "Content-Type": "application/json"
+
+    Project.find({_id : id})
+    .exec()
+    .then((result)=>{
+        result[0].status = true;
+        result[0].save().then(
+            ()=>{
+                let postBody = {
+                    'id' : id,
+                    'platform' : platform
                 }
-            };
-
-            var nnReq = http.request(nnOptions, (nnRes)=>{
-                var nnResponseString = "";
-                nnRes.on("data", (nnData) => {
-                    nnResponseString += nnData;
+                let postBodyString = JSON.stringify(postBody);
+                if(platform === "twitter"){
+                    var options = {
+                        host: "localhost",
+                        port: 3001,
+                        path: "/twitter/",
+                        method: "POST",
+                        headers: {
+                            'Content-Length': Buffer.byteLength(postBodyString),
+                            "Content-Type": "application/json"
+                        }
+                    };
+                }
+                let responseString;
+                var listenerReq = http.request(options, (listenerRes)=>{
+                    responseString = "";
+                    listenerRes.on("data", (data) => {
+                        responseString += data;
+                    });
+                    listenerRes.on("end", () => {
+                        responseString = JSON.parse(responseString);
+                        // console.log(responseString);
+                        let messages = '{"data" : []}';
+                        messages = JSON.parse(messages);
+                        responseString.forEach((element)=>{
+                            messages['data'].push(JSON.stringify(element['text']));
+                        });
+                        messages = JSON.stringify(messages);
+                        var nnOptions = {
+                            host: "localhost",
+                            port: 5000,
+                            path: "/api/evaluate",
+                            method: "POST",
+                            headers: {
+                                'Content-Length': Buffer.byteLength(messages),
+                                "Content-Type": "application/json"
+                            }
+                        };
+            
+                        var nnReq = http.request(nnOptions, (nnRes)=>{
+                            var nnResponseString = "";
+                            nnRes.on("data", (nnData) => {
+                                nnResponseString += nnData;
+                            });
+                            nnRes.on("end", () => {
+                                nnResponseString = JSON.parse(nnResponseString);
+                                
+                                let tweetsAndSentiments = '{"data" : []}';
+                                tweetsAndSentiments = JSON.parse(tweetsAndSentiments);
+                                tweetsAndSentiments['data'].push(responseString, nnResponseString);
+                                tweetsAndSentiments = JSON.stringify(tweetsAndSentiments);
+                                Project.find({_id : projID})
+                                .exec()
+                                .then((result)=>{
+                                    result[0].dataSentiment = tweetsAndSentiments;
+                                    result[0].status = false;
+                                    result[0].save().then(
+                                        (result)=>{
+                                            res.status(200).json(tweetsAndSentiments);
+                                        }
+                                    )
+                                }).catch((err) => {
+                                    // console.log(typeof result[0].data);
+                                })
+                            });
+                        });
+                        console.log(messages);
+                        nnReq.write(messages);
+                        nnReq.end();
+            
+                    });
                 });
-                nnRes.on("end", () => {
-                    nnResponseString = JSON.parse(nnResponseString);
-                    
-                    let tweetsAndSentiments = '{"data" : []}';
-                    tweetsAndSentiments['data'].push(responseString, nnResponseString);
-        
-                    res.status(200).json(tweetsAndSentiments);
-                });
-            });
-        
-            // const postBody = querystring.stringify({
-            //     'id': id
-            // });
-            // listenerReq.write(JSON.stringify(postBody));
-            nnReq.write(messages);
-            nnReq.end();
+            
+                listenerReq.write(postBodyString);
+                listenerReq.end();
+            }
+        )
+    }).catch((err) => {
+    //   console.log(typeof result[0].data);
+    })
 
-            // res.status(200).json(nnResponseString);
-        });
-    });
-
-    // const postBody = querystring.stringify({
-    //     'id': id
-    // });
-    // listenerReq.write(JSON.stringify(postBody));
-    listenerReq.write(postBodyString);
-    listenerReq.end();
+    
 });
 
 module.exports = router;
