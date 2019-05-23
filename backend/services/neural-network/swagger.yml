@@ -20,30 +20,29 @@ paths:
   /evaluate:
     post:
       operationId: operations.evaluate
+      parameters:
+        - name: data
+          description: Some message.
+          in: body
+          required: true
+          schema:
+            type: "object"
+            properties:
+              data:
+                type: array
+                items:
+                  type: string
       tags:
           - "evaluate"
       summary: Return sentiment value of the given data
       description: Evaluate the sentiment of the given data
-      parameters:
-        - in: body
-          name: Data
-          required: true
-          schema:
-            $ref: '#/definitions/DataStream'
       responses:
         200:
           description: Successfully return sentiment value of the given data
-          # Default Swagger data. This will need to change
           schema:
             type: array
             items:
-              properties:
-                fname:
-                  type: string
-                lname:
-                  type: string
-                timestamp:
-                  type: string
+              type: number
 
   /train:
     post:
@@ -54,29 +53,24 @@ paths:
       description: Train the Neural Network after evaluating the sentiment of the data
       parameters:
         - in: body
-          name: Data
+          name: data
           required: true
           schema:
-              $ref: '#/definitions/DataStream'
+            type: "object"
+            properties:
+              data:
+                type: array
+                items:
+                  type: string
+                  type: number
+
       responses:
         200:
           description: Successfully return sentiment value of the given data
-          # Default Swagger data. This will need to change
           schema:
-            type: array
-            items:
-              properties:
-                fname:
-                  type: string
-                lname:
-                  type: string
-                timestamp:
-                  type: string
-
-definitions:
-    DataStream:
-        type: "object"
-        properties:
-            data:
+            type: object
+            properties:
+              data:
                 type: string
+
 
