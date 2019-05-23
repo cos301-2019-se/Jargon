@@ -163,7 +163,7 @@ router.post('/start', (req, res, next) => {
                         let messages = '{"data" : []}';
                         messages = JSON.parse(messages);
                         responseString.forEach((element)=>{
-                            messages['data'].push(JSON.stringify(element['text']));
+                            messages['data'].push(element['text']);
                         });
                         messages = JSON.stringify(messages);
                         var nnOptions = {
@@ -187,9 +187,10 @@ router.post('/start', (req, res, next) => {
                                 
                                 let tweetsAndSentiments = '{"data" : []}';
                                 tweetsAndSentiments = JSON.parse(tweetsAndSentiments);
-                                tweetsAndSentiments['data'].push(responseString, nnResponseString);
+                                tweetsAndSentiments['data'].push(responseString);
+                                tweetsAndSentiments['data'].push(nnResponseString);
                                 tweetsAndSentiments = JSON.stringify(tweetsAndSentiments);
-                                Project.find({_id : projID})
+                                Project.find({_id : id})
                                 .exec()
                                 .then((result)=>{
                                     result[0].dataSentiment = tweetsAndSentiments;
@@ -204,7 +205,7 @@ router.post('/start', (req, res, next) => {
                                 })
                             });
                         });
-                        console.log(messages);
+                        // console.log(messages);
                         nnReq.write(messages);
                         nnReq.end();
             
