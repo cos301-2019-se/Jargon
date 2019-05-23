@@ -13,7 +13,7 @@ Link | Description
 <a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/srs/srs.pdf" target="blank">SRS</a> | System requirements specification/architectural design document
 <a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/user-manual/user-manual-1.0.pdf" target="blank">User Manual</a> | User manual document
 <a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/testing-policy/testing-policy-1.0.pdf" target="blank">Testing Policies</a> | Testing policies document
-<a href="" target="blank">Coding Standards</a> | Coding standards document
+<a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/coding-standards/coding-standards-1.0.pdf" target="blank">Coding Standards</a> | Coding standards document
 [Trello](https://trello.com/b/3q7zGrE5/jargon) | Project management tool
 [Slack](https://www.google.com) | Project communications tool
 
