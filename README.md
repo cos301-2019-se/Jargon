@@ -10,7 +10,10 @@ Jargon is a sentiment analysis application that intelligently determines sentime
 ## Project Links
 Link | Description
 --- | ---
-<a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/srs/srs.pdf" target="blank">SRS Document</a> | System requirements specification document
+<a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/srs/srs.pdf" target="blank">SRS</a> | System requirements specification document
+<a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/user-manual/user-manual-1.0.pdf" target="blank">User Manual</a> | User manual document
+<a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/testing-policy/testing-policy-1.0.pdf" target="blank">Testing Policies</a> | Testing policies document
+<a href="" target="blank">Coding Standards</a> | Coding standards document
 [Trello](https://trello.com/b/3q7zGrE5/jargon) | Project management tool
 [Slack](https://www.google.com) | Project communications tool
 
@@ -85,29 +88,3 @@ coordinate with a small team on projects.
 
 ##### About me:
 I am a tenacious Computer Science student that is eager to learn new concepts and I like to take on personal projects to increase my knowledge. I would like to see myself as a system programmer in the future. Technology and how they work on lower levels has always fascinated me, especially older hardware that can be emulated.
-
-
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
