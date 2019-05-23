@@ -1,4 +1,4 @@
-import { RegisterNavbarComponent } from './register/navbar/register-navbar.component';
+import { RegisterNavbarComponent } from './register/register-navbar/register-navbar.component';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
