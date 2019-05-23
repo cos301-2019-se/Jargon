@@ -14,7 +14,7 @@ export class ProjectApiRequesterService {
   public lastPage = '';
 
   constructor(private httpClient: HttpClient) {}
-
+ 
   public getProjects() {
     return this.httpClient.get(`${this.apiURL}/projects`);
   }
