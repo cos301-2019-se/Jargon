@@ -7,6 +7,4 @@ import { HttpClient } from '@angular/common/http';
 export class NeuralnetApiRequesterService {
 
   constructor(private httpClient: HttpClient) { }
-
-  public 
 }
