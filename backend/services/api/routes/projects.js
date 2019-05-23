@@ -1,10 +1,10 @@
+var http = require("http");
 const express = require('express');
 const router = express.Router();
 
 const mongoose = require('mongoose');
 const Project = require('../models/project');
-const twitterListener = require('../../listeners/twitterListener');
-
+// const querystring = require('querystring');
 
 router.get('/', (req, res, next) => {
     Project.find()
@@ -63,7 +63,7 @@ router.post('/create', (req, res, next) => {
         whitelist: req.body.whitelist,
         blacklist: req.body.blacklist,
         source: req.body.source,
-        startTime: req.body.startTime,
+        // startTime: req.body.startTime,
         trackTime: req.body.trackTime,
         data: null,
         createdBy: "Test User"
@@ -72,7 +72,6 @@ router.post('/create', (req, res, next) => {
     project
     .save()
     .then(result => {
-      console.log(result);
       res.status(201).json({
         message: "Handling POST requests to /projects/create",
         createdProduct: result
@@ -124,43 +123,43 @@ router.post('/delete', (req, res, next) => {
 });
 
 router.post('/start', (req, res, next) => {
-  const id = req.body.id;
-  Project.find({ _id: id })
-    .exec()
-    .then(results => {
-      if(results[0].source==='Twitter'){
-        tl = new twitterListener(results[0].whitelist, results[0].trackTime);
-        tl.startTracking(res, results[0].id, returnListenerData);
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
-  });
+    const id = req.body.id;
+    const platform = req.body.platform;
+    let postBody = {
+        'id' : id,
+        'platform' : platform
+    }
+    let postBodyString = JSON.stringify(postBody);
+    if(platform === "twitter"){
+        var options = {
+            host: "localhost",
+            port: 3001,
+            path: "/twitter/",
+            method: "POST",
+            headers: {
+                'Content-Length': Buffer.byteLength(postBodyString),
+                "Content-Type": "application/json"
+            }
+        };
+    }
+    var listenerReq = http.request(options, (listenerRes)=>{
+        var responseString = "";
+        listenerRes.on("data", (data) => {
+            responseString += data;
+        });
+        listenerRes.on("end", () => {
+            responseString = JSON.parse(responseString);
+            // console.log(responseString);
+            res.status(200).json(responseString);
+        });
+    });
+
+    // const postBody = querystring.stringify({
+    //     'id': id
+    // });
+    // listenerReq.write(JSON.stringify(postBody));
+    listenerReq.write(postBodyString);
+    listenerReq.end();
 });
-
-function returnListenerData(res, projID, tempArray){
-  let updateVals = {};
-  updateVals["data"] = tempArray;
-  Project.find({_id : projID})
-  .exec()
-  .then((result)=>{
-    result[0].data = tempArray;
-    result[0].save().then(
-      (result)=>{
-        res.status(200).json(result);
-      }
-    )
-  }).catch((err) => {
-    console.log(typeof result[0].data);
-  })
-
-  // let doc = await Project.findOne({_id : projID});
-  // doc.data = tempArray;
-  // await doc.save();
-  // res.status(200).json(tempArray);
-}
 
 module.exports = router;
