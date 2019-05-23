@@ -1,7 +1,16 @@
 <div class="pr-3 pl-3">
   <div class="card">
     <div class="card-body shadow">
-      <canvas id="myChart1"></canvas>
+
+          <canvas baseChart
+                  [datasets]="barChartData"
+                  [labels]="barChartLabels"
+                  [options]="barChartOptions"
+                  [legend]="barChartLegend"
+                  [chartType]="barChartType"
+                  [colors]="chartColors">
+          </canvas>
+
     </div>
   </div>
 </div>
