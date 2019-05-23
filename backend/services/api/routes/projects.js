@@ -142,15 +142,55 @@ router.post('/start', (req, res, next) => {
             }
         };
     }
+    let responseString;
     var listenerReq = http.request(options, (listenerRes)=>{
-        var responseString = "";
+        responseString = "";
         listenerRes.on("data", (data) => {
             responseString += data;
         });
         listenerRes.on("end", () => {
             responseString = JSON.parse(responseString);
             // console.log(responseString);
-            res.status(200).json(responseString);
+            let messages = '{"data" : []}';
+            messages = JSON.parse(messages);
+            responseString.forEach((element)=>{
+                messages['data'].push(element['text']);
+            });
+            messages = JSON.stringify(messages);
+            var nnOptions = {
+                host: "localhost",
+                port: 5000,
+                path: "/api/evaluate",
+                method: "POST",
+                headers: {
+                    'Content-Length': Buffer.byteLength(messages),
+                    "Content-Type": "application/json"
+                }
+            };
+
+            var nnReq = http.request(nnOptions, (nnRes)=>{
+                var nnResponseString = "";
+                nnRes.on("data", (nnData) => {
+                    nnResponseString += nnData;
+                });
+                nnRes.on("end", () => {
+                    nnResponseString = JSON.parse(nnResponseString);
+                    
+                    let tweetsAndSentiments = '{"data" : []}';
+                    tweetsAndSentiments['data'].push(responseString, nnResponseString);
+        
+                    res.status(200).json(tweetsAndSentiments);
+                });
+            });
+        
+            // const postBody = querystring.stringify({
+            //     'id': id
+            // });
+            // listenerReq.write(JSON.stringify(postBody));
+            nnReq.write(messages);
+            nnReq.end();
+
+            // res.status(200).json(nnResponseString);
         });
     });
 
