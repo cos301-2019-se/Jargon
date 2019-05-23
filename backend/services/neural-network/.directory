@@ -1,5 +1,9 @@
 [Dolphin]
+<<<<<<< HEAD
+Timestamp=2019,5,23,14,34,15
+=======
 Timestamp=2019,5,23,19,46,19
+>>>>>>> change-frontend
 Version=4
 
 [Settings]
