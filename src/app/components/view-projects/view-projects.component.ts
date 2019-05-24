@@ -21,6 +21,10 @@ export class ViewProjectsComponent implements OnInit {
   blacklistword = '';
 
   editMode: boolean;
+  dataMode: boolean;
+
+  public twitterResults: [];
+  public sentiments: [];
 
   constructor(private router: Router, private requester: ProjectApiRequesterService) { }
 
@@ -31,6 +35,7 @@ export class ViewProjectsComponent implements OnInit {
     });
 
     this.editMode = false;
+    this.dataMode = false;
   }
 
   addWhitelistWord() {
@@ -120,5 +125,21 @@ export class ViewProjectsComponent implements OnInit {
     this.requester.deleteProject(id).subscribe((res: any) => {
     });
     this.router.navigate(['/']);
+  }
+
+  start(id: number) {
+    console.log(id);
+    this.requester.start(id).subscribe((res: any) => {
+      if(res != undefined){
+        let json = JSON.parse(res);
+        this.twitterResults = json.data[0];
+        this.sentiments = json.data[1]['sentiments'];
+        this.dataMode = true;
+      }
+    });
+  }
+
+  close() {
+    this.dataMode = false;
   }
 }

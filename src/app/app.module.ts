@@ -23,8 +23,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 
+
 const appRoutes: Routes = [
-  { path: '' , component: LoginComponent},
+  { path: '' , component: HomeComponent},
   { path: 'home', component: HomeComponent },
   { path: 'view-projects', component: ViewProjectsComponent },
   { path: 'create-project', component: CreateProjectComponent },
@@ -64,7 +65,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     FormsModule,
     RouterModule.forRoot(appRoutes),
-    ChartsModule
+    ChartsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

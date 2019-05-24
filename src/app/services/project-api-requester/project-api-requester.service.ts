@@ -14,7 +14,7 @@ export class ProjectApiRequesterService {
   public lastPage = '';
 
   constructor(private httpClient: HttpClient) {}
-
+ 
   public getProjects() {
     return this.httpClient.get(`${this.apiURL}/projects`);
   }
@@ -55,5 +55,12 @@ export class ProjectApiRequesterService {
 
   public getTweets(){
     return this.httpClient.get(`${this.apiURL}/projects`);
+  }
+
+  public  start(id: number) {
+    return this.httpClient.post(`${this.apiURL}/projects/start`, {
+      'id': id,
+      'platform': 'twitter'
+    });
   }
 }
