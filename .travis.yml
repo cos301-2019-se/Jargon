@@ -15,6 +15,7 @@ services:
 
 before_script:
   - npm install
+  - npm install mocha
   - npm install --dev
   - cd './tests'
 
