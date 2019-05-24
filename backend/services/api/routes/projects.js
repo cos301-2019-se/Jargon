@@ -139,7 +139,7 @@ router.post('/start', (req, res, next) => {
                     'platform' : platform
                 }
                 let postBodyString = JSON.stringify(postBody);
-                if(platform === "twitter"){
+                if((platform === "twitter")||(platform==="Twitter")){
                     var options = {
                         host: "localhost",
                         port: 3001,
