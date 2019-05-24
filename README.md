@@ -8,14 +8,14 @@
 Jargon is a sentiment analysis application that intelligently determines sentiments on a given topic using real-time data from social platforms.
 
 ## Project Links
-Link | Description
---- | ---
-<a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/srs/srs.pdf" target="blank">SRS</a> | System requirements specification/architectural design document
-<a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/user-manual/user-manual-1.0.pdf" target="blank">User Manual</a> | User manual document
-<a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/testing-policy/testing-policy-1.0.pdf" target="blank">Testing Policies</a> | Testing policies document
-<a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/coding-standards/coding-standards-1.0.pdf" target="blank">Coding Standards</a> | Coding standards document
-[Trello](https://trello.com/b/3q7zGrE5/jargon) | Project management tool
-[Slack](https://www.google.com) | Project communications tool
+Link | Ver | Description
+--- | --- | ---
+<a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/srs/srs-2.1.pdf" target="blank">SRS</a> | 2.1 | System requirements specification/architectural design document
+<a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/user-manual/user-manual-1.1.pdf" target="blank">User Manual</a> | 1.1 | User manual document
+<a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/testing-policy/testing-policy-1.1.pdf" target="blank">Testing Policies</a> | 1.1 | Testing policies document
+<a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/coding-standards/coding-standards-1.1.pdf" target="blank">Coding Standards</a> | 1.1 | Coding standards document
+[Trello](https://trello.com/b/3q7zGrE5/jargon) | N/A | Project management tool
+[Slack](https://www.google.com) | N/A | Project communications tool
 
 ## Meet the team
 Syntactic sugar, the term is one that is commonly known within the programming community.It is a term that loosely refers to the writing of easy to understand, clear and concise code.  All members of the team are passionate about programming and technology in general, thus we takegreat pride in the work we produce.  Even the most complex of problems can be broken downinto more simple and easier to solve problems.
