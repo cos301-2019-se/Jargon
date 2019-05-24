@@ -163,7 +163,7 @@ router.post('/start', (req, res, next) => {
                         let messages = '{"data" : []}';
                         messages = JSON.parse(messages);
                         responseString.forEach((element)=>{
-                            messages['data'].push(element['text']);
+                            messages['data'].push(element);
                         });
                         messages = JSON.stringify(messages);
                         var nnOptions = {
@@ -181,8 +181,10 @@ router.post('/start', (req, res, next) => {
                             var nnResponseString = "";
                             nnRes.on("data", (nnData) => {
                                 nnResponseString += nnData;
+                                console.log(nnData)
                             });
                             nnRes.on("end", () => {
+                                console.log(nnResponseString);
                                 nnResponseString = JSON.parse(nnResponseString);
                                 
                                 let tweetsAndSentiments = '{"data" : []}';

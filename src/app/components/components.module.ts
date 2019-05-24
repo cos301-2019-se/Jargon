@@ -41,6 +41,8 @@ import { LoginNavbarComponent } from './login/login-navbar/login-navbar.componen
     RegisterNavbarComponent
   ]
   ,
-    exports: []
+    exports: [
+      ChartsComponent
+    ]
 })
 export class ChildModule { }

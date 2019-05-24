@@ -18,6 +18,7 @@ class NeuralNetwork(nn.Module):
 
         self.device = torch.device('cuda' if torch.cuda.is_available() 
                 else 'cpu')
+        self.device = torch.device('cpu')
         print('Using device: ', self.device)
 
         self.embedding = nn.Embedding(vocab_size, embedding_dim, 

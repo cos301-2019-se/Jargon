@@ -1,7 +1,23 @@
 <app-header></app-header>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-10 mx-auto bg-white shadow-lg rounded-lg mt-5 dash style-5">
+    <div *ngIf='dataMode==true' class="col-10 mx-auto bg-white shadow-lg rounded-lg mt-5 dash style-5">
+      <button class="mt-3 btn bg-primary rounded-pill text-light raise" (click)='close()'>Close</button>
+      <ul *ngFor='let tweet of twitterResults; let i = index' class="list-group mt-4 mb-4">
+        <li class="tweets list-group-item">
+          <div class="row">
+            <div class="col-md-9 col-12">
+              {{ twitterResults[i] }}
+            </div>
+            <div class="col-md-3 col-12 mt-md-0 mt-2">
+              {{ sentiments[i] }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf='dataMode==false' class="col-10 mx-auto bg-white shadow-lg rounded-lg mt-5 dash style-5">
       <h3 *ngIf="projectData.length > 0" class="display-3">Projects</h3>
       <div *ngIf="projectData.length == 0" id="icon-holder">
           <div><i class="far fa-file-alt" id="page-icon"></i></div>

@@ -76,3 +76,7 @@ h1 {
 span {
   font-weight: 400 !important;
 }
+
+.tweets {
+  font-size: 12px;
+}
