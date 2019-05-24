@@ -132,6 +132,7 @@ export class ViewProjectsComponent implements OnInit {
     this.requester.start(id).subscribe((res: any) => {
       if(res != undefined){
         let json = JSON.parse(res);
+        
         this.twitterResults = json.data[0];
         this.sentiments = json.data[1]['sentiments'];
         this.dataMode = true;

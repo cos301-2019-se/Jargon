@@ -163,7 +163,7 @@ router.post('/start', (req, res, next) => {
                         let messages = '{"data" : []}';
                         messages = JSON.parse(messages);
                         responseString.forEach((element)=>{
-                            messages['data'].push(element);
+                            messages['data'].push(element['text']);
                         });
                         messages = JSON.stringify(messages);
                         var nnOptions = {
