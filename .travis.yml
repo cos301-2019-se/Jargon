@@ -15,6 +15,7 @@ services:
 
 before_script:
   - npm install
+  - npm install --dev
   - cd './tests'
 
 script:
