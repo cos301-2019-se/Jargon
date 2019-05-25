@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/topisani/OTTO.svg?branch=master)](https://travis-ci.org/topisani/OTTO)
+[![Build Status](https://travis-ci.com/cos301-2019-se/Jargon.svg?branch=development)](https://travis-ci.com/cos301-2019-se/Jargon)
 [![Build Status](https://travis-ci.com/cos301-2019-se/Jargon.svg?branch=development)](https://travis-ci.com/cos301-2019-se/Jargon)
 
 
