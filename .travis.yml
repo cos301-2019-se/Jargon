@@ -13,6 +13,9 @@ before_install:
 services:
   - xvfb
 
+env:
+  - DOCKER_COMPOSE_VERSION=1.24.0
+  
 before_script:
   - npm install
   - npm install mocha
