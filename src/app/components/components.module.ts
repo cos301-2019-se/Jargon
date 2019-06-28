@@ -13,6 +13,7 @@ import { ViewProjectsComponent } from './view-projects/view-projects.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginNavbarComponent } from './login/login-navbar/login-navbar.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { LoginNavbarComponent } from './login/login-navbar/login-navbar.componen
     LoginComponent,
     RegisterComponent,
     LoginNavbarComponent,
-    RegisterNavbarComponent
+    RegisterNavbarComponent,
+    SidebarComponent
   ]
   ,
     exports: [

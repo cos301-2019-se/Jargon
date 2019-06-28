@@ -1,4 +1,5 @@
 import { LoginNavbarComponent } from './components/login/login-navbar/login-navbar.component';
+import {SidebarComponent} from './components/sidebar/sidebar.component';
 import { RegisterNavbarComponent } from './components/register/register-navbar/register-navbar.component';
 import { RegisterComponent } from './components/register/register.component';
 import { EditProjectComponent } from './components/view-projects/edit-project/edit-project.component';
@@ -48,6 +49,7 @@ const appRoutes: Routes = [
     RegisterComponent,
     LoginNavbarComponent,
     RegisterNavbarComponent,
+    SidebarComponent
   ],
   exports: [
     ChartsComponent,

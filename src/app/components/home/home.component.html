@@ -1,26 +1,22 @@
 <app-header></app-header>
-<div class="container-fluid mt-5 dashboard">
-  <div class="row">
-    <div class="col-10 mx-auto bg-white shadow-lg rounded-lg">
+<div class="container-fluid mt-2 dashboard">
+  <div class="wrapper">
+    <div class="sidebar" [hidden]='collapse'>
+      <app-sidebar></app-sidebar>
+    </div>
+    <div class="main">
       <div class="row">
-        <div class="col-lg-4 col-12 my-2 ml-2 mb-4 style-5">
-          <h1 class="display-4">Projects</h1>
-          <app-projects></app-projects>
-        </div>
-        <div class="col-lg-7 col-12 mb-4 my-2">
-          <h1 class="display-4">Charts</h1>
+        <div class="" id="dashboard-content">
           <div class="row">
-            <div class="col-lg-6 col-12 mb-3">
-              <app-charts></app-charts>
+            <div class="col-11 mx-auto pl-0 mb-4">
+              <h1 class="display-4">Dashboard</h1>
             </div>
-            <div class="col-lg-6 col-12 mb-3">
-              <app-charts></app-charts>
-            </div>
-            <div class="col-lg-6 col-12 mb-3">
-              <app-charts></app-charts>
-            </div>
-            <div class="col-lg-6 col-12 mb-3">
-              <app-charts></app-charts>
+            <div class="col-11 mx-auto shadow-lg rounded-lg" id="main-dash">
+              <div class="row">
+                <div class="col-lg-4 col-12 my-2 ml-2 mb-4 style-5">
+                  <app-projects></app-projects>
+                </div>
+              </div>
             </div>
           </div>
         </div>
