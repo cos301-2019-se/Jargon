@@ -109,3 +109,7 @@ body {
   font-family: sans-serif;
   padding: 10px;
 }
+
+.container-fluid {
+  width: 90% !important;
+}

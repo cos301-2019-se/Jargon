@@ -56,9 +56,10 @@
 }
 
 h1 {
-  text-align: center;
+  color: white;
+  /* text-align: center;
   font-family: Georgia;
-  color: rgba(8,162,233,1);
+  color: rgba(8,162,233,1); */
 }
 
 .round {
@@ -79,4 +80,69 @@ span {
 
 .tweets {
   font-size: 12px;
+}
+
+
+.side-bar {
+  background-color: rgba(0, 18, 37, 1);
+}
+
+.left-align-text {
+  text-align: left;
+}
+
+.text-size-medium {
+  font-size: 18px;
+}
+
+.icon {
+  color: rgb(31, 96, 165);
+}
+
+hr {
+  border-color: rgb(10, 36, 65) !important;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.main,
+.sidebar {
+  padding: 15px;
+}
+
+.main {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sidebar {
+  width: 600px;
+  margin-left: auto;
+  margin-right:auto;
+  height: fit-content;
+  top:15px;
+  position: sticky;
+  display: inline-block;
+}
+
+body {
+  background-color: #ccc;
+  font-family: sans-serif;
+  padding: 10px;
+}
+
+.container-fluid {
+  width: 90% !important;
+}
+
+#main-dash {
+  background-color: rgba(0, 57, 103, 0.3);
+}
+
+#dashboard-content {
+  width: 100%;
 }

@@ -1,75 +1,102 @@
 
-<nav class="navbar navbar-dark navbar-icon-top navbar-expand-xl" id="nav-bg">
-  <a class="navbar-brand text-light" href="/" id="logo">Jargon</a>
-  <button class="navbar-toggler text" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<nav class="navbar navbar-dark navbar-icon-top navbar-expand-xl border-bottom" id="nav-bg">
+  <div class="container-fluid">
+    <a class="navbar-brand text-light" href="/" id="logo">Jargon</a>
+    <button class="navbar-toggler text" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-    </ul>
-    <div [hidden]="collapse" class="mt-3">
-      <a class="btn btn-block btn-outline-primary border-0 py-2 px-0 rounded-0 m-0">
-        <div class="left-align-text pl-3 text-size-medium">
-          <span class="m-2"><i class="fas fa-home icon"></i></span><span class="m-2">Home</span>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+      </ul>
+      <div [hidden]="collapse" class="mt-3">
+        <div class="link-wrapper">
+          <div class="{{home_ab}} p-0 float-left"></div>
+          <a class="{{home}} side-bar-hover btn btn-block border-0 p-0 rounded-0 m-0 link" href="/home">
+            <div class=" left-align-text pl-3 text-size-medium">
+              <span class="m-2"><i class="fas fa-home icon"></i></span><span class="m-2">Home</span>
+            </div> 
+          </a>
         </div>
-      </a>
-    </div>
+      </div>
 
-    <div class="row">
+      <div class="row">
+          <div class="col mx-3"><hr></div>
+      </div>
+
+      <div [hidden]="collapse">
+        <div class="link-wrapper">
+          <div class="{{view_project_ab}} p-0 float-left"></div>
+          <a class="{{view_project}} side-bar-hover btn btn-block border-0 p-0 rounded-0 m-0 link" href="/view-projects">
+            <div class="left-align-text pl-3 text-size-medium">
+              <span class="m-2"><i class="fas fa-clipboard icon"></i></span><span class="m-2">View Projects</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div [hidden]="collapse">
+        <div class="link-wrapper">
+          <div class="{{create_project_ab}} p-0 float-left"></div>
+          <a class="{{create_project}} side-bar-hover btn btn-block border-0 p-0 rounded-0 m-0 link">
+            <div class="left-align-text pl-3 text-size-medium">
+              <span class="m-2"><i class="fas fa-tasks icon"></i></span><span class="m-2">Create Project</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="row">
         <div class="col mx-3"><hr></div>
-    </div>
+      </div>
 
-    <div [hidden]="collapse">
-      <a class="btn btn-block btn-outline-primary border-0 py-2 px-0 rounded-0 m-0">
-        <div class="left-align-text pl-3 text-size-medium">
-          <span class="m-2"><i class="fas fa-home icon"></i></span><span class="m-2">View Projects</span>
+      <div [hidden]="collapse"> 
+        <div class="link-wrapper">
+          <div class="{{nn_ab}} p-0 float-left"></div>
+          <a class="{{nn}} side-bar-hover btn btn-block border-0 p-0 rounded-0 m-0 link">
+            <div class="left-align-text pl-3 text-size-medium">
+              <span class="m-2"><i class="fas fa-network-wired icon"></i></span><span class="m-2">Neural Network</span>
+            </div>
+          </a>
         </div>
-      </a>
-    </div>
+      </div>
 
-    <div [hidden]="collapse">
-      <a class="btn btn-block btn-outline-primary border-0 py-2 px-0 rounded-0 m-0">
-        <div class="left-align-text pl-3 text-size-medium">
-          <span class="m-2"><i class="fas fa-home icon"></i></span><span class="m-2">Create Project</span>
+      <div class="row" [hidden]="collapse">
+        <div class="col mx-3"><hr></div>
+      </div>
+
+      <div [hidden]="collapse">
+        <div class="link-wrapper">
+          <div class="{{account_settings_ab}} p-0 float-left"></div>
+          <a class="{{account_settings}} side-bar-hover btn btn-block border-0 p-0 rounded-0 m-0 link">
+            <div class="left-align-text pl-3 text-size-medium">
+              <span class="m-2"><i class="fas fa-cogs icon"></i></span><span class="m-2">Account Settings</span>
+            </div>
+          </a>
         </div>
-      </a>
-    </div>
+      </div>
 
-    <div class="row">
-      <div class="col mx-3"><hr></div>
-    </div>
-
-    <div [hidden]="collapse"> 
-      <a class="btn btn-block btn-outline-primary border-0 py-2 px-0 rounded-0 m-0">
-        <div class="left-align-text pl-3 text-size-medium">
-          <span class="m-2"><i class="fas fa-home icon"></i></span><span class="m-2">Neural Network</span>
+      <div [hidden]="collapse" class="mb-3">
+        <div class="link-wrapper">
+          <div class="{{view_profile_ab}} p-0 float-left"></div>
+          <a class="{{view_profile}} side-bar-hover btn btn-block border-0 p-0 rounded-0 m-0 link">
+            <div class="left-align-text pl-3 text-size-medium">
+              <span class="m-2"><i class="fas fa-user icon"></i></span><span class="m-2">View Profile</span>
+            </div>
+          </a>
         </div>
-      </a>
-    </div>
+      </div>
 
-    <div class="row" [hidden]="collapse">
-      <div class="col mx-3"><hr></div>
-    </div>
-
-    <div [hidden]="collapse">
-      <a class="btn btn-block btn-outline-primary border-0 py-2 px-0 rounded-0 m-0">
-        <div class="left-align-text pl-3 text-size-medium">
-          <span class="m-2"><i class="fas fa-home icon"></i></span><span class="m-2">Account Settings</span>
+      <div class="row">
+        <div class="col-12">
+          <div class="mx-auto">
+            <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2 input-lg" type="text" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-light my-2 my-sm-0 rounded-pill raise" type="submit">Search</button>
+            </form>
+          </div>
         </div>
-      </a>
+      </div>
     </div>
-
-    <div [hidden]="collapse">
-      <a class="btn btn-block btn-outline-primary border-0 py-2 px-0 rounded-0 m-0">
-        <div class="left-align-text pl-3 text-size-medium">
-          <span class="m-2"><i class="fas fa-home icon"></i></span><span class="m-2">View Profile</span>
-        </div>
-      </a>
-    </div>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-light my-2 my-sm-0 rounded-pill raise" type="submit">Search</button>
-    </form>
   </div>
 </nav>

@@ -24,7 +24,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 
-
 const appRoutes: Routes = [
   { path: '' , component: HomeComponent},
   { path: 'home', component: HomeComponent },
@@ -57,7 +56,8 @@ const appRoutes: Routes = [
     EditProjectComponent,
     HomeComponent,
     LoginNavbarComponent,
-    RegisterNavbarComponent
+    RegisterNavbarComponent,
+    RouterModule,
   ],
   imports: [
     HttpClientModule,

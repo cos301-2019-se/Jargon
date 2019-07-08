@@ -5,6 +5,7 @@ import * as cloneDeep from 'lodash/cloneDeep';
 import { NgForm } from '@angular/forms';
 import { resetCompiledComponents } from '@angular/core/src/render3/jit/module';
 import { Router } from '@angular/router';
+import {HostListener} from '@angular/core';
 
 @Component({
   selector: 'app-view-projects',
@@ -13,6 +14,9 @@ import { Router } from '@angular/router';
 })
 
 export class ViewProjectsComponent implements OnInit {
+  public innerWidth: any;
+  public collapse: boolean;
+
   public projectData = [];
   public projectDataBackup = [];
   whitelist: string[] = [];
@@ -29,6 +33,15 @@ export class ViewProjectsComponent implements OnInit {
   constructor(private router: Router, private requester: ProjectApiRequesterService) { }
 
   ngOnInit() {
+    this.innerWidth = window.innerWidth;
+    if(this.innerWidth > 1200) {
+      this.collapse = false;
+    }
+
+    if(this.innerWidth < 1200) {
+      this.collapse= true;
+    }
+
     this.requester.getProjects().subscribe((res: Projects[]) => {
       this.projectData = JSON.parse(JSON.stringify(res));
       this.projectDataBackup = JSON.parse(JSON.stringify(res));
@@ -36,6 +49,17 @@ export class ViewProjectsComponent implements OnInit {
 
     this.editMode = false;
     this.dataMode = false;
+  }
+
+  @HostListener('window:resize', ['$event']) onResize(event) { 
+    this.innerWidth = window.innerWidth;
+    if(this.innerWidth > 1200) {
+      this.collapse = false;
+    }
+
+    if(this.innerWidth < 1200) {
+      this.collapse= true;
+    }
   }
 
   addWhitelistWord() {
@@ -92,7 +116,6 @@ export class ViewProjectsComponent implements OnInit {
   }
 
   resetData(form: NgForm) {
-
     if (this.editMode === true) {
       this.projectData = JSON.parse(JSON.stringify(this.projectDataBackup));
     }
