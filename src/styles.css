@@ -6,6 +6,7 @@
 body {
   /* background-color: #e3e4e5 !important; */
   background: url('./assets/images/background-xl.jpg') no-repeat fixed;
+  /* background: lightblue !important; */
   background-size: cover;
 }
 

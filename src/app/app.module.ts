@@ -1,12 +1,11 @@
 import { LoginNavbarComponent } from './components/login/login-navbar/login-navbar.component';
-import {SidebarComponent} from './components/sidebar/sidebar.component';
+import {SidebarComponent} from './components/home/sidebar/sidebar.component';
 import { RegisterNavbarComponent } from './components/register/register-navbar/register-navbar.component';
 import { RegisterComponent } from './components/register/register.component';
-import { EditProjectComponent } from './components/view-projects/edit-project/edit-project.component';
-import { CreateProjectComponent } from './components/create-project/create-project.component';
-import { ViewProjectsComponent } from './components/view-projects/view-projects.component';
+import { EditProjectComponent } from './components/home/view-projects/edit-project/edit-project.component';
+import { CreateProjectComponent } from './components/home/create-project/create-project.component';
+import { ViewProjectsComponent } from './components/home/view-projects/view-projects.component';
 import { Routes, RouterModule } from '@angular/router';
-import { ProjectsComponent } from './components/home/projects/projects.component';
 import { ChartsComponent } from './components/home/charts/charts.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -21,7 +20,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { HeaderComponent } from './components/header/header.component';
+import { HeaderComponent } from './components/home/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 
 const appRoutes: Routes = [
@@ -41,7 +40,6 @@ const appRoutes: Routes = [
     HomeComponent,
     HeaderComponent,
     ChartsComponent,
-    ProjectsComponent,
     ViewProjectsComponent,
     CreateProjectComponent,
     EditProjectComponent,
@@ -52,7 +50,6 @@ const appRoutes: Routes = [
   ],
   exports: [
     ChartsComponent,
-    ProjectsComponent,
     EditProjectComponent,
     HomeComponent,
     LoginNavbarComponent,

@@ -1,5 +1,5 @@
-import { Projects } from './../../shared/project/projects';
-import { ProjectApiRequesterService } from './../../services/project-api-requester/project-api-requester.service';
+import { Projects } from '../../../shared/project/projects';
+import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
 import { Component, OnInit } from '@angular/core';
 import * as cloneDeep from 'lodash/cloneDeep';
 import { NgForm } from '@angular/forms';

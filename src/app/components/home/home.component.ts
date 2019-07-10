@@ -1,4 +1,3 @@
-import { ProjectsComponent } from './projects/projects.component';
 import { ChartsComponent } from './charts/charts.component';
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';

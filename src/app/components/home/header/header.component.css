@@ -8,7 +8,7 @@
 
 .navbar-icon-top .navbar-nav .nav-link > .fa > .badge {
   font-size: 0.75rem;
-  position: absolute;
+  position: absolute; 
   right: 0;
   font-family: sans-serif;
 }
@@ -153,16 +153,16 @@ span {
   width: 90% !important;
 }
 
-a:hover {
+.side-nav-item:hover {
   background-color: rgb(31, 96, 165);
   transition-duration: 0s;
 }
 
-a:not(:hover) {
+.side-nav-item:not(:hover) {
   transition-duration: 0s;
 }
 
-a:hover i {
+.side-nav-item:hover i {
   color:white;
 }
 
