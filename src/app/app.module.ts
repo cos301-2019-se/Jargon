@@ -1,16 +1,8 @@
 import { LoginNavbarComponent } from './components/login/login-navbar/login-navbar.component';
-import {SidebarComponent} from './components/home/sidebar/sidebar.component';
 import { RegisterNavbarComponent } from './components/register/register-navbar/register-navbar.component';
 import { RegisterComponent } from './components/register/register.component';
-import { EditProjectComponent } from './components/home/view-projects/edit-project/edit-project.component';
-import { CreateProjectComponent } from './components/home/create-project/create-project.component';
-import { ViewProjectsComponent } from './components/home/view-projects/view-projects.component';
 import { Routes, RouterModule } from '@angular/router';
-import { ChartsComponent } from './components/home/charts/charts.component';
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { ChartsModule } from 'ng2-charts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,14 +12,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { HeaderComponent } from './components/home/header/header.component';
-import { HomeComponent } from './components/home/home.component';
+import { DashboardModule } from './components/dashboard/dashboard.module';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { CommonModule } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
 
 const appRoutes: Routes = [
-  { path: '' , component: HomeComponent},
-  { path: 'home', component: HomeComponent },
-  { path: 'view-projects', component: ViewProjectsComponent },
-  { path: 'create-project', component: CreateProjectComponent },
+  { path: '' , component: DashboardComponent},
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent }
 ];
@@ -37,34 +29,26 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent,
-    HeaderComponent,
-    ChartsComponent,
-    ViewProjectsComponent,
-    CreateProjectComponent,
-    EditProjectComponent,
+    DashboardComponent,
     RegisterComponent,
     LoginNavbarComponent,
-    RegisterNavbarComponent,
-    SidebarComponent
+    RegisterNavbarComponent
   ],
   exports: [
-    ChartsComponent,
-    EditProjectComponent,
-    HomeComponent,
+    DashboardComponent,
     LoginNavbarComponent,
     RegisterNavbarComponent,
     RouterModule,
   ],
   imports: [
-    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
     RouterModule.forRoot(appRoutes),
-    ChartsModule,
+    DashboardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

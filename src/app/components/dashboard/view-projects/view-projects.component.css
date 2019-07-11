@@ -1,6 +1,6 @@
 .dash {
+  height: 80vh;
   overflow-y: auto;
-  width: 100%;
 }
 
 .raise:hover,
@@ -31,32 +31,57 @@
 }
 
 .dashboard {
-  height: 60vh;
+  height: 70vh;
 }
 
-#defualt {
-  height:80vh;
+#page-icon {
+  height: 30vh;
+  font-size: 30vh;
+  padding-top: 15vh;
+  color: gray;
+  opacity: 0.2;
+}
+
+#icon-holder {
+  text-align: center;
+}
+
+#no-proj {
+  margin-top: 4vh;
+}
+
+#no-proj-heading {
+  color: gray;
+  opacity: 0.6;
 }
 
 h1 {
   color: white;
+  /* text-align: center;
+  font-family: Georgia;
+  color: rgba(8,162,233,1); */
 }
 
-.project-white-text {
-  color: white;
+.round {
+  border-radius: 0px 50px 50px 0px;
 }
 
-.project {
-  background-color: rgba(0, 0, 0, 0);
+.center {
+  text-align: center;
 }
 
-#main-dash {
-  background-color: rgba(0, 57, 103, 0.3);
+#heading {
+  text-shadow: 1px 1px 2px #000000;
 }
 
-#dashboard-content {
-  width: 100%;
+span {
+  font-weight: 400 !important;
 }
+
+.tweets {
+  font-size: 12px;
+}
+
 
 .side-bar {
   background-color: rgba(0, 18, 37, 1);
@@ -111,5 +136,18 @@ body {
 }
 
 .container-fluid {
-  width: 90% !important;
+  width: 100% !important;
+}
+
+.main-dash {
+  background-color: rgba(0, 57, 103, 0.3);
+  /* min-width: 90vh; */
+}
+
+#dashboard-content {
+  width: 100%;
+}
+
+:host(selector) {
+  width:  90%;
 }

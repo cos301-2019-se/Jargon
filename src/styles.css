@@ -3,6 +3,10 @@
 
 @import '../node_modules/bootstrap/dist/css/bootstrap.css';
 
+app-view-projects {
+  width: 100%;
+}
+
 body {
   /* background-color: #e3e4e5 !important; */
   background: url('./assets/images/background-xl.jpg') no-repeat fixed;
