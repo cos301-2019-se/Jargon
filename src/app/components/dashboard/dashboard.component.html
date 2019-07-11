@@ -14,7 +14,7 @@
         <div class="row" *ngIf="i != 0">
             <div class="col mx-3"><hr class="m-1"></div>
         </div>
-        <div *ngFor="let directory of directories[i]" class="link-wrapper">
+        <div *ngFor="let directory of directories[i]" class="link-wrapper side-nav-item ">
           <div class="p-0 float-left" routerLinkActive #rla_bar="routerLinkActive" [ngClass]="rla_bar.isActive ? 'active_bar' : 'no_ab'" routerLink="/{{directory.path}}"></div>
           <a class="side-bar-hover btn btn-block border-0 p-0 rounded-0 m-0 link" routerLinkActive #rla="routerLinkActive" [ngClass]="rla.isActive ? 'active' : 'inactive'" routerLink="/{{directory.path}}">
             <div class="left-align-text pl-3 text-size-medium">
@@ -55,7 +55,7 @@
                     <div class="row" *ngIf="i != 0">
                         <div class="col mx-3"><hr class="m-1"></div>
                     </div>
-                    <div *ngFor="let directory of directories[i]" class="link-wrapper">
+                    <div *ngFor="let directory of directories[i]" class="link-wrapper side-nav-item ">
                       <div class="p-0 float-left" routerLinkActive #rla_bar="routerLinkActive" [ngClass]="rla_bar.isActive ? 'active_bar' : 'no_ab'" routerLink="/{{directory.path}}"></div>
                       <a class="side-bar-hover btn btn-block border-0 p-0 rounded-0 m-0 link" routerLinkActive #rla="routerLinkActive" [ngClass]="rla.isActive ? 'active' : 'inactive'" routerLink="/{{directory.path}}">
                         <div class="left-align-text pl-3 text-size-medium">
@@ -64,6 +64,7 @@
                       </a>
                     </div>
                   </div>
+                  
                 </div>
               </div>
             </div>

@@ -10,6 +10,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { EditProjectComponent } from './view-projects/edit-project/edit-project.component';
 import { ProjectsComponent } from './view-projects/projects/projects.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ProjectsComponent } from './view-projects/projects/projects.component';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    RouterModule
   ]
 })
 export class DashboardModule { }
