@@ -42,13 +42,13 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
+    DashboardModule,
     RouterModule.forRoot(appRoutes),
-    DashboardModule
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

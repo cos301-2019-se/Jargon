@@ -12,18 +12,18 @@ export class DashboardComponent implements OnInit {
 
   directories: any[][] = [
     [
-      { caption: "Home", path: "a", icon: "home" },
+      { caption: "Home", path: "a", icon: "fa-home" },
     ],
     [
-      { caption: "View Projects", path: "dashboard/view-projects", icon: "" },
-      { caption: "Create Project", path: "dashboard/create-project", icon: "" }
+      { caption: "Projects", path: "dashboard/projects", icon: "fa-clipboard" },
+      { caption: "Create Project", path: "dashboard/create-project", icon: "fa-tasks" }
     ],
     [
-      { caption: "Neural Network", path: "dashboard/neural-network", icon: "" },
+      { caption: "Neural Network", path: "dashboard/neural-network", icon: "fa-network-wired" },
     ],
     [
-      { caption: "Account Settings", path: "dashboard/account-settings" },
-      { caption: "View Profile", path: "dashboard/view-profile" },
+      { caption: "Account Settings", path: "dashboard/account-settings", icon: "fa-cog"},
+      { caption: "View Profile", path: "dashboard/view-profile", icon: "fa-users" },
     ]
   ];
 

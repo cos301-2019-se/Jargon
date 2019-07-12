@@ -8,12 +8,12 @@ import { Router } from '@angular/router';
 import {HostListener} from '@angular/core';
 
 @Component({
-  selector: 'app-view-projects',
-  templateUrl: './view-projects.component.html',
-  styleUrls: ['./view-projects.component.css']
+  selector: 'app-projects',
+  templateUrl: './projects.component.html',
+  styleUrls: ['./projects.component.css']
 })
 
-export class ViewProjectsComponent implements OnInit {
+export class ProjectsComponent implements OnInit {
   public innerWidth: any;
   public collapse: boolean;
 
