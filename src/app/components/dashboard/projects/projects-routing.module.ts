@@ -6,10 +6,11 @@ import { ProjectInfoComponent } from './project-info/project-info.component';
 const routes: Routes = [
   { 
     path: '',
-    component: ProjectsComponent,
+    component: ProjectsComponent,    
     children: [
       { path: '', redirectTo: 'project', pathMatch: 'full' },
       { path: 'project', component: ProjectInfoComponent },
+      { path: '**', redirectTo: 'project' }
     ]
   },
 ];

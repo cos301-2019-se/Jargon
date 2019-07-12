@@ -8,9 +8,9 @@ const routes: Routes = [
     path: '',
     component: DashboardComponent,
     children: [
-      { path: '', redirectTo: 'view-projects', pathMatch: 'full' },
-      { path: 'create-project', component: CreateProjectComponent },
+      { path: '', redirectTo: 'projects', pathMatch: 'full' },
       { path: 'projects', loadChildren: './projects/projects.module#ProjectsModule' },
+      { path: '**', redirectTo: 'projects' }
     ]
   },
 ];
