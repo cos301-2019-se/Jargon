@@ -1,9 +1,7 @@
 #!/bin/sh
-cd backend/
+cd services/contoller/
 node server.js &
-cd services/listeners/
+cd ../listeners/
 node server.js &
 cd ../neural-network/
 python3 server.py &
-cd ../api/
-ng serve
