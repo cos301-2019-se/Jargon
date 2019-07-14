@@ -1,0 +1,90 @@
+.style-5::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+.style-5::-webkit-scrollbar
+{
+	width: 10px;
+	background-color: #F5F5F5;
+}
+
+.style-5::-webkit-scrollbar-thumb
+{
+	background-color: #0ae;
+
+  background-image:
+    -webkit-gradient(linear, 0 0, 0 100%,
+	  color-stop(.5, rgba(255, 255, 255, .2)),
+		color-stop(.5, transparent), to(transparent));
+}
+
+.wrapper {
+    /* background: rgba(36, 179, 255, 0.4); */
+    overflow-y: auto;
+}
+
+
+.project-list {
+    overflow-y: auto;
+    max-height: 70vh;
+}
+
+.main-content {
+    height: 70vh;
+    overflow-y: auto;
+    border-color: rgb(15, 65, 122) !important;
+    border-width: 2px !important;
+}
+
+.right-side {
+    background: rgba(6, 57, 116, 0.6) !important;
+    overflow-y: auto;
+    height: 70vh;
+}
+
+.project-item:hover {
+    background: rgb(80, 138, 247) !important;
+    transition-duration: 0s;
+} 
+
+/* .project-item:hover {
+    background-color: rgb(31, 96, 165);
+    transition-duration: 0s;
+  } */
+  
+.project-item:not(:hover) {
+    transition-duration: 0s;
+}
+
+.btn {
+    background: rgba(22, 111, 175, 0.3) !important;
+    color: white;
+    text-align: left;
+}
+
+select, input {
+    background-color: rgb(0, 18, 37) !important;
+    border-color:  rgb(36, 75, 117) !important;
+}
+
+select option {
+    background-color: rgb(21, 48, 77) !important;
+}
+
+select option:hover {
+    background-color: rgb(36, 75, 117) !important;
+}
+
+select, option, input {
+    color: white;
+}
+
+select:focus, input:focus {
+    color: white !important;
+}
+
+::placeholder {
+    color: rgb(136, 136, 156) !important;
+}

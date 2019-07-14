@@ -1,3 +1,77 @@
-<p>
-  empty bich
-</p>
+  <div class="container-fluid m-0 wrapper rounded">
+    <div class="row rounded">
+      <div class="col-md-4 col-12 p-0 m-0 project-list main-content style-5">
+          <ul class="list-group">
+              <li class="list-group-item btn m-0 rounded-0 project-item">Cras justo odio</li>
+              <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Dapibus ac facilisis in</li>
+              <li class="list-group-item btn m-0 rounded-0 project-item">Cras justo odio</li>
+              <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Dapibus ac facilisis in</li>
+              <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Morbi leo risus</li>
+              <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Porta ac consectetur ac</li>
+              <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Vestibulum at eros</li>
+              <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Cras justo odio</li>
+              <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Dapibus ac facilisis in</li>
+          
+            </ul>
+      </div>
+      <div class="text-light mt-md-0 mt-3 mb-mb-0 mb-3 col-md-8 col-12 m-0 p-0 right-side">
+        <div id="form" class="row m-0 p-0">
+          <div class="col-12">
+            <form>
+              <div class="row">
+                <div class="col-lg-11 mx-auto">
+                  <div class="row">
+                    <div class="col-12 mt-3">
+                      <div class="form-group">
+                        <label for="project-name">Project Name *</label>
+                        <input type="text" class="form-control" id="project-name" placeholder="eg. University of Pretoria Sentiments" name="name" required>
+                      </div>
+                    </div>
+                    <div class="col-12 float-left">
+                      <div class="form-group">
+                        <label for="Source">Source *</label>
+                        <select class="form-control" id="source" name="source"  required>
+                          <option value="" selected disabled>Please select a source</option>
+                          <option>Twitter</option>
+                          <option>Facebook</option>
+                          <option>Instagram</option>
+                        </select>
+                      </div>
+                    </div>
+  
+                    <div class="col-12 mb-1">
+                      <div class="form-group">
+                        <label for="project-name">Track Time (s) min(30) * </label>
+                        <input type="number" class="form-control" min="30" value="30" name="track" required>
+                      </div>
+                    </div>
+  
+                    <div class="col-12 mb-1">
+                      <div class="form-group">
+                        <label for="whitelist1">Whitelisted Words *</label>
+                        <input class="form-control mb-2" id="whitlist1" name="whitelist" placeholder="Press Enter key to select word">
+                        <!-- <div class="mt-3 badge badge-pill badge-primary mr-1 blw p-0 "><div class="float-left mx-3 mt-2"><h6 class="m-0"></h6></div><div class="float-right m-0 btn btn-secondary round">X</div></div> -->
+                      </div>
+                    </div>
+  
+                    <div class="col-12 mt-4">
+                      <div class="form-group">
+                        <label for="blacklist1">Blacklisted Words</label>
+                        <div>
+                          <input   class="form-control mb-2" id="blacklist1" name="blacklist" placeholder="Press Enter key to select word">
+                          <!-- <div class="mt-3 badge badge-pill badge-primary blw p-0"><div class="float-left mx-3 mt-2"><h6 class="m-0"></h6></div><div class="float-right m-0 btn btn-secondary round">X</div></div> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="mt-5 center mb-5">
+                    <input class="btn btn-outline-primary rounded-pill mx-auto" type="button"  value="Create">
+                  </div> -->
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

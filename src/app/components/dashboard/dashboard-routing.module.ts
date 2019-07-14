@@ -10,6 +10,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
       { path: 'projects', loadChildren: './projects/projects.module#ProjectsModule' },
+      { path: 'create-project', component: CreateProjectComponent },
       { path: '**', redirectTo: 'projects' }
     ]
   },
