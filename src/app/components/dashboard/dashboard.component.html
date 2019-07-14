@@ -1,0 +1,95 @@
+<!--HEADER-->
+<nav class="navbar navbar-dark navbar-icon-top navbar-expand-xl border-bottom" id="nav-bg">
+  <div class="container-fluid"> 
+    <a class="navbar-brand text-light" href="/" id="logo">Jargon</a>
+    <button class="navbar-toggler text" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+      </ul>
+
+      <div [hidden]='!collapse' *ngFor="let a of directories; let i = index">
+        <div class="row" *ngIf="i != 0">
+            <div class="col mx-3"><hr class="m-1"></div>
+        </div>
+        <div *ngFor="let directory of directories[i]" class="link-wrapper side-nav-item ">
+          <div class="p-0 float-left" routerLinkActive #rla_bar="routerLinkActive" [ngClass]="rla_bar.isActive ? 'active_bar' : 'no_ab'" routerLink="/{{directory.path}}"></div>
+          <a class="side-bar-hover btn btn-block border-0 p-0 rounded-0 m-0 link" routerLinkActive #rla="routerLinkActive" [ngClass]="rla.isActive ? 'active' : 'inactive'" routerLink="/{{directory.path}}">
+            <div class="left-align-text pl-3 text-size-medium">
+              <span class="m-2"><i class="fas {{directory.icon}} icon"></i></span><span class="m-2">{{directory.caption}}</span>
+            </div> 
+          </a>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="mx-auto">
+            <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2 input-lg" type="text" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-light my-2 my-sm-0 rounded-pill raise" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </div> 
+    </div>
+  </div>
+</nav>
+
+
+
+<!--SIDENAV-->
+<div class="container-fluid mt-2 dashboard">
+  <div class="wrapper">
+    <div class="sidebar mt-2" [hidden]='collapse'>
+      <div class="row">
+        <div class="col-12 mt-3">
+          <div class="row">
+            <div class="col-10">
+              <div class="card side-bar text-light">
+                <div class="card-body px-0">
+                  
+                  <div *ngFor="let a of directories; let i = index">
+                    <div class="row" *ngIf="i != 0">
+                        <div class="col mx-3"><hr class="m-1"></div>
+                    </div>
+                    <div *ngFor="let directory of directories[i]" class="link-wrapper side-nav-item ">
+                      <div class="p-0 float-left" routerLinkActive #rla_bar="routerLinkActive" [ngClass]="rla_bar.isActive ? 'active_bar' : 'no_ab'" routerLink="/{{directory.path}}"></div>
+                      <a class="side-bar-hover btn btn-block border-0 p-0 rounded-0 m-0 link" routerLinkActive #rla="routerLinkActive" [ngClass]="rla.isActive ? 'active' : 'inactive'" routerLink="/{{directory.path}}">
+                        <div class="left-align-text pl-3 text-size-medium">
+                          <span class="m-2"><i class="fas {{directory.icon}} icon"></i></span><span class="m-2">{{directory.caption}}</span>
+                        </div> 
+                      </a>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div>
+    <div class="main">
+      <div class="row">
+        
+          <router-outlet></router-outlet>
+          <!-- <div class="row">
+            <div class="col-11 mx-auto pl-0 mb-4">
+              <h1 class="display-4">Dashboard</h1>
+            </div>
+            <div class="col-11 mx-auto shadow-lg rounded-lg" id="main-dash">
+              <div class="row">
+                <div class="col-lg-4 col-12 my-2 ml-2 mb-4 style-5">
+                  
+                </div>
+              </div>
+            </div>
+          </div> -->
+        
+      </div>
+    </div>
+  </div>
+</div>

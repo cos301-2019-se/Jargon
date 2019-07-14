@@ -3,8 +3,19 @@
 
 @import '../node_modules/bootstrap/dist/css/bootstrap.css';
 
+app-projects {
+  width: 100%;
+}
+
+app-dashboard {
+  width: 100vh;
+}
+
 body {
-  background-color: #e3e4e5 !important;
+  /* background-color: #e3e4e5 !important; */
+  background: url('./assets/images/background-xl.jpg') no-repeat fixed;
+  /* background: lightblue !important; */
+  background-size: cover;
 }
 
 
