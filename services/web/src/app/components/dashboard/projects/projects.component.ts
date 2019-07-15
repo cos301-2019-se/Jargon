@@ -1,11 +1,7 @@
-import { Projects } from '../../../shared/project/projects';
-import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
 import { Component, OnInit } from '@angular/core';
-import * as cloneDeep from 'lodash/cloneDeep';
-import { NgForm } from '@angular/forms';
-import { resetCompiledComponents } from '@angular/core/src/render3/jit/module';
 import { Router } from '@angular/router';
-import {HostListener} from '@angular/core';
+import { Project } from '../../../interfaces/project/project';
+import { SharedProjectService } from '../../../services/shared-project/shared-project.service';
 
 @Component({
   selector: 'app-projects',
@@ -14,156 +10,179 @@ import {HostListener} from '@angular/core';
 })
 
 export class ProjectsComponent implements OnInit {
-  public innerWidth: any;
-  public collapse: boolean;
+  projects: Project[] = [];
+  selected: number = 0;
 
-  public projectData = [];
-  public projectDataBackup = [];
-  whitelist: string[] = [];
-  blacklist: string[] = [];
-  whitelistword = '';
-  blacklistword = '';
+  constructor(private sharedProjectService: SharedProjectService, private router: Router) {
+    let project = new Project();
+    project.projectName = "One";
+    project.blacklist = ["one", "two"];
+    project.whitelist = ["ttt", "22222"];
+    this.projects.push(project);
 
-  editMode: boolean;
-  dataMode: boolean;
-
-  public twitterResults: [];
-  public sentiments: [];
-
-  constructor(private router: Router, private requester: ProjectApiRequesterService) { }
+    project = new Project();
+    project.projectName = "Two";
+    project.blacklist = ["two", "three"];
+    project.whitelist = ["ggggg", "33333"];
+    this.projects.push(project);
+  }
 
   ngOnInit() {
-    this.innerWidth = window.innerWidth;
-    if(this.innerWidth > 1200) {
-      this.collapse = false;
-    }
-
-    if(this.innerWidth < 1200) {
-      this.collapse= true;
-    }
-
-    this.requester.getProjects().subscribe((res: Projects[]) => {
-      this.projectData = JSON.parse(JSON.stringify(res));
-      this.projectDataBackup = JSON.parse(JSON.stringify(res));
-    });
-
-    this.editMode = false;
-    this.dataMode = false;
   }
 
-  @HostListener('window:resize', ['$event']) onResize(event) { 
-    this.innerWidth = window.innerWidth;
-    if(this.innerWidth > 1200) {
-      this.collapse = false;
-    }
-
-    if(this.innerWidth < 1200) {
-      this.collapse= true;
-    }
+  setProject(project: Project) {
+    this.sharedProjectService.setCurrentProject(project);
   }
+  // public innerWidth: any;
+  // public collapse: boolean;
 
-  addWhitelistWord() {
-    const word = this.whitelistword.trim();
+  // public projectData = [];
+  // public projectDataBackup = [];
+  // whitelist: string[] = [];
+  // blacklist: string[] = [];
+  // whitelistword = '';
+  // blacklistword = '';
 
-    if (word === '') {
-      this.whitelistword = '';
-      return;
-    }
+  // editMode: boolean;
+  // dataMode: boolean;
 
-    this.whitelist.push(this.whitelistword);
-    this.whitelistword = '';
-  }
+  // public twitterResults: [];
+  // public sentiments: [];
 
-  addBlacklistWord() {
-    const word = this.blacklistword.trim();
+  // constructor(private router: Router, private requester: ProjectApiRequesterService) { }
 
-    if (word === '') {
-      this.blacklistword = '';
-      return;
-    }
+  // ngOnInit() {
+  //   this.innerWidth = window.innerWidth;
+  //   if(this.innerWidth > 1200) {
+  //     this.collapse = false;
+  //   }
 
-    this.blacklist.push(this.blacklistword);
-    this.blacklistword = '';
-  }
+  //   if(this.innerWidth < 1200) {
+  //     this.collapse= true;
+  //   }
 
-  removeWhitelistWord(index: number) {
-    this.whitelist.splice(index, 1);
-  }
+  //   this.requester.getProjects().subscribe((res: Projects[]) => {
+  //     this.projectData = JSON.parse(JSON.stringify(res));
+  //     this.projectDataBackup = JSON.parse(JSON.stringify(res));
+  //   });
 
-  removeBlacklistWord(index: number) {
-    this.blacklist.splice(index, 1);
-  }
+  //   this.editMode = false;
+  //   this.dataMode = false;
+  // }
 
-  changeMode(form: NgForm, id: number) {
-    if (this.editMode) {
-      this.update(form, id);
-      this.editMode = false;
-    } else {
-      this.editMode = true;
-    }
-  }
+  // @HostListener('window:resize', ['$event']) onResize(event) { 
+  //   this.innerWidth = window.innerWidth;
+  //   if(this.innerWidth > 1200) {
+  //     this.collapse = false;
+  //   }
 
-  assignArrays(index: number) {
-    this.whitelist = this.projectData[index].whitelist;
-    this.blacklist = this.projectData[index].blacklist;
-  }
+  //   if(this.innerWidth < 1200) {
+  //     this.collapse= true;
+  //   }
+  // }
 
-  reset(form: NgForm) {
-    this.editMode = false;
-    form.reset();
+  // addWhitelistWord() {
+  //   const word = this.whitelistword.trim();
 
-    this.projectData = JSON.parse(JSON.stringify(this.projectDataBackup));
-  }
+  //   if (word === '') {
+  //     this.whitelistword = '';
+  //     return;
+  //   }
 
-  resetData(form: NgForm) {
-    if (this.editMode === true) {
-      this.projectData = JSON.parse(JSON.stringify(this.projectDataBackup));
-    }
+  //   this.whitelist.push(this.whitelistword);
+  //   this.whitelistword = '';
+  // }
 
-    this.editMode = false;
-  }
+  // addBlacklistWord() {
+  //   const word = this.blacklistword.trim();
 
-  update(form: NgForm, id: number) {
-    let pos = 0;
-    for (let i = 0; i < this.projectData.length; i++) {
-      if (this.projectData[i]._id === id) {
-        pos = i;
-      }
-    }
+  //   if (word === '') {
+  //     this.blacklistword = '';
+  //     return;
+  //   }
 
-    const values = form.value;
+  //   this.blacklist.push(this.blacklistword);
+  //   this.blacklistword = '';
+  // }
 
-    this.projectDataBackup[pos].project_name = values.name;
-    this.projectDataBackup[pos].source = values.source;
-    this.projectDataBackup[pos].trackTime = values.track;
-    this.projectDataBackup[pos].whitelist = this.whitelist;
-    this.projectDataBackup[pos].blacklist = this.blacklist;
+  // removeWhitelistWord(index: number) {
+  //   this.whitelist.splice(index, 1);
+  // }
 
-    this.reset(form);
-    this.requester.updateProject(id, values.name, values.source, values.track, this.whitelist, this.blacklist).subscribe((res: any) => {
-    });
-  }
+  // removeBlacklistWord(index: number) {
+  //   this.blacklist.splice(index, 1);
+  // }
 
-  remove(form: NgForm, id: number) {
-    this.requester.deleteProject(id).subscribe((res: any) => {
-    });
-    this.router.navigate(['/']);
-  }
+  // changeMode(form: NgForm, id: number) {
+  //   if (this.editMode) {
+  //     this.update(form, id);
+  //     this.editMode = false;
+  //   } else {
+  //     this.editMode = true;
+  //   }
+  // }
 
-  start(id: number) {
-    console.log(id);
-    this.requester.start(id).subscribe((res: any) => {
-      if(res != undefined){
-        let json = JSON.parse(res);
+  // assignArrays(index: number) {
+  //   this.whitelist = this.projectData[index].whitelist;
+  //   this.blacklist = this.projectData[index].blacklist;
+  // }
+
+  // reset(form: NgForm) {
+  //   this.editMode = false;
+  //   form.reset();
+
+  //   this.projectData = JSON.parse(JSON.stringify(this.projectDataBackup));
+  // }
+
+  // resetData(form: NgForm) {
+  //   if (this.editMode === true) {
+  //     this.projectData = JSON.parse(JSON.stringify(this.projectDataBackup));
+  //   }
+
+  //   this.editMode = false;
+  // }
+
+  // update(form: NgForm, id: number) {
+  //   let pos = 0;
+  //   for (let i = 0; i < this.projectData.length; i++) {
+  //     if (this.projectData[i]._id === id) {
+  //       pos = i;
+  //     }
+  //   }
+
+  //   const values = form.value;
+
+  //   this.projectDataBackup[pos].project_name = values.name;
+  //   this.projectDataBackup[pos].source = values.source;
+  //   this.projectDataBackup[pos].trackTime = values.track;
+  //   this.projectDataBackup[pos].whitelist = this.whitelist;
+  //   this.projectDataBackup[pos].blacklist = this.blacklist;
+
+  //   this.reset(form);
+  //   this.requester.updateProject(id, values.name, values.source, values.track, this.whitelist, this.blacklist).subscribe((res: any) => {
+  //   });
+  // }
+
+  // remove(form: NgForm, id: number) {
+  //   this.requester.deleteProject(id).subscribe((res: any) => {
+  //   });
+  //   this.router.navigate(['/']);
+  // }
+
+  // start(id: number) {
+  //   console.log(id);
+  //   this.requester.start(id).subscribe((res: any) => {
+  //     if(res != undefined){
+  //       let json = JSON.parse(res);
         
-        this.twitterResults = json.data[0];
-        this.sentiments = json.data[1]['sentiments'];
-        this.dataMode = true;
-      }
-    });
-  }
+  //       this.twitterResults = json.data[0];
+  //       this.sentiments = json.data[1]['sentiments'];
+  //       this.dataMode = true;
+  //     }
+  //   });
+  // }
 
-  close() {
-    this.dataMode = false;
-  }
+  // close() {
+  //   this.dataMode = false;
+  // }
 }
