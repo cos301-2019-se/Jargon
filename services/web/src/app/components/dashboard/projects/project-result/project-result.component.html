@@ -1,4 +1,4 @@
-<button routerLink="/project-info">&lt;--</button>
+<button [routerLink]="['../project-info', project._id]">&lt;--</button>
 <p>
   something something results:
   {{project.project_name}}

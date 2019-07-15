@@ -105,13 +105,7 @@ export class ProjectsComponent implements OnInit {
   //   this.blacklistword = '';
   // }
 
-  // removeWhitelistWord(index: number) {
-  //   this.whitelist.splice(index, 1);
-  // }
-
-  // removeBlacklistWord(index: number) {
-  //   this.blacklist.splice(index, 1);
-  // }
+1
 
   // changeMode(form: NgForm, id: number) {
   //   if (this.editMode) {

@@ -5,12 +5,14 @@ import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectsComponent } from './projects.component';
 import { FormsModule } from '@angular/forms';
 import { ProjectResultComponent } from './project-result/project-result.component';
+import { NoInfoComponent } from './no-info/no-info.component';
 
 @NgModule({
   declarations: [
     ProjectsComponent,
     ProjectInfoComponent,
-    ProjectResultComponent
+    ProjectResultComponent,
+    NoInfoComponent,
   ],
   imports: [
     CommonModule,

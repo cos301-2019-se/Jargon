@@ -11,18 +11,9 @@
                 <div class="container-fluid m-0 wrapper rounded">
                   <div class="row rounded">
                     <div class="col-md-4 col-12 p-0 m-0 project-list main-content style-5">
-                        <ul class="list-group">
-                            <li *ngFor="let project of projects" class="list-group-item btn m-0 rounded-0 project-item" routerLink="/projects/project-info" (click)="setProject(project)">{{project.project_name}}</li>
-                            <!-- <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item btn m-0 rounded-0 project-item">Cras justo odio</li>
-                            <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Morbi leo risus</li>
-                            <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Porta ac consectetur ac</li>
-                            <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Vestibulum at eros</li>
-                            <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Cras justo odio</li>
-                            <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Dapibus ac facilisis in</li> -->
-                        
-                          </ul>
+                      <ul class="list-group">
+                        <li *ngFor="let project of projects" class="list-group-item btn m-0 rounded-0 project-item" routerLinkActive #rla="routerLinkActive" [ngClass]="rla.isActive ? 'active_project' : 'inactive_project'" [routerLink]="['./project-info', project._id]" (click)="setProject(project)">{{project.project_name}}</li>
+                      </ul>
                     </div>
                     <div class="text-light mt-md-0 mt-3 mb-mb-0 mb-3 col-md-8 col-12 m-0 p-0 right-side">
                       <router-outlet></router-outlet>
