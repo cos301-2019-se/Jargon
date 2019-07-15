@@ -1,5 +1,5 @@
 <div class="container-fluid m-0 dashboard">
-    <div class="wrapper">
+    <div class="wrapper-outer">
       <div class="main">
         <div class="row">
           <div class="" id="dashboard-content">
@@ -8,7 +8,27 @@
                 <h1 class="m-0 display-4">Projects</h1>
               </div>
               <div class="col-12 mx-auto rounded-lg main-dash">
-                <router-outlet></router-outlet>
+                <div class="container-fluid m-0 wrapper rounded">
+                  <div class="row rounded">
+                    <div class="col-md-4 col-12 p-0 m-0 project-list main-content style-5">
+                        <ul class="list-group">
+                            <li *ngFor="let project of projects" class="list-group-item btn m-0 rounded-0 project-item" routerLink="/projects/project-info" (click)="setProject(project)">{{project.projectName}}</li>
+                            <!-- <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Dapibus ac facilisis in</li>
+                            <li class="list-group-item btn m-0 rounded-0 project-item">Cras justo odio</li>
+                            <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Dapibus ac facilisis in</li>
+                            <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Morbi leo risus</li>
+                            <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Porta ac consectetur ac</li>
+                            <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Vestibulum at eros</li>
+                            <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Cras justo odio</li>
+                            <li class="list-group-item btn btn-block m-0 rounded-0 project-item">Dapibus ac facilisis in</li> -->
+                        
+                          </ul>
+                    </div>
+                    <div class="text-light mt-md-0 mt-3 mb-mb-0 mb-3 col-md-8 col-12 m-0 p-0 right-side">
+                      <router-outlet></router-outlet>
+                    </div>
+                  </div>
+                </div>
           
 
 <!-- <div class="container-fluid">

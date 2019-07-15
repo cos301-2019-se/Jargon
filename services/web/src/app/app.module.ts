@@ -19,7 +19,7 @@ import { BrowserModule } from '@angular/platform-browser';
     LoginComponent,
     RegisterComponent,
     LoginNavbarComponent,
-    RegisterNavbarComponent
+    RegisterNavbarComponent,
   ],
   exports: [
     LoginNavbarComponent,
