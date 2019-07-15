@@ -27,7 +27,9 @@ export class DashboardComponent implements OnInit {
     ]
   ];
 
-  constructor() { }
+  constructor() {
+    this.getResize();
+  }
 
   ngOnInit() {
     this.getResize();
@@ -39,6 +41,7 @@ export class DashboardComponent implements OnInit {
   
   getResize() {
     this.innerWidth = window.innerWidth;
+    console.log("RESIZE");
     if(this.innerWidth > 1200) {
       this.collapse = false;
     }
