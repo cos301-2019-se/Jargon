@@ -15,8 +15,12 @@ export class ProjectApiRequesterService {
 
   constructor(private httpClient: HttpClient) {}
  
-  public getProjects() {
-    return this.httpClient.get(`${this.apiURL}/projects`);
+  public getProjectsBasic() {
+    return this.httpClient.get(`${this.apiURL}/projects/basic`);
+  }
+
+  public getProjectsDetailed() {
+    return this.httpClient.get(`${this.apiURL}/projects/detailed`);
   }
 
   public createProject(project_name: string, source: string, whitelist: string[], blacklist: string[], track: number) {

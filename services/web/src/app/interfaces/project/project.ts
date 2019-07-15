@@ -1,12 +1,13 @@
 export class Project {
-    public id: string = "";
-    public whitelist: string[] = [];
     public blacklist: string[] = [];
-    public projectName: string = "";
+    public created: Date = null;
+    public createdBy: string = "";
+    public project_name: string = "";
     public source: string = "";
     public trackTime: number = 0;
+    public whitelist: string[] = [];
+    public _id: string = "";
+
     public data: string = "";
-    public createdBy: string = "";
-    public created: Date = null;
     public dataSentiment: number = 0;
 }

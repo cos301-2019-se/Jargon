@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Project } from '../../../interfaces/project/project';
 import { SharedProjectService } from '../../../services/shared-project/shared-project.service';
+import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
 
 @Component({
   selector: 'app-projects',
@@ -13,21 +13,21 @@ export class ProjectsComponent implements OnInit {
   projects: Project[] = [];
   selected: number = 0;
 
-  constructor(private sharedProjectService: SharedProjectService, private router: Router) {
-    let project = new Project();
-    project.projectName = "One";
-    project.blacklist = ["one", "two"];
-    project.whitelist = ["ttt", "22222"];
-    this.projects.push(project);
+  constructor(private sharedProjectService: SharedProjectService,
+      private projectApiRequesterService: ProjectApiRequesterService) {
 
-    project = new Project();
-    project.projectName = "Two";
-    project.blacklist = ["two", "three"];
-    project.whitelist = ["ggggg", "33333"];
-    this.projects.push(project);
   }
 
   ngOnInit() {
+    this.projectApiRequesterService.getProjectsBasic().subscribe(
+      (projects: Project[]) => {
+        console.log("Projects:", projects);
+        this.projects = projects;
+      },
+      error => {
+        console.log("Error");
+      }
+    );
   }
 
   setProject(project: Project) {
