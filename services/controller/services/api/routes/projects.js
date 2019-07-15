@@ -66,6 +66,41 @@ router.get('/detailed', (req, res, next) => {
 });
 
 router.get('/search', (req, res, next) => {
+    const type = req.body.searchType;
+    const input = req.body.input;
+    if (type === 'title')
+    {
+      Project.find({
+        project_name: new RegExp(input, "i")
+      })
+      .exec()
+      .then(result => {
+        console.log(result);
+        res.status(200).json(result);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ error: err });
+      });
+    }
+    else if (type === 'user')
+    {
+      Project.find({
+        createdBy: new RegExp(input, "i")
+      })
+      .exec()
+      .then(result => {
+        console.log(result);
+        res.status(200).json(result);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ error: err });
+      });
+    }
+  });
+
+router.get('/search', (req, res, next) => {
   const type = req.body.searchType;
   const input = req.body.input;
   if (type === 'title')
