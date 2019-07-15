@@ -21,11 +21,22 @@ const projectSchema = mongoose.Schema({
             type : Object
         }
     ],
+    dataSentiment: [
+        {
+            type : Number
+        } 
+    ],
     created: {
         type: Date,
         default: Date.now
     },
-    createdBy: String
+    createdBy: String,
+    status: Boolean,
+    runs: [
+        {
+            type : Object
+        }
+    ]
 });
 
 module.exports = mongoose.model('Project', projectSchema);

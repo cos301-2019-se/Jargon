@@ -126,7 +126,8 @@ router.post('/create', (req, res, next) => {
         trackTime: req.body.trackTime,
         data: null,
         dataSentiment: null,
-        createdBy: "Test User"
+        createdBy: "Test User",
+        runs: null
     });
 
     project
@@ -253,7 +254,43 @@ router.post('/start', (req, res, next) => {
                                 Project.find({_id : id})
                                 .exec()
                                 .then((result)=>{
+                                    let today = new Date();
+                                    let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                                    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                                    let currDate = date+' '+time;
+
+                                    tweetsAndSentiments = JSON.parse(tweetsAndSentiments);
+                                    let totalTweets = 0;
+                                    let posTweets = 0;
+                                    let negTweets = 0;
+                                    let bestTweet = -1;
+                                    let worstTweet = -1;
+                                    let bestTweetScore = -0.1;
+                                    let worstTweetScore = 1.1;
+
+                                    tweetsAndSentiments['data']['sentiments'].forEach((sentiment, ind)=>{
+                                        totalTweets++;
+                                        if(sentiment>0.5){
+                                            posTweets++;
+                                        }
+                                        if(sentiment<0.5){
+                                            negTweets++;
+                                        }
+                                        if(sentiment<worstTweetScore){
+                                            worstTweet = ind;
+                                            worstTweetScore = sentiment;
+                                        }
+                                        if(sentiment>bestTweetScore){
+                                            bestTweet = ind;
+                                            bestTweetScore = sentiment;
+                                        }
+                                    })
+                                    //TODO: positive percentage calculation, best tweet, worst tweet
+
+                                    let runInfo = '{"dateRun" : "' + currDate + '" , "positivePercentage" :"' + (posTweets/totalTweets) + '" , "negativePercentage" :"' + (negTweets/totalTweets) + '" , "bestTweet" : "' + tweetsAndSentiments['data'][0][bestTweet] + '", "worstTweet" :"' + tweetsAndSentiments['data'][0][worstTweet] + '" }';
+
                                     result[0].dataSentiment = tweetsAndSentiments;
+                                    result[0].runs.push(runInfo);
                                     result[0].status = false;
                                     result[0].save().then(
                                         (result)=>{
