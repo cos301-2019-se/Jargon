@@ -5,5 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class LoginApiRequesterService {
 
+  apiURL = 'http://localhost:3000';
   constructor() { }
 }
