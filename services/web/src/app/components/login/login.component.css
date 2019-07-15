@@ -2,8 +2,10 @@
     background: rgba(6, 57, 116, 0.6) !important;
     overflow-y: auto;
     height:  auto;
+    font-family: 'Amiko', sans-serif !important;
     
 }
+
 
 .white-text {
     color: #FFF;
