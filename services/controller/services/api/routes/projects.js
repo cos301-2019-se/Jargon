@@ -10,14 +10,58 @@ router.get('/', (req, res, next) => {
     Project.find()
     .exec()
     .then(results => {
-      console.log(results);
-      res.status(200).json(results);
+        console.log(results);
+        res.status(200).json(results);
     })
     .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
+});
+
+
+router.get('/basic', (req, res, next) => {
+    Project.find()
+    .exec()
+    .then(results => {
+        const retProjects = [];
+        let simplify = results.forEach((proj)=>{
+            let tempProj = {};
+            tempProj["_id"] = proj["_id"];
+            tempProj["project_name"] = proj["project_name"];
+            tempProj["whitelist"] = proj["whitelist"];
+            tempProj["blacklist"] = proj["blacklist"];
+            tempProj["source"] = proj["source"];
+            tempProj["trackTime"] = proj["trackTime"];
+            tempProj["created"] = proj["created"];
+            tempProj["createdBy"] = proj["createdBy"];
+            retProjects.push(tempProj);
+        });
+        console.log(retProjects);
+        res.status(200).json(retProjects);           
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
+});
+
+router.get('/detailed', (req, res, next) => {
+    Project.find()
+    .exec()
+    .then(results => {
+        console.log(results);
+        res.status(200).json(results);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
     });
 });
 
