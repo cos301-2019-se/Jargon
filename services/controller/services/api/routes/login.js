@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt-nodejs');
 
 
 router.post('/', (req, res, next) => {
+    console.log('here');
     User.find({
         email : req.body.email
     }).exec()

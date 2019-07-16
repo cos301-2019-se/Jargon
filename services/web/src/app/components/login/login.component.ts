@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginApiRequesterService } from '../../services/login-api-requester/login-api-requester.service';
 
 @Component({
   selector: 'app-login',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private loginApiRequester : LoginApiRequesterService) { }
 
   ngOnInit() {
   }
