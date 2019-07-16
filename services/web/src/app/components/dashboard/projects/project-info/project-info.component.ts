@@ -28,10 +28,6 @@ export class ProjectInfoComponent implements OnInit {
         this.project = project;
         this.projectSnapshot = JSON.parse(JSON.stringify(this.project));
         this.projectSnapshot = Object.assign(new Project, this.projectSnapshot);
-
-        console.log(this.projectSnapshot);
-        console.log(this.project);
-        console.log(project);
       }
     );
   }
@@ -95,7 +91,6 @@ export class ProjectInfoComponent implements OnInit {
     if (!this.projectSnapshot.compare(this.project)) {
       this.projectApiRequesterService.updateProject(this.projectSnapshot).subscribe(
         (project: any) => {
-          console.log(project);
           this.project.blacklist = this.projectSnapshot.blacklist;
           this.project.whitelist = this.projectSnapshot.whitelist;
           this.project.project_name = this.projectSnapshot.project_name;
@@ -114,7 +109,5 @@ export class ProjectInfoComponent implements OnInit {
     }
 
     this.projectSnapshot = JSON.parse(JSON.stringify(this.project));
-    console.log("AAAAAAA:",this.projectSnapshot);
-    console.log("BBBBBBB:",this.project);
   }
 }

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChartsModule } from 'ng2-charts';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -19,6 +20,7 @@ import { RefreshGuardService } from '../../services/refresh-guard/refresh-guard.
     ReactiveFormsModule,
     FormsModule,
     DashboardRoutingModule,
+    ChartsModule
   ],
   providers: [
     RefreshGuardService
