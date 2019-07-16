@@ -117,6 +117,7 @@ hr {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
+  height: auto;
 }
 
 .sidebar {
@@ -172,8 +173,9 @@ body {
 
 .right-side {
   background: rgba(6, 57, 116, 0.6) !important;
-  overflow-y: auto;
-  height: 75vh;
+  /* overflow-y: auto; */
+  min-height: 75;
+  height: auto;
 }
 
 .project-item:hover {
@@ -233,3 +235,7 @@ select:focus, input:focus {
 .active_project:hover {
   background: rgb(42, 129, 223) !important; 
 }
+
+/* * {
+  height: auto !important;
+} */
