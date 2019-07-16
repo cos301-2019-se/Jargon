@@ -41,7 +41,6 @@ export class DashboardComponent implements OnInit {
   
   getResize() {
     this.innerWidth = window.innerWidth;
-    console.log("RESIZE");
     if(this.innerWidth > 1200) {
       this.collapse = false;
     }

@@ -54,7 +54,6 @@ export class ProjectInfoComponent implements OnInit {
   }
 
   addWhitelistWord() {
-    console.log("AAA");2
     const word = this.whitelistword.trim();
 
     if (word === '') {
@@ -67,7 +66,6 @@ export class ProjectInfoComponent implements OnInit {
   }
 
   addBlacklistWord() {
-    console.log("AAA");
     const word = this.blacklistword.trim();
 
     if (word === '') {

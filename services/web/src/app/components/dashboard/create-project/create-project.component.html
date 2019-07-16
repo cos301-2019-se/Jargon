@@ -19,13 +19,13 @@
                               <div class="col-12 mt-3">
                                 <div class="form-group mt-4">
                                   <label for="project-name">Project Name *</label>
-                                  <input type="text" class="form-control" id="project-name" placeholder="eg. University of Pretoria Sentiments" name="name" required>
+                                  <input type="text" class="form-control" id="project-name" placeholder="eg. University of Pretoria Sentiments" name="name" required [(ngModel)]="project.project_name">
                                 </div>
                               </div>
                               <div class="col-12 float-left">
                                 <div class="form-group">
                                   <label for="Source">Source *</label>
-                                  <select class="form-control" id="source" name="source" required>
+                                  <select class="form-control" id="source" name="source" required [(ngModel)]="project.source" [compareWith]="compareSource">
                                     <option value="" selected disabled>Please select a source</option>
                                     <option value="Twitter">Twitter</option>
                                     <option value="Facebook">Facebook</option>
@@ -37,7 +37,7 @@
                               <div class="col-12 mb-1">
                                 <div class="form-group">
                                   <label for="project-name">Track Time (s) min(30) * </label>
-                                  <input type="number" class="form-control" min="30" value="30" name="track" required>
+                                  <input type="number" class="form-control" min="30" value="30" name="track" required [(ngModel)]="project.trackTime">
                                 </div>
                               </div>
                   
@@ -62,15 +62,18 @@
                                   </div>
                                 </div>
                               </div>
-
-                              <div class="mt-5 mb-3 mx-auto">
-                                <button class="btn create">Create</button>
-                              </div>
-                          
                             </div> 
                           </div>
                         </div>
                       </form>
+
+                      <div class="container">
+                        <div class="row mt-3 mb-3">
+                          <div class="mt-5 mb-3 mx-auto">
+                            <button class="btn create" (click)="onCreateClick()">Create</button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

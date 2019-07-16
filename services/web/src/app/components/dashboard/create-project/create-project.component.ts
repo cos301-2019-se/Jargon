@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Project } from '../../../interfaces/project/project';
+import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
 
 @Component({
   selector: 'app-create-project',
@@ -7,14 +8,15 @@ import { Project } from '../../../interfaces/project/project';
   styleUrls: ['./create-project.component.css']
 })
 export class CreateProjectComponent implements OnInit {
+
   project: Project = new Project();
-  projectSnapshot: Project = new Project();
 
   blacklistword: string = "";
   whitelistword: string = "";
 
 
-  constructor() { }
+  constructor(private projectApi: ProjectApiRequesterService) {
+  }
 
   ngOnInit() {
   }
@@ -28,7 +30,6 @@ export class CreateProjectComponent implements OnInit {
   }
 
   addWhitelistWord() {
-    console.log("AAA");2
     const word = this.whitelistword.trim();
 
     if (word === '') {
@@ -41,7 +42,6 @@ export class CreateProjectComponent implements OnInit {
   }
 
   addBlacklistWord() {
-    console.log("AAA");
     const word = this.blacklistword.trim();
 
     if (word === '') {
@@ -55,5 +55,14 @@ export class CreateProjectComponent implements OnInit {
 
   compareSource(op1: any, op2: any) {
     return op1 === op2;
+  }
+
+  onCreateClick() {
+    this.projectApi.createProject(this.project).subscribe(
+      (project: any) => {
+        console.log("response:", project);
+        this.project = new Project();
+      }
+    );
   }
 }
