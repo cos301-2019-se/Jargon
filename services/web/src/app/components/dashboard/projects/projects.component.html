@@ -7,15 +7,27 @@
               <div class="col-12 mx-auto pl-0 mb-4">
                 <h1 class="m-0 display-4">Projects</h1>
               </div>
-              <div class="col-12 mx-auto rounded-lg main-dash">
+              <div class="col-12 mx-auto rounded-lg main-dash p-0">
                 <div class="container-fluid m-0 wrapper rounded">
                   <div class="row rounded">
                     <div class="col-md-4 col-12 p-0 m-0 project-list main-content style-5" *ngIf="hide==false">
                       <ul class="list-group">
+                        <li class="list-group-item btn m-0 rounded-0" *ngIf="projects == null">
+                          <div class="row">
+                            <div class="spinner-border mx-auto" role="status">
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="list-group-item btn m-0 rounded-0" *ngIf="projects.length == 0">
+                            <div class="row pl-4">
+                              No projects
+                            </div>
+                          </li>
                         <li *ngFor="let project of projects" class="list-group-item btn m-0 rounded-0 project-item" routerLinkActive #rla="routerLinkActive" [ngClass]="rla.isActive ? 'active_project' : 'inactive_project'" [routerLink]="['./project-info', project._id]" (click)="setProject(project)">{{project.project_name}}</li>
                       </ul>
                     </div>
-                    <div class="text-light mt-md-0 mt-3 mb-mb-0 mb-3 col-md-8 col-12 m-0 p-0 right-side">
+                    <div class="text-light mt-md-0 mt-3 mb-mb-0 mb-3 m-0 p-0 right-side" [ngClass]="!hide ? 'col-12 col-md-8' : 'col-12'">
                       <router-outlet></router-outlet>
                     </div>
                   </div>

@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { DashboardComponent } from './dashboard.component';
+import { RefreshGuardService } from '../../services/refresh-guard/refresh-guard.service';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,9 @@ import { DashboardComponent } from './dashboard.component';
     ReactiveFormsModule,
     FormsModule,
     DashboardRoutingModule,
+  ],
+  providers: [
+    RefreshGuardService
   ]
 })
 export class DashboardModule { }
