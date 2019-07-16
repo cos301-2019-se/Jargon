@@ -176,16 +176,6 @@ body {
   height: 75vh;
 }
 
-.project-item:hover {
-  background: rgb(29, 82, 182) !important;
-  transition-duration: 0s;
-} 
-
-/* .project-item:hover {
-  background-color: rgb(31, 96, 165);
-  transition-duration: 0s;
-} */
-
 .project-item:not(:hover) {
   transition-duration: 0s;
 }
@@ -228,8 +218,59 @@ select:focus, input:focus {
 
 .active_project {
   background: rgb(40, 123, 211) !important; 
-}
+} 
 
 .active_project:hover {
   background: rgb(42, 129, 223) !important; 
+}
+
+
+select, input {
+  background-color: rgb(0, 18, 37) !important;
+  border-color:  rgb(36, 75, 117) !important;
+}
+
+select option {
+  background-color: rgb(21, 48, 77) !important;
+}
+
+select option:hover {
+  background-color: rgb(36, 75, 117) !important;
+}
+
+select, option, input {
+  color: white;
+}
+
+select:focus, input:focus {
+  color: white !important;
+}
+
+::placeholder {
+  color: rgb(136, 136, 156) !important;
+}
+
+.btn.focus, .btn:focus {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+label {
+  color: white;
+}
+
+.pill {
+  border-color: rgb(47, 50, 228) !important;
+}
+
+.pill:hover {
+  cursor: default;
+}
+
+.badge:hover {
+  cursor: pointer;
+}
+
+.create:hover {
+  background: rgba(37, 164, 255, 0.3) !important;
 }
