@@ -1,5 +1,18 @@
-<button [routerLink]="['../project-info', project._id]" (click)="deactivateResults()">&lt;--</button>
+<!-- <button [routerLink]="['../project-info', project._id]" (click)="deactivateResults()">&lt;--</button>
 <p>
   something something results:
   {{project.project_name}}
-</p>
+</p> -->
+
+<div>
+  <div>
+    <div style="display: block">
+      <canvas baseChart
+        [data]="doughnutChartData"
+        [labels]="doughnutChartLabels"
+        [chartType]="doughnutChartType"
+        [options]="doughnutChartOptions">
+      </canvas>
+    </div>
+  </div>
+</div>
