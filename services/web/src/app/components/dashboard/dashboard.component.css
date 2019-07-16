@@ -289,6 +289,8 @@ hr {
 .wrapper {
   display: flex;
   justify-content: space-between;
+  height: auto;
+
 }
 
 .main,
@@ -297,6 +299,7 @@ hr {
 }
 
 .main {
+  height: auto !important;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -325,4 +328,8 @@ body {
 .btn.focus, .btn:focus {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
+}
+
+.auto-height {
+  height:auto;
 }
