@@ -29,6 +29,35 @@ router.post('/', (req, res, next) => {
 function returnListenerData(res, projID, tempArray){
     let updateVals = {};
     updateVals["data"] = tempArray;
+    
+    let postBody = {
+        'rawData' : tempArray
+    }
+    let postBodyString = JSON.stringify(postBody);
+    var options = {
+        host: "localhost",
+        port: 3002,
+        path: "/twitter/",
+        method: "POST",
+        headers: {
+            'Content-Length': Buffer.byteLength(postBodyString),
+            "Content-Type": "application/json"
+        }
+    };
+    let responseString;
+    var listenerReq = http.request(options, (listenerRes)=>{
+        responseString = "";
+        listenerRes.on("data", (data) => {
+            responseString += data;
+        });
+        listenerRes.on("end", () => {
+            //end function here
+        });
+    });
+
+    listenerReq.write(postBodyString);
+    listenerReq.end();
+
     Project.find({_id : projID})
     .exec()
     .then((result)=>{
