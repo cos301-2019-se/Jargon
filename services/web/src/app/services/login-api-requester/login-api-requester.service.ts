@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from 'selenium-webdriver/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -7,12 +7,12 @@ import { HttpClient } from 'selenium-webdriver/http';
 export class LoginApiRequesterService {
 
   apiURL = 'http://localhost:3000';
-  constructor(httpClient : HttpClient) { }
+  constructor(private httpClient : HttpClient) { }
 
-  public authenticateUser(username : string, password : string)
+  public authenticateUser(email : string, password : string)
   {
-    return this.httpClient.post(`${this.apiURL}/user/login`, {
-      'project_name': project_name, 'whitelist': whitelist, 'blacklist': blacklist, 'source': source, 'trackTime': track
+    return this.httpClient.post(`${this.apiURL}/login`, {
+      'email': email, 'password': password
     });
   }
 }
