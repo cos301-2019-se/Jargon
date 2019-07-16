@@ -65,15 +65,17 @@
     <!-- <div class="mt-5 center mb-5">
       <input class="btn btn-outline-primary rounded-pill mx-auto" type="button"  value="Create">
     </div> -->
-    <div class="row mt-3 mb-3">
-      <div class="col-auto">
-          <button class="btn results" [routerLink]="['../../project-result']">Results</button>
-      </div>
-      <div class="col-auto">
-          <button class="btn save">Save <i class="fas fa-check"></i></button>
-      </div>
-      <div class="col-auto">
-          <button class="btn cancel">Cancel <i class="fas fa-ban"></i></button>
+    <div class="container">
+      <div class="row mt-3 mb-3">
+        <div class="col-auto mx-auto">
+            <button class="btn results" [routerLink]="['../../project-result']" (click)="activateResults()">Results</button>
+        </div>
+        <div class="col-auto" hidden>
+            <button class="btn save">Save <i class="fas fa-check" ></i></button>
+        </div>
+        <div class="col-auto mr-auto" hidden>
+            <button class="btn cancel">Cancel <i class="fas fa-ban"></i></button>
+        </div>
       </div>
     </div>
   </div>

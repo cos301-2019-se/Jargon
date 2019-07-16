@@ -11,6 +11,10 @@ app-dashboard {
   width: 100vh;
 }
 
+app-create-project {
+  width: 100%;
+}
+
 body {
   /* background-color: #e3e4e5 !important; */
   background: url('./assets/images/background-xl.jpg') no-repeat fixed;

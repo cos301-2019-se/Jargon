@@ -21,4 +21,8 @@ export class ProjectResultComponent implements OnInit {
   ngOnInit() {
   }
 
+  deactivateResults() {
+    this.shareProjectService.setHide(false);
+  }
+
 }

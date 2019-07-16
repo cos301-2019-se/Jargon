@@ -13,6 +13,8 @@ export class ProjectsComponent implements OnInit {
   projects: Project[] = [];
   selected: number = 0;
 
+  hide: boolean = true;
+
   constructor(private sharedProjectService: SharedProjectService,
       private projectApiRequesterService: ProjectApiRequesterService) {
 
@@ -28,11 +30,19 @@ export class ProjectsComponent implements OnInit {
         console.log("Error");
       }
     );
+
+    this.sharedProjectService.hide.subscribe(
+      hide => {
+        this.hide = hide;
+      }
+    );
   }
 
   setProject(project: Project) {
     this.sharedProjectService.setCurrentProject(project);
   }
+
+
   // public innerWidth: any;
   // public collapse: boolean;
 

@@ -10,7 +10,7 @@
               <div class="col-12 mx-auto rounded-lg main-dash">
                 <div class="container-fluid m-0 wrapper rounded">
                   <div class="row rounded">
-                    <div class="col-md-4 col-12 p-0 m-0 project-list main-content style-5">
+                    <div class="col-md-4 col-12 p-0 m-0 project-list main-content style-5" *ngIf="hide==false">
                       <ul class="list-group">
                         <li *ngFor="let project of projects" class="list-group-item btn m-0 rounded-0 project-item" routerLinkActive #rla="routerLinkActive" [ngClass]="rla.isActive ? 'active_project' : 'inactive_project'" [routerLink]="['./project-info', project._id]" (click)="setProject(project)">{{project.project_name}}</li>
                       </ul>
