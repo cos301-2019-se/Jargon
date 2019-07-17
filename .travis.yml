@@ -12,7 +12,7 @@ before_script:
   - sudo chmod +x test.sh
   - npm install -g mocha
   - npm install chai chai-http chai-arrays
-  - sleep 600s
+  - sleep 3600s
 
 script:
   # - ./test.sh
