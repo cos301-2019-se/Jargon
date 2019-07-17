@@ -33,6 +33,7 @@ before_script:
   - cd ./services/docker/compose
   - docker-compose up --build -d
   - cd ../../../tests
+  - sudo chmod +x test.sh
 
 script:
   - ./test.sh
