@@ -31,7 +31,7 @@ services:
 
 before_script:
   - cd ./services/docker/compose
-  - docker-compose up
+  - docker-compose up --build -d
   - cd ../../../tests
 
 script:
