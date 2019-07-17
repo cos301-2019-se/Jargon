@@ -55,8 +55,9 @@
   opacity: 0.6;
 }
 
-h1 {
+h2 {
   color: white;
+  /* font-weight: bold; */
   /* text-align: center;
   font-family: Georgia;
   color: rgba(8,162,233,1); */

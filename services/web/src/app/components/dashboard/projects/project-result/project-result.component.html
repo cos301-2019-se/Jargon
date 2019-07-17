@@ -4,15 +4,208 @@
   {{project.project_name}}
 </p> -->
 
-<div>
-  <div>
-    <div style="display: block">
-      <canvas baseChart
-        [data]="doughnutChartData"
-        [labels]="doughnutChartLabels"
-        [chartType]="doughnutChartType"
-        [options]="doughnutChartOptions">
-      </canvas>
+<div class="container-fluid">
+  <div class="row m-0 p-0">
+    <div class="col-12 p-0 m-0">
+      <div class="row align-center">
+        <div class="col-4 border-right">
+          <div>
+            <div>
+              <div style="display: block">
+                <canvas baseChart
+                  [data]="doughnutChartData"
+                  [labels]="doughnutChartLabels"
+                  [chartType]="doughnutChartType"
+                  [options]="doughnutChartOptions"
+                  [colors]="chartColors">
+                </canvas>
+              </div>
+            </div>
+          </div> 
+          <div class="mt-5">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                  View Tweets
+              </button>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="row">
+            <div class="col-12">
+              <div class="card text-dark">
+                <div class="card-header">
+                  Best Result
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Special title treatment</h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 mt-5">
+              <div class="card text-dark">
+                <div class="card-header">
+                  Worst Result
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Special title treatment</h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 mt-5">
+              <ul class="list-group text-dark">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Tweet 1
+                  <span class="badge badge-primary badge-pill">0.967</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Tweet 2
+                  <span class="badge badge-primary badge-pill">0.2</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Tweet 3
+                  <span class="badge badge-primary badge-pill">0.33</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Tweet 1
+                  <span class="badge badge-primary badge-pill">0.967</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Tweet 2
+                  <span class="badge badge-primary badge-pill">0.2</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Tweet 3
+                  <span class="badge badge-primary badge-pill">0.33</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Tweet 1
+                  <span class="badge badge-primary badge-pill">0.967</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Tweet 2
+                  <span class="badge badge-primary badge-pill">0.2</span>
+                </li>
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-12 p-0 m-0">     
+      <div class="container">     
+        <!-- The Modal -->
+        <div class="modal fade text-dark" id="myModal">
+          <div class="modal-dialog  modal-xl">
+            <div class="modal-content">
+            
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title">Flag Tweets For Retraining</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              
+              <!-- Modal body -->
+              <div class="modal-body">
+                
+                <div class="container mt-3">
+                  <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                      <a class="nav-link active" data-toggle="tab" href="#home">Positive</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#menu1">Negative</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#menu2">All</a>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content">
+                    <div id="home" class="container tab-pane active"><br>
+                      <h3>Tweeties</h3>
+                      <p>Positive Tweets</p>
+                      <ul class="list-group text-dark">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          <span><input type="checkbox" class="mr-2"> Tweet 1 This is an example of a really really long tweet, so that I can see where the text goes if the sentence is toooooooo long</span>
+                          <span class="ml-2 badge badge-primary badge-pill">0.967</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><input type="checkbox"> Tweet 2</span>
+                          <span class="badge badge-primary badge-pill">0.2</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><input type="checkbox"> Tweet 3</span>
+                          <span class="badge badge-primary badge-pill">0.33</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div id="menu1" class="container tab-pane fade"><br>
+                      <h3>Tweeties</h3>
+                      <p>Negative Tweets</p>
+                      <ul class="list-group text-dark">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          <span><input type="checkbox"> Tweet 1</span>
+                          <span class="badge badge-primary badge-pill">0.967</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          <span><input type="checkbox"> Tweet 2</span>
+                          <span class="badge badge-primary badge-pill">0.2</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          <span><input type="checkbox"> Tweet 3</span>
+                          <span class="badge badge-primary badge-pill">0.33</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div id="menu2" class="container tab-pane fade"><br>
+                      <h3>Tweeties</h3>
+                      <p>All Tweets</p>
+                      <ul class="list-group text-dark">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          <span><input type="checkbox"> Tweet 1</span>
+                          <span class="badge badge-primary badge-pill">0.967</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          <span><input type="checkbox"> Tweet 2</span>
+                          <span class="badge badge-primary badge-pill">0.2</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          <span><input type="checkbox"> Tweet 3</span>
+                          <span class="badge badge-primary badge-pill">0.33</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SharedProjectService } from '../../../../services/shared-project/shared-project.service';
 import { Project } from '../../../../interfaces/project/project';
-import { Label, MultiDataSet } from 'ng2-charts';
+import { Label, MultiDataSet, PluginServiceGlobalRegistrationAndOptions} from 'ng2-charts';
 import { ChartType, ChartOptions } from 'chart.js';
 
 @Component({
@@ -13,15 +13,25 @@ export class ProjectResultComponent implements OnInit {
 
   project: Project = null;
 
-  doughnutChartLabels: Label[] = [];//'Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
+  doughnutChartLabels: Label[] = ['positive', 'negative'];//'Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
   doughnutChartData: MultiDataSet = [ 
-    [350, 450, 100]
+    [80, 20]
   ];
   doughnutChartType: ChartType = 'doughnut';
   doughnutChartOptions: ChartOptions = {
-    cutoutPercentage: 80
+    cutoutPercentage: 80,
+    legend: {
+      labels: {
+        fontColor: 'white'
+      }
+    }
   };
-  
+
+  public chartColors: any[] = [
+  { 
+    backgroundColor:["#005C99", "#55BBFF"] 
+  }];
+
   constructor(private shareProjectService: SharedProjectService) {
     shareProjectService.project.subscribe(
       (project: Project) => {
@@ -31,6 +41,7 @@ export class ProjectResultComponent implements OnInit {
   }
 
   ngOnInit() {
+    
   }
 
   deactivateResults() {
