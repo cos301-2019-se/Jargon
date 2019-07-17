@@ -1,48 +1,61 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const User = require('../models/user');
-const bcrypt = require('bcrypt-nodejs');
+const FlaggedItem = require('../models/flaggedItem');
+const Epoch = require('../models/epoch');
 
 
-router.post('/', (req, res, next) => {
-    console.log('here');
-    User.find({
-        email : req.body.email
-    })
+
+router.post('/add', (req, res, next) => {
+
+    const list = req.body.tweets;
+
+    let tweetList = [];
+    list.forEach(elem => {
+        const item = {
+            text: elem.text,
+            currentScore: elem.currentScore,
+            alternateScore: elem.alternateScore
+        };
+        tweetList.push(item);
+    });
+    
+    Epoch.find()
     .exec()
     .then(data => {
-        if (data.length > 0)
+        if (data.length <= 0)
         {
-            if (bcrypt.compareSync(req.body.password, data[0].password))
-            {
+            const epoch = new Epoch({
+                _id: new mongoose.Types.ObjectId(),
+                size : 0,
+                capacity : 10,
+                timestamp : Date.now,
+                tweets : tweetList
+            })
+            .save()
+            .then(result => {
                 res.status(200).json({
-                    status : true,
-                    authenticated : true
+                    message: "Epoch successfully added"
                 });
-            }
-            else
-            {
-                res.status(200).json({
-                    status : true,
-                    authenticated : false
-                });
-            }
-        }
-        else
-        {
-            res.status(200).json({
-                status: false,
-                result: "User does not exist."
             });
         }
+    });
+    .save()
+    .then(result => {
+
+      
+      res.status(200).json({
+        message: "Flagged item successfully added",
+        createdProduct: result
+      });
     })
     .catch(err => {
-        res.status(500).json({
-            error: err
-        });
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
     });
-});
+}
 
 
 module.exports = router;

@@ -5,10 +5,13 @@ const epochSchema = mongoose.Schema({
     size : Number,
     timestamp : Date,
     capacity : Number,
-    source: String,
-    startTime: Number,
-    trackTime: Number,
-    tweets: [{type : mongoose.Schema.Types.ObjectId, ref : 'FlaggedItem'}]
+    tweets: [
+        {
+            text: String,
+            currentScore : Number,
+            alternateScore : Number
+        }
+    ]
 });
 
 module.exports = mongoose.model('Epoch', epochSchema);
