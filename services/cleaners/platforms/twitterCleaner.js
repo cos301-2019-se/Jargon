@@ -5,14 +5,18 @@ class twitterCleaner{
         
     }
 
-    clean(tweetCollection, callback){
-        tweetCollection.forEach((tweet)=>{
+    clean(tweetCollections, callback, res){
+        
+        tweetCollections.forEach((tweet)=>{
             let tweetText = tweet["text"];
 
             
 
             tweet["text"] = tweetText;
+            
         })
+        
+        callback(tweetCollections, res);
     }
 }
 

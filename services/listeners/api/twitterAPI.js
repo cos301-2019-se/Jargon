@@ -1,3 +1,4 @@
+var http = require("http");
 const express = require('express');
 const router = express.Router();
 
@@ -10,10 +11,13 @@ router.post('/', (req, res, next) => {
     Project.find({ _id: id })
     .exec()
     .then(results => {
+        
         if((results[0].source==='Twitter')||(results[0].source==='twitter')){
             // console.log(results[0].trackTime);
             tl = new twitterListener(results[0].whitelist, results[0].blacklist, results[0].trackTime);
+            
             tl.startTracking(res, results[0].id, returnListenerData);
+            
         }else{
             console.log("Platform does not match project's chosen platform.");
         }
@@ -27,9 +31,10 @@ router.post('/', (req, res, next) => {
 });
 
 function returnListenerData(res, projID, tempArray){
+    
     let updateVals = {};
     updateVals["data"] = tempArray;
-    
+    // console.log(tempArray);
     let postBody = {
         'rawData' : tempArray
     }
@@ -44,32 +49,38 @@ function returnListenerData(res, projID, tempArray){
             "Content-Type": "application/json"
         }
     };
-    let responseString;
+    let responseString = "";
     var listenerReq = http.request(options, (listenerRes)=>{
         responseString = "";
         listenerRes.on("data", (data) => {
             responseString += data;
         });
         listenerRes.on("end", () => {
-            //end function here
+            console.log(responseString);
+            
+            Project.find({_id : projID})
+            .exec()
+            .then((result)=>{
+                // console.log(responseString);
+                result[0].data = JSON.parse(responseString);
+                result[0].save().then(
+                    (result)=>{
+                        
+                        res.status(200).json(result.data);
+                    }
+                ).catch((err) =>{
+
+                })
+            }).catch((err) => {
+                
+                console.log(typeof result[0].data);
+            })
         });
     });
-
+    
     listenerReq.write(postBodyString);
     listenerReq.end();
-
-    Project.find({_id : projID})
-    .exec()
-    .then((result)=>{
-        result[0].data = tempArray;
-        result[0].save().then(
-            (result)=>{
-                res.status(200).json(result.data);
-            }
-        )
-    }).catch((err) => {
-      console.log(typeof result[0].data);
-    })
+    
 }
 
 module.exports = router;

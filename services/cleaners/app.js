@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+app.use(bodyParser.json({ limit: '20mb' }))
 
 const twitterRoutes = require('./api/twitterCleanerAPI');
 

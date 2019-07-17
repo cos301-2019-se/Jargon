@@ -287,7 +287,7 @@ router.post('/start', (req, res, next) => {
 
                                     let runInfo = '{"dateRun" : "' + currDate + '" , "positivePercentage" :"' + (posTweets/totalTweets) + '" , "negativePercentage" :"' + (negTweets/totalTweets) + '" , "bestTweet" : "' + tweetsAndSentiments['data'][0][bestTweet]["text"] + '", "worstTweet" :"' + tweetsAndSentiments['data'][0][worstTweet]["text"] + '" }';
                                     tweetsAndSentiments = JSON.stringify(tweetsAndSentiments);
-
+                                    console.log("tweetsAndS: " + tweetsAndSentiments["data"]);
                                     result[0].dataSentiment = tweetsAndSentiments["data"];
                                     result[0].runs.push(runInfo);
                                     result[0].status = false;
