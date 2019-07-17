@@ -34,6 +34,7 @@ before_script:
   - docker-compose up --build -d
   - cd ../../../tests
   - sudo chmod +x test.sh
+  - sudo npm install -g mocha
 
 script:
   - ./test.sh
