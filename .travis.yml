@@ -11,7 +11,8 @@ before_script:
   - cd ../../../tests
   - sudo chmod +x test.sh
   - npm install -g mocha
+  - npm install chai chai-http chai-arrays
 
 script:
-  - ./test.sh
+  # - ./test.sh
   - mocha test.js --exit
