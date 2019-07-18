@@ -4,20 +4,27 @@
       <div class="row">
         <div class="col-lg-11 mx-auto">
           <div class="row">
+            <div class="col-12 mt-4">
+              <div class="row">
+                <div class="col-1 ml-auto mr-4">
+                  <i class="fas fa-cog settings_icon" (click)="onEditClick()"></i>
+                </div>
+              </div>
+            </div>
             <div class="col-12 mt-3">
               <div class="form-group">
                 <label for="project-name">Project Name *</label>
-                <input type="text" class="form-control" id="project-name" placeholder="eg. University of Pretoria Sentiments" name="name" required [(ngModel)]="project.projectName">
+                <input type="text" class="form-control" id="project-name" placeholder="eg. University of Pretoria Sentiments" name="name" [readonly]="isReadOnly" required [(ngModel)]="projectSnapshot.project_name">
               </div>
             </div>
             <div class="col-12 float-left">
               <div class="form-group">
                 <label for="Source">Source *</label>
-                <select class="form-control" id="source" name="source"  required>
+                <select class="form-control" id="source" name="source" [disabled]="isReadOnly" required [(ngModel)]="projectSnapshot.source" [compareWith]="compareSource">
                   <option value="" selected disabled>Please select a source</option>
-                  <option>Twitter</option>
-                  <option>Facebook</option>
-                  <option>Instagram</option>
+                  <option value="Twitter">Twitter</option>
+                  <option value="Facebook">Facebook</option>
+                  <option value="Instagram">Instagram</option>
                 </select>
               </div>
             </div>
@@ -25,35 +32,51 @@
             <div class="col-12 mb-1">
               <div class="form-group">
                 <label for="project-name">Track Time (s) min(30) * </label>
-                <input type="number" class="form-control" min="30" value="30" name="track" required>
+                <input type="number" class="form-control" min="30" value="30" name="track" [readonly]="isReadOnly" required [(ngModel)]="projectSnapshot.trackTime">
               </div>
             </div>
 
-            <div class="col-12 mb-1">
+            <div class="col-12 ">
               <div class="form-group">
                 <label for="whitelist1">Whitelisted Words *</label>
-                <input class="form-control mb-2" id="whitlist1" name="whitelist" placeholder="Press Enter key to select word">
-                <!-- <div class="mt-3 badge badge-pill badge-primary mr-1 blw p-0 "><div class="float-left mx-3 mt-2"><h6 class="m-0"></h6></div><div class="float-right m-0 btn btn-secondary round">X</div></div> -->
+                <input class="form-control mb-2" id="whitlist1" name="whitelist" placeholder="Press Enter key to select word" required [readonly]="isReadOnly" [(ngModel)]="whitelistword" (keyup.enter)="addWhitelistWord()">
+                <span class="btn pr-1 pill mr-3 mt-2" *ngFor="let whitelistword of projectSnapshot.whitelist; let i = index">
+                  {{whitelistword}}<span class="badge m-1 mr-0"><i class="fas fa-close" (click)="removeWhitelistWord(i)"></i></span>
+                </span>
               </div>
             </div>
 
-            <div class="col-12 mt-4">
+            <div class="col-12 mt-2">
               <div class="form-group">
                 <label for="blacklist1">Blacklisted Words</label>
                 <div>
-                  <input   class="form-control mb-2" id="blacklist1" name="blacklist" placeholder="Press Enter key to select word">
-                  <!-- <div class="mt-3 badge badge-pill badge-primary blw p-0"><div class="float-left mx-3 mt-2"><h6 class="m-0"></h6></div><div class="float-right m-0 btn btn-secondary round">X</div></div> -->
+                  <input class="form-control mb-2" id="blacklist1" name="blacklist" [readonly]="isReadOnly" placeholder="Press Enter key to select word" [(ngModel)]="blacklistword" (keyup.enter)="addBlacklistWord()">
+                  <span class="btn pr-1 pill mr-3 mt-2" *ngFor="let blacklistword of projectSnapshot.blacklist; let i = index">
+                    {{blacklistword}}<span class="badge m-1 mr-0"><i class="fas fa-close" (click)="removeBlacklistWord(i)"></i></span>
+                  </span>
                 </div>
               </div>
             </div>
           </div>
           
-          <!-- <div class="mt-5 center mb-5">
-            <input class="btn btn-outline-primary rounded-pill mx-auto" type="button"  value="Create">
-          </div> -->
         </div>
       </div>
     </form>
-    <button [routerLink]="['../project-result']">Results</button>
+    <!-- <div class="mt-5 center mb-5">
+      <input class="btn btn-outline-primary rounded-pill mx-auto" type="button"  value="Create">
+    </div> -->
+    <div class="container">
+      <div class="row mt-3 mb-3">
+        <div class="col-auto mx-auto" [hidden]="!isReadOnly">
+            <button class="btn results" [routerLink]="['../../../project-result']">Results</button>
+        </div>
+        <div class="col-auto ml-auto" [hidden]="isReadOnly">
+            <button class="btn save" (click)="onSaveClick()">Save <i class="fas fa-check"></i></button>
+        </div>
+        <div class="col-auto mr-auto" [hidden]="isReadOnly">
+            <button class="btn cancel" (click)="onCancelClick()">Cancel <i class="fas fa-ban"></i></button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
