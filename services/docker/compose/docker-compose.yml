@@ -1,9 +1,9 @@
 version: '2'
 services:
-    # neural-network:
-    #     build: ../../neural-network/
-    #     ports:
-    #         - "5000:5000"
+    neural-network:
+        build: ../../neural-network/
+        ports:
+            - "5000:5000"
     controller:
         build: ../../controller/
         ports:
