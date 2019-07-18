@@ -1,1 +1,4 @@
-Flask==1.0.3
+connexion==2.3.0
+torch==1.1.0
+spacy==2.1.4
+torchtext==0.3.1

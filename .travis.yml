@@ -1,26 +1,20 @@
-sudo: required
-dist: xenial
-addons:
-  firefox: latest-esr
-      
 language: node_js
 node_js:
   - 11
 
-before_install:
-  - cd './backend'
-
 services:
-  - xvfb
+  - docker
 
-env:
-  - DOCKER_COMPOSE_VERSION=1.24.0
-  
 before_script:
-  - npm install
-  - npm install mocha
-  - npm install --dev
-  - cd './tests'
+  # - cd ./services/docker/compose
+  # - docker-compose up --build -d
+  # - cd ../../../tests
+  - cd ./tests
+  - sudo chmod +x test.sh install.sh
+  - ./install.sh
+  # - npm install -g mocha
+  # - npm install chai chai-http chai-arrays
 
 script:
-  - mocha test --exit
+  - ./test.sh
+  # - mocha test.js --exit

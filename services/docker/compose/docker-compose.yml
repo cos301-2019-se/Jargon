@@ -1,0 +1,14 @@
+version: '2'
+services:
+    neural-network:
+        build: ../../neural-network/
+        ports:
+            - "5000:5000"
+    controller:
+        build: ../../controller/
+        ports:
+            - "3000:3000"
+    listeners:
+        build: ../../listeners/
+        ports:
+            - "3001:3001"

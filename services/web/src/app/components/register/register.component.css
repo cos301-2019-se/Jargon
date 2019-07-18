@@ -19,3 +19,25 @@
   left: 0;
   z-index: 1;
 }
+
+.main-card {
+  background: rgba(6, 57, 116, 0.6) !important;
+  overflow-y: auto;
+  height:  auto;
+  
+}
+
+.white-text {
+  color: #FFF;
+}
+
+select, input {
+  background-color: rgb(0, 18, 37) !important;
+  border-color:  rgb(36, 75, 117) !important;
+}
+
+.span-background {
+  background: rgba(40, 109, 189, 0.6) !important;
+  border-color: rgba(6, 57, 116, 0.6) !important;
+  color: white;
+}

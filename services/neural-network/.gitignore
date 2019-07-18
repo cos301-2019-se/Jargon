@@ -5,4 +5,4 @@ __pycache__/
 geckodriver.log
 .data/
 .vector_cache/
-nn-model.pt
+.gitignore

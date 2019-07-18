@@ -1,8 +1,12 @@
-FROM python:3.4-alpine
+FROM python:3
+
+WORKDIR /usr/src/app
+
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+RUN python -m spacy download en
+RUN pip install connexion[swagger-ui]
+
 COPY . .
-WORKDIR /api
-RUN pip install -r ./requirements.txt
-RUN adduser -D myuser
-USER myuser
-ENTRYPOINT ["python"]
-CMD ["server.py"]
+
+CMD [ "python", "./server.py" ]
