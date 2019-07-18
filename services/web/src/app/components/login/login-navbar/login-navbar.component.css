@@ -10,7 +10,7 @@
   font-size: 0.75rem;
   position: absolute;
   right: 0;
-  font-family: sans-serif;
+  font-family: 'Amiko', sans-serif !important;
 }
 
 .navbar-icon-top .navbar-nav .nav-link > .fa {
