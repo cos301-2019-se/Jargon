@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SharedProjectService } from '../../../../services/shared-project/shared-project.service';
-import { Project } from '../../../../interfaces/project/project';
+import { Project, Run } from '../../../../interfaces/project/project';
 import { Label, MultiDataSet, PluginServiceGlobalRegistrationAndOptions, Color} from 'ng2-charts';
 import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
 import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
@@ -13,7 +13,7 @@ import { ProjectApiRequesterService } from '../../../../services/project-api-req
 export class ProjectResultComponent implements OnInit {
 
   project: Project = new Project();
-  currentRun: any = null;
+  currentRun: Run = new Run();
 
   doughnutChartLabels: Label[] = ['positive', 'negative'];//'Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
   doughnutChartData: MultiDataSet = [ 
@@ -73,9 +73,9 @@ export class ProjectResultComponent implements OnInit {
   ];
 
   lineChartData: ChartDataSets[] = [
-    { data: [0.05, 0.15, 0.23, 0.1, 0.35, 0.2, 0.62,0.4, 0.9, 0.45, 1], label:'' },
+    { data: [], label:'' },
   ];
-  lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November'];
+  lineChartLabels: Label[] = [];//'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November'];
 
   lineChartOptions: ChartOptions = {
     responsive: true,
@@ -129,9 +129,22 @@ export class ProjectResultComponent implements OnInit {
           (project: Project) => {
             this.project = project;
 
-            this.doughnutChartData = [
-              [50, 50]
+            let index = this.project.runs.length - 1;
+            this.selectCurrentRun(index);
+
+            let data: number[] = [];
+            let label: string[] = [];
+            this.project.runs.forEach(
+              (run: Run) => {
+                data.push(run.positivePercentage);
+                label.push(run.dateRun.toString());
+              }
+            );
+
+            this.lineChartData = [
+              { data: [...data], label:'' },
             ];
+            this.lineChartLabels = [...label];
           }
         );
       }
@@ -146,8 +159,28 @@ export class ProjectResultComponent implements OnInit {
       return;
     }
 
-    let index: number = event.active._index;
+    let index: number = event.active[0]._index;
+    // console.log("waddap:", event);
+    this.selectCurrentRun(index);
+  }
+
+  selectCurrentRun(index: number) {
+    if (index == -1) {
+      return;
+    }
+
     this.currentRun = this.project.runs[index];
+    const decimals = 4;
+    this.currentRun.bestTweetSentiment = parseFloat(this.currentRun.bestTweetSentiment.toFixed(decimals));
+    this.currentRun.worstTweetSentiment = parseFloat(this.currentRun.worstTweetSentiment.toFixed(decimals));
+    console.log(this.currentRun);
+    let avg = Math.round(this.currentRun.averageScore*100);
+    this.doughnutChartData = [
+      [
+        avg,
+        100-avg
+      ]
+    ];
   }
 
 }

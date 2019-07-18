@@ -166,7 +166,7 @@ body {
 }
 
 .main-content {
-  height: 70vh;
+  height: 80vh;
   overflow-y: auto;
   border-color: rgb(15, 65, 122) !important;
   border-width: 2px !important;
@@ -194,6 +194,12 @@ body {
 }
 
 .btn {
+  background: rgba(22, 111, 175, 0.3) !important;
+  color: white;
+  text-align: left;
+}
+
+.search-bar {
   background: rgba(22, 111, 175, 0.3) !important;
   color: white;
   text-align: left;
