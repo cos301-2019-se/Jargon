@@ -66,3 +66,13 @@
         border: none !important;
     }
 }
+
+.arrow-font {
+    font-size: 20px;
+    color: white;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center; 
+}
