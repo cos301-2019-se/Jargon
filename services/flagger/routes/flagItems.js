@@ -105,19 +105,22 @@ router.post('/add', (req, res, next) => {
                     console.log("not updated");
                     let end = data.length - 1;
                     let lastSize = data[end].size;
-                    console.log(end);
-                    console.log(lastSize);
+                   // console.log(end);
+                   // console.log(lastSize);
                     let tweetsAdd = data[end].tweets;
                     updated = true;
                     if (lastSize < cap)
                     {
-                        const s = cap - lastSize;
+                        let s = cap - lastSize;
+                        if (s > tweetList.length)
+                            s = tweetList.length;
+                      //  console.log(`s : ${s}  tweetList: ${tweetList.length}`);
                         for (let i = 0; i < s; i++)
                         {
                             tweetsAdd.push(tweetList.pop());
                         }
 
-                        data[end].size = cap;
+                        data[end].size = lastSize + s;
                         data[end].tweets = tweetsAdd;
 
                         data[end]
@@ -131,21 +134,21 @@ router.post('/add', (req, res, next) => {
 
 
                     }
-                    if (tweetList.length == 0)
-                    {
-                        res.status(200).json({
-                            output : outputList
-                        });
-                    }
+                    // if (tweetList.length == 0)
+                    // {
+                    //     res.status(200).json({
+                    //         output : outputList
+                    //     });
+                    // }
                 }
                 else
                 {
                     len = tweetList.length;
                     inputTweets = [];
-                    console.log("updated sections");
+                   // console.log("updated sections");
                     while (len != 0)
                     {
-                        console.log("waiting add " + len);
+                       // console.log("waiting add " + len);
                         if (len < cap)
                         {
                             const tempList = tweetList;
