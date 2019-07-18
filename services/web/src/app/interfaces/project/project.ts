@@ -5,7 +5,7 @@ export class Project {
     public data: any = [];
     public dataSentiment: number[] = [];
     public project_name: string = "";
-    public runs: any[] = [];
+    public runs: Run[] = [];
     public source: string = "";
     public status: boolean = false;
     public trackTime: number = 0;
@@ -51,4 +51,15 @@ export class Project {
 
         return true;
     }
+}
+
+export class Run {
+    public averageScore: number = 0;
+    public dateRun: Date = null;
+    public positivePercentage: number = 0.0;
+    public negativePercentage: number = 0.0;
+    public bestTweet: string = "";
+    public bestTweetSentiment: number = 0;
+    public worstTweet: string = "";
+    public worstTweetSentiment: number = 0;
 }

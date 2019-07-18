@@ -85,13 +85,13 @@ export class ProjectInfoComponent implements OnInit {
     this.isReadOnly = true;
 
     if (!this.projectSnapshot.compare(this.project)) {
-      this.projectApiRequesterService.updateProject(this.projectSnapshot).subscribe(
-        (project: any) => {
-          this.project.blacklist = this.projectSnapshot.blacklist;
-          this.project.whitelist = this.projectSnapshot.whitelist;
-          this.project.project_name = this.projectSnapshot.project_name;
-          this.project.source = this.projectSnapshot.source;
-          this.project.trackTime = this.projectSnapshot.trackTime;
+      this.projectApiRequesterService.updateProject(this.project).subscribe(
+        (project: Project) => {
+          this.projectSnapshot.blacklist = project.blacklist;
+          this.projectSnapshot.whitelist = project.whitelist;
+          this.projectSnapshot.project_name = project.project_name;
+          this.projectSnapshot.source = project.source;
+          this.projectSnapshot.trackTime = project.trackTime;
         }
       );
     }
