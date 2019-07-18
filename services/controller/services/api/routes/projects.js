@@ -247,6 +247,7 @@ router.post('/start', (req, res, next) => {
                                 tweetsAndSentiments = JSON.parse(tweetsAndSentiments);
                                 tweetsAndSentiments['data'].push(responseString);
                                 tweetsAndSentiments['data'].push(nnResponseString);
+                                console.log("test: " + tweetsAndSentiments);
                                 tweetsAndSentiments = JSON.stringify(tweetsAndSentiments);
                  
                                 Project.find({_id : id})

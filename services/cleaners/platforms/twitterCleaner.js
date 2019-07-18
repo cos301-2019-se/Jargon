@@ -10,12 +10,13 @@ class twitterCleaner{
         tweetCollections.forEach((tweet)=>{
             let tweetText = tweet["text"];
 
-            
+            if((tweetText.indexOf("RT")>-1)&&(tweetText.indexOf("RT")<4)){
+                tweetText = tweetText.slice(tweetText.indexOf(":")+2, tweetText.length);
+                tweetText = '"' + tweetText;
+            }
 
-            tweet["text"] = tweetText;
-            
+            tweet["text"] = tweetText;     
         })
-        
         callback(tweetCollections, res);
     }
 }
