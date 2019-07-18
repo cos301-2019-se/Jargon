@@ -8,7 +8,8 @@ services:
 before_script:
   # - cd ./services/docker/compose
   # - docker-compose up --build -d
-  - cd ../../../tests
+  # - cd ../../../tests
+  - cd ./tests
   - sudo chmod +x test.sh
   # - npm install -g mocha
   # - npm install chai chai-http chai-arrays
