@@ -6,11 +6,8 @@ npm install chai chai-http chai-arrays
 # install hidden files
 cd ../services/listeners/db
 wget --no-check-certificate "$DBCONFIGLINK" -O dbconfig.js
-ls
 cd ../platforms
-wget --no-check-certificate "$TWITTERLISTENERLINK" -O twitterListener.js
+wget --no-check-certificate "$TWITTERLISTENERLINK" -O twitterConfig.js
 cd ../../controller/db
-ls
 wget --no-check-certificate "$DBCONFIGLINK" -O dbconfig.js
 cd ../../../tests
-ls
