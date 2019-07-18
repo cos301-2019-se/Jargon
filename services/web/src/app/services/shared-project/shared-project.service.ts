@@ -10,8 +10,8 @@ export class SharedProjectService {
   private projectSource: BehaviorSubject<Project> = new BehaviorSubject<Project>(null);
   project: Observable<Project> = this.projectSource.asObservable();
 
-  private hideSource: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  hide: Observable<boolean> = this.hideSource.asObservable();
+  // private hideSource: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  // hide: Observable<boolean> = this.hideSource.asObservable();
 
   constructor() {
   }
@@ -20,7 +20,4 @@ export class SharedProjectService {
     this.projectSource.next(proj);
   }
 
-  setHide(hide: boolean) {
-    this.hideSource.next(hide);
-  }
 }

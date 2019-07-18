@@ -14,7 +14,6 @@ const routes: Routes = [
       { path: '', redirectTo: 'project-initial', pathMatch: 'full' },
       { path: 'project-initial', component: ProjectInitialComponent },
       { path: 'project-info/:id', component: ProjectInfoComponent, canActivate: [RefreshGuardService] },
-      { path: 'project-result', component: ProjectResultComponent, canActivate: [RefreshGuardService] },
       { path: '**', redirectTo: 'project-initial' }
     ]
   },

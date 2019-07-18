@@ -14,7 +14,7 @@ export class RefreshGuardService {
       if (this.router.url.search("project-info/")) {
         this.router.navigateByUrl("/dashboard/projects/project-initial");
       } else if (this.router.url.search("project-result/")) {
-        this.router.navigateByUrl("/dashboard/projects/project-initial");
+        //this.router.navigateByUrl("/dashboard/projects/project-initial");
       }
       return false;
     }

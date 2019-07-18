@@ -16,22 +16,22 @@
                     <div class="card-body text-gray">
                       <div class="pl-3 row">
                         <div class="col-6"><h6 class="display-5">Project Name:</h6></div>
-                        <div class="col-6 text-light">name goes here</div>
+                        <div class="col-6 text-light">{{project.project_name}}</div>
                       </div>
                       <br>
                       <div class="pl-3 row">
                         <div class="col-6"><h6 class="display-5">Source:</h6></div>
-                        <div class="col-6 text-light">name goes here</div>
+                        <div class="col-6 text-light">{{project.source}}</div>
                       </div>
                       <br>
                       <div class="pl-3 row">
                         <div class="col-6"><h6 class="display-5">Whitelisted Words:</h6></div>
-                        <div class="col-6 text-light">words goes here</div>
+                        <div class="col-6 text-light">{{project.whitelist.toString()}}</div>
                       </div>
                       <br>
                       <div class="pl-3 row">
                         <div class="col-6"><h6 class="display-5">Blacklisted Words:</h6></div>
-                        <div class="col-6 text-light">words goes here</div>
+                        <div class="col-6 text-light">{{project.blacklist.toString()}}</div>
                       </div>
                     </div>
                   </div>

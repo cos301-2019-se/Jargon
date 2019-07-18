@@ -27,7 +27,7 @@ export class ProjectResultComponent implements OnInit {
     },
   };
 
-  public doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [{
+  doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [{
     beforeDraw(chart) {
       const ctx = chart.ctx;
       const txt = 'Center Text';
@@ -61,27 +61,17 @@ export class ProjectResultComponent implements OnInit {
     }
   }];
 
-  public chartColors: any[] = [
+  chartColors: any[] = [
   { 
     backgroundColor:["#005C99", "#55BBFF"] 
   }];
 
-  constructor(private shareProjectService: SharedProjectService) {
-    shareProjectService.project.subscribe(
-      (project: Project) => {
-        this.project = project;
-      }
-    );
-  }
-
-
-
-  public lineChartData: ChartDataSets[] = [
+  lineChartData: ChartDataSets[] = [
     { data: [0.05, 0.15, 0.23, 0.1, 0.35, 0.2, 0.62,0.4, 0.9, 0.45, 1], label:'' },
   ];
-  public lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November'];
+  lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November'];
 
-  public lineChartOptions: ChartOptions = {
+  lineChartOptions: ChartOptions = {
     responsive: true,
     legend: {
       labels: {
@@ -114,22 +104,26 @@ export class ProjectResultComponent implements OnInit {
     },
   };
 
-  public lineChartColors: Color[] = [
+  lineChartColors: Color[] = [
     {
       borderColor: 'rgba(30, 129, 228, 0.5)',
       backgroundColor: 'rgba(255,0,0,0)',
     },
   ];
-  public lineChartLegend = true;
-  public lineChartType = 'line';
-  public lineChartPlugins = [];
+  lineChartLegend = true;
+  lineChartType = 'line';
+  lineChartPlugins = [];
+
+  constructor(private shareProjectService: SharedProjectService) {
+    shareProjectService.project.subscribe(
+      (project: Project) => {
+        this.project = project;
+      }
+    );
+  }
 
   ngOnInit() {
     
-  }
-
-  deactivateResults() {
-    this.shareProjectService.setHide(false);
   }
 
 }

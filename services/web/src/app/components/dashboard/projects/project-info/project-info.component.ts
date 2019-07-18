@@ -77,10 +77,6 @@ export class ProjectInfoComponent implements OnInit {
     return op1 === op2;
   }
 
-  activateResults() {
-    this.sharedProjectService.setHide(true);
-  }
-
   onEditClick() {
     this.isReadOnly = false;
   }

@@ -12,6 +12,7 @@ import { ProjectApiRequesterService } from '../../../services/project-api-reques
 export class ProjectsComponent implements OnInit {
   projects: Project[] = null;
   selected: number = 0;
+  loading: boolean = false;
 
   hide: boolean = true;
 
@@ -21,18 +22,15 @@ export class ProjectsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loading = true;
     this.projectApiRequesterService.getProjectsBasic().subscribe(
       (projects: Project[]) => {
         this.projects = projects;
+        this.loading = false;
       },
       error => {
         console.log("Error");
-      }
-    );
-
-    this.sharedProjectService.hide.subscribe(
-      hide => {
-        this.hide = hide;
+        this.loading = true;
       }
     );
   }
