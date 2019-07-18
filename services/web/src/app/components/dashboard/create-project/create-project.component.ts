@@ -1,7 +1,6 @@
-import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Project } from '../../../interfaces/project/project';
+import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
 
 @Component({
   selector: 'app-create-project',
@@ -9,15 +8,25 @@ import { Router } from '@angular/router';
   styleUrls: ['./create-project.component.css']
 })
 export class CreateProjectComponent implements OnInit {
-  whitelist: string[] = [];
-  blacklist: string[] = [];
-  whitelistword = '';
-  blacklistword = '';
 
-  constructor(private router: Router, private requester: ProjectApiRequesterService) { }
+  project: Project = new Project();
+
+  blacklistword: string = "";
+  whitelistword: string = "";
+
+
+  constructor(private projectApi: ProjectApiRequesterService) {
+  }
 
   ngOnInit() {
+  }
 
+  removeWhitelistWord(index: number) {
+    this.project.whitelist.splice(index, 1);
+  }
+
+  removeBlacklistWord(index: number) {
+    this.project.blacklist.splice(index, 1);
   }
 
   addWhitelistWord() {
@@ -28,7 +37,7 @@ export class CreateProjectComponent implements OnInit {
       return;
     }
 
-    this.whitelist.push(this.whitelistword);
+    this.project.whitelist.push(this.whitelistword);
     this.whitelistword = '';
   }
 
@@ -39,30 +48,21 @@ export class CreateProjectComponent implements OnInit {
       this.blacklistword = '';
       return;
     }
-
-    this.blacklist.push(this.blacklistword);
+    
+    this.project.blacklist.push(this.blacklistword);
     this.blacklistword = '';
   }
 
-  removeWhitelistWord(index: number) {
-    this.whitelist.splice(index, 1);
+  compareSource(op1: any, op2: any) {
+    return op1 === op2;
   }
 
-  removeBlacklistWord(index: number) {
-    this.blacklist.splice(index, 1);
-  }
-
-  onCreateProject(form: NgForm) {
-    const values = form.value;
-    const white = this.whitelist;
-    const black = this.blacklist;
-    const name = values.name;
-    const source = values.source;
-    const track = values.track;
-
-    this.requester.createProject(name, source, white, black, track).subscribe((res: any) => {
-      console.log(res);
-    });
-    this.router.navigate(['/']);
+  onCreateClick() {
+    this.projectApi.createProject(this.project).subscribe(
+      (project: any) => {
+        console.log("response:", project);
+        this.project = new Project();
+      }
+    );
   }
 }

@@ -18,7 +18,7 @@
 {
 	width: 10px;
 	background-color: #F5F5F5;
-}
+} 
 
 .style-5::-webkit-scrollbar-thumb
 {
@@ -34,18 +34,32 @@
   height: 70vh;
 }
 
-#form {
-  height: 80vh;
+#page-icon {
+  height: 30vh;
+  font-size: 30vh;
+  padding-top: 15vh;
+  color: gray;
+  opacity: 0.2;
 }
 
 #icon-holder {
   text-align: center;
 }
 
+#no-proj {
+  margin-top: 4vh;
+}
+
+#no-proj-heading {
+  color: gray;
+  opacity: 0.6;
+}
+
 h1 {
-  text-align: center;
+  color: white;
+  /* text-align: center;
   font-family: Georgia;
-  color: rgba(8,162,233,1);
+  color: rgba(8,162,233,1); */
 }
 
 .round {
@@ -59,16 +73,206 @@ h1 {
 #heading {
   text-shadow: 1px 1px 2px #000000;
 }
-/* .badge {
-  animation: 1s ease-in 1s 1 slideInFromRight;
+
+span {
+  font-weight: 400 !important;
 }
 
-@keyframes slideInFromRight {
-  0% {
-    transform: translateX(400%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-} */
+.tweets {
+  font-size: 12px;
+}
 
+
+.side-bar {
+  background-color: rgba(0, 18, 37, 1);
+}
+
+.left-align-text {
+  text-align: left;
+}
+
+.text-size-medium {
+  font-size: 18px;
+}
+
+.icon {
+  color: rgb(31, 96, 165);
+}
+
+hr {
+  border-color: rgb(10, 36, 65) !important;
+}
+
+.wrapper-outer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.main,
+.sidebar {
+  padding: 15px;
+}
+
+.main {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sidebar {
+  width: 600px;
+  margin-left: auto;
+  margin-right:auto;
+  height: fit-content;
+  top:15px;
+  position: sticky;
+  display: inline-block;
+}
+
+body {
+  background-color: #ccc;
+  font-family: sans-serif;
+  padding: 10px;
+}
+
+.container-fluid {
+  width: 100% !important;
+}
+
+.main-dash {
+  /* background-color: rgba(0, 57, 103, 0); */
+  /* min-width: 90vh; */ 
+  height: auto;
+}
+
+#dashboard-content {
+  width: 100%;
+}
+
+:host(selector) {
+  width:  90%;
+}
+
+.wrapper {
+  /* background: rgba(36, 179, 255, 0.4); */
+  /* overflow-y: auto; */
+  height: auto;
+}
+
+
+.project-list {
+  overflow-y: auto;
+  max-height: 70vh;
+}
+
+.main-content {
+  height: 70vh;
+  overflow-y: auto;
+  border-color: rgb(15, 65, 122) !important;
+  border-width: 2px !important;
+}
+
+.right-side {
+  background: rgba(6, 57, 116, 0.6) !important;
+  /* overflow-y: auto; */
+  height: auto;
+}
+
+.project-item:not(:hover) {
+  transition-duration: 0s;
+}
+
+.btn {
+  background: rgba(22, 111, 175, 0.3) !important;
+  color: white;
+  text-align: left;
+}
+
+select, input {
+  background-color: rgb(0, 18, 37) !important;
+  border-color:  rgb(36, 75, 117) !important;
+}
+
+select option {
+  background-color: rgb(21, 48, 77) !important;
+}
+
+select option:hover {
+  background-color: rgb(36, 75, 117) !important;
+}
+
+select, option, input {
+  color: white;
+}
+
+select:focus, input:focus {
+  color: white !important;
+}
+
+::placeholder {
+  color: rgb(136, 136, 156) !important;
+}
+
+.btn.focus, .btn:focus {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.active_project {
+  background: rgb(40, 123, 211) !important; 
+} 
+
+.active_project:hover {
+  background: rgb(42, 129, 223) !important; 
+}
+
+
+select, input {
+  background-color: rgb(0, 18, 37) !important;
+  border-color:  rgb(36, 75, 117) !important;
+}
+
+select option {
+  background-color: rgb(21, 48, 77) !important;
+}
+
+select option:hover {
+  background-color: rgb(36, 75, 117) !important;
+}
+
+select, option, input {
+  color: white;
+}
+
+select:focus, input:focus {
+  color: white !important;
+}
+
+::placeholder {
+  color: rgb(136, 136, 156) !important;
+}
+
+.btn.focus, .btn:focus {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+label {
+  color: white;
+}
+
+.pill {
+  border-color: rgb(47, 50, 228) !important;
+}
+
+.pill:hover {
+  cursor: default;
+}
+
+.badge:hover {
+  cursor: pointer;
+}
+
+.create:hover {
+  background: rgba(37, 164, 255, 0.3) !important;
+}

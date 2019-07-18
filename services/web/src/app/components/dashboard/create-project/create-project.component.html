@@ -1,9 +1,100 @@
-<div class="container-fluid mt-5">
+<div class="container-fluid m-0 dashboard">
+  <div class="wrapper-outer">
+    <div class="main">
+      <div class="row">
+        <div class="" id="dashboard-content">
+          <div class="row">
+            <div class="col-12 mx-auto pl-0 mb-4">
+              <h1 class="m-0 display-4">Create Project</h1>
+            </div>
+            <div class="col-12 mx-auto rounded-lg main-dash p-0">
+              <div class="container-fluid m-0 wrapper rounded">
+                <div class="row rounded right-side shadow-lg">
+                  <div id="form" class="row m-0 p-0">
+                    <div class="col-12">
+                      <form>
+                        <div class="row">
+                          <div class="col-lg-11 mx-auto">
+                            <div class="row">
+                              <div class="col-12 mt-3">
+                                <div class="form-group mt-4">
+                                  <label for="project-name">Project Name *</label>
+                                  <input type="text" class="form-control" id="project-name" placeholder="eg. University of Pretoria Sentiments" name="name" required [(ngModel)]="project.project_name">
+                                </div>
+                              </div>
+                              <div class="col-12 float-left">
+                                <div class="form-group">
+                                  <label for="Source">Source *</label>
+                                  <select class="form-control" id="source" name="source" required [(ngModel)]="project.source" [compareWith]="compareSource">
+                                    <option value="" selected disabled>Please select a source</option>
+                                    <option value="Twitter">Twitter</option>
+                                    <option value="Facebook">Facebook</option>
+                                    <option value="Instagram">Instagram</option>
+                                  </select>
+                                </div>
+                              </div>
+                  
+                              <div class="col-12 mb-1">
+                                <div class="form-group">
+                                  <label for="project-name">Track Time (s) min(30) * </label>
+                                  <input type="number" class="form-control" min="30" value="30" name="track" required [(ngModel)]="project.trackTime">
+                                </div>
+                              </div>
+                  
+                              <div class="col-12 ">
+                                <div class="form-group">
+                                  <label for="whitelist1">Whitelisted Words *</label>
+                                  <input class="form-control mb-2" id="whitlist1" name="whitelist" placeholder="Press Enter key to select word" [(ngModel)]="whitelistword" (keyup.enter)="addWhitelistWord()">
+                                  <span class="btn pr-1 pill mr-3 mt-2" *ngFor="let whitelistword of project.whitelist; let i = index">
+                                    {{whitelistword}}<span class="badge m-1 mr-0"><i class="fas fa-close" (click)="removeWhitelistWord(i)"></i></span>
+                                  </span>
+                                </div>
+                              </div>
+                  
+                              <div class="col-12 mt-2">
+                                <div class="form-group">
+                                  <label for="blacklist1">Blacklisted Words</label>
+                                  <div>
+                                    <input class="form-control mb-2" id="blacklist1" name="blacklist" placeholder="Press Enter key to select word" [(ngModel)]="blacklistword" (keyup.enter)="addBlacklistWord()">
+                                    <span class="btn pr-1 pill mr-3 mt-2" *ngFor="let blacklistword of project.blacklist; let i = index">
+                                      {{blacklistword}}<span class="badge m-1 mr-0"><i class="fas fa-close" (click)="removeBlacklistWord(i)"></i></span>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div> 
+                          </div>
+                        </div>
+                      </form>
+
+                      <div class="container">
+                        <div class="row mt-3 mb-3">
+                          <div class="mt-5 mb-3 mx-auto">
+                            <button class="btn create" (click)="onCreateClick()">Create</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+          
+
+
+<!-- <div class="container-fluid mt-5">
   <div class="row">
     <div class="col-10 mx-auto bg-white shadow-lg rounded-lg dash style-5">
       <div id="form" class="row">
         <div class="col-12">
-          <form #f="ngForm">
+          <form>
             <div class="row">
               <div class="col-lg-11 mx-auto">
                   <h3 class="display-3">Create Project</h3>
@@ -12,7 +103,7 @@
                   <div class="col-12 mt-3">
                     <div class="form-group">
                       <label for="project-name">Project Name *</label>
-                      <input type="text" class="form-control" id="project-name" placeholder="eg. University of Pretoria Sentiments" name="name" ngModel required>
+                      <input type="text" class="form-control" id="project-name" placeholder="eg. University of Pretoria Sentiments" name="name">
                     </div>
                   </div>
                   <div class="col-12 float-left">
@@ -68,4 +159,4 @@
     </div>
   </div>
 </div>
-
+ -->
