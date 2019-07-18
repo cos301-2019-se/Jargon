@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Project } from '../../../interfaces/project/project';
 import { SharedProjectService } from '../../../services/shared-project/shared-project.service';
+import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
 
 @Component({
   selector: 'app-projects',
@@ -10,29 +10,35 @@ import { SharedProjectService } from '../../../services/shared-project/shared-pr
 })
 
 export class ProjectsComponent implements OnInit {
-  projects: Project[] = [];
+  projects: Project[] = null;
   selected: number = 0;
+  loading: boolean = false;
 
-  constructor(private sharedProjectService: SharedProjectService, private router: Router) {
-    let project = new Project();
-    project.projectName = "One";
-    project.blacklist = ["one", "two"];
-    project.whitelist = ["ttt", "22222"];
-    this.projects.push(project);
+  hide: boolean = true;
 
-    project = new Project();
-    project.projectName = "Two";
-    project.blacklist = ["two", "three"];
-    project.whitelist = ["ggggg", "33333"];
-    this.projects.push(project);
+  constructor(private sharedProjectService: SharedProjectService,
+      private projectApiRequesterService: ProjectApiRequesterService) {
+
   }
 
   ngOnInit() {
+    this.loading = true;
+    this.projectApiRequesterService.getProjectsBasic().subscribe(
+      (projects: Project[]) => {
+        this.projects = projects;
+        this.loading = false;
+      },
+      error => {
+        console.log("Error");
+        this.loading = true;
+      }
+    );
   }
 
   setProject(project: Project) {
     this.sharedProjectService.setCurrentProject(project);
   }
+
   // public innerWidth: any;
   // public collapse: boolean;
 
@@ -105,13 +111,7 @@ export class ProjectsComponent implements OnInit {
   //   this.blacklistword = '';
   // }
 
-  // removeWhitelistWord(index: number) {
-  //   this.whitelist.splice(index, 1);
-  // }
-
-  // removeBlacklistWord(index: number) {
-  //   this.blacklist.splice(index, 1);
-  // }
+1
 
   // changeMode(form: NgForm, id: number) {
   //   if (this.editMode) {
