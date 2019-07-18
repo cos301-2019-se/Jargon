@@ -4,12 +4,20 @@
 cd services
 status=0
 
+# cleaner service
+mocha cleaners/test.js --timeout 15000
+#status+=$?
+
 # controller service
 mocha controller/test.js --exit 
 #status+=$?
 
 # flagger service
 mocha flagger/test.js --timeout 15000
+#status+=$?
+
+# listener service
+mocha listeners/test.js --timeout 15000
 #status+=$?
 
 #mocha listeners/test.js --exit && status +=$(( $? ))
