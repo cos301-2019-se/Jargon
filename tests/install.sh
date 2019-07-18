@@ -13,5 +13,7 @@ cd ../platforms
 wget --no-check-certificate "$TWITTERLISTENERLINK" -O twitterConfig.js
 cd ../../controller/db
 wget --no-check-certificate "$DBCONFIGLINK" -O dbconfig.js
+cd ../../flagger/db
+wget --no-check-certificate "$DBCONFIGLINK" -O dbconfig.js
 # go back to test dir
 cd ../../../tests
