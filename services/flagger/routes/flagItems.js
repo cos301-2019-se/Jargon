@@ -24,6 +24,7 @@ router.post('/add', (req, res, next) => {
     let updated = false;
     let inputTweets = [];
     let len = tweetList.length;
+    let num = 0;
     
     Epoch.find()
     .exec()
@@ -34,7 +35,7 @@ router.post('/add', (req, res, next) => {
             console.log("init");
             while (len != 0)
             {   
-                console.log("waiting initial " + len);
+               // console.log("waiting initial " + len);
                 if (len < cap)
                 {
                     const epoch = new Epoch({
@@ -49,16 +50,24 @@ router.post('/add', (req, res, next) => {
                     .save()
                     .then(result => {
                         outputList.push("Success.");
-                        len = 0;
+                        
                     })
                     .catch(err => {
                         outputList.push("Failed.");
                     });
-                    
+                    len = 0;
                 }
                 else
                 {
+                    //console.log("here2");
                     inputTweets = tweetList.splice(0, cap);
+
+                    if (num <= 1)
+                    {
+                        console.log(inputTweets);
+                        num++;
+                    }
+                    
                     const epoch = new Epoch({
                         _id: new mongoose.Types.ObjectId(),
                         size : cap,
@@ -71,12 +80,15 @@ router.post('/add', (req, res, next) => {
                     .save()
                     .then(result => {
                         outputList.push("Success.");
-                        len = len - cap;
+                        
+                        console.log(result);
                     })
                     .catch(err => {
                         outputList.push("Failed.");
-                    });
+                        console.log(err);
 
+                    });
+                    len = len - cap;
                     
                 }
             }
@@ -86,121 +98,111 @@ router.post('/add', (req, res, next) => {
         }
         else
         {
-            console.log("extra");
-            if (!updated)
+            while(tweetList.length != 0)
             {
-                let end = data.length - 1;
-                let lastSize = data[end].size;
-                
-                let tweetsAdd = data[end].tweets;
-                updated = true;
-                if (lastSize < cap)
+                if (!updated)
                 {
-                    const s = lastSize - cap;
-                    for (let i = 0; i < s; i++)
+                    console.log("not updated");
+                    let end = data.length - 1;
+                    let lastSize = data[end].size;
+                    console.log(end);
+                    console.log(lastSize);
+                    let tweetsAdd = data[end].tweets;
+                    updated = true;
+                    if (lastSize < cap)
                     {
-                        tweets.push(tweetList.pop());
-                    }
+                        const s = cap - lastSize;
+                        for (let i = 0; i < s; i++)
+                        {
+                            tweetsAdd.push(tweetList.pop());
+                        }
 
-                    data[end].size = cap;
-                    data[end].tweets = tweetList;
+                        data[end].size = cap;
+                        data[end].tweets = tweetsAdd;
 
-                    data[end]
-                    .save()
-                    .then(result => {
-                        outputList.push("Updated");
-                    })
-                    .catch(err => {
-                        outputList.push("Failed");
-                    });
-
-
-                   /* let updateVals = {
-                        size : cap,
-                        tweets : tweetsAdd
-                    };
-                    
-                    Epoch.update({ _id: id }, { $set: updateVals })
-                    .exec()
-                    .then(result => {
-                        outputList.push("Updated.");
-                        //updated = true;
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        res.status(500).json({
-                            error: err
+                        data[end]
+                        .save()
+                        .then(result => {
+                            outputList.push("Updated");
+                        })
+                        .catch(err => {
+                            outputList.push("Failed");
                         });
-                    });*/
 
 
+                    }
+                    if (tweetList.length == 0)
+                    {
+                        res.status(200).json({
+                            output : outputList
+                        });
+                    }
                 }
-                if (tweetList.length == 0)
+                else
                 {
-                    res.status(200).json({
-                        output : outputList
-                    });
+                    len = tweetList.length;
+                    inputTweets = [];
+                    console.log("updated sections");
+                    while (len != 0)
+                    {
+                        console.log("waiting add " + len);
+                        if (len < cap)
+                        {
+                            const tempList = tweetList;
+                            tweetList = [];
+                            const epoch = new Epoch({
+                                _id: new mongoose.Types.ObjectId(),
+                                size : len,
+                                capacity : cap,
+                                tweets : tempList,
+                                trained : false
+                            });
+
+                            epoch
+                            .save()
+                            .then(result => {
+                                outputList.push("Success.");
+                                
+                            })
+                            .catch(err => {
+                                outputList.push("Failed.");
+                            });
+                            len = 0;
+                        }
+                        else
+                        {
+                            inputTweets = tweetList.splice(0, cap);
+                            const epoch = new Epoch({
+                                _id: new mongoose.Types.ObjectId(),
+                                size : cap,
+                                capacity : cap,
+                                tweets : inputTweets,
+                                trained : false
+                            });
+
+                            epoch
+                            .save()
+                            .then(result => {
+                                outputList.push("Success.");
+                                
+                            })
+                            .catch(err => {
+                                outputList.push("Failed.");
+                            });
+                            len = len - cap;
+                            
+                        }
+                    }
                 }
             }
-            else
-            {
-                len = tweetList.length;
-                inputTweets = [];
-
-                while (len != 0)
-                {
-                    console.log("waiting add " + len);
-                    if (len < cap)
-                    {
-                        const epoch = new Epoch({
-                            _id: new mongoose.Types.ObjectId(),
-                            size : len,
-                            capacity : cap,
-                            tweets : tweetList,
-                            trained : false
-                        });
-
-                        epoch
-                        .save()
-                        .then(result => {
-                            outputList.push("Success.");
-                            len = 0;
-                        })
-                        .catch(err => {
-                            outputList.push("Failed.");
-                        });
-                        
-                    }
-                    else
-                    {
-                        inputTweets = tweetList.splice(0, cap);
-                        const epoch = new Epoch({
-                            _id: new mongoose.Types.ObjectId(),
-                            size : cap,
-                            capacity : cap,
-                            tweets : inputTweets,
-                            trained : false
-                        });
-
-                        epoch
-                        .save()
-                        .then(result => {
-                            outputList.push("Success.");
-                            len = len - cap;
-                        })
-                        .catch(err => {
-                            outputList.push("Failed.");
-                        });
-
-                        
-                    }
-                }
+            console.log("extra");
+            
 
                 res.status(200).json({
                     output : outputList
                 });
 
-            }
+        
         }
 
         
