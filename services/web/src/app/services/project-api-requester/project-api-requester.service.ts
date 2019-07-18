@@ -24,6 +24,10 @@ export class ProjectApiRequesterService {
     return this.httpClient.get(`${this.apiURL}/projects/detailed`);
   }
 
+  public getProjectDetailed(id: string) {
+    return this.httpClient.post(`${this.apiURL}/projects/detailedSearch`, { id: id });
+  }
+
   public createProject(project: Project) {
     return this.httpClient.post(`${this.apiURL}/projects/create`, project);
   }

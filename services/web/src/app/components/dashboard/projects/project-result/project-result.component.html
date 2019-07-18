@@ -69,7 +69,8 @@
                         [colors]="lineChartColors"
                         [legend]="lineChartLegend"
                         [chartType]="lineChartType"
-                        [plugins]="lineChartPlugins">
+                        [plugins]="lineChartPlugins"
+                        (chartClick)="onChartClicked($event)">
                       </canvas>
                     </div>
                   </div>
