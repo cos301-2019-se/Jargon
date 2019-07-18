@@ -134,12 +134,6 @@ router.post('/add', (req, res, next) => {
 
 
                     }
-                    // if (tweetList.length == 0)
-                    // {
-                    //     res.status(200).json({
-                    //         output : outputList
-                    //     });
-                    // }
                 }
                 else
                 {
@@ -211,6 +205,35 @@ router.post('/add', (req, res, next) => {
 
 
     
+});
+
+router.post('/train', (req, res, next) => {
+
+    Epoch.find()
+    .exec()
+    .then(data => {
+        let len = data.length;
+        if (len > 0)
+        {
+            for(let i = 0; i < len; i++)
+            {
+                if (!data[i].trained)
+                {
+                    data[i].trained = true;
+                    data[i].save()
+                    .then(result => {
+                       
+                    });
+                    break;
+                }
+            }
+        }
+
+        res.status(200).json({
+            success : true
+        });
+    });
+
 });
 
 
