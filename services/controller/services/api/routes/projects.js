@@ -133,7 +133,7 @@ router.post('/create', (req, res, next) => {
     project
     .save()
     .then(result => {
-      res.status(201).json({
+      res.status(200).json({
         message: "Handling POST requests to /projects/create",
         createdProduct: result
       });
