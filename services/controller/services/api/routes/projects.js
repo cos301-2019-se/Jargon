@@ -247,8 +247,8 @@ router.post('/start', (req, res, next) => {
                                 tweetsAndSentiments = JSON.parse(tweetsAndSentiments);
                                 tweetsAndSentiments['data'].push(responseString);
                                 tweetsAndSentiments['data'].push(nnResponseString);
-                                console.log("test: " + tweetsAndSentiments);
-                                tweetsAndSentiments = JSON.stringify(tweetsAndSentiments);
+                                // console.log("test: " + JSON.stringify(tweetsAndSentiments));
+                                // tweetsAndSentiments = JSON.stringify(tweetsAndSentiments);
                  
                                 Project.find({_id : id})
                                 .exec()
@@ -258,7 +258,7 @@ router.post('/start', (req, res, next) => {
                                     let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
                                     let currDate = date+' '+time;
 
-                                    tweetsAndSentiments = JSON.parse(tweetsAndSentiments);
+                                    // tweetsAndSentiments = JSON.parse(tweetsAndSentiments);
                                     let totalTweets = 0;
                                     let posTweets = 0;
                                     let negTweets = 0;
@@ -287,9 +287,10 @@ router.post('/start', (req, res, next) => {
                                     })
 
                                     let runInfo = '{"dateRun" : "' + currDate + '" , "positivePercentage" :"' + (posTweets/totalTweets) + '" , "negativePercentage" :"' + (negTweets/totalTweets) + '" , "bestTweet" : "' + tweetsAndSentiments['data'][0][bestTweet]["text"] + '", "worstTweet" :"' + tweetsAndSentiments['data'][0][worstTweet]["text"] + '" }';
+                                    
+                                    // console.log("tweetsAndS: " + tweetsAndSentiments["data"]);
+                                    result[0].dataSentiment = tweetsAndSentiments["data"][1]['sentiments'];
                                     tweetsAndSentiments = JSON.stringify(tweetsAndSentiments);
-                                    console.log("tweetsAndS: " + tweetsAndSentiments["data"]);
-                                    result[0].dataSentiment = tweetsAndSentiments["data"];
                                     result[0].runs.push(runInfo);
                                     result[0].status = false;
                                     result[0].save().then(
