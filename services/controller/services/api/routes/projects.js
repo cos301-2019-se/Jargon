@@ -218,8 +218,10 @@ router.post('/start', (req, res, next) => {
                     });
                     listenerRes.on("end", () => {
                         responseString = JSON.parse(responseString);
-                        let messages = '{"data" : []}';
-                        messages = JSON.parse(messages);
+                        let messages = {
+                            data : []
+                        }
+                        // messages = JSON.parse(messages);
                         responseString.forEach((element)=>{
                             messages['data'].push(element['text']);
                         });
@@ -243,11 +245,11 @@ router.post('/start', (req, res, next) => {
                             nnRes.on("end", () => {
                                 nnResponseString = JSON.parse(nnResponseString);
                                 
-                                let tweetsAndSentiments = '{"data" : []}';
-                                tweetsAndSentiments = JSON.parse(tweetsAndSentiments);
+                                let tweetsAndSentiments = {
+                                    data : []
+                                }
                                 tweetsAndSentiments['data'].push(responseString);
                                 tweetsAndSentiments['data'].push(nnResponseString);
-                                tweetsAndSentiments = JSON.stringify(tweetsAndSentiments);
                  
                                 Project.find({_id : id})
                                 .exec()
@@ -257,7 +259,6 @@ router.post('/start', (req, res, next) => {
                                     let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
                                     let currDate = date+' '+time;
 
-                                    tweetsAndSentiments = JSON.parse(tweetsAndSentiments);
                                     let totalTweets = 0;
                                     let posTweets = 0;
                                     let negTweets = 0;
@@ -285,10 +286,18 @@ router.post('/start', (req, res, next) => {
                                         }
                                     })
 
-                                    let runInfo = '{"dateRun" : "' + currDate + '" , "positivePercentage" :"' + (posTweets/totalTweets) + '" , "negativePercentage" :"' + (negTweets/totalTweets) + '" , "bestTweet" : "' + tweetsAndSentiments['data'][0][bestTweet]["text"] + '", "worstTweet" :"' + tweetsAndSentiments['data'][0][worstTweet]["text"] + '" }';
+                                    let runInfo = {
+                                        dateRun : currDate,
+                                        positivePercentage : (posTweets/totalTweets),
+                                        negativePercentage : (negTweets/totalTweets),
+                                        bestTweet : tweetsAndSentiments['data'][0][bestTweet]["text"],
+                                        bestTweetSentiment : bestTweetScore,
+                                        worstTweet : tweetsAndSentiments['data'][0][worstTweet]["text"],
+                                        worstTweetSentiment : worstTweetScore
+                                    }
+                                    result[0].dataSentiment = tweetsAndSentiments["data"][1]['sentiments'];
                                     tweetsAndSentiments = JSON.stringify(tweetsAndSentiments);
-
-                                    result[0].dataSentiment = tweetsAndSentiments["data"];
+                                    
                                     result[0].runs.push(runInfo);
                                     result[0].status = false;
                                     result[0].save().then(

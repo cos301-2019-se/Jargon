@@ -6,15 +6,13 @@ services:
   - docker
 
 before_script:
-  # - cd ./services/docker/compose
-  # - docker-compose up --build -d
-  # - cd ../../../tests
-  - cd ./tests
+  # prep test env
+  - cd tests
   - sudo chmod +x test.sh install.sh
   - ./install.sh
-  # - npm install -g mocha
-  # - npm install chai chai-http chai-arrays
+  # build containers
+  - cd ../services/docker/compose
+  - docker-compose up --build -d
 
 script:
   - ./test.sh
-  # - mocha test.js --exit
