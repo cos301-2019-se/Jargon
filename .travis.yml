@@ -6,10 +6,10 @@ services:
   - docker
 
 before_script:
-  # - cd ./services/docker/compose
-  # - docker-compose up --build -d
-  # - cd ../../../tests
-  - cd ./tests
+  - cd ./services/docker/compose
+  - docker-compose up --build -d
+  - cd ../../../tests
+  # - cd ./tests
   - sudo chmod +x test.sh install.sh
   - ./install.sh
   # - npm install -g mocha
