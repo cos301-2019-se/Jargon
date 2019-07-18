@@ -6,11 +6,11 @@ status=0
 
 # controller service
 mocha controller/test.js --exit 
-status+=$(( $? ))
+status+=$?
 
 # flagger service
 mocha flagger/test.js --timeout 15000
-status+=$(( $? ))
+status+=$?
 
 #mocha listeners/test.js --exit && status +=$(( $? ))
 #mocha cleaners/test.js --exit && status +=$(( $? ))
