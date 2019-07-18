@@ -127,7 +127,7 @@ router.post('/create', (req, res, next) => {
         data: null,
         dataSentiment: null,
         createdBy: "Test User",
-        runs: null
+        runs: []
     });
 
     project
@@ -295,9 +295,14 @@ router.post('/start', (req, res, next) => {
                                         worstTweet : tweetsAndSentiments['data'][0][worstTweet]["text"],
                                         worstTweetSentiment : worstTweetScore
                                     }
+                                    if(result[0].dataSentiment===null){
+                                        result[0].dataSentiment = [];
+                                    }
                                     result[0].dataSentiment = tweetsAndSentiments["data"][1]['sentiments'];
                                     tweetsAndSentiments = JSON.stringify(tweetsAndSentiments);
-                                    
+                                    if(result[0].runs===null){
+                                        result[0].runs = [];
+                                    }
                                     result[0].runs.push(runInfo);
                                     result[0].status = false;
                                     result[0].save().then(
