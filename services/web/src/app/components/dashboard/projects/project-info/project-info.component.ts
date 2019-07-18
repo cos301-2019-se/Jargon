@@ -113,4 +113,16 @@ export class ProjectInfoComponent implements OnInit {
 
     this.projectSnapshot = JSON.parse(JSON.stringify(this.project));
   }
+
+  onStartClick() {
+    if (this.project == null)
+      return;
+
+    this.projectApiRequesterService.startProject(this.project).subscribe(
+      resp => {
+        console.log("Complete:", resp);
+      }
+    );
+  }
+
 }

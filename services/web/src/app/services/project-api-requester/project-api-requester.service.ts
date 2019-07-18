@@ -36,6 +36,14 @@ export class ProjectApiRequesterService {
 
   }
 
+  public startProject(project: Project) {
+    const body = {
+      id: project._id,
+      platform: project.source
+    }
+    return this.httpClient.post(`${this.apiURL}/projects/start`, body);
+  }
+
   public updateProject(project: Project) {
     const updateValues = [
       {'propName': 'project_name', 'value': project.project_name},
