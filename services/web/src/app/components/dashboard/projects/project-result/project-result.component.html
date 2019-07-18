@@ -1,5 +1,178 @@
-<button routerLink="/project-info">&lt;--</button>
-<p>
-  something something results:
-  {{project.projectName}}
-</p>
+ <div class="container-fluid p-0 m-0">
+  <div class="wrapper-outer">
+    <div class="main">
+      <div class="row">
+        <div class="" id="dashboard-content">
+          <div class="row">
+            <div class="col-12 mx-auto mb-4">
+              <h2 class="m-0 display-4">PROJECT RESULTS</h2>
+            </div>
+            <div class="col-12 m-0 p-0">
+              <div class="card-deck">
+                  <div class="card shadow-lg">
+                    <div class="card-header m-3">
+                      <h5 class="display-5"><b>PROJECT DETAILS</b></h5>
+                    </div>
+                    <div class="card-body text-gray">
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Project Name:</h6></div>
+                        <div class="col-6 text-light">{{project.project_name}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Source:</h6></div>
+                        <div class="col-6 text-light">{{project.source}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Whitelisted Words:</h6></div>
+                        <div class="col-6 text-light">{{project.whitelist.toString()}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Blacklisted Words:</h6></div>
+                        <div class="col-6 text-light">{{project.blacklist.toString()}}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card shadow-lg">
+                    <div class="card-header m-3">
+                      <h5 class="display-5"><b>SCORE</b></h5>
+                    </div>
+                    <div class="card-body">
+                      <div>
+                        <div style="display: block">
+                          <canvas baseChart height="100"
+                            [data]="doughnutChartData"
+                            [labels]="doughnutChartLabels"
+                            [chartType]="doughnutChartType"
+                            [options]="doughnutChartOptions"
+                            [colors]="chartColors"
+                            [plugins]="doughnutChartPlugins">
+                          </canvas>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="card-deck mt-4">
+                <div class="card shadow-lg">
+                  <div class="card-header m-3">
+                    <h5 class="display-5"><b>History</b></h5>
+                  </div>
+                  <div class="card-body">
+                    <div style="display: block;">
+                      <canvas baseChart width="400" height="230"
+                        [datasets]="lineChartData"
+                        [labels]="lineChartLabels"
+                        [options]="lineChartOptions"
+                        [colors]="lineChartColors"
+                        [legend]="lineChartLegend"
+                        [chartType]="lineChartType"
+                        [plugins]="lineChartPlugins">
+                      </canvas>
+                    </div>
+                  </div>
+                </div>
+                <div class="card shadow-lg">
+                  <div class="card-header m-3">
+                    <h5 class="display-5"><b>MOST AND LEAST POSITIVE RESULTS</b></h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-10 ml-4 mb-2 display-5">MOST POSITIVE:</div>
+
+                      <div class="col-10 mb-3 p-3 mx-auto border rounded">
+                        <div class="mb-2">Tweeter</div>
+                        <div class=" d-flex justify-content-between align-items-center">
+                          Morbi leo risus
+                          <span class="badge badge-primary badge-pill ml-3">0.987</span>
+                        </div>
+                      </div>
+
+                      <div class="col-10 ml-4 mb-2 display-5">LEAST POSITIVE:</div>
+
+                      <div class="col-10 p-3 mx-auto border rounded">
+                        <div class="mb-2">Tweeter</div>
+                        <div class=" d-flex justify-content-between align-items-center">
+                          Morbi leo risu  Morbi leo risus Morbi leo risus Morbi leo risus Morbi leo risus Morbi leo risus Morbi leo risuss
+                          <span class="badge badge-primary badge-pill ml-3">0.023</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-deck mt-4 pb-3">
+                <div class="card shadow-lg">
+                  <div class="card-header m-3">
+                    <span><h5 class="display-5 float-left"><b>ALL RESULTS</b></h5></span>
+                    <span class="float-right">
+                      <button class="btn btn-outline-primary">Flag Tweets</button>
+                    </span>
+                  </div>
+                  <div class="card-body tweet-list">
+                    <div class="row mb-3">
+                      <div class="col-auto">
+                        <div class="dropdown">
+                          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            Filter
+                          </button>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item">All Tweets</a>
+                            <a class="dropdown-item">Positve Tweets</a>
+                            <a class="dropdown-item">Negative Tweets</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-auto">
+                        <div class="dropdown">
+                          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            Sort
+                          </button>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item">Oldest</a>
+                            <a class="dropdown-item">Newest</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-auto ml-auto">
+                        Total Tweets: 100
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="row m-0 p-0">
+                          <div class="col-11 mx-auto m-0 p-0">
+                            <div class="row m-0 p-0">
+                              <div class="col-12 mb-3 p-3 mx-auto border rounded m-0 p-0">
+                                <div class="mb-2">Tweeter</div>
+                                <div class=" d-flex justify-content-between align-items-center">
+                                  Morbi leo risus
+                                  <span class="badge badge-primary badge-pill ml-3">0.987</span>
+                                </div>
+                                <div class="row mt-3 m-0 p-0" >
+                                  <div class="col-8 mx-auto m-0 p-0">
+                                    <input type="range" class="custom-range" id="customRange1">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-1 m-0 my-auto mx-auto">
+                              <input type="checkbox">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

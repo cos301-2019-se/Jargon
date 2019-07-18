@@ -27,7 +27,9 @@ export class DashboardComponent implements OnInit {
     ]
   ];
 
-  constructor() { }
+  constructor() {
+    this.getResize();
+  }
 
   ngOnInit() {
     this.getResize();

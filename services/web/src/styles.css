@@ -3,12 +3,26 @@
 
 @import '../node_modules/bootstrap/dist/css/bootstrap.css';
 
+@import url('https://fonts.googleapis.com/css?family=Amiko&display=swap');
+
+.display-4 {
+  font-family: 'Amiko', sans-serif !important;
+}
+
 app-projects {
   width: 100%;
 }
 
 app-dashboard {
   width: 100vh;
+}
+
+app-create-project {
+  width: 100%;
+}
+
+app-project-result {
+  width: 100%;
 }
 
 body {
