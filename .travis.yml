@@ -10,10 +10,10 @@ before_script:
   # - docker-compose up --build -d
   # - cd ../../../tests
   - cd ./tests
-  - sudo chmod +x test.sh
+  - sudo chmod +x test.sh install.sh
+  - ./install.sh
   # - npm install -g mocha
   # - npm install chai chai-http chai-arrays
-  # - sleep 3600s
 
 script:
   - ./test.sh
