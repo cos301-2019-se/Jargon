@@ -13,6 +13,7 @@ before_script:
   # build containers
   - cd ../services/docker/compose
   - docker-compose up --build -d
+  - cd ../../../tests
 
 script:
   - ./test.sh
