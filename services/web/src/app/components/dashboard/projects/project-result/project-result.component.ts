@@ -4,6 +4,8 @@ import { Project, Run } from '../../../../interfaces/project/project';
 import { Label, MultiDataSet, PluginServiceGlobalRegistrationAndOptions, Color} from 'ng2-charts';
 import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
 import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
+import { FlagData } from '../../../../interfaces/flagger/flag-data';
+import { FlaggerApiRequesterService } from '../../../../services/flagger-api-requester/flagger-api-requester.service';
 
 @Component({
   selector: 'app-project-result',
@@ -14,6 +16,13 @@ export class ProjectResultComponent implements OnInit {
 
   project: Project = new Project();
   currentRun: Run = new Run();
+  filteredData: any[] = [];
+  filteredSentiments: number[] = [];
+
+  activeFlagging: boolean = false;
+
+  filter: string = "All";
+  sorting: string = "Oldest"
 
   doughnutChartLabels: Label[] = ['positive', 'negative'];//'Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
   doughnutChartData: MultiDataSet = [ 
@@ -121,7 +130,8 @@ export class ProjectResultComponent implements OnInit {
   lineChartPlugins = [];
 
   constructor(private shareProjectService: SharedProjectService,
-      private projectApiRequesterService: ProjectApiRequesterService) {
+      private projectApiRequesterService: ProjectApiRequesterService,
+      private flaggerApiRequesterService: FlaggerApiRequesterService) {
 
     shareProjectService.project.subscribe(
       (project: Project) => {
@@ -145,6 +155,9 @@ export class ProjectResultComponent implements OnInit {
               { data: [...data], label:'' },
             ];
             this.lineChartLabels = [...label];
+
+            this.onSortItemClick(this.sorting);
+            this.onFilterItemClick(this.filter);
           }
         );
       }
@@ -152,6 +165,9 @@ export class ProjectResultComponent implements OnInit {
   }
 
   ngOnInit() {
+    var list = {"you": 100, "me": 75, "foo": 116, "bar": 15};
+    let keysSorted = Object.keys(list).sort(function(a,b){return list[a]-list[b]})
+    console.log(keysSorted);     // bar,me,you,foo
   }
 
   onChartClicked(event: any) {
@@ -181,6 +197,125 @@ export class ProjectResultComponent implements OnInit {
         100-avg
       ]
     ];
+  }
+
+  compareItemString(op1: any, op2: any) {
+    return op1 === op2;
+  }
+
+  onSortItemClick(value: string) {
+    if (value === "Oldest") {
+      this.filteredData.sort(
+        (itm1, itm2) => {
+          if (new Date(itm1.created_at) < new Date(itm2.created_at))
+            return -1;
+          if (new Date(itm1.created_at) >= new Date(itm2.created_at))
+            return 1;
+          return 0;
+        }
+      );
+      this.filteredData = [...this.filteredData]
+    } else if (value === "Newest") {
+      this.filteredData.sort(
+        (itm1, itm2) => {
+          if (new Date(itm1.created_at) >= new Date(itm2.created_at)) 
+            return -1;
+          if (new Date(itm1.created_at) < new Date(itm2.created_at))
+            return 1;
+          return 0;
+        }
+      );
+    }
+  }
+
+  onFilterItemClick(value: string) {
+    if (value === "All") {
+      console.log("ALL");
+      this.filteredData = [...this.project.data];
+      this.filteredSentiments = [...this.project.dataSentiment];
+    } else if (value === "Positive") {
+      console.log("POS");
+      this.filteredData = [];
+      this.filteredSentiments = [];
+      for (let i = 0; i < this.project.dataSentiment.length; ++i) {
+        let sentiment = this.project.dataSentiment[i];
+        if (sentiment >= 0.5) {
+          this.filteredData.push(this.project.data[i]);
+          this.filteredSentiments.push(this.project.dataSentiment[i]);
+        }
+      }
+    } else if (value === "Negative") {
+      console.log("NEG");
+      this.filteredData = [];
+      this.filteredSentiments = [];
+      for (let i = 0; i < this.project.dataSentiment.length; ++i) {
+        let sentiment = this.project.dataSentiment[i];
+        if (sentiment < 0.5) {
+          this.filteredData.push(this.project.data[i]);
+          this.filteredSentiments.push(this.project.dataSentiment[i]);
+        }
+      }
+    }
+  }
+
+  onFlagTweetsClick() {
+    if (this.activeFlagging) {
+      let data = [];
+      this.filteredData.forEach(
+        fdata => {
+          if (fdata['checked'] != undefined && fdata['checked']) {
+            data.push(fdata);
+          }
+        }
+      )
+      console.log("Stuff:", data);
+    }
+    this.activeFlagging = true;
+  }
+
+  onCancelClick() {
+    this.activeFlagging = false;
+
+    this.filteredData.forEach(
+      (data: string) => {
+        data['checked'] = false;
+      }
+    );
+  }
+
+  onSaveFlaggedItems() {
+    let flaggedData: FlagData[] = [];
+    
+    for (let i = 0; i < this.filteredData.length; ++i) {
+      let flagData: FlagData = new FlagData();
+
+      if (this.filteredData[i]['checked']) {
+        flagData.text = this.filteredData[i].text;
+        flagData.currentScore = this.filteredSentiments[i];
+        flagData.alternateScore = this.filteredData['new_sentiment'];
+
+        flaggedData.push(flagData);
+      }
+    }
+
+    if (flaggedData.length == 0) {
+      return;
+    }
+    console.log(flaggedData);
+
+    this.flaggerApiRequesterService.flagData(flaggedData).subscribe(
+      list => {
+        this.activeFlagging = false;
+      },
+      error => {
+        console.log("Error");
+        this.activeFlagging = false;
+      }
+    );
+  }
+
+  onCheckboxClick(index: number) {
+    this.filteredData[index]['new_sentiment'] = 0.5;
   }
 
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Project } from '../../../../interfaces/project/project';
 import { SharedProjectService } from '../../../../services/shared-project/shared-project.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Form, NgForm } from '@angular/forms';
 import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
 
@@ -21,32 +21,39 @@ export class ProjectInfoComponent implements OnInit {
   isReadOnly: boolean = true;
 
   constructor(private sharedProjectService: SharedProjectService, 
-      private projectApiRequesterService: ProjectApiRequesterService) {
+      private projectApiRequesterService: ProjectApiRequesterService,
+      private activeRoute: ActivatedRoute) {
+  }
 
+  ngOnInit() {
+    this.activeRoute.params.subscribe(routeParams => 
+      {
+        this.isReadOnly = true;
+      }
+    );
+    this.isReadOnly = true;
     this.sharedProjectService.project.subscribe(
       (project: Project) => {
         this.project = project;
         this.projectSnapshot = JSON.parse(JSON.stringify(this.project));
+        
         this.projectSnapshot = Object.assign(new Project, this.projectSnapshot);
       }
     );
-  }
-
-  ngOnInit() {
   }
 
   removeWhitelistWord(index: number) {
     if (this.isReadOnly) {
       return;
     }
-    this.project.whitelist.splice(index, 1);
+    this.projectSnapshot.whitelist.splice(index, 1);
   }
 
   removeBlacklistWord(index: number) {
     if (this.isReadOnly) {
       return;
     }
-    this.project.blacklist.splice(index, 1);
+    this.projectSnapshot.blacklist.splice(index, 1);
   }
 
   addWhitelistWord() {
@@ -57,7 +64,7 @@ export class ProjectInfoComponent implements OnInit {
       return;
     }
 
-    this.project.whitelist.push(this.whitelistword);
+    this.projectSnapshot.whitelist.push(this.whitelistword);
     this.whitelistword = '';
   }
 
@@ -69,7 +76,7 @@ export class ProjectInfoComponent implements OnInit {
       return;
     }
     
-    this.project.blacklist.push(this.blacklistword);
+    this.projectSnapshot.blacklist.push(this.blacklistword);
     this.blacklistword = '';
   }
 
@@ -87,11 +94,11 @@ export class ProjectInfoComponent implements OnInit {
     if (!this.projectSnapshot.compare(this.project)) {
       this.projectApiRequesterService.updateProject(this.project).subscribe(
         (project: Project) => {
-          this.projectSnapshot.blacklist = project.blacklist;
-          this.projectSnapshot.whitelist = project.whitelist;
-          this.projectSnapshot.project_name = project.project_name;
-          this.projectSnapshot.source = project.source;
-          this.projectSnapshot.trackTime = project.trackTime;
+          this.project.blacklist = project.blacklist;
+          this.project.whitelist = project.whitelist;
+          this.project.project_name = project.project_name;
+          this.project.source = project.source;
+          this.project.trackTime = project.trackTime;
         }
       );
     }

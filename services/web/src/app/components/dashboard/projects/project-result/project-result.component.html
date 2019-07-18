@@ -5,7 +5,7 @@
         <div class="" id="dashboard-content">
           <div class="row">
             <div class="col-12 mx-auto mb-4 justify-content-between">
-              <h2 class="m-0 display-4">PROJECT RESULTS <span class="ml-5"><button class="btn rounded-circle arrow-font btn-outline-secondary mb-2"><i class="fas fa-arrow-left my-1"></i></button></span></h2>
+              <h2 class="m-0 display-4">PROJECT RESULTS <span class="ml-5"><button class="btn rounded-circle arrow-font btn-outline-secondary mb-2" [routerLink]="['../projects/project-info', project._id]"><i class="fas fa-arrow-left my-1"></i></button></span></h2>
             </div>
             <div class="col-12 m-0 p-0">
               <div class="card-deck">
@@ -109,35 +109,50 @@
                   <div class="card-header">
                     <span><h5 class="display-5 float-left"><b>LATEST RESULTS</b></h5></span>
                     <span class="ml-3 float-right">
-                        <button class="btn btn-outline-secondary">Cancel</button>
-                      </span>
+                      <button class="btn btn-outline-secondary" (click)="onCancelClick()" *ngIf="activeFlagging">Cancel</button>
+                    </span>
                     <span class="float-right">
-                      <button class="btn btn-outline-primary">Flag Tweets</button>
-                    </span>       
+                      <button class="btn btn-outline-primary" (click)="onFlagTweetsClick()" *ngIf="!activeFlagging">Flag Tweets</button>
+                    </span>
+                    <span class="float-right">
+                      <button class="btn btn-outline-primary" (click)="onSaveFlaggedItems()" *ngIf="activeFlagging">Save Flagged Items</button>
+                    </span>
                   </div>
                   <div class="card-body tweet-list">
                     <div class="row mb-3">
                       <div class="col-auto">
                         <div class="dropdown">
-                          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                          <!-- <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                             Filter
                           </button>
                           <div class="dropdown-menu">
                             <a class="dropdown-item">All Tweets</a>
                             <a class="dropdown-item">Positve Tweets</a>
                             <a class="dropdown-item">Negative Tweets</a>
-                          </div>
+                          </div> -->
+
+                          <select class="form-control" id="filer" name="filter" required [(ngModel)]="filter" [compareWith]="compareItemString"  (change)="onFilterItemClick($event.target.value)">
+                            <option value="All">All</option>
+                            <option value="Positive">Positve Sentiment</option>
+                            <option value="Negative">Negative Sentiment</option>
+                          </select>
+
                         </div>
                       </div>
                       <div class="col-auto">
                         <div class="dropdown">
-                          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                          <!-- <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                             Sort
                           </button>
                           <div class="dropdown-menu">
                             <a class="dropdown-item">Oldest</a>
                             <a class="dropdown-item">Newest</a>
-                          </div>
+                          </div> -->
+
+                          <select class="form-control" id="sort" name="sort" required [(ngModel)]="sorting" [compareWith]="compareItemString" (change)="onSortItemClick($event.target.value)">
+                            <option value="Oldest">Oldest first</option>
+                            <option value="Newest">Newest first</option>
+                          </select>
                         </div>
                       </div>
                       <div class="col-auto ml-auto">
@@ -147,24 +162,24 @@
 
                     <div class="row">
                       <div class="col-12">
-                        <div class="row m-0 p-0" *ngFor="let tweet of project.data; let i = index">
+                        <div class="row m-0 p-0" *ngFor="let text of filteredData; let i = index">
                           <div class="col-11 mx-auto m-0 p-0">
                             <div class="row m-0 p-0">
                               <div class="col-12 mb-3 p-3 mx-auto border rounded m-0 p-0">
                                 <div class=" d-flex justify-content-between align-items-center">
-                                  {{tweet.text}}
-                                  <span class="badge badge-primary badge-pill ml-3">{{project.dataSentiment[i] | number}}</span>
+                                  {{text.text}}
+                                  <span class="badge badge-primary badge-pill ml-3">{{filteredSentiments[i] | number}}</span>
                                 </div>
-                                <div class="row mt-3 m-0 p-0" >
+                                <div class="row mt-3 m-0 p-0" *ngIf="text['checked'] && activeFlagging">
                                   <div class="col-8 mx-auto m-0 p-0">
-                                    <input type="range" class="custom-range" id="customRange1">
+                                    <input type="range" class="custom-range" min="0" max="1" step="0.001" id="customRange1" value="0.5" [(ngModel)]="text['new_sentiment']">{{text['new_sentiment']}}
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <div class="col-1 m-0 my-auto mx-auto">
-                              <input type="checkbox">
+                          <div class="col-1 m-0 my-auto mx-auto" *ngIf="activeFlagging">
+                              <input type="checkbox" [(ngModel)]="text['checked']" (click)="onCheckboxClick(i)">
                           </div>
                         </div>
                       </div>

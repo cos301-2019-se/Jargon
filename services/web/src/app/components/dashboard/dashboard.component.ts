@@ -60,6 +60,7 @@ export class DashboardComponent implements OnInit {
       this.collapse= true;
     }
   }
+
 }
 
 
