@@ -6,14 +6,15 @@ services:
   - docker
 
 before_script:
-  - cd ./services/docker/compose
+  # prep test env
+  - cd tests
+  - sudo chmod +x test.sh install.sh
+  - ./install.sh
+  # build containers
+  - cd ../services/docker/compose
   - docker-compose up --build -d
   - cd ../../../tests
-  - sudo chmod +x test.sh
-  - npm install -g mocha
-  - npm install chai chai-http chai-arrays
-  - sleep 3600s
+  - sleep 120s
 
 script:
-  # - ./test.sh
-  - mocha test.js --exit
+  - ./test.sh

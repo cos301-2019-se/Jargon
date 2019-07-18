@@ -31,7 +31,12 @@ const projectSchema = mongoose.Schema({
         default: Date.now
     },
     createdBy: String,
-    status: Boolean
+    status: Boolean,
+    runs: [
+        {
+            type : Object
+        }
+    ]
 });
 
 module.exports = mongoose.model('Project', projectSchema);

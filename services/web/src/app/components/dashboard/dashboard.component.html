@@ -38,19 +38,16 @@
   </div>
 </nav>
 
-
-
 <!--SIDENAV-->
 <div class="container-fluid mt-2 dashboard">
   <div class="wrapper">
-    <div class="sidebar mt-2" [hidden]='collapse'>
+    <div class="sidebar mt-2" *ngIf='collapse == false'>
       <div class="row">
         <div class="col-12 mt-3">
           <div class="row">
             <div class="col-10">
               <div class="card side-bar text-light">
                 <div class="card-body px-0">
-                  
                   <div *ngFor="let a of directories; let i = index">
                     <div class="row" *ngIf="i != 0">
                         <div class="col mx-3"><hr class="m-1"></div>
@@ -64,7 +61,6 @@
                       </a>
                     </div>
                   </div>
-                  
                 </div>
               </div>
             </div>
@@ -73,8 +69,7 @@
       </div> 
     </div>
     <div class="main">
-      <div class="row">
-        
+      <div class="row auto-height">
           <router-outlet></router-outlet>
           <!-- <div class="row">
             <div class="col-11 mx-auto pl-0 mb-4">
@@ -88,7 +83,6 @@
               </div>
             </div>
           </div> -->
-        
       </div>
     </div>
   </div>
