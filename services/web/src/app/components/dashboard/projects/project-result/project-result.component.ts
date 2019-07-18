@@ -3,6 +3,7 @@ import { SharedProjectService } from '../../../../services/shared-project/shared
 import { Project } from '../../../../interfaces/project/project';
 import { Label, MultiDataSet, PluginServiceGlobalRegistrationAndOptions, Color} from 'ng2-charts';
 import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
+import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
 
 @Component({
   selector: 'app-project-result',
@@ -11,11 +12,13 @@ import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
 })
 export class ProjectResultComponent implements OnInit {
 
-  project: Project = null;
+  project: Project = new Project();
+  currentRun: any = null;
 
   doughnutChartLabels: Label[] = ['positive', 'negative'];//'Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
   doughnutChartData: MultiDataSet = [ 
-    [80, 20],
+    // [80, 20],
+    [0,0]
   ];
   doughnutChartType: ChartType = 'doughnut';
   doughnutChartOptions: ChartOptions = {
@@ -30,7 +33,8 @@ export class ProjectResultComponent implements OnInit {
   doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [{
     beforeDraw(chart) {
       const ctx = chart.ctx;
-      const txt = 'Center Text';
+      
+      var txt = chart.data.datasets[0].data[0].toString();
 
       //Get options from the center object in options
       const sidePadding = 60;
@@ -57,14 +61,16 @@ export class ProjectResultComponent implements OnInit {
       ctx.fillStyle = 'white';
 
       // Draw text in center
-      ctx.fillText('20%', centerX, centerY);
+
+      ctx.fillText(txt+'%', centerX, centerY);
     }
   }];
 
   chartColors: any[] = [
-  { 
-    backgroundColor:["#005C99", "#55BBFF"] 
-  }];
+    { 
+      backgroundColor:["#005C99", "#55BBFF"] 
+    }
+  ];
 
   lineChartData: ChartDataSets[] = [
     { data: [0.05, 0.15, 0.23, 0.1, 0.35, 0.2, 0.62,0.4, 0.9, 0.45, 1], label:'' },
@@ -114,16 +120,34 @@ export class ProjectResultComponent implements OnInit {
   lineChartType = 'line';
   lineChartPlugins = [];
 
-  constructor(private shareProjectService: SharedProjectService) {
+  constructor(private shareProjectService: SharedProjectService,
+      private projectApiRequesterService: ProjectApiRequesterService) {
+
     shareProjectService.project.subscribe(
       (project: Project) => {
-        this.project = project;
+        this.projectApiRequesterService.getProjectDetailed(project._id).subscribe(
+          (project: Project) => {
+            this.project = project;
+
+            this.doughnutChartData = [
+              [50, 50]
+            ];
+          }
+        );
       }
     );
   }
 
   ngOnInit() {
-    
+  }
+
+  onChartClicked(event: any) {
+    if (event.active == undefined || event.active == null || event.active.length == 0) {
+      return;
+    }
+
+    let index: number = event.active._index;
+    this.currentRun = this.project.runs[index];
   }
 
 }

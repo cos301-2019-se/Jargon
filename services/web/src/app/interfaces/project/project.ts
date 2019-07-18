@@ -2,14 +2,15 @@ export class Project {
     public blacklist: string[] = [];
     public created: Date = null;
     public createdBy: string = "";
+    public data: any = [];
+    public dataSentiment: number[] = [];
     public project_name: string = "";
+    public runs: any[] = [];
     public source: string = "";
+    public status: boolean = false;
     public trackTime: number = 0;
     public whitelist: string[] = [];
     public _id: string = "";
-
-    public data: string = "";
-    public dataSentiment: number = 0;
 
     compare(object: Project) : boolean {
         return (
