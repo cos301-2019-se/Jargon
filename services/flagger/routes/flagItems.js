@@ -29,10 +29,10 @@ router.post('/add', (req, res, next) => {
     Epoch.find()
     .exec()
     .then(data => {
-        console.log(data);
+       // console.log(data);
         if (data.length <= 0)
         {
-            console.log("init");
+            //console.log("init");
             while (len != 0)
             {   
                // console.log("waiting initial " + len);
@@ -81,11 +81,11 @@ router.post('/add', (req, res, next) => {
                     .then(result => {
                         outputList.push("Success.");
                         
-                        console.log(result);
+                        //console.log(result);
                     })
                     .catch(err => {
                         outputList.push("Failed.");
-                        console.log(err);
+                      //  console.log(err);
 
                     });
                     len = len - cap;
@@ -198,44 +198,17 @@ router.post('/add', (req, res, next) => {
                     }
                 }
             }
-            console.log("extra");
-            
-
-                res.status(200).json({
-                    output : outputList
-                });
-
-        
+           // console.log("extra");
         }
 
-        
+        if (tweetList.length == 0)
+        {
+            res.status(200).json({
+                output : outputList
+            });
+        }
     });
 
-
-    
-
-    /*const epoch = new Epoch({
-        _id: new mongoose.Types.ObjectId(),
-        size : len,
-        capacity : cap,
-        tweets : tweetList,
-        trained : false
-    });
-
-    epoch
-    .save()
-    .then(result => {
-        outputList.push("Success.");
-        res.status(200).json({
-            output: outputList
-        });
-    })
-    .catch(err => {
-        outputList.push("Failed.");
-        res.status(200).json({
-            output: err
-        });
-    });*/
 
     
 });
