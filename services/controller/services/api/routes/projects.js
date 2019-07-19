@@ -127,13 +127,13 @@ router.post('/create', (req, res, next) => {
         data: null,
         dataSentiment: null,
         createdBy: "Test User",
-        runs: null
+        runs: []
     });
 
     project
     .save()
     .then(result => {
-      res.status(201).json({
+      res.status(200).json({
         message: "Handling POST requests to /projects/create",
         createdProduct: result
       });
@@ -298,9 +298,14 @@ router.post('/start', (req, res, next) => {
                                         worstTweetSentiment : worstTweetScore,
                                         averageScore : (avgScore/totalTweets)
                                     }
+                                    if(result[0].dataSentiment===null){
+                                        result[0].dataSentiment = [];
+                                    }
                                     result[0].dataSentiment = tweetsAndSentiments["data"][1]['sentiments'];
                                     tweetsAndSentiments = JSON.stringify(tweetsAndSentiments);
-                                    
+                                    if(result[0].runs===null){
+                                        result[0].runs = [];
+                                    }
                                     result[0].runs.push(runInfo);
                                     result[0].status = false;
                                     result[0].save().then(

@@ -1,9 +1,9 @@
 version: '2'
 services:
-    # neural-network:
-    #     build: ../../neural-network/
-    #     ports:
-    #         - "5000:5000"
+    neural-network:
+        build: ../../neural-network/
+        ports:
+            - "5000:5000"
     controller:
         build: ../../controller/
         ports:
@@ -12,3 +12,12 @@ services:
         build: ../../listeners/
         ports:
             - "3001:3001"
+    flagger:
+        build: ../../flagger/
+        ports:
+            - "3002:3002"
+    cleaners:
+        build: ../../cleaners/
+        ports:
+            - "3003:3003"
+
