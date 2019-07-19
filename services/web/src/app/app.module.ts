@@ -13,6 +13,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { ChartsModule } from 'ng2-charts';
+import { LoginApiRequesterService } from './services/login-api-requester/login-api-requester.service';
+import { RegisterApiRequesterService } from './services/register-api-requester/register-api-requester.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,10 @@ import { ChartsModule } from 'ng2-charts';
     ChartsModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    LoginApiRequesterService,
+    RegisterApiRequesterService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
