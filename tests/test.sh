@@ -17,7 +17,7 @@ mocha flagger/test.js --timeout 15000
 #status+=$?
 
 # listener service
-mocha listeners/test.js --timeout 15000
+#mocha listeners/test.js --timeout 150000
 #status+=$?
 
 #mocha listeners/test.js --exit && status +=$(( $? ))

@@ -1,6 +1,6 @@
-const chai = require('../node_modules/chai');
-const chaiHttp = require('../node_modules/chai-http');
-const chaiArray = require('../node_modules/chai-arrays');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const chaiArray = require('chai-arrays');
 
 chai.use(chaiHttp);
 chai.use(chaiArray);
