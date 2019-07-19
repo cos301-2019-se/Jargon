@@ -14,13 +14,13 @@
             <div class="col-12 mt-3">
               <div class="form-group">
                 <label for="project-name">Project Name *</label>
-                <input type="text" class="form-control" id="project-name" placeholder="eg. University of Pretoria Sentiments" name="name" [readonly]="isReadOnly" required [(ngModel)]="project.project_name">
+                <input type="text" class="form-control" id="project-name" placeholder="eg. University of Pretoria Sentiments" name="name" [readonly]="isReadOnly" required [(ngModel)]="projectSnapshot.project_name">
               </div>
             </div>
             <div class="col-12 float-left">
               <div class="form-group">
                 <label for="Source">Source *</label>
-                <select class="form-control" id="source" name="source" [disabled]="isReadOnly" required [(ngModel)]="project.source" [compareWith]="compareSource">
+                <select class="form-control" id="source" name="source" [disabled]="isReadOnly" required [(ngModel)]="projectSnapshot.source" [compareWith]="compareSource">
                   <option value="" selected disabled>Please select a source</option>
                   <option value="Twitter">Twitter</option>
                   <option value="Facebook">Facebook</option>
@@ -32,7 +32,7 @@
             <div class="col-12 mb-1">
               <div class="form-group">
                 <label for="project-name">Track Time (s) min(30) * </label>
-                <input type="number" class="form-control" min="30" value="30" name="track" [readonly]="isReadOnly" required [(ngModel)]="project.trackTime">
+                <input type="number" class="form-control" min="30" value="30" name="track" [readonly]="isReadOnly" required [(ngModel)]="projectSnapshot.trackTime">
               </div>
             </div>
 
@@ -40,7 +40,7 @@
               <div class="form-group">
                 <label for="whitelist1">Whitelisted Words *</label>
                 <input class="form-control mb-2" id="whitlist1" name="whitelist" placeholder="Press Enter key to select word" required [readonly]="isReadOnly" [(ngModel)]="whitelistword" (keyup.enter)="addWhitelistWord()">
-                <span class="btn pr-1 pill mr-3 mt-2" *ngFor="let whitelistword of project.whitelist; let i = index">
+                <span class="btn pr-1 pill mr-3 mt-2" *ngFor="let whitelistword of projectSnapshot.whitelist; let i = index">
                   {{whitelistword}}<span class="badge m-1 mr-0"><i class="fas fa-close" (click)="removeWhitelistWord(i)"></i></span>
                 </span>
               </div>
@@ -51,7 +51,7 @@
                 <label for="blacklist1">Blacklisted Words</label>
                 <div>
                   <input class="form-control mb-2" id="blacklist1" name="blacklist" [readonly]="isReadOnly" placeholder="Press Enter key to select word" [(ngModel)]="blacklistword" (keyup.enter)="addBlacklistWord()">
-                  <span class="btn pr-1 pill mr-3 mt-2" *ngFor="let blacklistword of project.blacklist; let i = index">
+                  <span class="btn pr-1 pill mr-3 mt-2" *ngFor="let blacklistword of projectSnapshot.blacklist; let i = index">
                     {{blacklistword}}<span class="badge m-1 mr-0"><i class="fas fa-close" (click)="removeBlacklistWord(i)"></i></span>
                   </span>
                 </div>
@@ -71,7 +71,7 @@
             <button class="btn results" [routerLink]="['../../../project-result']">Results</button>
         </div>
         <div class="col-auto mr-auto" [hidden]="!isReadOnly">
-            <button class="btn results" [routerLink]="['../../../project-result']">Start</button>
+            <button class="btn results" (click)="onStartClick()">Start</button>
         </div>
         <div class="col-auto ml-auto" [hidden]="isReadOnly">
             <button class="btn save" (click)="onSaveClick()">Save <i class="fas fa-check"></i></button>

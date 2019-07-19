@@ -22,10 +22,23 @@ export class ProjectsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.projects = this.sharedProjectService.getProjects();
+    if (this.projects === null) {
+      this.onRefreshProjectsClick();
+    }
+  }
+
+  setProject(project: Project) {
+    this.sharedProjectService.setCurrentProject(project);
+  }
+
+  onRefreshProjectsClick() {
     this.loading = true;
+    this.projects = null;
     this.projectApiRequesterService.getProjectsBasic().subscribe(
       (projects: Project[]) => {
-        this.projects = projects;
+        this.sharedProjectService.setProjects(projects);
+        this.projects = this.sharedProjectService.getProjects();
         this.loading = false;
       },
       error => {
@@ -33,10 +46,6 @@ export class ProjectsComponent implements OnInit {
         this.loading = true;
       }
     );
-  }
-
-  setProject(project: Project) {
-    this.sharedProjectService.setCurrentProject(project);
   }
 
   // public innerWidth: any;
