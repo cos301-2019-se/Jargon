@@ -1,13 +1,20 @@
-import neural_network as nno
+"""
+    Filename: operations.py
+    Author  : Christiaan Nel
+    Type    : Functions
+    
+        The operations.py file contains the methods for configuring
+        the neural network. It also contains API methods for
+        interfacing with the NeuralNetwork class.
+"""
 import json
-
-import torch
+import neural_network as nno
 import random
-
+import spacy
+import torch
 from torchtext import data
 from torchtext import datasets
 
-import spacy
 
 SEED = 1234
 
@@ -47,6 +54,9 @@ print("Pretrained embeddings applied")
 nlp = spacy.load('en')
 
 def create_indexed(sentence, min_len = 5):
+    """
+        create_indexed(sentence, min_len = 5): 
+    """
     tokenized = [tok.text for tok in nlp.tokenizer(sentence)]
 
     if len(tokenized) < min_len:
@@ -56,6 +66,10 @@ def create_indexed(sentence, min_len = 5):
 
 
 def evaluate(data):
+    """
+        evaluate(data): 
+        Evaulate a list of strings and return a sentiment for each.
+    """
     print(data)
     indexed = [create_indexed(sentence) for sentence in data['data']]
     results = [cnn.evaluate(indexed_sentence) for indexed_sentence
@@ -65,5 +79,9 @@ def evaluate(data):
     return res
 
 def train(data):
+    """
+        train(data):
+        Trains the neural network. 
+    """
     print(data)
     return cnn.train('')

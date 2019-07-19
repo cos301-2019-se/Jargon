@@ -10,7 +10,7 @@ cd ..
 cd ../services/listeners/db
 wget --no-check-certificate "$DBCONFIGLINK" -O dbconfig.js
 cd ../platforms
-wget --no-check-certificate "$TWITTERLISTENERLINK" -O twitterConfig.js
+wget --no-check-certificate "$TWITTERLISTENERLINK" -O twitterConfig
 cd ../../controller/db
 wget --no-check-certificate "$DBCONFIGLINK" -O dbconfig.js
 cd ../../flagger/db

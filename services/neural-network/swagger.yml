@@ -1,3 +1,11 @@
+#
+#    Filename: swagger.yml
+#    Author  : Herbert Magaya
+#    Type    : Configurations
+#    
+#       This file contains configurations for the flask server, connecting
+#       the flask server to the neural network class.
+#
 swagger: "2.0"
 info:
   description: Endpoint definition for the Neural Network Microservice

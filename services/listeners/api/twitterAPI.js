@@ -34,6 +34,7 @@ function returnListenerData(res, projID, tempArray){
     
     let updateVals = {};
     updateVals["data"] = tempArray;
+    console.log("tempArray: " + tempArray);
     // console.log(tempArray);
     let postBody = {
         'rawData' : tempArray
@@ -77,7 +78,6 @@ function returnListenerData(res, projID, tempArray){
     
     listenerReq.write(postBodyString);
     listenerReq.end();
-    
 }
 
 module.exports = router;

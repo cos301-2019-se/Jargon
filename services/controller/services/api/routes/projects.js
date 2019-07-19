@@ -266,10 +266,12 @@ router.post('/start', (req, res, next) => {
                                     let worstTweet = -1;
                                     let bestTweetScore = -0.1;
                                     let worstTweetScore = 1.1;
+                                    let avgScore = 0;
 
                                     
                                     tweetsAndSentiments['data'][1]['sentiments'].forEach((sentiment, ind)=>{
                                         totalTweets++;
+                                        avgScore += sentiment;
                                         if(sentiment>0.5){
                                             posTweets++;
                                         }
@@ -293,7 +295,8 @@ router.post('/start', (req, res, next) => {
                                         bestTweet : tweetsAndSentiments['data'][0][bestTweet]["text"],
                                         bestTweetSentiment : bestTweetScore,
                                         worstTweet : tweetsAndSentiments['data'][0][worstTweet]["text"],
-                                        worstTweetSentiment : worstTweetScore
+                                        worstTweetSentiment : worstTweetScore,
+                                        averageScore : (avgScore/totalTweets)
                                     }
                                     if(result[0].dataSentiment===null){
                                         result[0].dataSentiment = [];

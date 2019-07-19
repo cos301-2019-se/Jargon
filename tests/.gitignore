@@ -1,1 +1,4 @@
 services/node_modules
+services/package.json
+services/package-lock.json
+.directory
