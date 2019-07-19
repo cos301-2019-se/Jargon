@@ -1,21 +1,20 @@
-sudo: required
-dist: xenial
-addons:
-  firefox: latest-esr
-      
 language: node_js
 node_js:
   - 11
 
-before_install:
-  - cd './backend'
-
 services:
-  - xvfb
+  - docker
 
 before_script:
-  - npm install
-  - cd './tests'
+  # prep test env
+  - cd tests
+  - sudo chmod +x test.sh install.sh
+  - ./install.sh
+  # build containers
+  - cd ../services/docker/compose
+  - docker-compose up --build -d
+  - cd ../../../tests
+  - sleep 120s
 
 script:
-  - mocha test --exit
+  - ./test.sh

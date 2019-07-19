@@ -1,0 +1,78 @@
+.container-fluid {
+    color: white;
+}
+
+.align-center {
+    text-align: center;
+}
+
+#dashboard-content {
+    width: 100%;
+}
+
+.wrapper-outer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.main {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    height: auto;
+}
+
+.main,
+.sidebar {
+  padding: 15px;
+}
+
+.card-header {
+    border-bottom: rgb(30, 129, 228) !important;
+}
+
+.card {
+    background-color: rgba(9, 111, 212, 0.1) !important;
+    /* border-color: rgb(3, 52, 102) !important; */
+    border: none;
+}
+
+.card-body {
+    background-color: rgba(29, 124, 219, 0.1) !important;
+}
+
+.same-row-card-same-height {
+    display:flex;
+    flex-direction:row;
+}
+
+.text-gray {
+    color : rgb(161, 167, 178);
+}
+
+.border {
+    border-color: rgba(58, 61, 255, 0.5) !important;
+    border-width: 2px !important;
+}
+
+.tweet-list {
+    max-height: 75vh;
+    height: auto;
+    overflow-y:auto;
+}
+
+@media only screen and (max-width : 765px) {
+    .border-right {
+        border: none !important;
+    }
+}
+
+.arrow-font {
+    font-size: 20px;
+    color: white;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center; 
+}

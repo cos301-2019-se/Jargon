@@ -1,0 +1,84 @@
+#
+#    Filename: swagger.yml
+#    Author  : Herbert Magaya
+#    Type    : Configurations
+#    
+#       This file contains configurations for the flask server, connecting
+#       the flask server to the neural network class.
+#
+swagger: "2.0"
+info:
+  description: Endpoint definition for the Neural Network Microservice
+  version: "1.0.0"
+  title: Neural Network Microservice
+tags:
+    - name: "evaluate"
+      description: "Evaluate data"
+    - name: "train"
+      description: "Train data"
+consumes:
+  - application/json
+produces:
+  - application/json
+
+basePath: /api
+
+# Paths supported by the server application
+paths:
+  /evaluate:
+    post:
+      operationId: operations.evaluate
+      parameters:
+        - name: data
+          description: Some message.
+          in: body
+          required: true
+          schema:
+            type: "object"
+            properties:
+              data:
+                type: array
+                items:
+                  type: string
+      tags:
+          - "evaluate"
+      summary: Return sentiment value of the given data
+      description: Evaluate the sentiment of the given data
+      responses:
+        200:
+          description: Successfully return sentiment value of the given data
+          schema:
+            type: array
+            items:
+              type: number
+
+  /train:
+    post:
+      operationId: operations.train
+      tags:
+        - "train"
+      summary: Train the Neural Network on the given data stream
+      description: Train the Neural Network after evaluating the sentiment of the data
+      parameters:
+        - in: body
+          name: data
+          required: true
+          schema:
+            type: "object"
+            properties:
+              data:
+                type: array
+                items:
+                  type: string
+                  type: number
+
+      responses:
+        200:
+          description: Successfully return sentiment value of the given data
+          schema:
+            type: object
+            properties:
+              data:
+                type: string
+
+
