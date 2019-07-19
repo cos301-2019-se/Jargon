@@ -146,7 +146,7 @@ export class ProjectResultComponent implements OnInit {
             let label: string[] = [];
             this.project.runs.forEach(
               (run: Run) => {
-                data.push(run.positivePercentage);
+                data.push(run.averageScore);
                 label.push(run.dateRun.toString());
               }
             );
