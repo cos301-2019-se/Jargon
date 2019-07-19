@@ -1,3 +1,10 @@
+/**
+ * Filename: app.js
+ * Author: Kevin Coetzee
+ * 
+ *  The app.js file is used for routing to different platforms' cleaner APIs
+ */
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -8,7 +15,9 @@ const twitterRoutes = require('./api/twitterCleanerAPI');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+/**
+ * first use function (req, res, next) 
+ */
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
