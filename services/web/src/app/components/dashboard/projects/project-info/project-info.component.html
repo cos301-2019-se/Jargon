@@ -70,7 +70,7 @@
         <div class="col-auto ml-auto" [hidden]="!isReadOnly">
             <button class="btn results" [routerLink]="['../../../project-result']">Results</button>
         </div>
-        <div class="col-auto mr-auto">
+        <div class="col-auto mr-auto" [hidden]="!isReadOnly">
             <button class="btn results" (click)="onStartClick()">Start</button>
         </div>
         <div class="col-auto ml-auto" [hidden]="isReadOnly">

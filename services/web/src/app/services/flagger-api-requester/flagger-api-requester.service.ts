@@ -6,7 +6,7 @@ import { FlagData } from '../../interfaces/flagger/flag-data';
   providedIn: 'root'
 })
 export class FlaggerApiRequesterService {
-  apiURL = 'http://10.0.0.12:3002';
+  apiURL = 'http:localhos:3002';
 
   constructor(private httpClient: HttpClient) {}
 
