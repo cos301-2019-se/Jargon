@@ -1,6 +1,22 @@
+/**
+ * Filename: twitterListener.js
+ * Author: Kevin Coetzee
+ * 
+ *      This file contains the class used to instantiate listeners that
+ *      track tweets based on certain projects' whitelisted and blacklisted
+ *      words.
+ */
 "use strict";
 
-class twitterListener{
+class TwitterListener{
+    /*** 
+     * conctructor(string array, string array, integer)
+     * 
+     *      The constructor takes a string array corresponding to a 
+     *      project's whitelisted words, a string array corresponding 
+     *      to a project's blacklisted words, and the duration in seconds
+     *      corresponding to a project's runtime.
+     * */  
     constructor(whitelist_, blacklist_, trackingDuration_){
         this.whitelist = "";
         this.blacklist = "";
@@ -22,51 +38,83 @@ class twitterListener{
             }
         }
     }
-   
-    get blacklistArray(){
-        return this._blacklistArray;
-    }
 
+    /***
+    * get blacklist() : string
+    * 
+    * getter for the concatenated string blacklist 
+    */
     get blacklist(){
         return this._blacklist;
     }
 
+    /***
+    * get whitelist() : string
+    * 
+    * getter for the concatenated string whitelist 
+    */
     get whitelist(){
         return this._whitelist;
     }
 
+    /***
+    * get trackingDuration() : integer
+    * 
+    * getter for the tracking duration
+    */
     get trackingDuration(){
         return this._trackingDuration;
     }
 
-    set blacklistArray(vals){
-        this._blacklistArray = vals;
-    }
-
+    /***
+    * set blacklist() : void
+    * 
+    * setter for the blacklist concatenated string
+    */
     set blacklist(vals){
         this._blacklist = vals;
     }
 
+    /***
+    * set whitelist() : void
+    * 
+    * setter for the whitelist concatenated string
+    */
     set whitelist(vals){
         this._whitelist = vals;
     }
 
+    /***
+    * set trackingDuration() : void
+    * 
+    * setter for the tracking duration
+    */
     set trackingDuration(val){
         this._trackingDuration = val;
     }
 
+    /***
+     * startTracking(null object, string, function) : void
+     * 
+     *      The startTracking function takes a null response object and a projID 
+     *      string which it sends as a parameter to the third parameter 
+     *      (callback function). The function connects to the Twitter API and 
+     *      starts collecting tweets that contain whitelisted words and does not
+     *      contain blacklisted words. After it has run for the required duration,
+     *      it calls the callback function.
+     */
     startTracking(res, projID, callback){
         const twitterConsumerSecret = require('./twitterConfig').consumer_secret;
         const twitterTokenSecret = require('./twitterConfig').token_secret;
         const Twitter = require("node-tweet-stream")
-        , t = new Twitter({
+        , twitterAPI = new Twitter({
             consumer_key: 'DnXz3QBEptjCkSCXoKmj690GQ',
             consumer_secret: twitterConsumerSecret,
             token: '1122433281465700352-bPVkrTzBiwMyenSqHfePpi2QNU4t3e',
             token_secret: twitterTokenSecret
         })
         let tempArray = [];
-        t.on('tweet', function(tweet){
+        twitterAPI.on('tweet', function(tweet){
             let found = false;
             this.blacklistArray.forEach(element=>{
                 if(tweet.text.indexOf(element)>-1){
@@ -77,9 +125,9 @@ class twitterListener{
                 tempArray.push(tweet);
             }
         }.bind(this))
-        t.track(this.whitelist); 
+        twitterAPI.track(this.whitelist); 
         setTimeout(()=>{
-            t.untrack(this.whitelist);
+            twitterAPI.untrack(this.whitelist);
             if(typeof callback == 'function'){
                 callback(res, projID, tempArray);
             }else{
@@ -88,20 +136,25 @@ class twitterListener{
         }, this.trackingDuration);
     }
 
+    /*** 
+     * hardStopTweets() : void
+     * 
+     *      This function immediately stops tracking tweets using the Twitter API.
+    */
     hardStopTweets(){
         const twitterConsumerSecret = require('./twitterConfig').consumer_secret;
         const twitterTokenSecret = require('./twitterConfig').token_secret;
         const Twitter = require("node-tweet-stream")
-        , t = new Twitter({
+        , twitterAPI = new Twitter({
             consumer_key: 'DnXz3QBEptjCkSCXoKmj690GQ',
             consumer_secret: twitterConsumerSecret,
             token: '1122433281465700352-bPVkrTzBiwMyenSqHfePpi2QNU4t3e',
             token_secret: twitterTokenSecret
         })
         this.whitelistArray.forEach(element => {
-            t.untrack(element); 
+            twitterAPI.untrack(element); 
         }); 
     }
 }
 
-module.exports = twitterListener;
+module.exports = TwitterListener;
