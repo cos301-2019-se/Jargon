@@ -103,7 +103,7 @@ class TwitterListener{
      *      contain blacklisted words. After it has run for the required duration,
      *      it calls the callback function.
      */
-    startTracking(res, projID, callback){
+    startTracking(response, projectID, callback){
         const twitterConsumerSecret = require('./twitterConfig').consumer_secret;
         const twitterTokenSecret = require('./twitterConfig').token_secret;
         const Twitter = require("node-tweet-stream")
@@ -129,7 +129,7 @@ class TwitterListener{
         setTimeout(()=>{
             twitterAPI.untrack(this.whitelist);
             if(typeof callback == 'function'){
-                callback(res, projID, tempArray);
+                callback(response, projectID, tempArray);
             }else{
                 console.log(typeof callback);
             }
