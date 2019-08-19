@@ -16,11 +16,11 @@ const twitterCleaner = require('../platforms/twitterCleaner');
     * twitterCleaner instance, which ensures all tweets are cleaned according
     * to the rules implemented for the Twitter platform accordingly 
     */
-router.post('/', (req, res, next) =>{
-    let rawTweets = req.body.rawData;
-    tc = new twitterCleaner();
+router.post('/', (request, response, next) =>{
+    let rawTweets = request.body.rawData;
+    twitterCleanerInstance = new twitterCleaner();
     console.log("starting clean");
-    tc.clean(rawTweets, returnCleanedData, res);
+    twitterCleanerInstance.clean(rawTweets, returnCleanedData, response);
 });
 
 /***
@@ -30,9 +30,9 @@ router.post('/', (req, res, next) =>{
     * twitterCleaner instance, which ensures all tweets are cleaned according
     * to the rules implemented for the Twitter platform accordingly 
     */
-function returnCleanedData(retArray, res){
+function returnCleanedData(returnArray, response){
     console.log("finished cleaning");
-    res.status(200).json(retArray);
+    response.status(200).json(returnArray);
 }
 
 module.exports = router;
