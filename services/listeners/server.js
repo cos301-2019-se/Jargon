@@ -1,9 +1,9 @@
 /**
- * Filename: app.js
+ * Filename: server.js
  * Author: Kevin Coetzee
  * 
- *      This file provides the API routing for the
- *      different files within the listeners microservice
+ *      This file executes the Node server
+ *      for the listener microservice
  */
 "use strict";
 
