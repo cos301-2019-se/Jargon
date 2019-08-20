@@ -7,7 +7,7 @@ const statisticSchema = mongoose.Schema({
     std_dev : Number,
     variance : Number,
     mean : Number,
-    mode : Number,
+    mode : [ {type : Number } ],
     median : Number,
     timestamp : 
     {

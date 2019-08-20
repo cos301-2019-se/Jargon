@@ -82,7 +82,7 @@ router.post('/', (req, res, next) => {
 
     console.log(final);
 
-   /* Project.find({_id : req.body.id})
+    Project.find({_id : req.body.id})
     .exec()
     .then(data => {
         const stat = new Statistic({
@@ -92,16 +92,36 @@ router.post('/', (req, res, next) => {
             std_dev : final.std_deviation,
             variance : final.variance,
             mean : final.average,
-            mode : ,
-            median : Number,
+            mode : final.mode,
+            median : final.median,
             project : data._id
         });
-    });*/
+
+        stat.save()
+        .then(result => {
+            res.status(200).json({
+                status: true,
+                result : "Statistics calculated and added"
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(200).json({
+                status: false,
+                result: "Failed to add stats"
+            });
+        });
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(200).json({
+            status: false,
+            result: "Error finding project"
+        });
+    });
     
 
-    res.status(200).json({
-        result: final
-    });
+    
 });
 
 
