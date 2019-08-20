@@ -21,6 +21,44 @@ function reduce(vals) {
         x.max = Math.max(x.max, y.max);
     }
 
+    vals.sort(function(a,b){
+        return a - b;
+    });
+    if (len % 2 == 0)
+    {
+        x.median = (vals[len/2 - 1].sum + vals[len/2].sum) / 2;
+    }
+    else
+    {
+        x.median = (vals[(len-1) / 2].sum);
+    }
+
+    let mode = [];
+    let count = [];
+    let max = 0;
+
+    for (let i = 0; i < len; i++)
+    {
+        let num = vals[i].sum;
+
+        count[num] = (count[num] || 0) + 1;
+        if (count[num] > max)
+        {
+            max = count[num];
+        }
+    }
+
+    for (c in count)
+    {
+        if (count.hasOwnProperty(c))
+        {
+            if (count[c] === max)
+            {
+                mode.push(Number(c));
+            }
+        }
+    }
+    x.mode = mode;
     x.average = x.sum / x.count;
     x.variance = x.diff / x.count;
     x.std_deviation = Math.sqrt(x.variance);
@@ -44,6 +82,21 @@ router.post('/', (req, res, next) => {
 
     console.log(final);
 
+   /* Project.find({_id : req.body.id})
+    .exec()
+    .then(data => {
+        const stat = new Statistic({
+            _id: new mongoose.Types.ObjectId(),
+            min : final.min,
+            max : final.max,
+            std_dev : final.std_deviation,
+            variance : final.variance,
+            mean : final.average,
+            mode : ,
+            median : Number,
+            project : data._id
+        });
+    });*/
     
 
     res.status(200).json({
