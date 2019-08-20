@@ -7,6 +7,8 @@
  *      words.
  */
 "use strict";
+const mongoose = require('mongoose');
+const Project = require('../models/project');
 
 class TwitterListener{
     /*** 
@@ -122,7 +124,24 @@ class TwitterListener{
                 }
             })
             if(!found){
-                tempArray.push(tweet);
+                tempArray.push(tweet["id_str"]);
+
+                //TODO save to db
+                let tweetStructure = {
+                    "tweetID" : tweet["id_str"],
+                    "tweetObject" : tweet,
+                    "tweetSentiment" : -2
+                }
+                Project.find({_id : projectID})
+                .exec()
+                .then((result)=>{
+                    result[0].data.push(tweetStructure);
+                    console.log("saving tweet");
+                    result[0].save();
+                }).catch((err) => {
+                    console.log(err);
+                })
+                //TODO send to RMQ
             }
         }.bind(this))
         twitterAPI.track(this.whitelist); 

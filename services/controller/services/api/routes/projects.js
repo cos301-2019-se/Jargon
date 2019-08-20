@@ -163,8 +163,7 @@ router.post('/create', (req, res, next) => {
         source: req.body.source,
         status : false,
         trackTime: req.body.trackTime,
-        data: null,
-        dataSentiment: null,
+        data: [],
         createdBy: "Test User",
         runs: []
     });
@@ -256,7 +255,149 @@ router.post('/start', (req, res, next) => {
                     'platform' : platform
                 }
                 let postBodyString = JSON.stringify(postBody);
-                if((platform === "twitter")||(platform==="Twitter")){
+                if(platform.toUpperCase() === "TWITTER"){
+                    var options = {
+                        host: "localhost",
+                        port: 3001,
+                        path: "/twitter/",
+                        method: "POST",
+                        headers: {
+                            'Content-Length': Buffer.byteLength(postBodyString),
+                            "Content-Type": "application/json"
+                        }
+                    };
+                }
+                let responseString;
+                var listenerReq = http.request(options, (listenerRes)=>{
+                    responseString = "";
+                    listenerRes.on("data", (data) => {
+                        responseString += data;
+                    });
+                    listenerRes.on("end", () => {
+                        console.log("response: " + responseString);
+                        responseString = JSON.parse(responseString);
+                        let messages = {
+                            data : []
+                        }
+                        responseString.forEach((element)=>{
+                            messages['data'].push(element['text']);
+                        });
+                        messages = JSON.stringify(messages);
+                        var nnOptions = {
+                            host: "localhost",
+                            port: 5000,
+                            path: "/api/evaluate",
+                            method: "POST",
+                            headers: {
+                                'Content-Length': Buffer.byteLength(messages),
+                                "Content-Type": "application/json"
+                            }
+                        };
+                        var nnReq = http.request(nnOptions, (nnRes)=>{
+                            var nnResponseString = "";
+                            nnRes.on("data", (nnData) => {
+                                nnResponseString += nnData;
+                            });
+                            nnRes.on("end", () => {
+                                nnResponseString = JSON.parse(nnResponseString);
+                                let tweetsAndSentiments = {
+                                    data : []
+                                }
+                                tweetsAndSentiments['data'].push(responseString);
+                                tweetsAndSentiments['data'].push(nnResponseString);
+                                Project.find({_id : id})
+                                .exec()
+                                .then((result)=>{
+                                    let today = new Date();
+                                    let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                                    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                                    let currDate = date+' '+time;
+                                    let totalTweets = 0;
+                                    let posTweets = 0;
+                                    let negTweets = 0;
+                                    let bestTweet = -1;
+                                    let worstTweet = -1;
+                                    let bestTweetScore = -0.1;
+                                    let worstTweetScore = 1.1;
+                                    let avgScore = 0;
+                                    tweetsAndSentiments['data'][1]['sentiments'].forEach((sentiment, ind)=>{
+                                        totalTweets++;
+                                        avgScore += sentiment;
+                                        if(sentiment>0.5){
+                                            posTweets++;
+                                        }
+                                        if(sentiment<0.5){
+                                            negTweets++;
+                                        }
+                                        if(sentiment<worstTweetScore){
+                                            worstTweet = ind;
+                                            worstTweetScore = sentiment;
+                                        }
+                                        if(sentiment>bestTweetScore){
+                                            bestTweet = ind;
+                                            bestTweetScore = sentiment;
+                                        }
+                                    })
+                                    let runInfo = {
+                                        dateRun : currDate,
+                                        positivePercentage : (posTweets/totalTweets),
+                                        negativePercentage : (negTweets/totalTweets),
+                                        bestTweet : tweetsAndSentiments['data'][0][bestTweet]["text"],
+                                        bestTweetSentiment : bestTweetScore,
+                                        worstTweet : tweetsAndSentiments['data'][0][worstTweet]["text"],
+                                        worstTweetSentiment : worstTweetScore,
+                                        averageScore : (avgScore/totalTweets)
+                                    }
+                                    if(result[0].dataSentiment===null){
+                                        result[0].dataSentiment = [];
+                                    }
+                                    result[0].dataSentiment = tweetsAndSentiments["data"][1]['sentiments'];
+                                    tweetsAndSentiments = JSON.stringify(tweetsAndSentiments);
+                                    if(result[0].runs===null){
+                                        result[0].runs = [];
+                                    }
+                                    result[0].runs.push(runInfo);
+                                    result[0].status = false;
+                                    result[0].save().then(
+                                        (result)=>{
+                                            res.status(200).json(tweetsAndSentiments);
+                                        }
+                                    )
+                                }).catch((err) => {
+                                    console.log(err);
+                                    res.status(500).json(err);
+                                })
+                            });
+                        });
+                        nnReq.write(messages);
+                        nnReq.end();
+                    });
+                });
+                listenerReq.write(postBodyString);
+                listenerReq.end();
+            }
+        )
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+    })
+});
+
+router.post('/startWithID', (req, res, next) => {
+    const id = req.body.id;
+    const platform = req.body.platform;
+    Project.find({_id : id})
+    .exec()
+    .then((result)=>{
+        result[0].status = true;
+        result[0].save().then(
+            ()=>{
+                let postBody = {
+                    'id' : id,
+                    'platform' : platform
+                }
+                let postBodyString = JSON.stringify(postBody);
+                if(platform.toUpperCase() === "TWITTER"){
                     var options = {
                         host: "localhost",
                         port: 3001,

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const projectSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     project_name : String,
@@ -18,13 +19,10 @@ const projectSchema = mongoose.Schema({
     trackTime: Number,
     data: [
         {
-            type : Object
+            tweetID : String,
+            tweetObject : Object,
+            tweetSentiment : Number,
         }
-    ],
-    dataSentiment: [
-        {
-            type : Number
-        } 
     ],
     created: {
         type: Date,

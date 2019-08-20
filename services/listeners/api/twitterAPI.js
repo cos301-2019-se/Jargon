@@ -75,7 +75,11 @@ function returnListenerData(response, projID, tempArray){
             Project.find({_id : projID})
             .exec()
             .then((result)=>{
-                result[0].data = JSON.parse(responseString);
+                //TODO concatenate instead of replacing
+                // let testOut = result[0].data;
+                // testOut += JSON.parse(responseString);
+                // console.log(testOut);
+                // result[0].data += JSON.parse(responseString);
                 result[0].save().then(
                     (result)=>{     
                         response.status(200).json(result.data);
