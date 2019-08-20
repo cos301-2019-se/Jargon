@@ -26,7 +26,8 @@ export class ProjectResultComponent implements OnInit {
   public datalabel: Object = {
     visible: true,
     name: 'text',
-    position: 'Inside'
+    position: 'Inside',
+    size: '14px'
   };
 
   /* Sentiment Distribution - Histogram with Normal-ish Distribution*/

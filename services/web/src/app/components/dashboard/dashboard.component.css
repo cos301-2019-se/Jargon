@@ -306,13 +306,22 @@ hr {
 }
 
 .sidebar {
-  width: 550px;
+  width: 140px;
   margin-left: auto;
   margin-right:auto;
   height: fit-content;
   top:15px;
   position: sticky;
   display: inline-block;
+}
+
+.sidebar:hover {
+  width: 550px;
+  transition: width 0.5s;
+}
+
+.sidebar:not(:hover) {
+  transition: width 0.5s;
 }
 
 body {
