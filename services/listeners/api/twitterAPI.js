@@ -13,6 +13,40 @@ const mongoose = require('mongoose');
 const Project = require('../models/project');
 const twitterListener = require('../platforms/twitterListener');
 
+
+const amqp = require('amqplib/callback_api');
+
+const send = (msg) => {
+    amqp.connect("amqp://localhost", function(error0, connection) {
+    if (error0)
+    {
+        throw error0;
+    }
+
+    connection.createChannel(function(error1, channel) {
+        if (error1)
+            throw error1;
+
+        let queue = "tweet_queue";
+        
+        channel.assertQueue(queue, {
+            durable: true
+        });
+        channel.sendToQueue(queue, Buffer.from(msg), {
+            persistent: true
+        });
+
+        console.log("[x] sent to %s", msg);
+    });
+
+    setTimeout(() => {
+        connection.close();
+    }, 500);
+    });
+};
+
+
+
 /***
     * request for root (/) page (string id)
     * 
