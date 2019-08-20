@@ -17,10 +17,8 @@ export class ProjectResultComponent implements OnInit {
 
   /* Doughnut Chart */
   public piedata: Object[] = [
-    { x: '40', y: 40, text: '40%'},
+    { x: '80', y: 80, text: '80%'},
     { x: '20', y: 20, text: '20%'},
-    { x: '10', y: 10, text: '10%'},
-    { x: '30', y: 30, text: '30%'},
   ];
   public legendSettings: Object = {
     visible: false
@@ -37,10 +35,31 @@ export class ProjectResultComponent implements OnInit {
   };
   public dataHistogram: Object[] = [];
   public primaryXAxisHistogram: Object = {
-    minimum: 0, maximum: 100
+    minimum: 0, maximum: 70, interval: 10,
+    title: 'Hello',
+    titleStyle: {
+      color: 'white',
+      size: '18px'
+    },
+    labelStyle: {
+      color: 'white',
+      size: '16px',
+    },
+    series: [{
+      stroke: 'white'
+    }]
   };
   public primaryYAxisHistogram: Object = {
-    minimum: 0, maximum: 50, interval: 10,
+    minimum: 0, maximum: 20, interval: 10,
+    title: 'Hello',
+    titleStyle: {
+      color: 'white',
+      size: '18px'
+    },
+    labelStyle: {
+      color: 'white',
+      size: '16px',
+    }
   };
   public loadHistogram(args: ILoadedEventArgs): void {
     let points: number[] = [5,5,5,5,5,15,15,15,15,15,25,25,25,25,25,25,25,25,25,25,25,25,25,35,35,35,35,35,35,45,45,45,45,55,55,55
@@ -51,9 +70,9 @@ export class ProjectResultComponent implements OnInit {
       });
     });
   };
-  public binInterval: number = 20;
+  public binInterval: number = 10;
   public columnWidth: number = 0.99;
-  public showNormalDistribution: boolean = true;
+  public showNormalDistribution: boolean = false;
   
   
   /* Average Sentiment Over Time */
@@ -61,12 +80,37 @@ export class ProjectResultComponent implements OnInit {
     { x: 2005, y: 28 }, { x: 2006, y: 25 },{ x: 2007, y: 26 }, { x: 2008, y: 27 },
     { x: 2009, y: 32 }, { x: 2010, y: 35 }, { x: 2011, y: 30 }
   ];
-  public title: string = 'Efficiency of oil-fired power production';
+
+  public marker: Object = {
+    visible: true,
+    fill: 'rgb(39,141,199)',
+    height: 10,
+    width: 10
+  }
+  
   public primaryXAxis: Object = {
-    interval: 1
+    interval: 1,
+    title: 'Hello',
+    titleStyle: {
+      color: 'white',
+      size: '18px'
+    },
+    labelStyle: {
+      color: 'white',
+      size: '16px',
+    }
+
   };
   public primaryYAxis: Object = {
     title: 'Expense',
+    titleStyle: {
+      color: 'white',
+      size: '18px'
+    },
+    labelStyle: {
+      color: 'white',
+      size: '16px'
+    }
   };
 
     
