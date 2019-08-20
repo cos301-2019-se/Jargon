@@ -6,6 +6,7 @@ import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
 import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
 import { FlagData } from '../../../../interfaces/flagger/flag-data';
 import { FlaggerApiRequesterService } from '../../../../services/flagger-api-requester/flagger-api-requester.service';
+import { ILoadedEventArgs } from '@syncfusion/ej2-charts';
 
 @Component({
   selector: 'app-project-result',
@@ -13,6 +14,64 @@ import { FlaggerApiRequesterService } from '../../../../services/flagger-api-req
   styleUrls: ['./project-result.component.css']
 })
 export class ProjectResultComponent implements OnInit {
+
+  /* Doughnut Chart */
+  public piedata: Object[] = [
+    { x: '40', y: 40, text: '40%'},
+    { x: '20', y: 20, text: '20%'},
+    { x: '10', y: 10, text: '10%'},
+    { x: '30', y: 30, text: '30%'},
+  ];
+  public legendSettings: Object = {
+    visible: false
+  };
+  public datalabel: Object = {
+    visible: true,
+    name: 'text',
+    position: 'Inside'
+  };
+
+  /* Sentiment Distribution - Histogram with Normal-ish Distribution*/
+  public chartArea: Object = {
+    background: 'skyblue'
+  };
+  public dataHistogram: Object[] = [];
+  public primaryXAxisHistogram: Object = {
+    minimum: 0, maximum: 100
+  };
+  public primaryYAxisHistogram: Object = {
+    minimum: 0, maximum: 50, interval: 10,
+  };
+  public loadHistogram(args: ILoadedEventArgs): void {
+    let points: number[] = [5,5,5,5,5,15,15,15,15,15,25,25,25,25,25,25,25,25,25,25,25,25,25,35,35,35,35,35,35,45,45,45,45,55,55,55
+    ];
+    points.map((value: number) => {
+      this.dataHistogram.push({
+        y: value
+      });
+    });
+  };
+  public binInterval: number = 20;
+  public columnWidth: number = 0.99;
+  public showNormalDistribution: boolean = true;
+  
+  
+  /* Average Sentiment Over Time */
+  public chartData: Object[] = [
+    { x: 2005, y: 28 }, { x: 2006, y: 25 },{ x: 2007, y: 26 }, { x: 2008, y: 27 },
+    { x: 2009, y: 32 }, { x: 2010, y: 35 }, { x: 2011, y: 30 }
+  ];
+  public title: string = 'Efficiency of oil-fired power production';
+  public primaryXAxis: Object = {
+    interval: 1
+  };
+  public primaryYAxis: Object = {
+    title: 'Expense',
+  };
+
+    
+  
+
 
   project: Project = new Project();
   currentRun: Run = new Run();

@@ -11,6 +11,7 @@ import { RefreshGuardService } from '../../services/refresh-guard/refresh-guard.
 import { ProjectApiRequesterService } from '../../services/project-api-requester/project-api-requester.service';
 import { NeuralnetApiRequesterService } from '../../services/neuralnet-api-requester/neuralnet-api-requester.service';
 import { SharedProjectService } from '../../services/shared-project/shared-project.service';
+import { HistogramSeriesService, LineSeriesService, PieSeriesService, AccumulationDataLabelService, AccumulationAnnotationService, AccumulationTooltipService, AccumulationLegendService, AccumulationChartModule } from '@syncfusion/ej2-angular-charts';
 
 @NgModule({
   declarations: [
@@ -23,13 +24,19 @@ import { SharedProjectService } from '../../services/shared-project/shared-proje
     ReactiveFormsModule,
     FormsModule,
     DashboardRoutingModule,
-    ChartsModule
   ],
   providers: [
     RefreshGuardService,
     ProjectApiRequesterService,
     NeuralnetApiRequesterService,
-    SharedProjectService
+    SharedProjectService,
+    HistogramSeriesService,
+    LineSeriesService,
+    PieSeriesService, 
+    AccumulationLegendService, 
+    AccumulationTooltipService, 
+    AccumulationAnnotationService,
+    AccumulationDataLabelService
   ]
 })
 export class DashboardModule { }

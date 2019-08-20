@@ -37,19 +37,40 @@
                   </div>
                   <div class="card shadow-lg">
                     <div class="card-header">
+                      <h5 class="display-5"><b>PROJECT DETAILS</b></h5>
+                    </div>
+                    <div class="card-body text-gray">
+
+                      <ejs-accumulationchart id="chart-container" [legendSettings]='legendSettings' background='rgba(1,1,1,0)'>
+                          <e-accumulation-series-collection>
+                              <e-accumulation-series [dataSource]='piedata' xName='x' yName='y' innerRadius='40%' [dataLabel]='datalabel'></e-accumulation-series>
+                          </e-accumulation-series-collection>
+                      </ejs-accumulationchart>
+                    </div>
+                  </div>
+                  <div class="card shadow-lg">
+                    <div class="card-header">
                       <h5 class="display-5"><b>AVERAGE SCORE</b></h5>
                     </div>
                     <div class="card-body">
                       <div>
                         <div style="display: block">
-                          <canvas baseChart height="100"
+
+                          <ejs-chart id="chart-average-over-time" [primaryXAxis]='primaryXAxis'[primaryYAxis]='primaryYAxis'
+                              [title]='title'>
+                            <e-series-collection>
+                                <e-series [dataSource]='chartData' type='Line' xName='x' yName='y'></e-series>
+                            </e-series-collection>
+                          </ejs-chart>
+
+                          <!-- <canvas baseChart height="100"
                             [data]="doughnutChartData"
                             [labels]="doughnutChartLabels"
                             [chartType]="doughnutChartType"
                             [options]="doughnutChartOptions"
                             [colors]="chartColors"
                             [plugins]="doughnutChartPlugins">
-                          </canvas>
+                          </canvas> -->
                         </div>
                       </div>
                     </div>
@@ -62,7 +83,16 @@
                   </div>
                   <div class="card-body">
                     <div style="display: block;">
-                      <canvas baseChart width="400" height="230"
+
+                      <ejs-chart id='chart-histogram' style='display:block;' align='center' [primaryXAxis]='primaryXAxisHistogram' [primaryYAxis]='primaryYAxisHistogram' (load)='loadHistogram($event)'>
+                        <e-series-collection>
+                            <e-series [dataSource]='dataHistogram' type='Histogram' yName='y' name='Score' width=2 [binInterval]='binInterval' showNormalDistribution='showNormalDistribution'
+                            [columnWidth]='columnWidth'> </e-series>
+                        </e-series-collection>
+                      </ejs-chart>
+                    
+
+                      <!-- <canvas baseChart width="400" height="230"
                         [datasets]="lineChartData"
                         [labels]="lineChartLabels"
                         [options]="lineChartOptions"
@@ -71,7 +101,7 @@
                         [chartType]="lineChartType"
                         [plugins]="lineChartPlugins"
                         (chartClick)="onChartClicked($event)">
-                      </canvas>
+                      </canvas> -->
                     </div>
                   </div>
                 </div>
@@ -179,7 +209,7 @@
                             </div>
                           </div>
                           <div class="col-1 m-0 my-auto mx-auto" *ngIf="activeFlagging">
-                              <input type="checkbox" [(ngModel)]="text['checked']" (click)="onCheckboxClick(i)">
+                            <input type="checkbox" [(ngModel)]="text['checked']" (click)="onCheckboxClick(i)">
                           </div>
                         </div>
                       </div>
