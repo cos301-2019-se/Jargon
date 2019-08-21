@@ -124,5 +124,31 @@ router.post('/', (req, res, next) => {
     
 });
 
+router.post('/compare', (req, res, next) => {
+    let idOne = req.body.first;
+    let idTwo = req.body.second;
+
+    Statistic.find({project: idOne})
+    .exec()
+    .then(res1 => {
+        Statistic.find(project: idTwo)
+        .exec()
+        .then(res2 => {
+            
+        })
+        .catch(err2 => {
+            res.status(200).json({
+                status: false,
+                result : "Error finding second project"
+            })
+        });
+    })
+    .catch(err1 => {
+        res.status(200).json({
+            status: false,
+            result : "Error finding first project"
+        });
+    });
+});
 
 module.exports = router;
