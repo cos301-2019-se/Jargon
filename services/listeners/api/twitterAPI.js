@@ -61,7 +61,7 @@ router.post('/', (req, res, next) => {
     .then(results => {
         if((results[0].source).toUpperCase()==='TWITTER'){
             twitterListenerInstance = new twitterListener(results[0].whitelist, results[0].blacklist, results[0].trackTime);     
-            twitterListenerInstance.startTracking(res, results[0].id, returnListenerData);   
+            twitterListenerInstance.startTracking(res, results[0].id, returnListenerData, send);   
         }else{
             console.log("Platform does not match project's chosen platform.");
         }

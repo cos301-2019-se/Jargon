@@ -103,7 +103,7 @@ class TwitterListener{
      *      contain blacklisted words. After it has run for the required duration,
      *      it calls the callback function.
      */
-    startTracking(response, projectID, callback){
+    startTracking(response, projectID, callback, streamSend){
         const twitterConsumerSecret = require('./twitterConfig').consumer_secret;
         const twitterTokenSecret = require('./twitterConfig').token_secret;
         const Twitter = require("node-tweet-stream")
@@ -123,6 +123,56 @@ class TwitterListener{
             })
             if(!found){
                 tempArray.push(tweet);
+                //TODO clean tweet
+                tweetArray = [];
+                tweetArray[0] = tweet;
+                let postBody = {
+                    'rawData' : tweetArray
+                }
+                let postBodyString = JSON.stringify(postBody);
+                var options = {
+                    host: "localhost",
+                    port: 3003,
+                    path: "/twitter/",
+                    method: "POST",
+                    headers: {
+                        'Content-Length': Buffer.byteLength(postBodyString),
+                        "Content-Type": "application/json"
+                    }
+                };
+                let responseString = "";
+                let sendString = "T";
+                var listenerRequest = http.request(options, (listenerResponse)=>{
+                    responseString = "";
+                    listenerResponse.on("data", (data) => {
+                        responseString += data;
+                    });
+                    listenerResponse.on("end", () => {
+                        //TODO save tweet to DB
+                        responseString = JSON.parse(responseString);
+                        sendString += responseString[0]["id_str"];
+                        let tweetStructure = {
+                            "tweetID" : responseString[0]["id_str"],
+                            "tweetObject" : responseString[0],
+                            "tweetSentiment" : -2
+                        }
+                        Project.find({_id : projectID})
+                        .exec()
+                        .then((result)=>{
+                            result[0].data.push(tweetStructure);
+                            sendString = "P" + result[0]["_id"] + sendString;
+                            console.log("saving tweet");
+                            result[0].save().then(() =>{ 
+                                streamSend(sendString);
+                            });
+                        }).catch((err) => {
+                            console.log(err);
+                        })
+                        //TODO send to RMQ
+                    });
+                });
+                listenerRequest.write(postBodyString);
+                listenerRequest.end();
             }
         }.bind(this))
         twitterAPI.track(this.whitelist); 
