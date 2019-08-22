@@ -14,7 +14,7 @@ class Sender():
         )
         self.channel = self.connection.channel()
         self.queue = 'controller_queue'
-        self.channel.queue_declare(queue=self.queue)
+        self.channel.queue_declare(queue=self.queue, durable=True)
 
     def send_message(self, body):
         self.channel.basic_publish(

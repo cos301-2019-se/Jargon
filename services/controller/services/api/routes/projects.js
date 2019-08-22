@@ -487,14 +487,14 @@ function startRMQ(){
         if (error1) {
         throw error1;
         }
-        var exchange = 'direct_logs';
+        // var exchange = 'direct_logs';
 
-        channel.assertExchange(exchange, 'direct', {
-        durable: false
-        });
+        // channel.assertExchange(exchange, 'direct', {
+        // durable: false
+        // });
 
         channel.assertQueue('controller_queue', {
-        exclusive: true
+        // exclusive: true
         }, function(error2, q) {
             if (error2) {
             throw error2;
