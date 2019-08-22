@@ -13,6 +13,10 @@ body {
   background-color: #D7DBD6 !important;
 }
 
+app-project-compare {
+  width: 100%;
+}
+
 app-projects {
   width: 100%;
 }
