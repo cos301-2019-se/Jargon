@@ -101,11 +101,18 @@ function generateHistogramData(data)
     let histogram = [];
 
     let len = data.length;
+    console.log("HISTOGRAM ===========");
+    console.log(data);
     for (let i = 0; i < len; i++)
     {
-        let num = ((Math.trunc(data[i] / INTERVAL)) - 1) * 100;
-        histogram.push(num);
+        if (data[i] > 0)
+        {
+            let num = Math.round((data[i] * 100));
+            histogram.push(num);
+        }
+        
     }
+    console.log(histogram);
     return histogram;
 }
 
@@ -297,7 +304,7 @@ router.post('/', (req, res, next) => {
             mode : final.mode,
             median : final.median,
             graphs : graph,
-            project : proj[0]._id
+            project : req.body.id
         });
 
         stat.save()
