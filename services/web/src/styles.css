@@ -9,6 +9,10 @@
   font-family: 'Amiko', sans-serif !important;
 }
 
+body {
+  background-color: #D7DBD6 !important;
+}
+
 app-projects {
   width: 100%;
 }
