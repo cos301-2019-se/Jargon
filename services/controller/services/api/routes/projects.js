@@ -337,16 +337,23 @@ router.post('/start', (req, res, next) => {
                                             bestTweet = ind;
                                             bestTweetScore = sentiment;
                                         }
+
+                                        let tweetStructure = {
+                                            "tweetID" : tweetsAndSentiments[0]["id_str"],
+                                            "tweetObject" : responseString[0],
+                                            "tweetSentiment" : -2
+                                        }
+
                                     })
                                     let runInfo = {
-                                        dateRun : currDate,
-                                        positivePercentage : (posTweets/totalTweets),
-                                        negativePercentage : (negTweets/totalTweets),
-                                        bestTweet : tweetsAndSentiments['data'][0][bestTweet]["text"],
-                                        bestTweetSentiment : bestTweetScore,
-                                        worstTweet : tweetsAndSentiments['data'][0][worstTweet]["text"],
-                                        worstTweetSentiment : worstTweetScore,
-                                        averageScore : (avgScore/totalTweets)
+                                        // dateRun : currDate,
+                                        // positivePercentage : (posTweets/totalTweets),
+                                        // negativePercentage : (negTweets/totalTweets),
+                                        // bestTweet : tweetsAndSentiments['data'][0][bestTweet]["text"],
+                                        // bestTweetSentiment : bestTweetScore,
+                                        // worstTweet : tweetsAndSentiments['data'][0][worstTweet]["text"],
+                                        // worstTweetSentiment : worstTweetScore,
+                                        // averageScore : (avgScore/totalTweets)
                                     }
                                     if(result[0].dataSentiment===null){
                                         result[0].dataSentiment = [];
