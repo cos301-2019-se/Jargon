@@ -138,9 +138,13 @@ function generateAverageSentimentOverTime(data)
     
     for (let i = 0; i < len; i++)
     {
-        let ind = Number(arr[i].hour);
-        sum[ind] += arr[i].sentiment;
-        count[ind] += 1;
+        if (arr[i].tweetSentiment != -2)
+        {
+            let ind = Number(arr[i].hour);
+            sum[ind] += arr[i].sentiment;
+            count[ind] += 1;
+        }
+        
     }
     let avg = [];
     for (let i = 0; i < HOURS; i++)
@@ -157,7 +161,7 @@ function generateAverageSentimentOverTime(data)
             let tweetsList = [];
             for (let j = 0; j < len; j++)
             {
-                if (Number(arr[j].hour) == i)
+                if (Number(arr[j].hour) == i && arr[j].sentiment != -2)
                     tweetsList.push({
                         tweet : arr[j].tweet,
                         sentiment : arr[j].sentiment
@@ -200,7 +204,7 @@ function getRateOfChange(data)
     let index = 0;
     for (; index < len; index++)
     {
-        if (data[index] !== undefined) {
+        if (data[index].averageSentiment != -2) {
             prev = data[index];
             break;
         }
@@ -212,8 +216,8 @@ function getRateOfChange(data)
     for (let i = index; i < len; i++)
     {
 
-        if (data[i] !== undefined) {
-            if (data[i-1] === undefined) {
+        if (data[i].averageSentiment != -2) {
+            if (data[i-1].averageSentiment == -2) {
                 change[i] = ((data[i].averageSentiment - prev.averageSentiment) / (HOUR * count));
                 prev = data[i];
                 count++;
@@ -267,13 +271,16 @@ router.post('/', (req, res, next) => {
     .exec()
     .then(proj => {
         // console.log(proj);
-        let initial = proj[0].data.map(function(elem) {
+        let projectData = proj[0].data.filter(function(elem){
+            return elem.tweetSentiment > 0;
+        });
+        let initial = projectData.map(function(elem) {
             return elem.tweetSentiment;
         });
 
         let hist = generateHistogramData(initial);
 
-        let avg = generateAverageSentimentOverTime(proj[0].data)
+        let avg = generateAverageSentimentOverTime(projectData)
 
         let change = getRateOfChange(avg);
     
