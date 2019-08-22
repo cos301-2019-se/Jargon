@@ -124,11 +124,12 @@ def evaluate(sentence):
     result = cnn.evaluate(indexed)
     return result
 
+
 def callback(ch, method, properties, body):
 
     project_id, tweet_id = body.decode().split()
     client = pymongo.MongoClient(
-        "mongodb+srv://admin:" + urllib.parse.quote("sug@r123") + \
+        "mongodb+srv://admin:" + urllib.parse.quote("sug@r123") +
         "@cluster0-jsbm1.gcp.mongodb.net/test?retryWrites=true"
     )
     print('Database connection established.')
@@ -140,31 +141,33 @@ def callback(ch, method, properties, body):
     project = proj.find_one(query)
     tweets = project['data']
 
-    t = [tweet['text'] for tweet in tweets if tweet['id_str'] == tweet_id][0]
+    tweet = [tweet for tweet in tweets if tweet['id_str'] == tweet_id][0]
+    t = tweet['text']
+    i = tweets.index(tweet)
+    print(t)
     print(f'-> Sending text to NN:\n\t{t}')
 
     sentiment = evaluate(t)
     print(f'-> Result:\t{sentiment}')
     print(f'Updating database entry')
-    # project.update_one({
-    #     '_id':project_id},
-    #     {
-    #         "$set": {
-    #             "sentiment": sentiment
-    #         }
-    #     },
-    #     upsert=False
-    # )
+    proj.update_one(
+        {'_id': ObjectId(project_id)},
+        {
+            "$set": {
+                "data."+str(i)+".sentiment": sentiment
+            }
+        },
+        upsert=False
+    )
     s = Sender()
     s.open_conn()
     s.send_message(f'{project_id} {tweet_id}')
     s.close_conn()
 
+    client.close()
 
-    #client.close()
-    print('done')
 
 channel.basic_consume(queue=queue, auto_ack=True, on_message_callback=callback)
 
 print('[*] Waiting for messages. To exit press CTRL+C')
-channel.start_consuming();
+channel.start_consuming()
