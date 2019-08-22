@@ -32,7 +32,8 @@ export class ProjectResultComponent implements OnInit {
 
   /* Sentiment Distribution - Histogram with Normal-ish Distribution*/
   public chartArea: Object = {
-    background: 'skyblue'
+    background: 'skyblue',
+    canResize: true,
   };
   public dataHistogram: Object[] = [];
   public primaryXAxisHistogram: Object = {
