@@ -18,7 +18,8 @@ export class DashboardComponent implements OnInit {
     ],
     [
       { caption: "Projects", path: "dashboard/projects", icon: "fa-clipboard" },
-      { caption: "Create Project", path: "dashboard/create-project", icon: "fa-tasks" }
+      { caption: "Create Project", path: "dashboard/create-project", icon: "fa-tasks" },
+      { caption: "Compare Project", path: "dashboard/compare-project", icon: "fa-clone" }
     ],
     [
       { caption: "Neural Network", path: "dashboard/neural-network", icon: "fa-network-wired" },

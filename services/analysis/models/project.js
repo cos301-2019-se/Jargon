@@ -18,13 +18,10 @@ const projectSchema = mongoose.Schema({
     trackTime: Number,
     data: [
         {
-            type : Object
+            tweetID : String,
+            tweetObject : Object,
+            tweetSentiment : Number,
         }
-    ],
-    dataSentiment: [
-        {
-            type : Number
-        } 
     ],
     created: {
         type: Date,
@@ -38,5 +35,6 @@ const projectSchema = mongoose.Schema({
         }
     ]
 });
+
 
 module.exports = mongoose.model('Project', projectSchema);

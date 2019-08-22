@@ -361,8 +361,8 @@ router.post('/start', (req, res, next) => {
                                     // //     worstTweetSentiment : worstTweetScore,
                                     // //     averageScore : (avgScore/totalTweets)
                                     // // }
-                                    console.log("here: " + result[0]['data'][0]);
-                                    console.log("and here: " + tweetsAndSentiments['data'][0][0]['id_str']);
+                                    // console.log("here: " + result[0]['data'][0]);
+                                    // console.log("and here: " + tweetsAndSentiments['data'][0][0]['id_str']);
                                     let y = 0;
                                     result[0]['data'].forEach((tweetA) =>{
                                         let x = 0;
@@ -389,6 +389,7 @@ router.post('/start', (req, res, next) => {
                                     result[0].status = false;
                                     result[0].save().then(
                                         (result)=>{
+                                            console.log(tweetsAndSentiments);
                                             res.status(200).json(tweetsAndSentiments);
                                         }
                                     )
