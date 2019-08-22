@@ -1,3 +1,11 @@
+/**
+ * Filename: analyse.js
+ * Author: Ethan Lindeman
+ * 
+ *      This file contains all the endpoints for the API that handles
+ *      all analysis of projects.
+ */
+
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -134,6 +142,15 @@ router.post('/compare', (req, res, next) => {
         Statistic.find(project: idTwo)
         .exec()
         .then(res2 => {
+
+            const obj = {
+                firstProject : res1,
+                secondProject : res2
+            }
+            res.send(200).json({
+                status: true,
+                result: obj
+            })
             
         })
         .catch(err2 => {
