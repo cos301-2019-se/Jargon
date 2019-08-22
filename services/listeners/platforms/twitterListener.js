@@ -186,7 +186,8 @@ class TwitterListener{
                     }
                 };
                 let responseString = "";
-                let sendString = " T";
+                let sendString = " ";
+                // let sendString = " T";
                 var listenerRequest = http.request(options, (listenerResponse)=>{
                     responseString = "";
                     listenerResponse.on("data", (data) => {
