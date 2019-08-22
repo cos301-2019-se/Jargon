@@ -4,4 +4,5 @@ __pycache__/
 *$py.class
 geckodriver.log
 .data/
+data/train.csv
 .vector_cache/

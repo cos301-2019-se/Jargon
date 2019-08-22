@@ -276,9 +276,12 @@ router.post('/start', (req, res, next) => {
                     });
                     listenerRes.on("end", () => {
                         responseString = JSON.parse(responseString);
+                        responseString = JSON.parse(responseString);
                         let messages = {
                             data : []
                         }
+                        // console.log(responseString);
+                        // console.log(typeof(responseString));
                         responseString.forEach((element)=>{
                             messages['data'].push(element['text']);
                         });
@@ -305,58 +308,84 @@ router.post('/start', (req, res, next) => {
                                 }
                                 tweetsAndSentiments['data'].push(responseString);
                                 tweetsAndSentiments['data'].push(nnResponseString);
+                                let tweetStructures = [];
+                                // console.log(tweetsAndSentiments);
+                                // console.log(tweetsAndSentiments['data']);
                                 Project.find({_id : id})
                                 .exec()
                                 .then((result)=>{
-                                    let today = new Date();
-                                    let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-                                    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                                    let currDate = date+' '+time;
-                                    let totalTweets = 0;
-                                    let posTweets = 0;
-                                    let negTweets = 0;
-                                    let bestTweet = -1;
-                                    let worstTweet = -1;
-                                    let bestTweetScore = -0.1;
-                                    let worstTweetScore = 1.1;
-                                    let avgScore = 0;
-                                    tweetsAndSentiments['data'][1]['sentiments'].forEach((sentiment, ind)=>{
-                                        totalTweets++;
-                                        avgScore += sentiment;
-                                        if(sentiment>0.5){
-                                            posTweets++;
-                                        }
-                                        if(sentiment<0.5){
-                                            negTweets++;
-                                        }
-                                        if(sentiment<worstTweetScore){
-                                            worstTweet = ind;
-                                            worstTweetScore = sentiment;
-                                        }
-                                        if(sentiment>bestTweetScore){
-                                            bestTweet = ind;
-                                            bestTweetScore = sentiment;
-                                        }
+                                    // let today = new Date();
+                                    // let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                                    // let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                                    // let currDate = date+' '+time;
+                                    // let totalTweets = 0;
+                                    // let posTweets = 0;
+                                    // let negTweets = 0;
+                                    // let bestTweet = -1;
+                                    // let worstTweet = -1;
+                                    // let bestTweetScore = -0.1;
+                                    // let worstTweetScore = 1.1;
+                                    // let avgScore = 0;
+                                    // // tweetsAndSentiments['data'][1]['sentiments'].forEach((sentiment, ind)=>{
+                                    // //     totalTweets++;
+                                    // //     avgScore += sentiment;
+                                    // //     if(sentiment>0.5){
+                                    // //         posTweets++;
+                                    // //     }
+                                    // //     if(sentiment<0.5){
+                                    // //         negTweets++;
+                                    // //     }
+                                    // //     if(sentiment<worstTweetScore){
+                                    // //         worstTweet = ind;
+                                    // //         worstTweetScore = sentiment;
+                                    // //     }
+                                    // //     if(sentiment>bestTweetScore){
+                                    // //         bestTweet = ind;
+                                    // //         bestTweetScore = sentiment;
+                                    // //     }
+
+                                    // //     // let tweetStructure = {
+                                    // //     //     "tweetID" : tweetsAndSentiments['data'][0][(totalTweets-1)]["id_str"],
+                                    // //     //     "tweetObject" : tweetsAndSentiments['data'][0][(totalTweets-1)],
+                                    // //     //     "tweetSentiment" : tweetsAndSentiments['data'][1]['sentiments'][(totalTweets-1)]
+                                    // //     // }
+                                    // //     // tweetStructures.push(tweetStructure);
+                                    // // })
+                                    // // let runInfo = {
+                                    // //     dateRun : currDate,
+                                    // //     positivePercentage : (posTweets/totalTweets),
+                                    // //     negativePercentage : (negTweets/totalTweets),
+                                    // //     bestTweet : tweetsAndSentiments['data'][0][bestTweet]["text"],
+                                    // //     bestTweetSentiment : bestTweetScore,
+                                    // //     worstTweet : tweetsAndSentiments['data'][0][worstTweet]["text"],
+                                    // //     worstTweetSentiment : worstTweetScore,
+                                    // //     averageScore : (avgScore/totalTweets)
+                                    // // }
+                                    console.log("here: " + result[0]['data'][0]);
+                                    console.log("and here: " + tweetsAndSentiments['data'][0][0]['id_str']);
+                                    let y = 0;
+                                    result[0]['data'].forEach((tweetA) =>{
+                                        let x = 0;
+                                        tweetsAndSentiments['data'][0].forEach((tweetB)=>{
+                                            if(tweetA['tweetID']==tweetB['id_str']){
+                                                console.log("ja");
+                                                result[0]["data"][y]['tweetSentiment'] = tweetsAndSentiments['data'][1]['sentiments'][x];
+                                                console.log(tweetsAndSentiments['data'][1]['sentiments']);
+                                                console.log(result[0]["data"][y]);
+                                            }
+                                            x++;
+                                        })
+                                        y++;
                                     })
-                                    let runInfo = {
-                                        dateRun : currDate,
-                                        positivePercentage : (posTweets/totalTweets),
-                                        negativePercentage : (negTweets/totalTweets),
-                                        bestTweet : tweetsAndSentiments['data'][0][bestTweet]["text"],
-                                        bestTweetSentiment : bestTweetScore,
-                                        worstTweet : tweetsAndSentiments['data'][0][worstTweet]["text"],
-                                        worstTweetSentiment : worstTweetScore,
-                                        averageScore : (avgScore/totalTweets)
-                                    }
-                                    if(result[0].dataSentiment===null){
-                                        result[0].dataSentiment = [];
-                                    }
-                                    result[0].dataSentiment = tweetsAndSentiments["data"][1]['sentiments'];
+                                    // if(result[0].dataSentiment===null){
+                                    //     result[0].dataSentiment = [];
+                                    // }
+                                    // result[0].dataSentiment = tweetsAndSentiments["data"][1]['sentiments'];
                                     tweetsAndSentiments = JSON.stringify(tweetsAndSentiments);
-                                    if(result[0].runs===null){
-                                        result[0].runs = [];
-                                    }
-                                    result[0].runs.push(runInfo);
+                                    // if(result[0].runs===null){
+                                    //     result[0].runs = [];
+                                    // }
+                                    // result[0].runs.push(runInfo);
                                     result[0].status = false;
                                     result[0].save().then(
                                         (result)=>{
@@ -371,6 +400,62 @@ router.post('/start', (req, res, next) => {
                         });
                         nnReq.write(messages);
                         nnReq.end();
+                    });
+                });
+                listenerReq.write(postBodyString);
+                listenerReq.end();
+            }
+        )
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+    })
+});
+
+/***
+    * request for start (/start) projects page (string id, string platform)
+    * 
+    * This function receives a specific project's id the platform a project
+    * needs to run on (e.g. Twitter), and then starts the a listener specific
+    * to the platform specified, which aggregates data according to the project's 
+    * whitelisted words. Certain metrics are then produced based on the data returned, 
+    * before the results are returned. 
+    */
+   router.post('/startStream', (req, res, next) => {
+    const id = req.body.id;
+    const platform = req.body.platform;
+    Project.find({_id : id})
+    .exec()
+    .then((result)=>{
+        result[0].status = true;
+        result[0].save().then(
+            ()=>{
+                let postBody = {
+                    'id' : id,
+                    'platform' : platform
+                }
+                let postBodyString = JSON.stringify(postBody);
+                if((platform === "twitter")||(platform==="Twitter")){
+                    var options = {
+                        host: "localhost",
+                        port: 3001,
+                        path: "/twitter/stream",
+                        method: "POST",
+                        headers: {
+                            'Content-Length': Buffer.byteLength(postBodyString),
+                            "Content-Type": "application/json"
+                        }
+                    };
+                }
+                let responseString;
+                var listenerReq = http.request(options, (listenerRes)=>{
+                    responseString = "";
+                    listenerRes.on("data", (data) => {
+                        responseString += data;
+                    });
+                    listenerRes.on("end", () => {
+                        responseString = JSON.parse(responseString);
+                        res.status(200).json(responseString);
                     });
                 });
                 listenerReq.write(postBodyString);

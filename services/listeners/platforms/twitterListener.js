@@ -8,6 +8,9 @@
  */
 "use strict";
 
+var http = require("http");
+const Project = require('../models/project');
+
 class TwitterListener{
     /*** 
      * conctructor(string array, string array, integer)
@@ -130,6 +133,101 @@ class TwitterListener{
             twitterAPI.untrack(this.whitelist);
             if(typeof callback == 'function'){
                 callback(response, projectID, tempArray);
+            }else{
+                console.log(typeof callback);
+            }
+        }, this.trackingDuration);
+    }
+
+    /***
+     * startStreamTracking(null object, string, function, function) : void
+     * 
+     *      The startStreamTracking function takes a null response object and a projID 
+     *      string which it sends as a parameter to the third parameter 
+     *      (callback function). The function connects to the Twitter API and 
+     *      starts collecting tweets that contain whitelisted words and does not
+     *      contain blacklisted words. It sends these tweets in real time as they 
+     *      are collected, to the nueral network for processing
+     */
+    startStreamTracking(response, projectID, callback, streamStart, streamSend){
+        // streamStart("one message");
+        const twitterConsumerSecret = require('./twitterConfig').consumer_secret;
+        const twitterTokenSecret = require('./twitterConfig').token_secret;
+        const Twitter = require("node-tweet-stream")
+        , twitterAPI = new Twitter({
+            consumer_key: 'DnXz3QBEptjCkSCXoKmj690GQ',
+            consumer_secret: twitterConsumerSecret,
+            token: '1122433281465700352-bPVkrTzBiwMyenSqHfePpi2QNU4t3e',
+            token_secret: twitterTokenSecret
+        })
+        twitterAPI.on('tweet', function(tweet){
+            let found = false;
+            this.blacklistArray.forEach(element=>{
+                if(tweet.text.indexOf(element)>-1){
+                    found = true;
+                }
+            })
+            if(!found){
+                //TODO clean tweet
+                let tweetArray = [];
+                tweetArray[0] = tweet;
+                let postBody = {
+                    'rawData' : tweetArray
+                }
+                let postBodyString = JSON.stringify(postBody);
+                var options = {
+                    host: "localhost",
+                    port: 3003,
+                    path: "/twitter/",
+                    method: "POST",
+                    headers: {
+                        'Content-Length': Buffer.byteLength(postBodyString),
+                        "Content-Type": "application/json"
+                    }
+                };
+                let responseString = "";
+                let sendString = " ";
+                // let sendString = " T";
+                var listenerRequest = http.request(options, (listenerResponse)=>{
+                    responseString = "";
+                    listenerResponse.on("data", (data) => {
+                        responseString += data;
+                    });
+                    listenerResponse.on("end", () => {
+                        //TODO save tweet to DB
+                        responseString = JSON.parse(responseString);
+                        sendString += responseString[0]["id_str"];
+                        let tweetStructure = {
+                            "tweetID" : responseString[0]["id_str"],
+                            "tweetObject" : responseString[0],
+                            "tweetSentiment" : -2
+                        }
+                        Project.find({_id : projectID})
+                        .exec()
+                        .then((result)=>{
+                            result[0].data.push(tweetStructure);
+                            sendString = result[0]["_id"] + sendString;
+                            console.log("saving tweet");
+                            result[0].save().then(() =>{ 
+                                // console.log("here");
+                                streamStart(sendString);
+                            });
+                        }).catch((err) => {
+                            console.log(err);
+                        })
+                        //TODO send to RMQ
+                    });
+                });
+                listenerRequest.write(postBodyString);
+                listenerRequest.end();
+            }
+        }.bind(this))
+        twitterAPI.track(this.whitelist); 
+        setTimeout(()=>{
+            twitterAPI.untrack(this.whitelist);
+            if(typeof callback == 'function'){
+                streamStart(projectID + " T/t");
+                callback(response, projectID, true);
             }else{
                 console.log(typeof callback);
             }
