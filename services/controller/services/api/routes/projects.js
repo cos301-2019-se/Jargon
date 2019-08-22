@@ -425,7 +425,7 @@ router.post('/start', (req, res, next) => {
     * before the results are returned. 
     */
 router.post('/startStream', (req, res, next) => {
-    startRMQ();
+    startRMQ(res);
     const id = req.body.id;
     const platform = req.body.platform;
     Project.find({_id : id})
@@ -472,7 +472,7 @@ router.post('/startStream', (req, res, next) => {
     })
 });
 
-function startRMQ(){
+function startRMQ(res){
     var args = process.argv.slice(2);
 
     // if (args.length == 0) {
@@ -508,6 +508,16 @@ function startRMQ(){
 
         channel.consume(q.queue, function(msg) {
             console.log(" [x] %s: '%s'", msg.fields.routingKey, msg.content.toString());
+            //add database stuff here
+            
+            const sock = res.io;
+
+            sock.emit("datasend", {});
+
+            setTimeout(() => {
+                sock.disconnect();
+            }, 6000);
+
         }, {
             noAck: true
         });
