@@ -32,4 +32,4 @@ if __name__ == "__main__":
         __main__():     none
         Instantiate the server.  
     """
-    app.run(debug=True)
+    app.run(debug=False)
