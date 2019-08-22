@@ -6,7 +6,7 @@ import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
 import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
 import { FlagData } from '../../../../interfaces/flagger/flag-data';
 import { FlaggerApiRequesterService } from '../../../../services/flagger-api-requester/flagger-api-requester.service';
-import { ILoadedEventArgs } from '@syncfusion/ej2-charts';
+import { ILoadedEventArgs, IAccTextRenderEventArgs } from '@syncfusion/ej2-charts';
 
 @Component({
   selector: 'app-project-result',
@@ -21,13 +21,17 @@ export class ProjectResultComponent implements OnInit {
     { x: '20', y: 20, text: '20%'},
   ];
   public legendSettings: Object = {
-    visible: false
+    visible: true,
+    textStyle: {
+      size: '25px',
+      color: 'white'
+    }
   };
   public datalabel: Object = {
     visible: true,
     name: 'text',
     position: 'Inside',
-    size: '14px'
+    size: '125px'
   };
 
   /* Sentiment Distribution - Histogram with Normal-ish Distribution*/
@@ -37,7 +41,7 @@ export class ProjectResultComponent implements OnInit {
   };
   public dataHistogram: Object[] = [];
   public primaryXAxisHistogram: Object = {
-    minimum: 0, maximum: 70, interval: 10,
+    minimum: 0.0, maximum: 1.0, interval: 0.10,
     title: 'Hello',
     titleStyle: {
       color: 'white',
@@ -72,7 +76,7 @@ export class ProjectResultComponent implements OnInit {
       });
     });
   };
-  public binInterval: number = 10;
+  public binInterval: number = 0.10;
   public columnWidth: number = 0.99;
   public showNormalDistribution: boolean = false;
   
@@ -91,8 +95,9 @@ export class ProjectResultComponent implements OnInit {
   }
   
   public primaryXAxis: Object = {
-    interval: 1,
-    title: 'Hello',
+    valueType: 'DateTime',
+    // interval: 1,
+    title: 'Time',
     titleStyle: {
       color: 'white',
       size: '18px'
@@ -104,7 +109,7 @@ export class ProjectResultComponent implements OnInit {
 
   };
   public primaryYAxis: Object = {
-    title: 'Expense',
+    title: 'Avg Sentiment',
     titleStyle: {
       color: 'white',
       size: '18px'
@@ -129,110 +134,110 @@ export class ProjectResultComponent implements OnInit {
   filter: string = "All";
   sorting: string = "Oldest"
 
-  doughnutChartLabels: Label[] = ['positive', 'negative'];//'Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
-  doughnutChartData: MultiDataSet = [ 
-    // [80, 20],
-    [0,0]
-  ];
-  doughnutChartType: ChartType = 'doughnut';
-  doughnutChartOptions: ChartOptions = {
-    cutoutPercentage: 80,
-    legend: {
-      labels: {
-        fontColor: 'white'
-      }
-    },
-  };
+  // doughnutChartLabels: Label[] = ['positive', 'negative'];//'Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
+  // doughnutChartData: MultiDataSet = [ 
+  //   // [80, 20],
+  //   [0,0]
+  // ];
+  // doughnutChartType: ChartType = 'doughnut';
+  // doughnutChartOptions: ChartOptions = {
+  //   cutoutPercentage: 80,
+  //   legend: {
+  //     labels: {
+  //       fontColor: 'white'
+  //     }
+  //   },
+  // };
 
-  doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [{
-    beforeDraw(chart) {
-      const ctx = chart.ctx;
+  // doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [{
+  //   beforeDraw(chart) {
+  //     const ctx = chart.ctx;
       
-      var txt = chart.data.datasets[0].data[0].toString();
+  //     var txt = chart.data.datasets[0].data[0].toString();
 
-      //Get options from the center object in options
-      const sidePadding = 60;
-      const sidePaddingCalculated = (sidePadding / 100) * (chart.config.options.circumference)
+  //     //Get options from the center object in options
+  //     const sidePadding = 60;
+  //     const sidePaddingCalculated = (sidePadding / 100) * (chart.config.options.circumference)
 
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-      const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+  //     ctx.textAlign = 'center';
+  //     ctx.textBaseline = 'middle';
+  //     const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+  //     const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
 
-      //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
-      const stringWidth = ctx.measureText(txt).width;
-      const elementWidth = (chart.config.options.circumference) - sidePaddingCalculated;
+  //     //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+  //     const stringWidth = ctx.measureText(txt).width;
+  //     const elementWidth = (chart.config.options.circumference) - sidePaddingCalculated;
 
-      // Find out how much the font can grow in width.
-      const widthRatio = elementWidth / stringWidth;
-      const newFontSize = Math.floor(30 * widthRatio);
-      const elementHeight = (chart.config.options.circumference);
+  //     // Find out how much the font can grow in width.
+  //     const widthRatio = elementWidth / stringWidth;
+  //     const newFontSize = Math.floor(30 * widthRatio);
+  //     const elementHeight = (chart.config.options.circumference);
 
-      // Pick a new font size so it will not be larger than the height of label.
-      const fontSizeToUse = Math.min(newFontSize, elementHeight);
+  //     // Pick a new font size so it will not be larger than the height of label.
+  //     const fontSizeToUse = Math.min(newFontSize, elementHeight);
 
-      ctx.font = '2.4vw Arial';
-      ctx.fillStyle = 'white';
+  //     ctx.font = '2.4vw Arial';
+  //     ctx.fillStyle = 'white';
 
-      // Draw text in center
+  //     // Draw text in center
 
-      ctx.fillText(txt+'%', centerX, centerY);
-    }
-  }];
+  //     ctx.fillText(txt+'%', centerX, centerY);
+  //   }
+  // }];
 
-  chartColors: any[] = [
-    { 
-      backgroundColor:["#005C99", "#55BBFF"] 
-    }
-  ];
+  // chartColors: any[] = [
+  //   { 
+  //     backgroundColor:["#005C99", "#55BBFF"] 
+  //   }
+  // ];
 
-  lineChartData: ChartDataSets[] = [
-    { data: [], label:'' },
-  ];
-  lineChartLabels: Label[] = [];//'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November'];
+  // lineChartData: ChartDataSets[] = [
+  //   { data: [], label:'' },
+  // ];
+  // lineChartLabels: Label[] = [];//'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November'];
 
-  lineChartOptions: ChartOptions = {
-    responsive: true,
-    legend: {
-      labels: {
-        fontColor: '',
-        boxWidth: 0
-      }
-    },
-    scales: {
-      xAxes: [{
-        ticks: {
-          fontColor: 'white'
-        },
-        gridLines: {
-          color: ''  // grid line color (can be removed or changed)
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          fontColor: 'white'
-        },
-        gridLines: {
-          color: ''
-        },
-      }],
-    },
-    title: {
-      // display: true,
-      // text: 'Your chart title',
-      // fontColor: 'white',
-    },
-  };
+  // lineChartOptions: ChartOptions = {
+  //   responsive: true,
+  //   legend: {
+  //     labels: {
+  //       fontColor: '',
+  //       boxWidth: 0
+  //     }
+  //   },
+  //   scales: {
+  //     xAxes: [{
+  //       ticks: {
+  //         fontColor: 'white'
+  //       },
+  //       gridLines: {
+  //         color: ''  // grid line color (can be removed or changed)
+  //       }
+  //     }],
+  //     yAxes: [{
+  //       ticks: {
+  //         fontColor: 'white'
+  //       },
+  //       gridLines: {
+  //         color: ''
+  //       },
+  //     }],
+  //   },
+  //   title: {
+  //     // display: true,
+  //     // text: 'Your chart title',
+  //     // fontColor: 'white',
+  //   },
+  // };
 
-  lineChartColors: Color[] = [
-    {
-      borderColor: 'rgba(30, 129, 228, 0.5)',
-      backgroundColor: 'rgba(255,0,0,0)',
-    },
-  ];
-  lineChartLegend = true;
-  lineChartType = 'line';
-  lineChartPlugins = [];
+  // lineChartColors: Color[] = [
+  //   {
+  //     borderColor: 'rgba(30, 129, 228, 0.5)',
+  //     backgroundColor: 'rgba(255,0,0,0)',
+  //   },
+  // ];
+  // lineChartLegend = true;
+  // lineChartType = 'line';
+  // lineChartPlugins = [];
 
   constructor(private shareProjectService: SharedProjectService,
       private projectApiRequesterService: ProjectApiRequesterService,
@@ -241,7 +246,7 @@ export class ProjectResultComponent implements OnInit {
     shareProjectService.project.subscribe(
       (project: Project) => {
         this.projectApiRequesterService.getProjectDetailed(project._id).subscribe(
-          (project: Project) => {
+          (project: any) => {
             this.project = project;
 
             let index = this.project.runs.length - 1;
@@ -249,6 +254,9 @@ export class ProjectResultComponent implements OnInit {
 
             let data: number[] = [];
             let label: string[] = [];
+
+            console.log(this.project);
+            console.log(this.piedata);
             this.project.runs.forEach(
               (run: Run) => {
                 data.push(run.averageScore);
@@ -256,10 +264,13 @@ export class ProjectResultComponent implements OnInit {
               }
             );
 
-            this.lineChartData = [
-              { data: [...data], label:'' },
-            ];
-            this.lineChartLabels = [...label];
+            // this.lineChartData = [
+            //   { data: [...data], label:'' },
+            // ];
+            // this.lineChartLabels = [...label];
+
+            this.chartData = [];
+            
 
             this.onSortItemClick(this.sorting);
             this.onFilterItemClick(this.filter);
@@ -294,13 +305,17 @@ export class ProjectResultComponent implements OnInit {
     const decimals = 4;
     this.currentRun.bestTweetSentiment = parseFloat(this.currentRun.bestTweetSentiment.toFixed(decimals));
     this.currentRun.worstTweetSentiment = parseFloat(this.currentRun.worstTweetSentiment.toFixed(decimals));
-    console.log(this.currentRun);
+    console.log('Current Run:',this.currentRun);
     let avg = Math.round(this.currentRun.averageScore*100);
-    this.doughnutChartData = [
-      [
-        avg,
-        100-avg
-      ]
+    // this.doughnutChartData = [
+    //   [
+    //     avg,
+    //     100-avg
+    //   ]
+    // ];
+    this.piedata = [
+      { x: 'Positive', y: avg, text: (avg).toString()+'%'},
+      { x: 'Negative', y: 100-avg, text: (100-avg).toString()+'%'},
     ];
   }
 
