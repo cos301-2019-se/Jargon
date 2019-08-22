@@ -15,7 +15,9 @@ const twitterListener = require('../platforms/twitterListener');
 
 
 const amqp = require('amqplib/callback_api');
-
+let streamChannel = null;
+let streamConnection = null;
+let streamQueue = null;
 const send = (msg) => {
     amqp.connect("amqp://localhost", function(error0, connection) {
     if (error0)
@@ -23,19 +25,21 @@ const send = (msg) => {
         throw error0;
     }
 
+    streamConnection = connection;
     connection.createChannel(function(error1, channel) {
         if (error1)
             throw error1;
 
         let queue = "tweet_queue";
+        streamQueue = queue;
         
         channel.assertQueue(queue, {
-            durable: true
+            durable: false
         });
+        streamChannel = channel;
         channel.sendToQueue(queue, Buffer.from(msg), {
             persistent: true
         });
-
         console.log("[x] sent to %s", msg);
     });
 
@@ -44,6 +48,19 @@ const send = (msg) => {
     }, 500);
     });
 };
+
+// function sendMessage(message){ 
+//     if(streamChannel != null){
+//         console.log("sending: " + message);
+//         streamChannel.sendToQueue(streamQueue, Buffer.from(message), {
+//             persistent : true
+//         });
+//     }
+// }
+
+// function closeQueue(){
+//     streamConnection.close();
+// }
 
 
 
@@ -88,7 +105,8 @@ router.post('/stream', (req, res, next) => {
     .exec()
     .then(results => {
         if((results[0].source).toUpperCase()==='TWITTER'){
-            twitterListenerInstance = new twitterListener(results[0].whitelist, results[0].blacklist, results[0].trackTime);     
+            twitterListenerInstance = new twitterListener(results[0].whitelist, results[0].blacklist, results[0].trackTime);
+            // send("");     
             twitterListenerInstance.startStreamTracking(res, results[0].id, returnListenerDataStream, send);   
         }else{
             console.log("Platform does not match project's chosen platform.");
@@ -169,6 +187,7 @@ function returnListenerData(response, projID, tempArray){
     *   words from this project
     */
     function returnListenerDataStream(response, projID, requestSuccess){ 
+        // closeQueue();
         response.status(200).json({success : requestSuccess});
     }   
 
