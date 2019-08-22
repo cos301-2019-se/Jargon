@@ -8,6 +8,9 @@
  */
 "use strict";
 
+var http = require("http");
+const Project = require('../models/project');
+
 class TwitterListener{
     /*** 
      * conctructor(string array, string array, integer)
@@ -146,7 +149,8 @@ class TwitterListener{
      *      contain blacklisted words. It sends these tweets in real time as they 
      *      are collected, to the nueral network for processing
      */
-    startStreamTracking(response, projectID, callback, streamSend){
+    startStreamTracking(response, projectID, callback, streamStart, streamSend){
+        // streamStart("one message");
         const twitterConsumerSecret = require('./twitterConfig').consumer_secret;
         const twitterTokenSecret = require('./twitterConfig').token_secret;
         const Twitter = require("node-tweet-stream")
@@ -165,7 +169,7 @@ class TwitterListener{
             })
             if(!found){
                 //TODO clean tweet
-                tweetArray = [];
+                let tweetArray = [];
                 tweetArray[0] = tweet;
                 let postBody = {
                     'rawData' : tweetArray
@@ -182,7 +186,7 @@ class TwitterListener{
                     }
                 };
                 let responseString = "";
-                let sendString = "T";
+                let sendString = " T";
                 var listenerRequest = http.request(options, (listenerResponse)=>{
                     responseString = "";
                     listenerResponse.on("data", (data) => {
@@ -201,10 +205,11 @@ class TwitterListener{
                         .exec()
                         .then((result)=>{
                             result[0].data.push(tweetStructure);
-                            sendString = "P" + result[0]["_id"] + sendString;
+                            sendString = result[0]["_id"] + sendString;
                             console.log("saving tweet");
                             result[0].save().then(() =>{ 
-                                streamSend(sendString);
+                                // console.log("here");
+                                streamStart(sendString);
                             });
                         }).catch((err) => {
                             console.log(err);
@@ -220,6 +225,7 @@ class TwitterListener{
         setTimeout(()=>{
             twitterAPI.untrack(this.whitelist);
             if(typeof callback == 'function'){
+                streamStart(projectID + " T/t");
                 callback(response, projectID, true);
             }else{
                 console.log(typeof callback);
