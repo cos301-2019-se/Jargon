@@ -61,7 +61,35 @@ router.post('/', (req, res, next) => {
     .then(results => {
         if((results[0].source).toUpperCase()==='TWITTER'){
             twitterListenerInstance = new twitterListener(results[0].whitelist, results[0].blacklist, results[0].trackTime);     
-            twitterListenerInstance.startTracking(res, results[0].id, returnListenerData, send);   
+            twitterListenerInstance.startTracking(res, results[0].id, returnListenerData);   
+        }else{
+            console.log("Platform does not match project's chosen platform.");
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
+});
+
+/***
+    * request for stream (/stream) page (string id)
+    * 
+    * this function receives an id string, which it uses to search
+    * for a project in the database, and starts a twitterListener 
+    * object with the keywords in that specific project, in a manner
+    * that allows it to stream tweets in realtime
+    */
+router.post('/stream', (req, res, next) => {
+    const id = req.body.id;
+    Project.find({ _id: id })
+    .exec()
+    .then(results => {
+        if((results[0].source).toUpperCase()==='TWITTER'){
+            twitterListenerInstance = new twitterListener(results[0].whitelist, results[0].blacklist, results[0].trackTime);     
+            twitterListenerInstance.startStreamTracking(res, results[0].id, returnListenerDataStream, send);   
         }else{
             console.log("Platform does not match project's chosen platform.");
         }
@@ -131,5 +159,17 @@ function returnListenerData(response, projID, tempArray){
     listenerRequest.write(postBodyString);
     listenerRequest.end();
 }
+
+/***
+    * returnListenerData(null, string, null) : json object
+    * 
+    *   a callback function sent to an instance of the twitterListener class
+    *   that updates the specific project (based on the projectID) with all 
+    *   the tweets found from running a listener with the relevant whitelisted
+    *   words from this project
+    */
+    function returnListenerDataStream(response, projID, requestSuccess){ 
+        response.status(200).json({success : requestSuccess});
+    }   
 
 module.exports = router;

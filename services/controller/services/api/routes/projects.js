@@ -383,4 +383,60 @@ router.post('/start', (req, res, next) => {
     })
 });
 
+/***
+    * request for start (/start) projects page (string id, string platform)
+    * 
+    * This function receives a specific project's id the platform a project
+    * needs to run on (e.g. Twitter), and then starts the a listener specific
+    * to the platform specified, which aggregates data according to the project's 
+    * whitelisted words. Certain metrics are then produced based on the data returned, 
+    * before the results are returned. 
+    */
+   router.post('/startStream', (req, res, next) => {
+    const id = req.body.id;
+    const platform = req.body.platform;
+    Project.find({_id : id})
+    .exec()
+    .then((result)=>{
+        result[0].status = true;
+        result[0].save().then(
+            ()=>{
+                let postBody = {
+                    'id' : id,
+                    'platform' : platform
+                }
+                let postBodyString = JSON.stringify(postBody);
+                if((platform === "twitter")||(platform==="Twitter")){
+                    var options = {
+                        host: "localhost",
+                        port: 3001,
+                        path: "/twitter/stream",
+                        method: "POST",
+                        headers: {
+                            'Content-Length': Buffer.byteLength(postBodyString),
+                            "Content-Type": "application/json"
+                        }
+                    };
+                }
+                let responseString;
+                var listenerReq = http.request(options, (listenerRes)=>{
+                    responseString = "";
+                    listenerRes.on("data", (data) => {
+                        responseString += data;
+                    });
+                    listenerRes.on("end", () => {
+                        responseString = JSON.parse(responseString);
+                        res.status(200).json(responseString);
+                    });
+                });
+                listenerReq.write(postBodyString);
+                listenerReq.end();
+            }
+        )
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+    })
+});
+
 module.exports = router;
