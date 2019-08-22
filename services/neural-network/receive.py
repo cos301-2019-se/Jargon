@@ -147,8 +147,7 @@ def callback(ch, method, properties, body):
         print(t)
         print(f'-> Sending text to NN:\n\t{t}')
 
-        # sentiment = evaluate(t)
-        sentiment = 0.5
+        sentiment = evaluate(t)
         print(f'-> Result:\t{sentiment}')
         print(f'Updating database entry')
         proj.update_one(
