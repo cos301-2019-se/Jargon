@@ -107,7 +107,7 @@ function generateHistogramData(data)
     {
         if (data[i] > 0)
         {
-            let num = Math.round((data[i] * 100));
+            let num = Math.floor((data[i] * 100)/10) *10;
             histogram.push(num);
         }
         
@@ -168,6 +168,13 @@ function generateAverageSentimentOverTime(data)
                 tweets : tweetsList
 
             };
+        }
+        else
+        {
+            res.push({
+                averageSentiment: -2,
+                tweets : []
+            });
         }
     }
 
