@@ -136,10 +136,10 @@ def evaluate(model, iterator, criterion):
 
         for batch in iterator:
 
-            predictions = model(batch.t).squeeze(1)
+            predictions = model(batch.text).squeeze(1)
 
-            loss = criterion(predictions, torch.squeeze(batch.s))
-            acc = binary_accuracy(predictions, torch.squeeze(batch.s))
+            loss = criterion(predictions, torch.squeeze(batch.label))
+            acc = binary_accuracy(predictions, torch.squeeze(batch.label))
 
             epoch_loss += loss.item()
             epoch_acc += acc.item()
@@ -180,12 +180,15 @@ def train_model(model, train_iterator, valid_iterator):
             best_valid_loss = valid_loss
             torch.save(model.state_dict(), 'nn-model.pt')
 
-        print(f'Epoch: {epoch+1:02} | Epoch Time: {epoch_mins}m {epoch_secs}s')
+        print(f'-> Epoch: {epoch+1:02} | '
+              'Epoch Time: {epoch_mins}m {epoch_secs}s')
         print(
-            f'\tTrain Loss: {train_loss:.3f} | Train Acc: {train_acc*100:.2f}%'
+            f'\t -> Train Loss: {train_loss:.3f} | '
+            'Train Acc: {train_acc*100:.2f}%'
         )
         print(
-            f'\t Val. Loss: {valid_loss:.3f} |  Val. Acc: {valid_acc*100:.2f}%'
+            f'\t -> Val. Loss: {valid_loss:.3f} | '
+            ' Val. Acc: {valid_acc*100:.2f}%'
         )
 
 
@@ -214,9 +217,9 @@ def train(model, iterator, optimizer, criterion):
 
     for batch in iterator:
         optimizer.zero_grad()
-        predictions = model(batch.t).squeeze(1)
-        loss = criterion(predictions, torch.squeeze(batch.s))
-        acc = binary_accuracy(predictions, torch.squeeze(batch.s))
+        predictions = model(batch.text).squeeze(1)
+        loss = criterion(predictions, torch.squeeze(batch.label))
+        acc = binary_accuracy(predictions, torch.squeeze(batch.label))
 
         loss.backward()
         optimizer.step()
