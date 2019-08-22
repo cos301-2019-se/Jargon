@@ -11,6 +11,8 @@ const router = express.Router();
 
 const mongoose = require('mongoose');
 const Project = require('../models/project');
+var ampq = require('amqplib/callback_api');
+var amqpConn = null;
 
 /***
     * request for root (/) page
@@ -361,17 +363,17 @@ router.post('/start', (req, res, next) => {
                                     // //     worstTweetSentiment : worstTweetScore,
                                     // //     averageScore : (avgScore/totalTweets)
                                     // // }
-                                    console.log("here: " + result[0]['data'][0]);
-                                    console.log("and here: " + tweetsAndSentiments['data'][0][0]['id_str']);
+                                    // console.log("here: " + result[0]['data'][0]);
+                                    // console.log("and here: " + tweetsAndSentiments['data'][0][0]['id_str']);
                                     let y = 0;
                                     result[0]['data'].forEach((tweetA) =>{
                                         let x = 0;
                                         tweetsAndSentiments['data'][0].forEach((tweetB)=>{
                                             if(tweetA['tweetID']==tweetB['id_str']){
-                                                console.log("ja");
+                                                // console.log("ja");
                                                 result[0]["data"][y]['tweetSentiment'] = tweetsAndSentiments['data'][1]['sentiments'][x];
-                                                console.log(tweetsAndSentiments['data'][1]['sentiments']);
-                                                console.log(result[0]["data"][y]);
+                                                // console.log(tweetsAndSentiments['data'][1]['sentiments']);
+                                                // console.log(result[0]["data"][y]);
                                             }
                                             x++;
                                         })
@@ -421,7 +423,8 @@ router.post('/start', (req, res, next) => {
     * whitelisted words. Certain metrics are then produced based on the data returned, 
     * before the results are returned. 
     */
-   router.post('/startStream', (req, res, next) => {
+router.post('/startStream', (req, res, next) => {
+    startRMQ();
     const id = req.body.id;
     const platform = req.body.platform;
     Project.find({_id : id})
@@ -467,5 +470,49 @@ router.post('/start', (req, res, next) => {
         res.status(500).json(err);
     })
 });
+
+function startRMQ() {
+    amqp.connect(process.env.CLOUDAMQP_URL + "?heartbeat=60", function(err, conn) {
+      if (err) {
+        console.error("[AMQP]", err.message);
+        return setTimeout(start, 1000);
+      }
+      conn.on("error", function(err) {
+        if (err.message !== "Connection closing") {
+          console.error("[AMQP] conn error", err.message);
+        }
+      });
+      conn.on("close", function() {
+        console.error("[AMQP] reconnecting");
+        return setTimeout(start, 1000);
+      });
+      console.log("[AMQP] connected");
+      amqpConn = conn;
+      whenConnected();
+    });
+  };
+
+  function whenConnected() {
+    startWorker();
+  }
+
+  function startWorker() {
+    amqpConn.createChannel(function(err, ch) {
+      if (closeOnErr(err)) return;
+      ch.on("error", function(err) {
+        console.error("[AMQP] channel error", err.message);
+      });
+      ch.on("close", function() {
+        console.log("[AMQP] channel closed");
+      });
+  
+      ch.prefetch(10);
+      ch.assertQueue("controller_queue", { durable: true }, function(err, _ok) {
+        if (closeOnErr(err)) return;
+        ch.consume("controller_queue", processMsg, { noAck: false });
+        console.log("Worker is started");
+      });
+    });
+  }
 
 module.exports = router;
