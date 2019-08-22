@@ -26,6 +26,7 @@ import { ProjectCompareComponent } from './project-compare/project-compare.compo
     ReactiveFormsModule,
     FormsModule,
     DashboardRoutingModule,
+    ChartsModule
   ],
   providers: [
     RefreshGuardService,
