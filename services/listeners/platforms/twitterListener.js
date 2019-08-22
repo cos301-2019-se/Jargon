@@ -103,7 +103,7 @@ class TwitterListener{
      *      contain blacklisted words. After it has run for the required duration,
      *      it calls the callback function.
      */
-    startTracking(response, projectID, callback, streamSend){
+    startTracking(response, projectID, callback){
         const twitterConsumerSecret = require('./twitterConfig').consumer_secret;
         const twitterTokenSecret = require('./twitterConfig').token_secret;
         const Twitter = require("node-tweet-stream")
@@ -123,6 +123,47 @@ class TwitterListener{
             })
             if(!found){
                 tempArray.push(tweet);
+            }
+        }.bind(this))
+        twitterAPI.track(this.whitelist); 
+        setTimeout(()=>{
+            twitterAPI.untrack(this.whitelist);
+            if(typeof callback == 'function'){
+                callback(response, projectID, tempArray);
+            }else{
+                console.log(typeof callback);
+            }
+        }, this.trackingDuration);
+    }
+
+    /***
+     * startStreamTracking(null object, string, function, function) : void
+     * 
+     *      The startStreamTracking function takes a null response object and a projID 
+     *      string which it sends as a parameter to the third parameter 
+     *      (callback function). The function connects to the Twitter API and 
+     *      starts collecting tweets that contain whitelisted words and does not
+     *      contain blacklisted words. It sends these tweets in real time as they 
+     *      are collected, to the nueral network for processing
+     */
+    startStreamTracking(response, projectID, callback, streamSend){
+        const twitterConsumerSecret = require('./twitterConfig').consumer_secret;
+        const twitterTokenSecret = require('./twitterConfig').token_secret;
+        const Twitter = require("node-tweet-stream")
+        , twitterAPI = new Twitter({
+            consumer_key: 'DnXz3QBEptjCkSCXoKmj690GQ',
+            consumer_secret: twitterConsumerSecret,
+            token: '1122433281465700352-bPVkrTzBiwMyenSqHfePpi2QNU4t3e',
+            token_secret: twitterTokenSecret
+        })
+        twitterAPI.on('tweet', function(tweet){
+            let found = false;
+            this.blacklistArray.forEach(element=>{
+                if(tweet.text.indexOf(element)>-1){
+                    found = true;
+                }
+            })
+            if(!found){
                 //TODO clean tweet
                 tweetArray = [];
                 tweetArray[0] = tweet;
@@ -179,7 +220,7 @@ class TwitterListener{
         setTimeout(()=>{
             twitterAPI.untrack(this.whitelist);
             if(typeof callback == 'function'){
-                callback(response, projectID, tempArray);
+                callback(response, projectID, true);
             }else{
                 console.log(typeof callback);
             }
