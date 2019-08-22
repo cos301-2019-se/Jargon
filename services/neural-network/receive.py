@@ -10,84 +10,84 @@ from bson.objectid import ObjectId
 from send import Sender
 
 
-SEED = 1234
+# SEED = 1234
 
-torch.manual_seed(SEED)
-torch.backends.cudnn.deterministic = True
+# torch.manual_seed(SEED)
+# torch.backends.cudnn.deterministic = True
 
-MAX_VOCAB_SIZE = 25_000
-TEXT = data.Field(tokenize='spacy')
-LABEL = data.LabelField(dtype=torch.float)
+# MAX_VOCAB_SIZE = 25_000
+# TEXT = data.Field(tokenize='spacy')
+# LABEL = data.LabelField(dtype=torch.float)
 
-print('-> Receiving data...')
+# print('-> Receiving data...')
 
-fields = [
-    ('label', LABEL),
-    (None, None),
-    (None, None),
-    (None, None),
-    (None, None),
-    ('text', TEXT)
-]
+# fields = [
+#     ('label', LABEL),
+#     (None, None),
+#     (None, None),
+#     (None, None),
+#     (None, None),
+#     ('text', TEXT)
+# ]
 
-train_data = data.TabularDataset(
-    path='data/train.csv',
-    format='csv',
-    fields=fields,
-    skip_header=True
-)
-train_count = len(train_data)
-print('-> Dataset loaded successfully, contains '
-      + str(train_count) + ' data points.')
+# train_data = data.TabularDataset(
+#     path='data/train.csv',
+#     format='csv',
+#     fields=fields,
+#     skip_header=True
+# )
+# train_count = len(train_data)
+# print('-> Dataset loaded successfully, contains '
+#       + str(train_count) + ' data points.')
 
-print('-> Splitting dataset...')
-train_data, test_data = train_data.split()
-train_data, valid_data = train_data.split(random_state=random.seed(SEED))
+# print('-> Splitting dataset...')
+# train_data, test_data = train_data.split()
+# train_data, valid_data = train_data.split(random_state=random.seed(SEED))
 
-train_count = len(train_data)
-valid_count = len(valid_data)
-test_count = len(test_data)
+# train_count = len(train_data)
+# valid_count = len(valid_data)
+# test_count = len(test_data)
 
-print('-> Dataset split into training ('+str(train_count)+') '
-      'and test ('+str(test_count)+') and validation ('+str(valid_count)+').')
-print(vars(train_data[0]))
+# print('-> Dataset split into training ('+str(train_count)+') '
+#       'and test ('+str(test_count)+') and validation ('+str(valid_count)+').')
+# print(vars(train_data[0]))
 
 
-print('-> Building vocab...')
-LABEL.build_vocab(train_data)
-TEXT.build_vocab(
-    train_data,
-    max_size=MAX_VOCAB_SIZE,
-    vectors='glove.6B.100d',
-    unk_init=torch.Tensor.normal_
-)
+# print('-> Building vocab...')
+# LABEL.build_vocab(train_data)
+# TEXT.build_vocab(
+#     train_data,
+#     max_size=MAX_VOCAB_SIZE,
+#     vectors='glove.6B.100d',
+#     unk_init=torch.Tensor.normal_
+# )
 
-INPUT_DIM = len(TEXT.vocab)
-EMBEDDING_DIM = 100
-N_FILTERS = 100
-FILTER_SIZE = [3, 4, 5]
-OUTPUT_DIM = 1
-DROPOUT = 0.5
-PAD_IDX = TEXT.vocab.stoi[TEXT.pad_token]
+# INPUT_DIM = len(TEXT.vocab)
+# EMBEDDING_DIM = 100
+# N_FILTERS = 100
+# FILTER_SIZE = [3, 4, 5]
+# OUTPUT_DIM = 1
+# DROPOUT = 0.5
+# PAD_IDX = TEXT.vocab.stoi[TEXT.pad_token]
 
-cnn = nno.NeuralNetwork(
-    train_data,
-    valid_data,
-    test_data,
-    INPUT_DIM,
-    EMBEDDING_DIM,
-    N_FILTERS,
-    FILTER_SIZE,
-    OUTPUT_DIM,
-    DROPOUT,
-    PAD_IDX
-)
+# cnn = nno.NeuralNetwork(
+#     train_data,
+#     valid_data,
+#     test_data,
+#     INPUT_DIM,
+#     EMBEDDING_DIM,
+#     N_FILTERS,
+#     FILTER_SIZE,
+#     OUTPUT_DIM,
+#     DROPOUT,
+#     PAD_IDX
+# )
 
-pretrained_embedding = TEXT.vocab.vectors
+# pretrained_embedding = TEXT.vocab.vectors
 
-print("-> Applying pretrained embeddings...")
-cnn.embedding.weight.data.copy_(pretrained_embedding)
-nlp = spacy.load('en')
+# print("-> Applying pretrained embeddings...")
+# cnn.embedding.weight.data.copy_(pretrained_embedding)
+# nlp = spacy.load('en')
 
 queue = 'tweet_queue'
 print(f'-> RMQ consumer listening on {queue}.')
@@ -103,26 +103,26 @@ channel.queue_declare(queue=queue)
 print("-> [done]")
 
 
-def create_indexed(sentence, min_len=5):
-    """
-        create_indexed(sentence, min_len = 5):
-    """
-    tokenized = [tok.text for tok in nlp.tokenizer(sentence)]
+# def create_indexed(sentence, min_len=5):
+#     """
+#         create_indexed(sentence, min_len = 5):
+#     """
+#     tokenized = [tok.text for tok in nlp.tokenizer(sentence)]
 
-    if len(tokenized) < min_len:
-        tokenized += ['<pad>'] * (min_len - len(tokenized))
+#     if len(tokenized) < min_len:
+#         tokenized += ['<pad>'] * (min_len - len(tokenized))
 
-    return [TEXT.vocab.stoi[t] for t in tokenized]
+#     return [TEXT.vocab.stoi[t] for t in tokenized]
 
 
-def evaluate(sentence):
-    """
-        evaluate(data):
-        Evaulate a list of strings and return a sentiment for each.
-    """
-    indexed = create_indexed(sentence)
-    result = cnn.evaluate(indexed)
-    return result
+# def evaluate(sentence):
+#     """
+#         evaluate(data):
+#         Evaulate a list of strings and return a sentiment for each.
+#     """
+#     indexed = create_indexed(sentence)
+#     result = cnn.evaluate(indexed)
+#     return result
 
 
 def callback(ch, method, properties, body):
@@ -147,7 +147,8 @@ def callback(ch, method, properties, body):
     print(t)
     print(f'-> Sending text to NN:\n\t{t}')
 
-    sentiment = evaluate(t)
+    # sentiment = evaluate(t)
+    sentiment = 0.5
     print(f'-> Result:\t{sentiment}')
     print(f'Updating database entry')
     proj.update_one(
