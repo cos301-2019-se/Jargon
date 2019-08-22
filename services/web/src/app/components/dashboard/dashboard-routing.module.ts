@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { ProjectResultComponent } from './projects/project-result/project-result.component';
 import { RefreshGuardService } from '../../services/refresh-guard/refresh-guard.service';
+import { ProjectCompareComponent } from './project-compare/project-compare.component';
 
 const routes: Routes = [
   { 
@@ -13,7 +14,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
       { path: 'projects', loadChildren: './projects/projects.module#ProjectsModule' },
       { path: 'create-project', component: CreateProjectComponent },
-      // { path: 'create-project', component: ProjectResultComponent },
+      { path: 'compare-project', component: ProjectCompareComponent },
       { path: 'project-result', component: ProjectResultComponent, canActivate: [RefreshGuardService] },
       { path: '**', redirectTo: 'projects' }
     ]
