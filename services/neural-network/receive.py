@@ -126,40 +126,40 @@ print("-> [done]")
 
 
 def callback(ch, method, properties, body):
-
     project_id, tweet_id = body.decode().split()
-    client = pymongo.MongoClient(
-        "mongodb+srv://admin:" + urllib.parse.quote("sug@r123") +
-        "@cluster0-jsbm1.gcp.mongodb.net/test?retryWrites=true"
-    )
-    print('Database connection established.')
+    if(tweet_id != '/t'):
+        client = pymongo.MongoClient(
+            "mongodb+srv://admin:" + urllib.parse.quote("sug@r123") +
+            "@cluster0-jsbm1.gcp.mongodb.net/test?retryWrites=true"
+        )
+        print('Database connection established.')
 
-    mydb = client["test"]
-    proj = mydb["projects"]
+        mydb = client["test"]
+        proj = mydb["projects"]
 
-    query = {"_id": ObjectId(project_id)}
-    project = proj.find_one(query)
-    tweets = project['data']
+        query = {"_id": ObjectId(project_id)}
+        project = proj.find_one(query)
+        tweets = project['data']
 
-    tweet = [tweet for tweet in tweets if tweet['tweetID'] == tweet_id][0]
-    t = tweet['tweetObject']['text']
-    i = tweets.index(tweet)
-    print(t)
-    print(f'-> Sending text to NN:\n\t{t}')
+        tweet = [tweet for tweet in tweets if tweet['tweetID'] == tweet_id][0]
+        t = tweet['tweetObject']['text']
+        i = tweets.index(tweet)
+        print(t)
+        print(f'-> Sending text to NN:\n\t{t}')
 
-    # sentiment = evaluate(t)
-    sentiment = 0.5
-    print(f'-> Result:\t{sentiment}')
-    print(f'Updating database entry')
-    proj.update_one(
-        {'_id': ObjectId(project_id)},
-        {
-            "$set": {
-                "data."+str(i)+".tweetSentiment": sentiment
-            }
-        },
-        upsert=False
-    )
+        # sentiment = evaluate(t)
+        sentiment = 0.5
+        print(f'-> Result:\t{sentiment}')
+        print(f'Updating database entry')
+        proj.update_one(
+            {'_id': ObjectId(project_id)},
+            {
+                "$set": {
+                    "data."+str(i)+".tweetSentiment": sentiment
+                }
+            },
+            upsert=False
+        )
     s = Sender()
     s.open_conn()
     s.send_message(f'{project_id} {tweet_id}')
