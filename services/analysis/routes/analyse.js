@@ -12,6 +12,12 @@ const mongoose = require('mongoose');
 const Statistic = require('../models/statistic');
 const Project = require('../models/project')
 
+const INTERVAL = 0.05;
+const TOTAL = 1;
+
+const HOURS = 24;
+const HOUR = 60;
+
 
 function reduce(vals) {
     let x = vals[0];
@@ -29,6 +35,7 @@ function reduce(vals) {
         x.max = Math.max(x.max, y.max);
     }
 
+    
     vals.sort(function(a,b){
         return a - b;
     });
@@ -73,6 +80,100 @@ function reduce(vals) {
     return x;
 }
 
+function generateHistogramData(data)
+{
+    let histogram = [];
+
+    let len = data.length;
+    for (let i = 0; i < len; i++)
+    {
+        let num = ((Math.trunc(data[i] / INTERVAL)) - 1) * 100;
+        histogram.push(num);
+    }
+    return histogram;
+}
+
+function generateAverageSentimentOverTime(data)
+{
+    let sum = [];
+    let count = [];
+    for (let i = 0; i < HOURS; i++)
+    {
+        sum[i] = 0;
+        count[i] = 0;
+    }
+    let arr = mapToTime(data);
+    let len = arr.length;
+    
+    for (let i = 0; i < len; i++)
+    {
+        let ind = Number(arr[i].hour);
+        sum[ind] += arr[i].sentiment;
+        count[ind] += 1;
+    }
+    let avg = [];
+    for (let i = 0; i < HOURS; i++)
+    {
+        avg[i] = 0;
+        if (count[i] != 0)
+            avg[i] = sum[i] / count[i];
+    }
+    let res = [];
+    for (let i = 0; i < HOURS; i++)
+    {
+        if (avg[i] != 0)
+        {
+            let tweetsList = [];
+            for (let j = 0; j < len; j++)
+            {
+                if (Number(arr[j].hour) == i)
+                    tweetsList.push({
+                        tweet : arr[j].tweet,
+                        sentiment : arr[j].sentiment
+                    });
+            }
+            res[i] = {
+                averageSentiment : avg[i],
+                tweets : tweetsList
+
+            };
+        }
+    }
+
+    return res;
+}
+
+function getRateOfChange(data)
+{
+    let len = data.length;
+    let change = [];
+    change[0] = 0;
+    for (let i = 1; i < len; i++)
+    {
+        change[i] = ((data[i].averageSentiment - data[i-1].averageSentiment) / HOUR);
+    }
+
+    return change;
+}
+
+function mapToTime(elem)
+{
+    let stamp = elem.tweetObject.timestamp_ms;
+    let d = new Date(stamp * 1000);
+    return {
+        hour : d.getHours(),
+        tweet : elem.tweetObject,
+        sentiment : elem.tweetSentiment
+    };
+
+}
+/***
+    * request for root (/) page (string id, Number[] scores)
+    * 
+    * this function receives id and array of scores and does statistical analysis on the data
+    * the data is then stored in the Database inside the Statistic model
+    */
+
 router.post('/', (req, res, next) => {
    
     let mapped = req.body.scores.map(function(val)
@@ -97,7 +198,7 @@ router.post('/', (req, res, next) => {
             _id: new mongoose.Types.ObjectId(),
             min : final.min,
             max : final.max,
-            std_dev : final.std_deviation,
+            std_dev : final.std_deviation, 
             variance : final.variance,
             mean : final.average,
             mode : final.mode,
@@ -131,6 +232,13 @@ router.post('/', (req, res, next) => {
 
     
 });
+
+/***
+    * request for compare (/compare) route (string first, string second)
+    * 
+    * this function receives an id for two different projects and returns their statistics
+    * the data is read from the Database inside the Statistic model
+*/
 
 router.post('/compare', (req, res, next) => {
     let idOne = req.body.first;
