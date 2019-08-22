@@ -19,6 +19,15 @@ const HOURS = 24;
 const HOUR = 60;
 
 
+/***
+     * reduce(array) : array
+     * 
+     *      The reduce function takes an array of objects that it iterates over in order
+     *      to calculate various aspects of statistical data. It will return an object containing the total sum, average, mode, mean, median,
+     *      variance, standard deviation
+     *      
+*/
+
 function reduce(vals) {
     let x = vals[0];
     let len = vals.length;
@@ -80,6 +89,13 @@ function reduce(vals) {
     return x;
 }
 
+/***
+     * generateHistogramData(array) : array
+     * 
+     *      The generateHistogramData function takes an array of numbers that it iterates over in order
+     *      to convert each number to its nearest multiple of ten. It will return an array containing the converted numbers.
+*/
+
 function generateHistogramData(data)
 {
     let histogram = [];
@@ -92,6 +108,14 @@ function generateHistogramData(data)
     }
     return histogram;
 }
+
+/***
+     * generateAverageSentimentOverTime(array) : array
+     * 
+     *      The generateHistogramData function takes an array of objects (where each object has a tweet ID, twitter object and sentiment) that it iterates over in order
+     *      to calculate the average sentiment per hour of the day. It will return an array containing the calculated average and list of tweets for that period.
+*/
+
 
 function generateAverageSentimentOverTime(data)
 {
@@ -143,6 +167,13 @@ function generateAverageSentimentOverTime(data)
     return res;
 }
 
+/***
+     * getRateOfChange(array) : array
+     * 
+     *      The getRateOfChange function takes an array of objects (where each object has a averageSentiment and list of tweets) that it iterates over in order
+     *      to calculate the change in average sentiment per hour of the day. It will return an array containing the calculated change in average for that period.
+*/
+
 function getRateOfChange(data)
 {
     let len = data.length;
@@ -155,6 +186,13 @@ function getRateOfChange(data)
 
     return change;
 }
+
+/***
+     * mapToTime(element) : array
+     * 
+     *      The getRateOfChange function takes an element of an object from the Project data array. 
+     *      It will return a new object with the hour, tweet and sentiment
+*/
 
 function mapToTime(elem)
 {
@@ -170,7 +208,7 @@ function mapToTime(elem)
 /***
     * request for root (/) page (string id, Number[] scores)
     * 
-    * this function receives id and array of scores and does statistical analysis on the data
+    * this function receives project id and does statistical analysis on the data
     * the data is then stored in the Database inside the Statistic model
     */
 
@@ -257,7 +295,7 @@ router.post('/', (req, res, next) => {
 });
 
 /***
-    * request for compare (/compare) route (string first, string second)
+    * request for compare (analyse/compare) route (string first, string second)
     * 
     * this function receives an id for two different projects and returns their statistics
     * the data is read from the Database inside the Statistic model
@@ -289,6 +327,32 @@ router.post('/compare', (req, res, next) => {
                 status: false,
                 result : "Error finding second project"
             })
+        });
+    })
+    .catch(err1 => {
+        res.status(200).json({
+            status: false,
+            result : "Error finding first project"
+        });
+    });
+});
+
+/***
+    * request for getStatistics (analyse/getStatistics) route (string id)
+    * 
+    * this function receives an id for a project and returns its statistics
+    * the data is read from the Database inside the Statistic model
+*/
+
+router.post('/getStatistics', (req, res, next) => {
+    let id = req.body.id;
+
+    Statistic.find({project: id})
+    .exec()
+    .then(res1 => {
+        res.status(200).json({
+            status : true,
+            result : res1
         });
     })
     .catch(err1 => {
