@@ -32,6 +32,17 @@ export class ProjectsComponent implements OnInit {
     this.projects = this.sharedProjectService.getProjects();
     if (this.projects === null) {
       this.onRefreshProjectsClick();
+    } else {
+      this.projectsLength = this.projects.length/this.PAGE_SIZE;
+
+      for (let i = 0; i < this.projects.length; i += this.PAGE_SIZE ) {
+          this.pages.push(0);
+      }
+  
+      this.pageProjects = [];
+      for (let i = 0; i < this.PAGE_SIZE && i < this.projects.length; ++i) {
+        this.pageProjects.push(this.projects[i]);
+      }
     }
   }
 

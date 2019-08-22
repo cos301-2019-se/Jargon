@@ -126,7 +126,7 @@ function generateAverageSentimentOverTime(data)
         sum[i] = 0;
         count[i] = 0;
     }
-    let arr = mapToTime(data);
+    let arr = data.map(mapToTime);
     let len = arr.length;
     
     for (let i = 0; i < len; i++)
@@ -177,13 +177,46 @@ function generateAverageSentimentOverTime(data)
 function getRateOfChange(data)
 {
     let len = data.length;
+    console.log(data);
     let change = [];
-    change[0] = 0;
-    for (let i = 1; i < len; i++)
-    {
-        change[i] = ((data[i].averageSentiment - data[i-1].averageSentiment) / HOUR);
-    }
+    for (let i = 0; i < HOURS; i++)
+        change[i] = 0;
+    let prev = undefined;
 
+    let index = 0;
+    for (; index < len; index++)
+    {
+        if (data[index] !== undefined) {
+            prev = data[index];
+            break;
+        }
+    }
+    let count = 1;
+    change[0] = 0;
+    if (index == 0)
+        index = 1;
+    for (let i = index; i < len; i++)
+    {
+
+        if (data[i] !== undefined) {
+            if (data[i-1] === undefined) {
+                change[i] = ((data[i].averageSentiment - prev.averageSentiment) / (HOUR * count));
+                prev = data[i];
+                count++;
+            }
+            else {
+                change[i] = ((data[i].averageSentiment - data[i-1].averageSentiment) / HOUR);
+                count = 0;
+            }
+                
+        }
+        else
+        {
+            count++;
+        }
+        
+    }
+    console.log(change);
     return change;
 }
 
@@ -218,15 +251,15 @@ router.post('/', (req, res, next) => {
 
     Project.find({_id : req.body.id})
     .exec()
-    .then(data => {
-
-        let initial = data.data.map(function(elem) {
+    .then(proj => {
+        // console.log(proj);
+        let initial = proj[0].data.map(function(elem) {
             return elem.tweetSentiment;
         });
 
         let hist = generateHistogramData(initial);
 
-        let avg = generateAverageSentimentOverTime(data.data)
+        let avg = generateAverageSentimentOverTime(proj[0].data)
 
         let change = getRateOfChange(avg);
     
@@ -264,7 +297,7 @@ router.post('/', (req, res, next) => {
             mode : final.mode,
             median : final.median,
             graphs : graph,
-            project : data._id
+            project : proj[0]._id
         });
 
         stat.save()
@@ -308,7 +341,7 @@ router.post('/compare', (req, res, next) => {
     Statistic.find({project: idOne})
     .exec()
     .then(res1 => {
-        Statistic.find(project: idTwo)
+        Statistic.find({project: idTwo})
         .exec()
         .then(res2 => {
 

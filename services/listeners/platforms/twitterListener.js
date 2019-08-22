@@ -226,7 +226,7 @@ class TwitterListener{
         setTimeout(()=>{
             twitterAPI.untrack(this.whitelist);
             if(typeof callback == 'function'){
-                streamStart(projectID + " T/t");
+                streamStart(projectID + " /t");
                 callback(response, projectID, true);
             }else{
                 console.log(typeof callback);
