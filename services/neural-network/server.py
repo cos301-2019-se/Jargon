@@ -2,10 +2,10 @@
     Filename: server.py
     Author  : Christiaan Nel
     Type    : Functions
-    
+
         The server.py file contains the flask web framework methods.
         The service server entrypoint.
-        
+
 """
 import connexion
 
@@ -22,7 +22,7 @@ def home():
     """
         home():     the rendered template "home.html"
         This function just responds to the browser URL
-        localhost:5000/  
+        localhost:5000/
     """
     return "Hello"
 
@@ -30,6 +30,6 @@ def home():
 if __name__ == "__main__":
     """
         __main__():     none
-        Instantiate the server.  
+        Instantiate the server.
     """
-    app.run(debug=True)
+    app.run(debug=False)

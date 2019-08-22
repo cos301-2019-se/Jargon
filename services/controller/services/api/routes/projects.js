@@ -1,11 +1,22 @@
+/**
+ * Filename: projects.js
+ * Author: Ethan Lindeman & Kevin Coetzee
+ * 
+ *      This file contains all the endpoints for the API that handles
+ *      all project requests to the system
+ */
 var http = require("http");
 const express = require('express');
 const router = express.Router();
 
 const mongoose = require('mongoose');
 const Project = require('../models/project');
-// const querystring = require('querystring');
 
+/***
+    * request for root (/) page
+    * 
+    * this function returns all projects stored in the system
+    */
 router.get('/', (req, res, next) => {
     Project.find()
     .exec()
@@ -21,7 +32,11 @@ router.get('/', (req, res, next) => {
     });
 });
 
-
+/***
+    * request for basic (/basic) projects page
+    * 
+    * this function returns a an array of simplified, less detailed projects
+    */
 router.get('/basic', (req, res, next) => {
     Project.find()
     .exec()
@@ -50,6 +65,11 @@ router.get('/basic', (req, res, next) => {
     });
 });
 
+/***
+    * request for detailed (/detailed) projects page
+    * 
+    * this function mirrors the default root function for legacy use cases
+    */
 router.get('/detailed', (req, res, next) => {
     Project.find()
     .exec()
@@ -65,6 +85,12 @@ router.get('/detailed', (req, res, next) => {
     });
 });
 
+/***
+    * request for detailedSearch (/detailedSearch) projects page (string id)
+    * 
+    * this function searches for a certain project by its id, and returns all
+    * detailed information about the project based upon that id
+    */
 router.post('/detailedSearch', (req, res, next) => {
     const id = req.body.id;
       Project.findById(id)
@@ -79,6 +105,12 @@ router.post('/detailedSearch', (req, res, next) => {
       });
   });
 
+/***
+    * request for earch (/search) projects page (string type, input)
+    * 
+    * this function searches for a certain project by other values than its
+    * id, such as title and username
+    */
 router.get('/search', (req, res, next) => {
   const type = req.body.searchType;
   const input = req.body.input;
@@ -114,6 +146,14 @@ router.get('/search', (req, res, next) => {
   }
 });
 
+/***
+    * request for create (/create) projects page (string project_name, source,
+    * createdBy, string array whitelist, blacklist, integer trackTime)
+    * 
+    * This function is used to create a new project based on a set of input
+    * paramaters needed per project. These projects can then be run to aggregate
+    * Twitter data
+    */
 router.post('/create', (req, res, next) => {
     const project = new Project({
         _id: new mongoose.Types.ObjectId(),
@@ -122,14 +162,12 @@ router.post('/create', (req, res, next) => {
         blacklist: req.body.blacklist,
         source: req.body.source,
         status : false,
-        // startTime: req.body.startTime,
         trackTime: req.body.trackTime,
         data: null,
         dataSentiment: null,
         createdBy: "Test User",
         runs: []
     });
-
     project
     .save()
     .then(result => {
@@ -146,9 +184,15 @@ router.post('/create', (req, res, next) => {
     });
 });
 
+/***
+    * request for edit (/edit) projects page (value array)
+    * 
+    * This function receives an array of values that need to updated for a 
+    * certain project as well as the id of a certain project. The projects 
+    * specific values are then updated with the new values.
+    */
 router.post('/edit', (req, res, next) => {
     const id = req.body.id;
-
     let updateVals = {};
     for (const vals of req.body.updateValues)
     {
@@ -168,6 +212,12 @@ router.post('/edit', (req, res, next) => {
     });
 });
 
+/***
+    * request for delete (/delete) projects page ()
+    * 
+    * This function receives a specific project's id and
+    * deletes this project in the database
+    */
 router.post('/delete', (req, res, next) => {
   const id = req.body.id;
   Project.remove({ _id: id })
@@ -183,10 +233,18 @@ router.post('/delete', (req, res, next) => {
   });
 });
 
+/***
+    * request for start (/start) projects page (string id, string platform)
+    * 
+    * This function receives a specific project's id the platform a project
+    * needs to run on (e.g. Twitter), and then starts the a listener specific
+    * to the platform specified, which aggregates data according to the project's 
+    * whitelisted words. Certain metrics are then produced based on the data returned, 
+    * before the results are returned. 
+    */
 router.post('/start', (req, res, next) => {
     const id = req.body.id;
     const platform = req.body.platform;
-
     Project.find({_id : id})
     .exec()
     .then((result)=>{
@@ -221,7 +279,6 @@ router.post('/start', (req, res, next) => {
                         let messages = {
                             data : []
                         }
-                        // messages = JSON.parse(messages);
                         responseString.forEach((element)=>{
                             messages['data'].push(element['text']);
                         });
@@ -236,7 +293,6 @@ router.post('/start', (req, res, next) => {
                                 "Content-Type": "application/json"
                             }
                         };
-            
                         var nnReq = http.request(nnOptions, (nnRes)=>{
                             var nnResponseString = "";
                             nnRes.on("data", (nnData) => {
@@ -244,13 +300,11 @@ router.post('/start', (req, res, next) => {
                             });
                             nnRes.on("end", () => {
                                 nnResponseString = JSON.parse(nnResponseString);
-                                
                                 let tweetsAndSentiments = {
                                     data : []
                                 }
                                 tweetsAndSentiments['data'].push(responseString);
                                 tweetsAndSentiments['data'].push(nnResponseString);
-                 
                                 Project.find({_id : id})
                                 .exec()
                                 .then((result)=>{
@@ -258,7 +312,6 @@ router.post('/start', (req, res, next) => {
                                     let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
                                     let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
                                     let currDate = date+' '+time;
-
                                     let totalTweets = 0;
                                     let posTweets = 0;
                                     let negTweets = 0;
@@ -267,8 +320,6 @@ router.post('/start', (req, res, next) => {
                                     let bestTweetScore = -0.1;
                                     let worstTweetScore = 1.1;
                                     let avgScore = 0;
-
-                                    
                                     tweetsAndSentiments['data'][1]['sentiments'].forEach((sentiment, ind)=>{
                                         totalTweets++;
                                         avgScore += sentiment;
@@ -287,7 +338,6 @@ router.post('/start', (req, res, next) => {
                                             bestTweetScore = sentiment;
                                         }
                                     })
-
                                     let runInfo = {
                                         dateRun : currDate,
                                         positivePercentage : (posTweets/totalTweets),
@@ -314,25 +364,23 @@ router.post('/start', (req, res, next) => {
                                         }
                                     )
                                 }).catch((err) => {
-                                    // console.log(typeof result[0].data);
+                                    console.log(err);
+                                    res.status(500).json(err);
                                 })
                             });
                         });
                         nnReq.write(messages);
                         nnReq.end();
-            
                     });
                 });
-            
                 listenerReq.write(postBodyString);
                 listenerReq.end();
             }
         )
     }).catch((err) => {
-    //   console.log(typeof result[0].data);
+        console.log(err);
+        res.status(500).json(err);
     })
-
-    
 });
 
 module.exports = router;
