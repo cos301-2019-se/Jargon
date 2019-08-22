@@ -17,10 +17,14 @@ const twitterCleaner = require('../platforms/twitterCleaner');
     * to the rules implemented for the Twitter platform accordingly 
     */
 router.post('/', (request, response, next) =>{
-    let rawTweets = request.body.rawData;
-    twitterCleanerInstance = new twitterCleaner();
-    console.log("starting clean");
-    twitterCleanerInstance.clean(rawTweets, returnCleanedData, response);
+    try {
+        let rawTweets = request.body.rawData;
+        twitterCleanerInstance = new twitterCleaner();
+        console.log("starting clean");
+        twitterCleanerInstance.clean(rawTweets, returnCleanedData, response);   
+    } catch (err) {
+        response.status(500);
+    }
 });
 
 /***
