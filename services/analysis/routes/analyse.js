@@ -175,25 +175,47 @@ function mapToTime(elem)
     */
 
 router.post('/', (req, res, next) => {
-   
-    let mapped = req.body.scores.map(function(val)
-    {
-        return {
-            sum: val,
-            max: val,
-            min: val,
-            count: 1,
-            diff: 0
-        }
-    });
 
-    let final = reduce(mapped);
-
-    console.log(final);
+    
 
     Project.find({_id : req.body.id})
     .exec()
     .then(data => {
+
+        let initial = data.data.map(function(elem) {
+            return elem.tweetSentiment;
+        });
+
+        let hist = generateHistogramData(initial);
+
+        let avg = generateAverageSentimentOverTime(data.data)
+
+        let change = getRateOfChange(avg);
+    
+        let mapped = initial.map(function(val)
+        {
+            return {
+                sum: val,
+                max: val,
+                min: val,
+                count: 1,
+                diff: 0
+            }
+        });
+
+        let final = reduce(mapped);
+
+        console.log(final);
+
+
+        const graph = {
+            histogram : hist,
+            averageOverTime : avg,
+            changeOverTime : change
+        };
+
+
+
         const stat = new Statistic({
             _id: new mongoose.Types.ObjectId(),
             min : final.min,
@@ -203,6 +225,7 @@ router.post('/', (req, res, next) => {
             mean : final.average,
             mode : final.mode,
             median : final.median,
+            graphs : graph,
             project : data._id
         });
 
