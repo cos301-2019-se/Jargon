@@ -6,11 +6,6 @@
   font-size: 24px;
 }
 
-.navbar {
-  /* background-color: grey; */
-  z-index: 10000000000000000000;
-}
-
 .navbar-icon-top .navbar-nav .nav-link > .fa > .badge {
   font-size: 0.75rem;
   position: absolute; 
@@ -123,7 +118,6 @@ hr {
   border-color: rgb(35, 83, 138) !important;
 }
 
-/* 
 #logo {
   font-size: 1.5rem;
 }
@@ -138,89 +132,58 @@ hr {
 }
 
 span {
-  color: black;
+  color: white;
 }
 
 @media only screen and (max-width: 1200px) {
   #nav-bg {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.5);
   }
 }
 
-.border-bottom {
-   border-color: rgb(44, 94, 133) !important; 
-}
-
 .container-fluid {
-  width: 90% !important;
-} */
-
-.list-group-item {
-  background-color : rgb(241, 241, 241);
+  width: 100% !important;
 }
 
-.list-group-item:hover {
-  background-color: rgb(41, 132, 230);
+.side-nav-item:hover {
+  background-color: rgb(31, 96, 165);
   transition-duration: 0s;
 }
 
-.list-group-item:not(:hover) {
+.side-nav-item:not(:hover) {
   transition-duration: 0s;
 }
 
-.list-group-item:hover i {
-  color:white !important;
-}
-
-.list-group-item:hover span {
-  color:white !important;
-}
-
-.side-bar-hover:hover {
-  background-color: rgb(41, 132, 230);
-  transition-duration: 0s;
-}
-
-.side-bar-hover:not(:hover) {
-  transition-duration: 0s;
-}
-
-.side-bar-hover:hover i {
-  color:white !important;
-}
-
-.side-bar-hover:hover span {
-  color:white !important;
+.side-nav-item:hover i {
+  color:white;
 }
 
 .active {
-  background-color: rgba(31, 96, 165, 1);
-  margin-left: 6px;
+  background-color: rgba(31, 96, 165, 0.5);
 }
 
-.active i, span {
+.active i {
   color: white;
-}
-
-.inactive span {
-  color: black !important;
 }
 
 .active:hover {
-  background-color: rgb(0, 172, 237) !important;
-  color: white;
+  background-color: rgb(52, 118, 189) !important;
 }
 
 .active_bar {
   position: relative;
   display: table-cell;
   width: 6px !important;
-  background-color: rgb(0, 172, 237) !important;
+  background-color: rgb(63, 129, 199) !important;
   height: 50px;
 }
 
 .link-wrapper {
   display: table; 
+}
+
+span {
+  color: white;
 }
 
 .link {
@@ -234,7 +197,7 @@ span {
   height: 50px;
 }
 
-/* .dash {
+.dash {
   overflow-y: auto;
   width: 100%;
 }
@@ -269,6 +232,7 @@ span {
 
 .dashboard {
   height: 60vh;
+  width: 100% !important;
 }
 
 #defualt {
@@ -304,7 +268,7 @@ h1 {
 }
 
 .text-size-medium {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .icon {
@@ -318,7 +282,7 @@ hr {
 .wrapper {
   display: flex;
   justify-content: space-between;
-  height: auto; 
+  height: auto;
 
 }
 
@@ -335,7 +299,7 @@ hr {
 }
 
 .sidebar {
-  width: 550px;
+  width: 400px;
   margin-left: auto;
   margin-right:auto;
   height: fit-content;
@@ -344,18 +308,10 @@ hr {
   display: inline-block;
 }
 
-.sidebar:not(:hover) {
-  transition: width 0.5s;
-}
-
 body {
   background-color: #ccc;
   font-family: sans-serif;
   padding: 10px;
-}
-
-.container-fluid {
-  width: 90% !important;
 }
 
 .btn.focus, .btn:focus {
@@ -365,80 +321,4 @@ body {
 
 .auto-height {
   height:auto;
-}  */
-
-
-#sidebar-wrapper {
-  min-height: 100vh;
-  margin-left: -15rem;
-  -webkit-transition: margin .25s ease-out;
-  -moz-transition: margin .25s ease-out;
-  -o-transition: margin .25s ease-out;
-  transition: margin .25s ease-out;
-  background-color: white !important; 
-}
-
-.list-group-item {
-  border: none !important;
-  /* margin-left: 6px; */
-  height: 50px;
-}
-
-#sidebar-wrapper .sidebar-heading {
-  padding: 0.875rem 1.25rem;
-  font-size: 1.2rem;
-  height: 57px !important
-}
-
-.sidebar-heading {
-  border-right:none !important
-}
-
-.navbar {
-  /* height: 55px !important; */
-  /* background-color: white !important; */
-}
-
-#sidebar-wrapper .list-group {
-  width: 15rem;
-}
-
-#page-content-wrapper {
-  min-width: 100vw;
-}
-
-#wrapper.toggled #sidebar-wrapper {
-  margin-left: 0;
-}
-
-@media (min-width: 960px) {
-  #sidebar-wrapper {
-    margin-left: 0;
-  }
-
-  #page-content-wrapper {
-    min-width: 0;
-    width: 100%;
-  }
-
-  #wrapper.toggled #sidebar-wrapper {
-    margin-left: -15rem;
-  }
-}
-
-.project-content {
-  overflow-y: auto;
-  height: auto !important;
-  width: 100%;
-}
-
-#sidebar-wrapper {
-  position: fixed;
-  z-index: 100000000;
-  background-color: rgb(241, 241, 241) !important;
-  border-right:none !important;
-}
-
-#wrapper {
-  height: 90vh;
 }
