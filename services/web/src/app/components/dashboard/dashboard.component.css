@@ -91,6 +91,10 @@
   }
 }
 
+.navbar {
+  background: rgba(36, 75, 117,0.9) !important;
+}
+
 @media (min-width: 1200px) {
   .navbar-icon-top.navbar-expand-xl .navbar-nav .nav-link {
     text-align: center;
