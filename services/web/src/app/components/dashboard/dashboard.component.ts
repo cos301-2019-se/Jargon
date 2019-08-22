@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {HostListener} from '@angular/core';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,6 +10,7 @@ import {HostListener} from '@angular/core';
 export class DashboardComponent implements OnInit {
   public innerWidth: any;
   public collapse: boolean;
+  public displaySideBarText: boolean;
 
   directories: any[][] = [
     [
@@ -27,12 +29,22 @@ export class DashboardComponent implements OnInit {
     ]
   ];
 
+  toggle() {
+    // if(window.outerWidth > 960){
+      $("#wrapper").toggleClass("toggled");
+    // }
+  }
+
   constructor() {
     this.getResize();
   }
 
   ngOnInit() {
+
+
     this.getResize();
+
+    this.displaySideBarText = true;
   }
 
   ngOnChange() {
@@ -48,6 +60,14 @@ export class DashboardComponent implements OnInit {
     if(this.innerWidth < 1200) {
       this.collapse= true;
     }
+  }
+
+  enter() {
+    // this.displaySideBarText = true;
+  }
+
+  leave() {
+    // this.displaySideBarText = false;
   }
 
   @HostListener('window:resize', ['$event']) onResize(event) { 

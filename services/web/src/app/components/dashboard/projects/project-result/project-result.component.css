@@ -2,6 +2,10 @@
     color: white;
 }
 
+h2 {
+    color: black !important;
+}
+
 .align-center {
     text-align: center;
 }
@@ -28,17 +32,17 @@
 }
 
 .card-header {
-    border-bottom: rgb(30, 129, 228) !important;
+    border-bottom: rgb(9, 38, 71) !important;
 }
 
 .card {
-    background-color: rgba(9, 111, 212, 0.1) !important;
+    background: rgba(6, 57, 116, 1) !important; 
     /* border-color: rgb(3, 52, 102) !important; */
     border: none;
 }
 
 .card-body {
-    background-color: rgba(29, 124, 219, 0.1) !important;
+    background: rgb(15, 82, 129) !important;
 }
 
 .same-row-card-same-height {
@@ -51,7 +55,7 @@
 }
 
 .border {
-    border-color: rgba(58, 61, 255, 0.5) !important;
+    border-color: rgb(104, 175, 255) !important;
     border-width: 2px !important;
 }
 
@@ -69,7 +73,7 @@
 
 .arrow-font {
     font-size: 20px;
-    color: white;
+    color: gray;
 }
 
 .btn {

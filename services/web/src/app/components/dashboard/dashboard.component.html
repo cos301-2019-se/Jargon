@@ -1,22 +1,16 @@
-<!--HEADER-->
-<nav class="navbar navbar-dark navbar-icon-top navbar-expand-xl border-bottom" id="nav-bg">
-  <div class="container-fluid"> 
-    <a class="navbar-brand text-light" href="/" id="logo">Jargon</a>
-    <button class="navbar-toggler text" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<div class="d-flex" id="wrapper">
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-      </ul>
-
-      <div [hidden]='!collapse' *ngFor="let a of directories; let i = index">
+  <!-- Sidebar -->
+  <div class="bg-light border-right" id="sidebar-wrapper">
+    <div class="sidebar-heading"></div>
+    <div class="list-group list-group-flush">
+      <div  *ngFor="let a of directories; let i = index">
         <div class="row" *ngIf="i != 0">
             <div class="col mx-3"><hr class="m-1"></div>
         </div>
-        <div *ngFor="let directory of directories[i]" class="link-wrapper side-nav-item ">
-          <div class="p-0 float-left" routerLinkActive #rla_bar="routerLinkActive" [ngClass]="rla_bar.isActive ? 'active_bar' : 'no_ab'" routerLink="/{{directory.path}}"></div>
-          <a class="side-bar-hover btn btn-block border-0 p-0 rounded-0 m-0 link" routerLinkActive #rla="routerLinkActive" [ngClass]="rla.isActive ? 'active' : 'inactive'" routerLink="/{{directory.path}}">
+        <div *ngFor="let directory of directories[i]">
+          <span class="p-0 float-left" routerLinkActive #rla_bar="routerLinkActive" [ngClass]="rla_bar.isActive ? 'active_bar' : 'no_ab'" routerLink="/{{directory.path}}"></span>
+          <a class="list-group-item text-black" routerLinkActive #rla="routerLinkActive" [ngClass]="rla.isActive ? 'active' : 'inactive'" routerLink="/{{directory.path}}">
             <div class="left-align-text pl-3 text-size-medium">
               <span class="m-2"><i class="fas {{directory.icon}} icon"></i></span><span class="m-2">{{directory.caption}}</span>
             </div> 
@@ -24,54 +18,65 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-12">
-          <div class="mx-auto">
-            <form class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2 input-lg" type="text" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-light my-2 my-sm-0 rounded-pill raise" type="submit">Search</button>
-            </form>
-          </div>
-        </div>
-      </div> 
+      <!-- <a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+      <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
+      <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
+      <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+      <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
+      <a href="#" class="list-group-item list-group-item-action bg-light">Status</a> -->
     </div>
   </div>
-</nav>
+  <!-- /#sidebar-wrapper -->
 
-<!--SIDENAV-->
-<div class="container-fluid mt-2 dashboard">
-  <div class="wrapper">
-    <div class="sidebar mt-2" *ngIf='collapse == false'>
-      <div class="row">
-        <div class="col-12 mt-3">
-          <div class="row">
-            <div class="col-10">
-              <div class="card side-bar text-light">
-                <div class="card-body px-0">
-                  <div *ngFor="let a of directories; let i = index">
-                    <div class="row" *ngIf="i != 0">
-                        <div class="col mx-3"><hr class="m-1"></div>
-                    </div>
-                    <div *ngFor="let directory of directories[i]" class="link-wrapper side-nav-item ">
-                      <div class="p-0 float-left" routerLinkActive #rla_bar="routerLinkActive" [ngClass]="rla_bar.isActive ? 'active_bar' : 'no_ab'" routerLink="/{{directory.path}}"></div>
-                      <a class="side-bar-hover btn btn-block border-0 p-0 rounded-0 m-0 link" routerLinkActive #rla="routerLinkActive" [ngClass]="rla.isActive ? 'active' : 'inactive'" routerLink="/{{directory.path}}">
-                        <div class="left-align-text pl-3 text-size-medium">
-                          <span class="m-2"><i class="fas {{directory.icon}} icon"></i></span><span class="m-2">{{directory.caption}}</span>
-                        </div> 
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+
+    <nav class="navbar navbar-light fixed-top bg-light navbar-icon-top navbar-expand-xl border-bottom" id="nav-bg">
+      <div class="container-fluid"> 
+        <button class="btn btn-primary" id="menu-toggle" (click)="toggle()"><i class="fas fa-bars"></i></button>
+        <button class="mr-4 navbar-toggler text" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+          </ul>
+    
+          <div [hidden]='!collapse' *ngFor="let a of directories; let i = index">
+            <div class="row" *ngIf="i != 0">
+                <div class="col mx-3"><hr class="m-1"></div>
+            </div>
+            <div *ngFor="let directory of directories[i]" class="link-wrapper side-nav-item ">
+              <div class="p-0 float-left" routerLinkActive #rla_bar="routerLinkActive" [ngClass]="rla_bar.isActive ? 'active_bar' : 'no_ab'" routerLink="/{{directory.path}}"></div>
+              <a class="side-bar-hover btn btn-block border-0 p-0 rounded-0 m-0 link" routerLinkActive #rla="routerLinkActive" [ngClass]="rla.isActive ? 'active' : 'inactive'" routerLink="/{{directory.path}}">
+                <div class="left-align-text pl-3 text-size-medium">
+                  <span class="m-2"><i class="fas {{directory.icon}} icon"></i></span><span class="m-2">{{directory.caption}}</span>
+                </div> 
+              </a>
             </div>
           </div>
+    
+          <div class="row">
+            <div class="col-12">
+              <div class="mx-auto">
+                <form class="form-inline my-2 my-lg-0">
+                  <input class="form-control mr-sm-2 input-lg" type="text" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-primary my-2 my-sm-0 rounded" type="submit">Search</button>
+                </form>
+              </div>
+            </div>
+          </div> 
         </div>
-      </div> 
-    </div>
-    <div class="main">
-      <div class="row auto-height">
-          <router-outlet></router-outlet>
       </div>
+    </nav>
+
+    <div class="project-content m-0">
+      <router-outlet></router-outlet>
     </div>
   </div>
+  <!-- /#page-content-wrapper -->
+
 </div>
+<!-- /#wrapper -->
+
+<!-- Menu Toggle Script -->
