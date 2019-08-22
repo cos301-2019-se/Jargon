@@ -141,8 +141,8 @@ def callback(ch, method, properties, body):
     project = proj.find_one(query)
     tweets = project['data']
 
-    tweet = [tweet for tweet in tweets if tweet['id_str'] == tweet_id][0]
-    t = tweet['text']
+    tweet = [tweet for tweet in tweets if tweet['tweetID'] == tweet_id][0]
+    t = tweet['tweetObject']['text']
     i = tweets.index(tweet)
     print(t)
     print(f'-> Sending text to NN:\n\t{t}')
@@ -154,7 +154,7 @@ def callback(ch, method, properties, body):
         {'_id': ObjectId(project_id)},
         {
             "$set": {
-                "data."+str(i)+".sentiment": sentiment
+                "data."+str(i)+".tweetSentiment": sentiment
             }
         },
         upsert=False
