@@ -155,10 +155,21 @@ function returnListenerData(response, projID, tempArray){
             Project.find({_id : projID})
             .exec()
             .then((result)=>{
-                result[0].data = JSON.parse(responseString);
+                // console.log("responseString: " + responseString);
+                result[0].data = [];
+                let responseObject = JSON.parse(responseString);
+                responseObject.forEach(element => {
+                    result[0].data.push({
+                        "tweetID" : element["id_str"],
+                        "tweetObject" : element,
+                        "tweetSentiment" : -2
+                    });
+                });
+                // result[0].data = JSON.parse(responseString);
                 result[0].save().then(
-                    (result)=>{     
-                        response.status(200).json(result.data);
+                    (result)=>{   
+                        console.log(result)  
+                        response.status(200).json(responseString);
                     }
                 ).catch((err) =>{
                     console.log(err);
