@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SharedProjectService } from '../../../../services/shared-project/shared-project.service';
-import { Project, Run } from '../../../../interfaces/project/project';
+import { Project, Run, SocialData } from '../../../../interfaces/project/project';
 import { Label, MultiDataSet, PluginServiceGlobalRegistrationAndOptions, Color} from 'ng2-charts';
 import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
 import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
@@ -83,8 +83,12 @@ export class ProjectResultComponent implements OnInit {
   
   /* Average Sentiment Over Time */
   public chartData: Object[] = [
-     { x: 2006, y: 25 },{ x: 2007, y: 26 }, { x: 2008, y: 27 },
-    { x: 2009, y: 32 }, { x: 2010, y: 35 }, { x: 2011, y: 30 }
+    { x: new Date(2006, 8, 3), y: 27 },
+    { x: new Date(2006, 8, 5), y: 35 },
+    { x: new Date(2006, 8, 9), y: 25 },
+    { x: new Date(2006, 8, 10), y: 32 },
+    { x: new Date(2006, 8, 11), y: 26 },
+    { x: new Date(2006, 8, 28), y: 30 }
   ];
 
   public marker: Object = {
@@ -95,10 +99,9 @@ export class ProjectResultComponent implements OnInit {
   }
   
   public primaryXAxis: Object = {
-
     valueType: 'DateTime',
-    // interval: 1,
-    title: 'Time',
+    // interval: 365,
+    title: 'Date/Time',
     titleStyle: {
       color: 'white',
       size: '18px'
@@ -127,8 +130,7 @@ export class ProjectResultComponent implements OnInit {
 
   project: Project = new Project();
   currentRun: Run = new Run();
-  filteredData: any[] = [];
-  filteredSentiments: number[] = [];
+  filteredData: SocialData[] = [];
 
   activeFlagging: boolean = false;
 
@@ -270,11 +272,16 @@ export class ProjectResultComponent implements OnInit {
             // ];
             // this.lineChartLabels = [...label];
 
-            this.chartData = [];
+            // this.chartData = [];
             
-
             this.onSortItemClick(this.sorting);
             this.onFilterItemClick(this.filter);
+          }
+        );
+
+        this.projectApiRequesterService.projectAnalysis(project._id, "day").subscribe(
+          (result: any) => {
+            console.log("Response:", result);
           }
         );
       }
@@ -282,9 +289,9 @@ export class ProjectResultComponent implements OnInit {
   }
 
   ngOnInit() {
-    var list = {"you": 100, "me": 75, "foo": 116, "bar": 15};
-    let keysSorted = Object.keys(list).sort(function(a,b){return list[a]-list[b]})
-    console.log(keysSorted);     // bar,me,you,foo
+    // var list = {"you": 100, "me": 75, "foo": 116, "bar": 15};
+    // let keysSorted = Object.keys(list).sort(function(a,b){return list[a]-list[b]})
+    // console.log(keysSorted);     // bar,me,you,foo
   }
 
   onChartClicked(event: any) {
@@ -328,9 +335,9 @@ export class ProjectResultComponent implements OnInit {
     if (value === "Oldest") {
       this.filteredData.sort(
         (itm1, itm2) => {
-          if (new Date(itm1.created_at) < new Date(itm2.created_at))
+          if (new Date(itm1.tweetObject.created_at) < new Date(itm2.tweetObject.created_at))
             return -1;
-          if (new Date(itm1.created_at) >= new Date(itm2.created_at))
+          if (new Date(itm1.tweetObject.created_at) >= new Date(itm2.tweetObject.created_at))
             return 1;
           return 0;
         }
@@ -339,9 +346,9 @@ export class ProjectResultComponent implements OnInit {
     } else if (value === "Newest") {
       this.filteredData.sort(
         (itm1, itm2) => {
-          if (new Date(itm1.created_at) >= new Date(itm2.created_at)) 
+          if (new Date(itm1.tweetObject.created_at) >= new Date(itm2.tweetObject.created_at)) 
             return -1;
-          if (new Date(itm1.created_at) < new Date(itm2.created_at))
+          if (new Date(itm1.tweetObject.created_at) < new Date(itm2.tweetObject.created_at))
             return 1;
           return 0;
         }
@@ -353,27 +360,22 @@ export class ProjectResultComponent implements OnInit {
     if (value === "All") {
       console.log("ALL");
       this.filteredData = [...this.project.data];
-      this.filteredSentiments = [...this.project.dataSentiment];
     } else if (value === "Positive") {
       console.log("POS");
       this.filteredData = [];
-      this.filteredSentiments = [];
-      for (let i = 0; i < this.project.dataSentiment.length; ++i) {
-        let sentiment = this.project.dataSentiment[i];
+      for (let i = 0; i < this.project.data.length; ++i) {
+        let sentiment = this.project.data[i].tweetSentiment;
         if (sentiment >= 0.5) {
           this.filteredData.push(this.project.data[i]);
-          this.filteredSentiments.push(this.project.dataSentiment[i]);
         }
       }
     } else if (value === "Negative") {
       console.log("NEG");
       this.filteredData = [];
-      this.filteredSentiments = [];
-      for (let i = 0; i < this.project.dataSentiment.length; ++i) {
-        let sentiment = this.project.dataSentiment[i];
+      for (let i = 0; i < this.project.data.length; ++i) {
+        let sentiment = this.project.data[i].tweetSentiment;
         if (sentiment < 0.5) {
           this.filteredData.push(this.project.data[i]);
-          this.filteredSentiments.push(this.project.dataSentiment[i]);
         }
       }
     }
@@ -398,7 +400,7 @@ export class ProjectResultComponent implements OnInit {
     this.activeFlagging = false;
 
     this.filteredData.forEach(
-      (data: string) => {
+      (data: SocialData) => {
         data['checked'] = false;
       }
     );
@@ -411,9 +413,9 @@ export class ProjectResultComponent implements OnInit {
       let flagData: FlagData = new FlagData();
 
       if (this.filteredData[i]['checked']) {
-        flagData.text = this.filteredData[i].text;
-        flagData.currentScore = this.filteredSentiments[i];
-        flagData.alternateScore = this.filteredData['new_sentiment'];
+        flagData.text = this.filteredData[i].tweetObject.text;
+        flagData.currentScore = this.filteredData[i].tweetSentiment;
+        flagData.alternateScore = this.filteredData[i]['new_sentiment'];
 
         flaggedData.push(flagData);
       }

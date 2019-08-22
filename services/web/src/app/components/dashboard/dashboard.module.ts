@@ -39,7 +39,8 @@ import { ProjectCompareComponent } from './project-compare/project-compare.compo
     AccumulationLegendService, 
     AccumulationTooltipService, 
     AccumulationAnnotationService,
-    AccumulationDataLabelService
+    AccumulationDataLabelService,
+    DateTimeService
   ]
 })
 export class DashboardModule { }
