@@ -60,9 +60,13 @@
 }
 
 .btn {
-    background: rgba(22, 111, 175, 0.3) !important;
-    color: white;
+    /* background: rgba(22, 111, 175, 0.3) !important; */
+    /* color: black; */
     text-align: left;
+}
+
+.btn-white {
+    color:white !important;
 }
 
 select, input {

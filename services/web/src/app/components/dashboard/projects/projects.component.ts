@@ -14,7 +14,14 @@ export class ProjectsComponent implements OnInit {
   selected: number = 0;
   loading: boolean = false;
 
+  projectsLength: number = 0;
+  pageProjects: Project[] = [];
+  pageIndex: number = 0;
+  pages: number[] = [];
+
   hide: boolean = true;
+
+  PAGE_SIZE: number = 5;
 
   constructor(private sharedProjectService: SharedProjectService,
       private projectApiRequesterService: ProjectApiRequesterService) {
@@ -39,6 +46,18 @@ export class ProjectsComponent implements OnInit {
       (projects: Project[]) => {
         this.sharedProjectService.setProjects(projects);
         this.projects = this.sharedProjectService.getProjects();
+        this.projectsLength = this.projects.length/this.PAGE_SIZE;
+
+        for (let i = 0; i < this.projects.length; i += this.PAGE_SIZE ) {
+            this.pages.push(0);
+        }
+
+
+        this.pageProjects = [];
+        for (let i = 0; i < this.PAGE_SIZE && i < this.projects.length; ++i) {
+          this.pageProjects.push(this.projects[i]);
+        }
+
         this.loading = false;
       },
       error => {
@@ -46,6 +65,37 @@ export class ProjectsComponent implements OnInit {
         this.loading = true;
       }
     );
+  }
+
+  onNextClick() {
+    if (this.pageIndex + 1 < this.projects.length/this.PAGE_SIZE) {
+      this.pageIndex++;
+      this.pageProjects = [];
+      
+      for (let i = this.pageIndex * this.PAGE_SIZE, count = 0; i < this.projects.length && count < this.PAGE_SIZE; ++i, ++count) {
+        this.pageProjects.push(this.projects[i]);
+      }
+    }
+  }
+
+  onPreviousClick() {
+    if (this.pageIndex - 1 >= 0) {
+      this.pageIndex--;
+      this.pageProjects = [];
+      
+      for (let i = this.pageIndex * this.PAGE_SIZE, count = 0; i < this.projects.length && count < this.PAGE_SIZE; ++i, ++count) {
+        this.pageProjects.push(this.projects[i]);
+      }
+    }
+  }
+
+  onPageClick(index: number) {
+    this.pageIndex = index;
+    this.pageProjects = [];
+    
+    for (let i = this.pageIndex * this.PAGE_SIZE, count = 0; i < this.projects.length && count < this.PAGE_SIZE; ++i, ++count) {
+      this.pageProjects.push(this.projects[i]);
+    }
   }
 
   // public innerWidth: any;

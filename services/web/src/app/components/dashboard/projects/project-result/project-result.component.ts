@@ -37,7 +37,7 @@ export class ProjectResultComponent implements OnInit {
   };
   public dataHistogram: Object[] = [];
   public primaryXAxisHistogram: Object = {
-    minimum: 0, maximum: 70, interval: 10,
+    minimum: 0, maximum: 70, interval: 0.1,
     title: 'Hello',
     titleStyle: {
       color: 'white',
@@ -52,7 +52,7 @@ export class ProjectResultComponent implements OnInit {
     }]
   };
   public primaryYAxisHistogram: Object = {
-    minimum: 0, maximum: 20, interval: 10,
+    minimum: 0, maximum: 10, interval: 1,
     title: 'Hello',
     titleStyle: {
       color: 'white',
@@ -64,7 +64,7 @@ export class ProjectResultComponent implements OnInit {
     }
   };
   public loadHistogram(args: ILoadedEventArgs): void {
-    let points: number[] = [5,5,5,5,5,15,15,15,15,15,25,25,25,25,25,25,25,25,25,25,25,25,25,35,35,35,35,35,35,45,45,45,45,55,55,55
+    let points: number[] = [0.11,0.111,0.112,0.1113,0.233
     ];
     points.map((value: number) => {
       this.dataHistogram.push({
@@ -73,13 +73,11 @@ export class ProjectResultComponent implements OnInit {
     });
   };
   public binInterval: number = 10;
-  public columnWidth: number = 0.99;
-  public showNormalDistribution: boolean = false;
-  
-  
+  public columnWidth: number = 0.5;
+    public showNormalDistribution: boolean = false;
   /* Average Sentiment Over Time */
   public chartData: Object[] = [
-    { x: 2005, y: 28 }, { x: 2006, y: 25 },{ x: 2007, y: 26 }, { x: 2008, y: 27 },
+     { x: 2006, y: 25 },{ x: 2007, y: 26 }, { x: 2008, y: 27 },
     { x: 2009, y: 32 }, { x: 2010, y: 35 }, { x: 2011, y: 30 }
   ];
 
@@ -92,6 +90,7 @@ export class ProjectResultComponent implements OnInit {
   
   public primaryXAxis: Object = {
     interval: 1,
+    minimum: 2005,
     title: 'Hello',
     titleStyle: {
       color: 'white',
