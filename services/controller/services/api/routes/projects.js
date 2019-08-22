@@ -391,6 +391,7 @@ router.post('/start', (req, res, next) => {
                                     result[0].status = false;
                                     result[0].save().then(
                                         (result)=>{
+                                            console.log(tweetsAndSentiments);
                                             res.status(200).json(tweetsAndSentiments);
                                         }
                                     )

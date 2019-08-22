@@ -251,3 +251,12 @@ select:focus, input:focus {
 .project-component {
   height:auto;
 }
+
+.active_page {
+  background: rgb(62, 50, 168) !important;
+  color: white !important;
+}
+.paginate {
+  background : rgba(0,0,0,0);
+  border: none;
+}

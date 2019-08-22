@@ -6,9 +6,9 @@
           <div class="row">
             <div class="col-12 mx-auto rounded-lg main-dash px-5">
               <div class="container-fluid m-0 wrapper rounded">
-                <div class="row rounded mt-3">
-                  <div class="col-12 ml-0 mt-5 pl-0 mb-4">
-                    <h2 class=" display-4 text-black">PROJECTS</h2>
+                <div class="row rounded mt-2">
+                  <div class="col-12 ml-0 pl-0 mb-4">
+                    <h2 class=" display-5 text-black">PROJECTS</h2>
                   </div>
                   <div class="col-lg-4 col-12 p-0 m-0">
                     <div class="list-group-item search-bar m-0 rounded-0 justify-space-between">
@@ -41,21 +41,21 @@
                           No projects
                         </div>
                       </li>
-                      <li *ngFor="let project of projects" class="list-group-item btn m-0 rounded-0 project-item" routerLinkActive #rla="routerLinkActive" [ngClass]="rla.isActive ? 'active_project' : 'inactive_project'" [routerLink]="['./project-info', project._id]" (click)="setProject(project)">{{project.project_name}}</li>
-                      <li class="list-group-item mb-4">
+                      <li *ngFor="let project of pageProjects" class="list-group-item btn m-0 rounded-0 project-item" routerLinkActive #rla="routerLinkActive" [ngClass]="rla.isActive ? 'active_project' : 'inactive_project'" [routerLink]="['./project-info', project._id]" (click)="setProject(project)">{{project.project_name}}</li>
+                      <li class="list-group-item mb-4 paginate">
                         <nav aria-label="mx-auto Page navigation example">
                           <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                            <li class="page-item"><a class="page-link" (click)="onPreviousClick()">Previous</a></li>
+
+                            <li *ngFor="let page of pages; let i = index" class="page-item"><a [ngClass]="i == pageIndex ? 'active_page' : 'inactive_page'" class="page-link" (click)="onPageClick(i)">{{i+1}}</a></li>
+
+                            <li class="page-item"><a class="page-link" (click)="onNextClick()">Next</a></li>
                           </ul>
                         </nav>
                       </li>
                     </ul>
                   </div>
-                  <div class="text-light mt-md-0 mt-3 mb-mb-0 mb-3 m-0 p-0 right-side col-lg-8 col-12">
+                  <div class="text-light mt-md-0 mt-3 mb-mb-0 mb-3 m-0 p-0 right-side col-lg-7 ml-lg-3 col-12">
                     <router-outlet></router-outlet>
                   </div>
                 </div>

@@ -156,7 +156,7 @@ function returnListenerData(response, projID, tempArray){
             .exec()
             .then((result)=>{
                 // console.log("responseString: " + responseString);
-                result[0].data = [];
+                // result[0].data = [];
                 let responseObject = JSON.parse(responseString);
                 responseObject.forEach(element => {
                     result[0].data.push({

@@ -1,14 +1,14 @@
-<div class="container-fluid p-5 mx-auto m-0 ">
+<div class="container-fluid px-5 mx-auto m-0 ">
   <div class="wrapper-outer">
     <div class="main">
-      <div class="row mt-3">
+      <div class="row">
         <div class="" id="dashboard-content">
           <div class="row">
-            <div class="col-12 mx-auto mb-4 justify-content-between">
-              <h2 class="pl-0 display-4 float-left">PROJECT RESULTS </h2>
+            <div class="col-12 mx-auto justify-content-between">
+              <h2 class="pl-0 display-5 float-left mt-2">PROJECT RESULTS </h2>
               <span class="float-right"><button class="btn rounded-circle arrow-font btn-outline-primary mb-2" [routerLink]="['../projects/project-info', project._id]"><i class="fas fa-arrow-left my-1"></i></button></span>
             </div>
-            <div class="col-12">
+            <div class="col-12 mt-4">
               <div class="card-deck">
                 <div class="card shadow-lg">
                   <div class="card-header">
@@ -102,7 +102,7 @@
 
                     <ejs-accumulationchart id="chart-container" [legendSettings]='legendSettings' background='rgba(1,1,1,0)'>
                         <e-accumulation-series-collection>
-                            <e-accumulation-series [dataSource]='piedata' xName='x' yName='y' innerRadius='80%' [dataLabel]='datalabel'></e-accumulation-series>
+                            <e-accumulation-series [dataSource]='piedata' xName='x' yName='y' innerRadius='50%' [dataLabel]='datalabel' legendShape='Rectangle'></e-accumulation-series>
                         </e-accumulation-series-collection>
                     </ejs-accumulationchart>
                   </div>
@@ -266,24 +266,24 @@
 
                     <div class="row">
                       <div class="col-12">
-                        <div class="row m-0 p-0" *ngFor="let text of filteredData; let i = index">
+                        <div class="row m-0 p-0" *ngFor="let data of filteredData; let i = index">
                           <div class="col-11 mx-auto m-0 p-0">
                             <div class="row m-0 p-0">
                               <div class="col-12 mb-3 p-3 mx-auto border rounded m-0 p-0">
                                 <div class=" d-flex justify-content-between align-items-center">
-                                  {{text.text}}
-                                  <span class="badge badge-primary badge-pill ml-3">{{filteredSentiments[i] | number}}</span>
+                                  {{data.tweetObject.text}}
+                                  <span class="badge badge-primary badge-pill ml-3">{{data.tweetSentiment | number}}</span>
                                 </div>
-                                <div class="row mt-3 m-0 p-0" *ngIf="text['checked'] && activeFlagging">
+                                <div class="row mt-3 m-0 p-0" *ngIf="data['checked'] && activeFlagging">
                                   <div class="col-8 mx-auto m-0 p-0">
-                                    <input type="range" class="custom-range" min="0" max="1" step="0.001" id="customRange1" value="0.5" [(ngModel)]="text['new_sentiment']">{{text['new_sentiment']}}
+                                    <input type="range" class="custom-range" min="0" max="1" step="0.001" id="customRange1" value="0.5" [(ngModel)]="data['new_sentiment']">{{data['new_sentiment']}}
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                           <div class="col-1 m-0 my-auto mx-auto" *ngIf="activeFlagging">
-                            <input type="checkbox" [(ngModel)]="text['checked']" (click)="onCheckboxClick(i)">
+                            <input type="checkbox" [(ngModel)]="data['checked']" (click)="onCheckboxClick(i)">
                           </div>
                         </div>
                       </div>
