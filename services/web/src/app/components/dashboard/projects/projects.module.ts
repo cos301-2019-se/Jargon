@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ProjectResultComponent } from './project-result/project-result.component';
 import { ProjectInitialComponent } from './project-initial/project-initial.component';
 import { ChartsModule } from 'ng2-charts';
-import { ChartModule, AccumulationChartModule, AccumulationDataLabelService, AccumulationAnnotationService, AccumulationTooltipService, AccumulationLegendService, PieSeriesService, LineSeriesService, HistogramSeriesService  } from '@syncfusion/ej2-angular-charts';
+import { ChartModule, AccumulationChartModule, AccumulationDataLabelService, AccumulationAnnotationService, AccumulationTooltipService, AccumulationLegendService, PieSeriesService, LineSeriesService, HistogramSeriesService, DateTimeService  } from '@syncfusion/ej2-angular-charts';
 
 @NgModule({
   declarations: [
@@ -25,6 +25,7 @@ import { ChartModule, AccumulationChartModule, AccumulationDataLabelService, Acc
     AccumulationChartModule
   ],
   providers: [
+    DateTimeService
   ]
 })
 export class ProjectsModule { }
