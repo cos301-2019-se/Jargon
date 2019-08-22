@@ -493,7 +493,7 @@ function startRMQ(){
         durable: false
         });
 
-        channel.assertQueue('', {
+        channel.assertQueue('controller_queue', {
         exclusive: true
         }, function(error2, q) {
             if (error2) {
