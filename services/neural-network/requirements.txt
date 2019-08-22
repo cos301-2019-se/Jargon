@@ -1,4 +1,7 @@
-connexion==2.3.0
-torch==1.1.0
+pymongo==3.9.0
 spacy==2.1.4
 torchtext==0.3.1
+pika==1.1.0
+connexion==2.3.0
+torch==1.1.0
+requests==2.22.0

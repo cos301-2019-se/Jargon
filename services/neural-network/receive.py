@@ -7,7 +7,7 @@ import pika
 import pymongo
 import urllib
 from bson.objectid import ObjectId
-import send as s
+from send import Sender
 
 
 SEED = 1234
@@ -91,7 +91,12 @@ nlp = spacy.load('en')
 
 queue = 'tweet_queue'
 print(f'-> RMQ consumer listening on {queue}.')
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+connection = pika.BlockingConnection(
+    pika.ConnectionParameters(
+        host='localhost',
+        socket_timeout=300000
+    )
+)
 channel = connection.channel()
 
 channel.queue_declare(queue=queue)
@@ -139,10 +144,22 @@ def callback(ch, method, properties, body):
     print(f'-> Sending text to NN:\n\t{t}')
 
     sentiment = evaluate(t)
-    print(f'-> Result:\t{sentiment}'}
-    # save to db
-
+    print(f'-> Result:\t{sentiment}')
+    print(f'Updating database entry')
+    # project.update_one({
+    #     '_id':project_id},
+    #     {
+    #         "$set": {
+    #             "sentiment": sentiment
+    #         }
+    #     },
+    #     upsert=False
+    # )
+    s = Sender()
+    s.open_conn()
     s.send_message(f'{project_id} {tweet_id}')
+    s.close_conn()
+
 
     #client.close()
     print('done')
