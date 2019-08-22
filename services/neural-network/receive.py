@@ -160,12 +160,12 @@ def callback(ch, method, properties, body):
             },
             upsert=False
         )
+        client.close()
     s = Sender()
     s.open_conn()
     s.send_message(f'{project_id} {tweet_id}')
     s.close_conn()
 
-    client.close()
 
 
 channel.basic_consume(queue=queue, auto_ack=True, on_message_callback=callback)
