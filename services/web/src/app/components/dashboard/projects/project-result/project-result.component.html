@@ -1,83 +1,72 @@
-<div class="container-fluid p-0 m-0">
+<div class="container-fluid p-5 mx-auto m-0 ">
   <div class="wrapper-outer">
     <div class="main">
-      <div class="row">
+      <div class="row mt-3">
         <div class="" id="dashboard-content">
           <div class="row">
             <div class="col-12 mx-auto mb-4 justify-content-between">
-              <h2 class="m-0 display-4">PROJECT RESULTS <span class="ml-5"><button class="btn rounded-circle arrow-font btn-outline-secondary mb-2" [routerLink]="['../projects/project-info', project._id]"><i class="fas fa-arrow-left my-1"></i></button></span></h2>
+              <h2 class="pl-0 display-4 float-left">PROJECT RESULTS </h2>
+              <span class="float-right"><button class="btn rounded-circle arrow-font btn-outline-primary mb-2" [routerLink]="['../projects/project-info', project._id]"><i class="fas fa-arrow-left my-1"></i></button></span>
             </div>
-            <div class="col-12 m-0 p-0">
+            <div class="col-12">
               <div class="card-deck">
-                  <div class="card shadow-lg">
-                    <div class="card-header">
-                      <h5 class="display-5"><b>PROJECT DETAILS</b></h5>
-                    </div>
-                    <div class="card-body text-gray">
-                      <div class="pl-3 row">
-                        <div class="col-6"><h6 class="display-5">Project Name:</h6></div>
-                        <div class="col-6 text-light">{{project.project_name}}</div>
-                      </div>
-                      <br>
-                      <div class="pl-3 row">
-                        <div class="col-6"><h6 class="display-5">Source:</h6></div>
-                        <div class="col-6 text-light">{{project.source}}</div>
-                      </div>
-                      <br>
-                      <div class="pl-3 row">
-                        <div class="col-6"><h6 class="display-5">Whitelisted Words:</h6></div>
-                        <div class="col-6 text-light">{{project.whitelist.toString()}}</div>
-                      </div>
-                      <br>
-                      <div class="pl-3 row">
-                        <div class="col-6"><h6 class="display-5">Blacklisted Words:</h6></div>
-                        <div class="col-6 text-light">{{project.blacklist.toString()}}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card shadow-lg">
-                    <div class="card-header">
-                      <h5 class="display-5"><b>AVERAGE SCORE</b></h5>
-                    </div>
-                    <div class="card-body">
-                      <div>
-                        <div style="display: block">
-                          <canvas baseChart height="100"
-                            [data]="doughnutChartData"
-                            [labels]="doughnutChartLabels"
-                            [chartType]="doughnutChartType"
-                            [options]="doughnutChartOptions"
-                            [colors]="chartColors"
-                            [plugins]="doughnutChartPlugins">
-                          </canvas>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-              <div class="card-deck mt-4">
                 <div class="card shadow-lg">
                   <div class="card-header">
-                    <h5 class="display-5"><b>History</b></h5>
+                    <h5 class="display-5"><b>PROJECT DETAILS</b></h5>
                   </div>
-                  <div class="card-body">
-                    <div style="display: block;">
-                      <canvas baseChart width="400" height="230"
-                        [datasets]="lineChartData"
-                        [labels]="lineChartLabels"
-                        [options]="lineChartOptions"
-                        [colors]="lineChartColors"
-                        [legend]="lineChartLegend"
-                        [chartType]="lineChartType"
-                        [plugins]="lineChartPlugins"
-                        (chartClick)="onChartClicked($event)">
-                      </canvas>
+                  <div class="card-body text-gray">
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Project Name:</h6></div>
+                      <div class="col-6 text-light">{{project.project_name}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Source:</h6></div>
+                      <div class="col-6 text-light">{{project.source}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Whitelisted Words:</h6></div>
+                      <div class="col-6 text-light">{{project.whitelist.toString()}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Blacklisted Words:</h6></div>
+                      <div class="col-6 text-light">{{project.blacklist.toString()}}</div>
                     </div>
                   </div>
                 </div>
                 <div class="card shadow-lg">
                   <div class="card-header">
-                    <h5 class="display-5"><b>MOST AND LEAST POSITIVE RESULTS</b></h5>
+                    <h5 class="display-5"><b>STATISTICS</b></h5>
+                  </div>
+                  <div class="card-body text-gray">
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Project Name:</h6></div>
+                      <div class="col-6 text-light">{{project.project_name}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Source:</h6></div>
+                      <div class="col-6 text-light">{{project.source}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Whitelisted Words:</h6></div>
+                      <div class="col-6 text-light">{{project.whitelist.toString()}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Blacklisted Words:</h6></div>
+                      <div class="col-6 text-light">{{project.blacklist.toString()}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-deck mt-4">
+                <div class="card shadow-lg">
+                  <div class="card-header">
+                    <h5 class="display-5"><b>BEST AND WORST</b></h5>
                   </div>
                   <div class="card-body">
                     <div class="row">
@@ -99,6 +88,121 @@
                           {{currentRun.worstTweet}}
                           <span class="badge badge-primary badge-pill ml-3">{{currentRun.worstTweetSentiment}}</span>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-deck mt-4">
+                <div class="card shadow-lg">
+                  <div class="card-header">
+                    <h5 class="display-5"><b>Average Score</b></h5>
+                  </div>
+                  <div class="card-body text-gray">
+
+                    <ejs-accumulationchart id="chart-container" [legendSettings]='legendSettings' background='rgba(1,1,1,0)'>
+                        <e-accumulation-series-collection>
+                            <e-accumulation-series [dataSource]='piedata' xName='x' yName='y' innerRadius='80%' [dataLabel]='datalabel'></e-accumulation-series>
+                        </e-accumulation-series-collection>
+                    </ejs-accumulationchart>
+                  </div>
+                </div>
+                <div class="card shadow-lg">
+                  <div class="card-header">
+                    <h5 class="display-5"><b>History</b></h5>
+                  </div>
+                  <div class="card-body">
+                    <div style="display: block;">
+
+                      <ejs-chart id='chart-histogram' style='display:block;' align='center' [primaryXAxis]='primaryXAxisHistogram' [primaryYAxis]='primaryYAxisHistogram' (load)='loadHistogram($event)'background='rgba(255,255,255,0)'>
+                        <e-series-collection>
+                            <e-series stroke='white' color='blue' [dataSource]='dataHistogram' type='Histogram' yName='y' name='Score' width=2 [binInterval]='binInterval' 
+                            [columnWidth]='columnWidth'> </e-series>
+                        </e-series-collection>
+                      </ejs-chart>
+                    
+
+                      <!-- <canvas baseChart width="400" height="230"
+                        [datasets]="lineChartData"
+                        [labels]="lineChartLabels"
+                        [options]="lineChartOptions"
+                        [colors]="lineChartColors"
+                        [legend]="lineChartLegend"
+                        [chartType]="lineChartType"
+                        [plugins]="lineChartPlugins"
+                        (chartClick)="onChartClicked($event)">
+                      </canvas> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-deck mt-4 pb-3">
+                <div class="card shadow-lg">
+                  <div class="card-header">
+                    <h5 class="display-5"><b>AVG</b></h5>
+                  </div>
+                  <div class="card-body">
+                    <div>
+                      <div style="display: block">
+
+                        <ejs-chart id="chart-average-over-time" [primaryXAxis]='primaryXAxis'[primaryYAxis]='primaryYAxis' background='rgba(255,255,255,0)'>
+                          <e-series-collection>
+                              <e-series [dataSource]='chartData' type='Line' xName='x' yName='y' width='4' [marker]='marker'></e-series>
+                          </e-series-collection>
+                        </ejs-chart>
+
+                        <!-- <canvas baseChart height="100"
+                          [data]="doughnutChartData"
+                          [labels]="doughnutChartLabels"
+                          [chartType]="doughnutChartType"
+                          [options]="doughnutChartOptions"
+                          [colors]="chartColors"
+                          [plugins]="doughnutChartPlugins">
+                        </canvas> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card shadow-lg">
+                  <div class="card-header">
+                    <h5 class="display-5"><b>ROT</b></h5>
+                  </div>
+                  <div class="card-body">
+                    <!-- data -->
+                  </div>
+                </div>
+              </div>
+              <div class="card-deck mt-4 pb-3">
+                <div class="card shadow-lg">
+                  <div class="card-header">
+                    <h5 class="display-5"><b>AVG</b></h5>
+                  </div>
+                  <div class="card-body">
+                    <!-- data --> Hello
+                  </div>
+                </div>
+                <div class="card shadow-lg">
+                  <div class="card-header">
+                    <h5 class="display-5"><b>ROT</b></h5>
+                  </div>
+                  <div class="card-body">
+                    <div>
+                      <div style="display: block">
+
+                        <ejs-chart id="chart-change-over-time" [primaryXAxis]='primaryXAxis'[primaryYAxis]='primaryYAxis' background='rgba(255,255,255,0)'>
+                          <e-series-collection>
+                              <e-series [dataSource]='chartData' type='Line' xName='x' yName='y' width='4' [marker]='marker'></e-series>
+                          </e-series-collection>
+                        </ejs-chart>
+
+                        <!-- <canvas baseChart height="100"
+                          [data]="doughnutChartData"
+                          [labels]="doughnutChartLabels"
+                          [chartType]="doughnutChartType"
+                          [options]="doughnutChartOptions"
+                          [colors]="chartColors"
+                          [plugins]="doughnutChartPlugins">
+                        </canvas> -->
                       </div>
                     </div>
                   </div>
@@ -179,7 +283,7 @@
                             </div>
                           </div>
                           <div class="col-1 m-0 my-auto mx-auto" *ngIf="activeFlagging">
-                              <input type="checkbox" [(ngModel)]="text['checked']" (click)="onCheckboxClick(i)">
+                            <input type="checkbox" [(ngModel)]="text['checked']" (click)="onCheckboxClick(i)">
                           </div>
                         </div>
                       </div>

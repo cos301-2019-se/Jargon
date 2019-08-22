@@ -1,5 +1,5 @@
 .dash {
-  height: 80vh;
+  height: auto;
   overflow-y: auto;
 }
 
@@ -31,7 +31,7 @@
 }
 
 .dashboard {
-  height: 70vh;
+  height: auto;
 }
 
 #page-icon {
@@ -55,8 +55,8 @@
   opacity: 0.6;
 }
 
-h1 {
-  color: white;
+h2 {
+  color: black;
   /* text-align: center;
   font-family: Georgia;
   color: rgba(8,162,233,1); */
@@ -104,16 +104,21 @@ hr {
 }
 
 .wrapper-outer {
-  display: flex;
+  /* display: flex; */
   justify-content: space-between;
 }
 
 .main,
 .sidebar {
-  padding: 15px;
+  height:auto;
+}
+
+#form {
+  background: rgba(6, 57, 116, 1) !important; 
 }
 
 .main {
+  height:auto;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -162,11 +167,11 @@ body {
 
 .project-list {
   overflow-y: auto;
-  max-height: 70vh;
+  max-height: auto;
 }
 
 .main-content {
-  height: 70vh;
+  height: auto;
   overflow-y: auto;
   border-color: rgb(15, 65, 122) !important;
   border-width: 2px !important;
@@ -274,5 +279,5 @@ label {
 }
 
 .create:hover {
-  background: rgba(37, 164, 255, 0.3) !important;
+  background: rgba(37, 164, 255, 0.8) !important;
 }
