@@ -98,13 +98,13 @@ describe('/cleaners', () => {
                 }
             )
             .then((res) => {
-                chai.expect(res.body).to.be.eql({
+                chai.expect(res.body).to.be.eql(
                     [
                         {
-                          "text": "this is a tweet"
+                          "text" : "this is a tweet"
                         }
-                      ]
-                });
+                    ]
+                );
             }, (err) => {
                 chai.expect(err.response).to.have.status(500);
             });
