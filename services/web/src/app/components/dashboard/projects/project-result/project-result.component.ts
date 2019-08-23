@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SharedProjectService } from '../../../../services/shared-project/shared-project.service';
-import { Project, Run, SocialData, ProjectStatistic } from '../../../../interfaces/project/project';
+import { Project, Run, SocialData, ProjectStatistic, AveragePerTime } from '../../../../interfaces/project/project';
 import { Label, MultiDataSet, PluginServiceGlobalRegistrationAndOptions, Color} from 'ng2-charts';
 import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
 import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
@@ -41,8 +41,8 @@ export class ProjectResultComponent implements OnInit {
   };
   public dataHistogram: Object[] = [];
   public primaryXAxisHistogram: Object = {
-    minimum: 0.0, maximum: 1.0, interval: 0.10,
-    title: 'Hello',
+    minimum: 0, maximum: 100, interval: 10,
+    title: 'Sentiment (%)',
     titleStyle: {
       color: 'white',
       size: '18px'
@@ -56,8 +56,8 @@ export class ProjectResultComponent implements OnInit {
     }]
   };
   public primaryYAxisHistogram: Object = {
-    minimum: 0, maximum: 10, interval: 1,
-    title: 'Hello',
+    minimum: 0, interval: 2,
+    title: 'Frequency',
     titleStyle: {
       color: 'white',
       size: '18px'
@@ -68,42 +68,48 @@ export class ProjectResultComponent implements OnInit {
     }
   };
   public loadHistogram(args: ILoadedEventArgs): void {
-    let points: number[] = [0.11,0.111,0.112,0.1113,0.233
-    ];
-    points.map((value: number) => {
-      this.dataHistogram.push({
-        y: value
-      });
-    });
+    // let points: number[] = [
+    //   0,0,0,
+    //   10,10,10,10,
+    //   20,20,20,20,20,20,
+    //   30,30,30,
+    //   40,40,
+    //   90
+    // ];
+    // points.map((value: number) => {
+    //   this.dataHistogram.push({
+    //     y: value
+    //   });
+    // });
   };
-  public binInterval: number = 0.10;
+  public binInterval: number = 10;
   public columnWidth: number = 0.99;
   public showNormalDistribution: boolean = false;
   
   /* Average Sentiment Over Time */
-  public chartData: Object[] = [
-    { x: 3, y: 27 },
-    { x: 5, y: 35 },
-    { x: 9, y: 25 },
-    { x: 10, y: 32 },
-    { x: 11, y: 26 },
-    { x: 28, y: 30 }
+  public chartDataAvgSentiment: Object[] = [
+    // { x: 3, y: 27 },
+    // { x: 5, y: 35 },
+    // { x: 9, y: 25 },
+    // { x: 10, y: 32 },
+    // { x: 11, y: 26 },
+    // { x: 28, y: 30 }
   ];
 
-  public marker: Object = {
+  public markerAvgSentiment: Object = {
     visible: true,
     fill: 'rgb(39,141,199)',
     height: 10,
     width: 10
   }
   
-  public primaryXAxis: Object = {
+  public primaryXAxisAvgSentiment: Object = {
     // valueType: 'DateTime',
     // interval: 365,
     interval: 1,
-    min: 0,
-    max: 23,
-    title: 'Time',
+    minimum: 0,
+    maximum: 23,
+    title: 'Time (hours of day)',
     titleStyle: {
       color: 'white',
       size: '18px'
@@ -114,8 +120,9 @@ export class ProjectResultComponent implements OnInit {
     }
 
   };
-  public primaryYAxis: Object = {
-    title: 'Avg Sentiment',
+  public primaryYAxisAvgSentiment: Object = {
+    minimum: 0,
+    title: 'Average Sentiment',
     titleStyle: {
       color: 'white',
       size: '18px'
@@ -126,7 +133,51 @@ export class ProjectResultComponent implements OnInit {
     }
   };
 
-    
+   /* Rate of Change in Sentiment */
+   public chartDataROC: Object[] = [
+    // { x: 3, y: 27 },
+    // { x: 5, y: 35 },
+    // { x: 9, y: 25 },
+    // { x: 10, y: 32 },
+    // { x: 11, y: 26 },
+    // { x: 28, y: 30 }
+  ];
+
+  public markerROC: Object = {
+    visible: true,
+    fill: 'rgb(39,141,199)',
+    height: 10,
+    width: 10
+  }
+  
+  public primaryXAxisROC: Object = {
+    // valueType: 'DateTime',
+    // interval: 365,
+    interval: 1,
+    minimum: 0,
+    maximum: 23,
+    title: 'Time (hours of day)',
+    titleStyle: {
+      color: 'white',
+      size: '18px'
+    },
+    labelStyle: {
+      color: 'white',
+      size: '16px',
+    }
+
+  };
+  public primaryYAxisROC: Object = {
+    title: 'Average Change in Sentiment ',
+    titleStyle: {
+      color: 'white',
+      size: '18px'
+    },
+    labelStyle: {
+      color: 'white',
+      size: '16px'
+    }
+  }; 
   
 
 
@@ -206,7 +257,7 @@ export class ProjectResultComponent implements OnInit {
   //   responsive: true,
   //   legend: {
   //     labels: {
-  //       fontColor: '',
+  //       fontColor: '',<ProjectStatistic>
   //       boxWidth: 0
   //     }
   //   },
@@ -284,8 +335,51 @@ export class ProjectResultComponent implements OnInit {
 
         this.projectApiRequesterService.projectStatistics(project._id).subscribe(
           (result: any) => {
-            console.log("Response:", <ProjectStatistic>(result));
+            console.log("Response:", result);
             this.projectAnalysis = result.result[0];
+            
+            
+            this.projectAnalysis.graphs.histogram.map(
+              (value: number) => {
+                this.dataHistogram.push({
+                  y: value
+                });
+              }
+            );
+
+            this.dataHistogram = [...this.dataHistogram];
+
+            for (let i = 0; i < this.projectAnalysis.graphs.averageOverTime.length; ++i) {
+              if (this.projectAnalysis.graphs.averageOverTime[i].averageSentiment >= 0.0) {
+                this.chartDataAvgSentiment.push(
+                  { 
+                    x: i, 
+                    y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+                      0.0 :
+                      this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+                  }
+                );
+              }
+              // this.chartDataAvgSentiment.push(
+              //   { 
+              //     x: i, 
+              //     y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+              //       0.0 :
+              //       this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+              //   }
+              // );
+            }
+            this.chartDataAvgSentiment = [...this.chartDataAvgSentiment];
+
+            for (let i = 0; i < this.projectAnalysis.graphs.changeOverTime.length; ++i) {
+              this.chartDataROC.push(
+                { 
+                  x: i, 
+                  y: this.projectAnalysis.graphs.changeOverTime[i]
+                }
+              );
+            }
+            this.chartDataROC = [...this.chartDataROC];
           }
         );
       }
