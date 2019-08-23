@@ -42,7 +42,7 @@ export class ProjectResultComponent implements OnInit {
   public dataHistogram: Object[] = [];
   public primaryXAxisHistogram: Object = {
     minimum: 0, maximum: 100, interval: 10,
-    title: 'Hello',
+    title: 'Sentiment (%)',
     titleStyle: {
       color: 'white',
       size: '18px'
@@ -57,7 +57,7 @@ export class ProjectResultComponent implements OnInit {
   };
   public primaryYAxisHistogram: Object = {
     minimum: 0, maximum: 25, interval: 2,
-    title: 'Hello',
+    title: 'Frequency',
     titleStyle: {
       color: 'white',
       size: '18px'
@@ -109,7 +109,7 @@ export class ProjectResultComponent implements OnInit {
     interval: 1,
     minimum: 0,
     maximum: 23,
-    title: 'Time',
+    title: 'Time (hours of day)',
     titleStyle: {
       color: 'white',
       size: '18px'
@@ -122,7 +122,7 @@ export class ProjectResultComponent implements OnInit {
   };
   public primaryYAxisAvgSentiment: Object = {
     minimum: 0,
-    title: 'Avg Sentiment',
+    title: 'Average Sentiment',
     titleStyle: {
       color: 'white',
       size: '18px'
@@ -156,7 +156,7 @@ export class ProjectResultComponent implements OnInit {
     interval: 1,
     minimum: 0,
     maximum: 23,
-    title: 'Time',
+    title: 'Time (hours of day)',
     titleStyle: {
       color: 'white',
       size: '18px'
@@ -168,7 +168,7 @@ export class ProjectResultComponent implements OnInit {
 
   };
   public primaryYAxisROC: Object = {
-    title: 'Avg Sentiment',
+    title: 'Average Change in Sentiment ',
     titleStyle: {
       color: 'white',
       size: '18px'
