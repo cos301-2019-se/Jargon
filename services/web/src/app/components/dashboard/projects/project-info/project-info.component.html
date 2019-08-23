@@ -71,7 +71,7 @@
             <button class="btn btn-white results" [routerLink]="['../../../project-result']">Results</button>
         </div>
         <div class="col-auto mr-auto" [hidden]="!isReadOnly">
-          <button class="btn btn-white results" (click)="onStartClick()" data-toggle="modal" data-target="#exampleModal">Start</button>
+          <button class="btn btn-white results" (click)="onStartClick()">Start</button>
         </div>
         <div class="col-auto ml-auto" [hidden]="isReadOnly">
             <button class="btn btn-white save" (click)="onSaveClick()">Save <i class="fas fa-check"></i></button>
