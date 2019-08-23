@@ -42,23 +42,38 @@
                   </div>
                   <div class="card-body text-gray">
                     <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Project Name:</h6></div>
-                      <div class="col-6 text-light">{{project.project_name}}</div>
+                      <div class="col-6"><h6 class="display-5">Minimum:</h6></div>
+                      <div class="col-6 text-light">{{projectAnalysis.min | number}}</div>
                     </div>
                     <br>
                     <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Source:</h6></div>
-                      <div class="col-6 text-light">{{project.source}}</div>
+                      <div class="col-6"><h6 class="display-5">Maximum:</h6></div>
+                      <div class="col-6 text-light">{{projectAnalysis.max | number}}</div>
                     </div>
                     <br>
                     <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Whitelisted Words:</h6></div>
-                      <div class="col-6 text-light">{{project.whitelist.toString()}}</div>
+                      <div class="col-6"><h6 class="display-5">Mean:</h6></div>
+                      <div class="col-6 text-light">{{projectAnalysis.mean | number}}</div>
                     </div>
                     <br>
                     <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Blacklisted Words:</h6></div>
-                      <div class="col-6 text-light">{{project.blacklist.toString()}}</div>
+                      <div class="col-6"><h6 class="display-5">Median:</h6></div>
+                      <div class="col-6 text-light">{{projectAnalysis.median | number}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Mode:</h6></div>
+                      <div class="col-6 text-light">{{projectAnalysis.mode[0] | number}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Standard Deviation:</h6></div>
+                      <div class="col-6 text-light">{{projectAnalysis.std_dev | number}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Variance:</h6></div>
+                      <div class="col-6 text-light">{{projectAnalysis.variance | number}}</div>
                     </div>
                   </div>
                 </div>
@@ -139,15 +154,15 @@
               <div class="card-deck mt-4 pb-3">
                 <div class="card shadow-lg">
                   <div class="card-header">
-                    <h5 class="display-5"><b>AVG</b></h5>
+                    <h5 class="display-5"><b>Average Sentiment Over Time</b></h5>
                   </div>
                   <div class="card-body">
                     <div>
                       <div style="display: block">
 
-                        <ejs-chart id="chart-average-over-time" [primaryXAxis]='primaryXAxis'[primaryYAxis]='primaryYAxis' background='rgba(255,255,255,0)'>
+                        <ejs-chart id="chart-average-over-time" [primaryXAxis]='primaryXAxisAvgSentiment'[primaryYAxis]='primaryYAxisAvgSentiment' background='rgba(255,255,255,0)'>
                           <e-series-collection>
-                              <e-series [dataSource]='chartData' type='Line' xName='x' yName='y' width='4' [marker]='marker'></e-series>
+                              <e-series [dataSource]='chartDataAvgSentiment' type='Line' xName='x' yName='y' width='4' [marker]='markerAvgSentiment'></e-series>
                           </e-series-collection>
                         </ejs-chart>
 
@@ -183,15 +198,15 @@
                 </div>
                 <div class="card shadow-lg">
                   <div class="card-header">
-                    <h5 class="display-5"><b>ROT</b></h5>
+                    <h5 class="display-5"><b>Average Change in Sentiment Over Time</b></h5>
                   </div>
                   <div class="card-body">
                     <div>
                       <div style="display: block">
 
-                        <ejs-chart id="chart-change-over-time" [primaryXAxis]='primaryXAxis'[primaryYAxis]='primaryYAxis' background='rgba(255,255,255,0)'>
+                        <ejs-chart id="chart-change-over-time" [primaryXAxis]='primaryXAxisROC'[primaryYAxis]='primaryYAxisROC' background='rgba(255,255,255,0)'>
                           <e-series-collection>
-                              <e-series [dataSource]='chartData' type='Line' xName='x' yName='y' width='4' [marker]='marker'></e-series>
+                              <e-series [dataSource]='chartDataROC' type='Line' xName='x' yName='y' width='4' [marker]='markerROC'></e-series>
                           </e-series-collection>
                         </ejs-chart>
 

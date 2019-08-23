@@ -74,12 +74,32 @@ export class DataObject {
     public text: string = "";
 }
 
-export class ProjectAnalysis {
-    public min: number = 0.0;
+export class ProjectStatistic {
+    public graphs: Graphs = null;
     public max: number = 0.0;
-    public std_dev: number = 0.0;
-    public variance: number = 0.0;
     public mean: number = 0.0;
-    public mode: number = 0.0;
     public median: number = 0.0;
+    public min: number = 0.0;
+    public mode: number[] = [];
+    public project: string = "";
+    public std_dev: number = 0.0;
+    public timestamp: Date = null;
+    public variance: number = 0.0;
+}
+
+export class Graphs {
+    public averageOverTime: AveragePerTime[] = null;
+    public changeOverTime: number[] = null;
+    public histogram: number[] = null;
+}
+
+export class AveragePerTime {
+    public averageSentiment: number = 0.0;
+    public tweets: Data[] = null;
+    public _id: string = "";
+}
+
+export class Data {
+    public tweet: string = "";
+    public sentiment: number = 0.0;
 }

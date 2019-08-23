@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
+import { Project, ProjectStatistic, AveragePerTime } from '../../../interfaces/project/project';
+import { SharedProjectService } from '../../../services/shared-project/shared-project.service';
+import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
 
 @Component({
   selector: 'app-project-compare',
@@ -12,7 +15,7 @@ export class ProjectCompareComponent {
     { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
     { data: [25, 69, 100, 31, 53, 65, 21], label: 'Series B' },
   ];
-  public lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChartLabels: Label[] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
   public lineChartOptions: (ChartOptions) = {
     responsive: true,
     scales: {
@@ -40,8 +43,81 @@ export class ProjectCompareComponent {
   public lineChartType = 'line';
   public lineChartPlugins = [];
 
-  constructor() { }
+  projects: Project[] = null;
+  projectOneId: string = null;
+  projectTwoId: string = null;
+
+  projectOneStatistic: ProjectStatistic = null;
+  projectTwoStatistic: ProjectStatistic = null;
+
+  constructor(private sharedProjectService: SharedProjectService,
+      private projectApiRequesterService: ProjectApiRequesterService) {
+
+    this.projects = this.sharedProjectService.getProjects();
+
+    if (this.projects === null) {
+      this.projectApiRequesterService.getProjectsBasic().subscribe(
+        (projects: Project[]) => {
+          this.sharedProjectService.setProjects(projects);
+          this.projects = this.sharedProjectService.getProjects();
+        },
+        error => {
+          console.log("Error", error);
+        }
+      );
+    }
+  }
 
   ngOnInit() {
   }
+
+  compareItemString(op1: any, op2: any) {
+    return op1 === op2;
+  }
+
+  onCompareClick() {
+    console.log(this.projectOneId, this.projectTwoId);
+    console.log("One:", this.projectOneStatistic);
+    console.log("Two:", this.projectTwoStatistic);
+
+    if (this.projectOneId === null || this.projectTwoId === null) {
+      return;
+    }
+
+    this.projectApiRequesterService.projectStatistics(this.projectOneId).subscribe(
+      (statResult: any) => {
+        console.log(statResult);
+        this.projectOneStatistic = statResult.result[0];
+        console.log("One:", this.projectOneStatistic);
+        this.lineChartData[0].data = [];
+        this.projectOneStatistic.graphs.averageOverTime.forEach(
+          (avgPerTime: AveragePerTime) => {
+            
+            this.lineChartData[0].data.push(
+              avgPerTime.averageSentiment
+            );
+          }
+        );
+      }
+    );
+
+    this.projectApiRequesterService.projectStatistics(this.projectTwoId).subscribe(
+      (statResult: any) => {
+        console.log(statResult);
+        this.projectTwoStatistic = statResult.result[0];
+        console.log("Two:", this.projectTwoStatistic);
+
+        this.lineChartData[1].data = [];
+        this.projectTwoStatistic.graphs.averageOverTime.forEach(
+          (avgPerTime: AveragePerTime) => {
+            this.lineChartData[1].data.push(
+              avgPerTime.averageSentiment
+            );
+          }
+        );
+      }
+    );
+  }
+
+
 }

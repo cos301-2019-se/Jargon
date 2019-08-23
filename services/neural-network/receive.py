@@ -7,7 +7,7 @@ import pika
 import pymongo
 import urllib
 from bson.objectid import ObjectId
-import send as s
+from send import Sender
 
 
 SEED = 1234
@@ -91,7 +91,12 @@ nlp = spacy.load('en')
 
 queue = 'tweet_queue'
 print(f'-> RMQ consumer listening on {queue}.')
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+connection = pika.BlockingConnection(
+    pika.ConnectionParameters(
+        host='localhost',
+        socket_timeout=300000
+    )
+)
 channel = connection.channel()
 
 channel.queue_declare(queue=queue)
@@ -119,35 +124,49 @@ def evaluate(sentence):
     result = cnn.evaluate(indexed)
     return result
 
+
 def callback(ch, method, properties, body):
-
     project_id, tweet_id = body.decode().split()
-    client = pymongo.MongoClient(
-        "mongodb+srv://admin:" + urllib.parse.quote("sug@r123") + \
-        "@cluster0-jsbm1.gcp.mongodb.net/test?retryWrites=true"
-    )
-    print('Database connection established.')
+    if(tweet_id != '/t'):
+        client = pymongo.MongoClient(
+            "mongodb+srv://admin:" + urllib.parse.quote("sug@r123") +
+            "@cluster0-jsbm1.gcp.mongodb.net/test?retryWrites=true"
+        )
+        print('Database connection established.')
 
-    mydb = client["test"]
-    proj = mydb["projects"]
+        mydb = client["test"]
+        proj = mydb["projects"]
 
-    query = {"_id": ObjectId(project_id)}
-    project = proj.find_one(query)
-    tweets = project['data']
+        query = {"_id": ObjectId(project_id)}
+        project = proj.find_one(query)
+        tweets = project['data']
 
-    t = [tweet['text'] for tweet in tweets if tweet['id_str'] == tweet_id][0]
-    print(f'-> Sending text to NN:\n\t{t}')
+        tweet = [tweet for tweet in tweets if tweet['tweetID'] == tweet_id][0]
+        t = tweet['tweetObject']['text']
+        i = tweets.index(tweet)
+        print(t)
+        print(f'-> Sending text to NN:\n\t{t}')
 
-    sentiment = evaluate(t)
-    print(f'-> Result:\t{sentiment}'}
-    # save to db
-
+        sentiment = evaluate(t)
+        print(f'-> Result:\t{sentiment}')
+        print(f'Updating database entry')
+        proj.update_one(
+            {'_id': ObjectId(project_id)},
+            {
+                "$set": {
+                    "data."+str(i)+".tweetSentiment": sentiment
+                }
+            },
+            upsert=False
+        )
+        client.close()
+    s = Sender()
+    s.open_conn()
     s.send_message(f'{project_id} {tweet_id}')
+    s.close_conn()
 
-    #client.close()
-    print('done')
 
 channel.basic_consume(queue=queue, auto_ack=True, on_message_callback=callback)
 
 print('[*] Waiting for messages. To exit press CTRL+C')
-channel.start_consuming();
+channel.start_consuming()
