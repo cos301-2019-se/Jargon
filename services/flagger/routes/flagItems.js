@@ -1,9 +1,25 @@
+/**
+ * Filename: analyse.js
+ * Author: Ethan Lindeman
+ * 
+ *      This file contains all the endpoints for the API that handles
+ *      all flagging of tweets.
+ */
+
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Epoch = require('../models/epoch');
 
 const cap = 10;
+
+
+/***
+    * request for add (/flagItems/add) page (array)
+    * 
+    * this function receives an array of objects where each object consists of text, a current score and an alternate/new score
+    * these are then added to the database for later training
+    */
 
 router.post('/add', (req, res, next) => {
 
@@ -28,13 +44,13 @@ router.post('/add', (req, res, next) => {
     Epoch.find()
     .exec()
     .then(data => {
-       // console.log(data);
+      
         if (data.length <= 0)
         {
-            //console.log("init");
+            
             while (len != 0)
             {   
-               // console.log("waiting initial " + len);
+               
                 if (len < cap)
                 {
                     const epoch = new Epoch({
@@ -58,7 +74,7 @@ router.post('/add', (req, res, next) => {
                 }
                 else
                 {
-                    //console.log("here2");
+                    
                     inputTweets = tweetList.splice(0, cap);
 
                     if (num <= 1)
@@ -80,11 +96,11 @@ router.post('/add', (req, res, next) => {
                     .then(result => {
                         outputList.push("Success.");
                         
-                        //console.log(result);
+                        
                     })
                     .catch(err => {
                         outputList.push("Failed.");
-                      //  console.log(err);
+                      
 
                     });
                     len = len - cap;
@@ -104,8 +120,7 @@ router.post('/add', (req, res, next) => {
                     console.log("not updated");
                     let end = data.length - 1;
                     let lastSize = data[end].size;
-                   // console.log(end);
-                   // console.log(lastSize);
+                   
                     let tweetsAdd = data[end].tweets;
                     updated = true;
                     if (lastSize < cap)
@@ -113,7 +128,7 @@ router.post('/add', (req, res, next) => {
                         let s = cap - lastSize;
                         if (s > tweetList.length)
                             s = tweetList.length;
-                      //  console.log(`s : ${s}  tweetList: ${tweetList.length}`);
+                    
                         for (let i = 0; i < s; i++)
                         {
                             tweetsAdd.push(tweetList.pop());
@@ -138,10 +153,10 @@ router.post('/add', (req, res, next) => {
                 {
                     len = tweetList.length;
                     inputTweets = [];
-                   // console.log("updated sections");
+                   
                     while (len != 0)
                     {
-                       // console.log("waiting add " + len);
+                      
                         if (len < cap)
                         {
                             const tempList = tweetList;
@@ -191,7 +206,7 @@ router.post('/add', (req, res, next) => {
                     }
                 }
             }
-           // console.log("extra");
+           
         }
 
         if (tweetList.length == 0)
@@ -205,6 +220,13 @@ router.post('/add', (req, res, next) => {
 
     
 });
+
+/***
+    * request for train (/flagItems/train) page (none)
+    * 
+    * this route finds the next set of data to be trained on and sets it to be trained with
+    * this is updated in the database
+    */
 
 router.post('/train', (req, res, next) => {
 
