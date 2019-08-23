@@ -88,7 +88,7 @@ export class ProjectStatistic {
 }
 
 export class Graphs {
-    public averageOverTime: AveragePerTime = null;
+    public averageOverTime: AveragePerTime[] = null;
     public changeOverTime: number[] = null;
     public histogram: number[] = null;
 }

@@ -160,9 +160,9 @@
                     <div>
                       <div style="display: block">
 
-                        <ejs-chart id="chart-average-over-time" [primaryXAxis]='primaryXAxis'[primaryYAxis]='primaryYAxis' background='rgba(255,255,255,0)'>
+                        <ejs-chart id="chart-average-over-time" [primaryXAxis]='primaryXAxisAvgSentiment'[primaryYAxis]='primaryYAxisAvgSentiment' background='rgba(255,255,255,0)'>
                           <e-series-collection>
-                              <e-series [dataSource]='chartData' type='Line' xName='x' yName='y' width='4' [marker]='marker'></e-series>
+                              <e-series [dataSource]='chartDataAvgSentiment' type='Line' xName='x' yName='y' width='4' [marker]='markerAvgSentiment'></e-series>
                           </e-series-collection>
                         </ejs-chart>
 
@@ -204,9 +204,9 @@
                     <div>
                       <div style="display: block">
 
-                        <ejs-chart id="chart-change-over-time" [primaryXAxis]='primaryXAxis'[primaryYAxis]='primaryYAxis' background='rgba(255,255,255,0)'>
+                        <ejs-chart id="chart-change-over-time" [primaryXAxis]='primaryXAxisROC'[primaryYAxis]='primaryYAxisROC' background='rgba(255,255,255,0)'>
                           <e-series-collection>
-                              <e-series [dataSource]='chartData' type='Line' xName='x' yName='y' width='4' [marker]='marker'></e-series>
+                              <e-series [dataSource]='chartDataROC' type='Line' xName='x' yName='y' width='4' [marker]='markerROC'></e-series>
                           </e-series-collection>
                         </ejs-chart>
 
