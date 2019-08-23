@@ -7,6 +7,7 @@ import { ProjectApiRequesterService } from '../../../../services/project-api-req
 import { FlagData } from '../../../../interfaces/flagger/flag-data';
 import { FlaggerApiRequesterService } from '../../../../services/flagger-api-requester/flagger-api-requester.service';
 import { ILoadedEventArgs, IAccTextRenderEventArgs } from '@syncfusion/ej2-charts';
+import { SocketService } from '../../../../services/socket-service/socket-service.service';
 
 @Component({
   selector: 'app-project-result',
@@ -293,11 +294,26 @@ export class ProjectResultComponent implements OnInit {
   // lineChartType = 'line';
   // lineChartPlugins = [];
 
+  ioConnection: any;
+
   constructor(private shareProjectService: SharedProjectService,
       private projectApiRequesterService: ProjectApiRequesterService,
-      private flaggerApiRequesterService: FlaggerApiRequesterService) {
+      private flaggerApiRequesterService: FlaggerApiRequesterService,
+      private socketService: SocketService) {
+    
+    
+  }
 
-    shareProjectService.project.subscribe(
+  ngOnInit() {
+    // var list = {"you": 100, "me": 75, "foo": 116, "bar": 15};
+    // let keysSorted = Object.keys(list).sort(function(a,b){return list[a]-list[b]})
+    // console.log(keysSorted);     // bar,me,you,foo
+    this.init();
+  }
+
+  init() {
+    // this.initIoConnection();
+    this.shareProjectService.project.subscribe(
       (project: Project) => {
         this.projectApiRequesterService.getProjectDetailed(project._id).subscribe(
           (project: any) => {
@@ -327,71 +343,150 @@ export class ProjectResultComponent implements OnInit {
             
             this.onSortItemClick(this.sorting);
             this.onFilterItemClick(this.filter);
-          }
-        );
 
-        this.projectApiRequesterService.projectStatistics(project._id).subscribe(
-          (result: any) => {
-            console.log("Response:", result);
-            this.projectAnalysis = result.result[0];
-            
-            
-            this.projectAnalysis.graphs.histogram.map(
-              (value: number) => {
-                this.dataHistogram.push({
-                  y: value
-                });
-              }
-            );
+            console.log("TIMEOUT START");
+            // setTimeout(
+            //   () => {
+                console.log("TIMEOUT DONE");
+                this.projectApiRequesterService.analyse(project._id).subscribe(
+                  (response: any) => {
+                    console.log('ANALYSE:', response);
+                    if (response.status) {
+                      console.log("Get Stats");
+                      this.projectApiRequesterService.projectStatistics(project._id).subscribe(
+                        (result: any) => {
+                          console.log("Response:", result);
+                          this.projectAnalysis = result.result[0];
+                          
+                          this.projectAnalysis.graphs.histogram.map(
+                            (value: number) => {
+                              this.dataHistogram.push({
+                                y: value
+                              });
+                            }
+                          );
+              
+                          this.dataHistogram = [...this.dataHistogram];
 
-            this.dataHistogram = [...this.dataHistogram];
+                          this.piedata = [];
 
-            this.piedata = [];
-
-            this.piedata.push({x: "Positive", y: this.projectAnalysis.mean, text: + '%'});
-            this.piedata.push({x: "Negative", y: (1-this.projectAnalysis.mean), text: + '%'});
-
-            for (let i = 0; i < this.projectAnalysis.graphs.averageOverTime.length; ++i) {
-              if (this.projectAnalysis.graphs.averageOverTime[i].averageSentiment >= 0.0) {
-                this.chartDataAvgSentiment.push(
-                  { 
-                    x: i, 
-                    y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
-                      0.0 :
-                      this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+                          this.piedata.push({x: "Positive", y: this.projectAnalysis.mean, text: + '%'});
+                          this.piedata.push({x: "Negative", y: (1-this.projectAnalysis.mean), text: + '%'});
+              
+                          for (let i = 0; i < this.projectAnalysis.graphs.averageOverTime.length; ++i) {
+                            if (this.projectAnalysis.graphs.averageOverTime[i].averageSentiment >= 0.0) {
+                              this.chartDataAvgSentiment.push(
+                                { 
+                                  x: i, 
+                                  y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+                                    0.0 :
+                                    this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+                                }
+                              );
+                            }
+                            // this.chartDataAvgSentiment.push(
+                            //   { 
+                            //     x: i, 
+                            //     y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+                            //       0.0 :
+                            //       this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+                            //   }
+                            // );
+                          }
+                          this.chartDataAvgSentiment = [...this.chartDataAvgSentiment];
+              
+                          for (let i = 0; i < this.projectAnalysis.graphs.changeOverTime.length; ++i) {
+                            this.chartDataROC.push(
+                              { 
+                                x: i, 
+                                y: this.projectAnalysis.graphs.changeOverTime[i]
+                              }
+                            );
+                          }
+                          this.chartDataROC = [...this.chartDataROC];
+                        }
+                      );
+                    }
                   }
                 );
-              }
-              // this.chartDataAvgSentiment.push(
-              //   { 
-              //     x: i, 
-              //     y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
-              //       0.0 :
-              //       this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
-              //   }
-              // );
-            }
-            this.chartDataAvgSentiment = [...this.chartDataAvgSentiment];
-
-            for (let i = 0; i < this.projectAnalysis.graphs.changeOverTime.length; ++i) {
-              this.chartDataROC.push(
-                { 
-                  x: i, 
-                  y: this.projectAnalysis.graphs.changeOverTime[i]
-                }
-              );
-            }
-            this.chartDataROC = [...this.chartDataROC];
+            //   }, this.project.trackTime
+            // );
           }
         );
+
+        // this.projectApiRequesterService.projectStatistics(project._id).subscribe(
+        //   (result: any) => {
+        //     console.log("Response:", result);
+        //     this.projectAnalysis = result.result[0];
+            
+            
+        //     this.projectAnalysis.graphs.histogram.map(
+        //       (value: number) => {
+        //         this.dataHistogram.push({
+        //           y: value
+        //         });
+        //       }
+        //     );
+
+        //     this.dataHistogram = [...this.dataHistogram];
+
+        //     for (let i = 0; i < this.projectAnalysis.graphs.averageOverTime.length; ++i) {
+        //       if (this.projectAnalysis.graphs.averageOverTime[i].averageSentiment >= 0.0) {
+        //         this.chartDataAvgSentiment.push(
+        //           { 
+        //             x: i, 
+        //             y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+        //               0.0 :
+        //               this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+        //           }
+        //         );
+        //       }
+        //       // this.chartDataAvgSentiment.push(
+        //       //   { 
+        //       //     x: i, 
+        //       //     y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+        //       //       0.0 :
+        //       //       this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+        //       //   }
+        //       // );
+        //     }
+        //     this.chartDataAvgSentiment = [...this.chartDataAvgSentiment];
+
+        //     for (let i = 0; i < this.projectAnalysis.graphs.changeOverTime.length; ++i) {
+        //       this.chartDataROC.push(
+        //         { 
+        //           x: i, 
+        //           y: this.projectAnalysis.graphs.changeOverTime[i]
+        //         }
+        //       );
+        //     }
+        //     this.chartDataROC = [...this.chartDataROC];
+        //   }
+        // );
       }
     );
   }
 
-  ngOnInit() {
-    // var list = {"you": 100, "me": 75, "foo": 116, "bar": 15};
-    // let keysSorted = Object.keys(list).sort(function(a,b){return list[a]-list[b]})
-    // console.log(keysSorted);     // bar,me,you,foo
+  private initIoConnection(): void {
+    console.log("Websocket init");
+    this.socketService.initSocket();
+
+    this.ioConnection = this.socketService.onMessage()
+      .subscribe((message: any) => {
+        console.log("PUSHING BRUH");
+        this.project.data.push(message);
+        this.project.data = [...this.project.data];
+      });
+
+    this.socketService.onEvent(<any>'connected')
+      .subscribe(() => {
+        console.log('connected');
+      });
+      
+    this.socketService.onEvent(<any>'disconnect')
+      .subscribe(() => {
+        console.log('disconnected');
+      });
   }
 
   onChartClicked(event: any) {

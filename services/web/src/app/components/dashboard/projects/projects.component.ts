@@ -44,6 +44,7 @@ export class ProjectsComponent implements OnInit {
         this.pageProjects.push(this.projects[i]);
       }
     }
+    console.log(this.projects);
   }
 
   setProject(project: Project) {
@@ -55,6 +56,7 @@ export class ProjectsComponent implements OnInit {
     this.projects = null;
     this.projectApiRequesterService.getProjectsBasic().subscribe(
       (projects: Project[]) => {
+        console.log(projects);
         this.sharedProjectService.setProjects(projects);
         this.projects = this.sharedProjectService.getProjects();
         this.projectsLength = this.projects.length/this.PAGE_SIZE;

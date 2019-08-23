@@ -11,6 +11,7 @@ import { HistogramSeriesService, LineSeriesService, PieSeriesService, Accumulati
   templateUrl: './project-compare.component.html',
   styleUrls: ['./project-compare.component.css']
 })
+// <<<<<<< Updated upstream
 export class ProjectCompareComponent implements OnInit{
 
   ngOnInit(): void {
@@ -47,7 +48,27 @@ export class ProjectCompareComponent implements OnInit{
 
   public primaryXAxis : Object = {
     interval: 1,
-    title: 'Time (Hours)',
+//     title: 'Time (Hours)',
+// =======
+// export class ProjectCompareComponent {
+//   public lineChartData: ChartDataSets[] = [
+//     { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
+//     { data: [25, 69, 100, 31, 53, 65, 21], label: 'Series B' },
+//   ];
+//   public lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+//   public lineChartOptions: (ChartOptions) = {
+//     responsive: true,
+//     scales: {
+//       xAxes: [{
+//         ticks: { fontColor: 'white' },
+//         gridLines: { color: 'rgba(255,255,255,0.1)' }
+//       }],
+//       yAxes: [{
+//         ticks: { fontColor: 'white' },
+//         gridLines: { color: 'rgba(255,255,255,0.1)' }
+//       }]
+//     }
+// >>>>>>> Stashed changes
   };
 
   public primaryYAxis : Object = {
@@ -100,6 +121,7 @@ export class ProjectCompareComponent implements OnInit{
         this.projectOneStatistic = statResult.result[0];
         console.log("One:", this.projectOneStatistic);
 
+// <<<<<<< Updated upstream
         this.chartData = [];
 
         for (let i = 0; i < this.projectOneStatistic.graphs.averageOverTime.length; ++i) {
@@ -112,6 +134,13 @@ export class ProjectCompareComponent implements OnInit{
                   this.projectOneStatistic.graphs.averageOverTime[i].averageSentiment
               }
             );
+// =======
+//         this.projectOneStatistic.graphs.averageOverTime.forEach(
+//           (avgPerTime: AveragePerTime) => {
+//             // this.lineChartData[0].data.push(
+//             //   avgPerTime.averageSentiment
+//             // );
+// >>>>>>> Stashed changes
           }
         }
 
@@ -133,6 +162,7 @@ export class ProjectCompareComponent implements OnInit{
         this.projectTwoStatistic = statResult.result[0];
         console.log("Two:", this.projectTwoStatistic);
 
+// <<<<<<< Updated upstream
         this.chartData2 = [];
 
         for (let i = 0; i < this.projectTwoStatistic.graphs.averageOverTime.length; ++i) {
@@ -145,6 +175,13 @@ export class ProjectCompareComponent implements OnInit{
                   this.projectTwoStatistic.graphs.averageOverTime[i].averageSentiment
               }
             );
+// =======
+//         this.projectTwoStatistic.graphs.averageOverTime.forEach(
+//           (avgPerTime: AveragePerTime) => {
+//             // this.lineChartData[1].data.push(
+//             //   avgPerTime.averageSentiment
+//             // );
+// >>>>>>> Stashed changes
           }
         }
 

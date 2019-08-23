@@ -41,7 +41,7 @@ export class ProjectApiRequesterService {
       id: project._id,
       platform: project.source
     }
-    return this.httpClient.post(`${this.apiURL}/projects/start`, body);
+    return this.httpClient.post(`${this.apiURL}/projects/startStream`, body);
   }
 
   public updateProject(project: Project) {
@@ -78,6 +78,12 @@ export class ProjectApiRequesterService {
 
   public projectStatistics(id: string) {
     return this.httpClient.post('http://localhost:3004/analyse/getStatistics', {
+      id: id
+    });
+  }
+
+  public analyse(id: string) {
+    return this.httpClient.post('http://localhost:3004/analyse', {
       id: id
     });
   }
