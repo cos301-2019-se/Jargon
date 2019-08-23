@@ -514,7 +514,7 @@ function startRMQ(res){
                     y++;
                 }
                 if(y<result[0]['data'].length){
-                    console.log("sending: " + result[0]['data'][y]);
+                    console.log("sending message");
                     sock.emit("datasend", result[0]['data'][y]);
                 }else if(ids[1]=="/t"){
                     console.log("termination character");
@@ -522,7 +522,7 @@ function startRMQ(res){
             })
             setTimeout(() => {
                 sock.disconnect();
-            }, 6000);
+            }, 15000);
 
         }, {
             noAck: true

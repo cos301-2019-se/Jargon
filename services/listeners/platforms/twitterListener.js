@@ -205,6 +205,9 @@ class TwitterListener{
                         Project.find({_id : projectID})
                         .exec()
                         .then((result)=>{
+                            if(result[0].data==null){
+                                result[0].data = [];
+                            }
                             result[0].data.push(tweetStructure);
                             sendString = result[0]["_id"] + sendString;
                             console.log("saving tweet");
