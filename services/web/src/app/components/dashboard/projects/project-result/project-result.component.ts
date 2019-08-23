@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SharedProjectService } from '../../../../services/shared-project/shared-project.service';
-import { Project, Run, SocialData } from '../../../../interfaces/project/project';
+import { Project, Run, SocialData, ProjectStatistic } from '../../../../interfaces/project/project';
 import { Label, MultiDataSet, PluginServiceGlobalRegistrationAndOptions, Color} from 'ng2-charts';
 import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
 import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
@@ -80,15 +80,14 @@ export class ProjectResultComponent implements OnInit {
   public columnWidth: number = 0.99;
   public showNormalDistribution: boolean = false;
   
-  
   /* Average Sentiment Over Time */
   public chartData: Object[] = [
-    { x: new Date(2006, 8, 3), y: 27 },
-    { x: new Date(2006, 8, 5), y: 35 },
-    { x: new Date(2006, 8, 9), y: 25 },
-    { x: new Date(2006, 8, 10), y: 32 },
-    { x: new Date(2006, 8, 11), y: 26 },
-    { x: new Date(2006, 8, 28), y: 30 }
+    { x: 3, y: 27 },
+    { x: 5, y: 35 },
+    { x: 9, y: 25 },
+    { x: 10, y: 32 },
+    { x: 11, y: 26 },
+    { x: 28, y: 30 }
   ];
 
   public marker: Object = {
@@ -99,9 +98,12 @@ export class ProjectResultComponent implements OnInit {
   }
   
   public primaryXAxis: Object = {
-    valueType: 'DateTime',
+    // valueType: 'DateTime',
     // interval: 365,
-    title: 'Date/Time',
+    interval: 1,
+    min: 0,
+    max: 23,
+    title: 'Time',
     titleStyle: {
       color: 'white',
       size: '18px'
@@ -131,6 +133,7 @@ export class ProjectResultComponent implements OnInit {
   project: Project = new Project();
   currentRun: Run = new Run();
   filteredData: SocialData[] = [];
+  projectAnalysis: ProjectStatistic = new ProjectStatistic();
 
   activeFlagging: boolean = false;
 
@@ -252,20 +255,20 @@ export class ProjectResultComponent implements OnInit {
           (project: any) => {
             this.project = project;
 
-            let index = this.project.runs.length - 1;
-            this.selectCurrentRun(index);
+            // let index = this.project.runs.length - 1;
+            // this.selectCurrentRun(index);
 
-            let data: number[] = [];
-            let label: string[] = [];
+            // let data: number[] = [];
+            // let label: string[] = [];
 
             console.log(this.project);
             console.log(this.piedata);
-            this.project.runs.forEach(
-              (run: Run) => {
-                data.push(run.averageScore);
-                label.push(run.dateRun.toString());
-              }
-            );
+            // this.project.runs.forEach(
+            //   (run: Run) => {
+            //     data.push(run.averageScore);
+            //     label.push(run.dateRun.toString());
+            //   }
+            // );
 
             // this.lineChartData = [
             //   { data: [...data], label:'' },
@@ -279,9 +282,10 @@ export class ProjectResultComponent implements OnInit {
           }
         );
 
-        this.projectApiRequesterService.projectAnalysis(project._id, "day").subscribe(
+        this.projectApiRequesterService.projectStatistics(project._id).subscribe(
           (result: any) => {
-            console.log("Response:", result);
+            console.log("Response:", <ProjectStatistic>(result));
+            this.projectAnalysis = result.result[0];
           }
         );
       }
@@ -332,6 +336,7 @@ export class ProjectResultComponent implements OnInit {
   }
 
   onSortItemClick(value: string) {
+    console.log("AAAA");
     if (value === "Oldest") {
       this.filteredData.sort(
         (itm1, itm2) => {
@@ -357,6 +362,7 @@ export class ProjectResultComponent implements OnInit {
   }
 
   onFilterItemClick(value: string) {
+    console.log("BBBB");
     if (value === "All") {
       console.log("ALL");
       this.filteredData = [...this.project.data];

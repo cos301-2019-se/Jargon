@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
+import { Project, ProjectStatistic } from '../../../interfaces/project/project';
+import { SharedProjectService } from '../../../services/shared-project/shared-project.service';
+import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
 
 @Component({
   selector: 'app-project-compare',
@@ -40,8 +43,63 @@ export class ProjectCompareComponent {
   public lineChartType = 'line';
   public lineChartPlugins = [];
 
-  constructor() { }
+  projects: Project[] = null;
+  projectOneId: string = null;
+  projectTwoId: string = null;
+
+  projectOneStatistic: ProjectStatistic = null;
+  projectTwoStatistic: ProjectStatistic = null;
+
+  constructor(private sharedProjectService: SharedProjectService,
+      private projectApiRequesterService: ProjectApiRequesterService) {
+
+    this.projects = this.sharedProjectService.getProjects();
+
+    if (this.projects === null) {
+      this.projectApiRequesterService.getProjectsBasic().subscribe(
+        (projects: Project[]) => {
+          this.sharedProjectService.setProjects(projects);
+          this.projects = this.sharedProjectService.getProjects();
+        },
+        error => {
+          console.log("Error", error);
+        }
+      );
+    }
+  }
 
   ngOnInit() {
   }
+
+  compareItemString(op1: any, op2: any) {
+    return op1 === op2;
+  }
+
+  onCompareClick() {
+    console.log(this.projectOneId, this.projectTwoId);
+    console.log("One:", this.projectOneStatistic);
+    console.log("Two:", this.projectTwoStatistic);
+
+    if (this.projectOneId === null || this.projectTwoId === null) {
+      return;
+    }
+    
+    this.projectApiRequesterService.projectStatistics(this.projectOneId).subscribe(
+      (statResult: any) => {
+        console.log(statResult);
+        this.projectOneStatistic = <ProjectStatistic>(statResult.result[0]);
+        console.log("One:", this.projectOneStatistic);
+      }
+    );
+
+    this.projectApiRequesterService.projectStatistics(this.projectTwoId).subscribe(
+      (statResult: any) => {
+        console.log(statResult);
+        this.projectTwoStatistic = <ProjectStatistic>(statResult.result[0]);
+        console.log("Two:", this.projectTwoStatistic);
+      }
+    );
+  }
+
+
 }
