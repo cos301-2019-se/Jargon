@@ -1,22 +1,37 @@
-<div class="container-fluid m-0 dashboard">
-  <div class="wrapper-outer">
+<div class="container-fluid dashboard">
+  <div class="wrapper-outer mt-4">
+    <div class="main">
+      <div class="row">
+        <div class="">
+          <div class="row">
+            <div class="col-12">
+                <h2 class=" display-5 ml-5">CREATE PROJECT</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container float-left ml-5 dashboard">
+  <div class="wrapper-outer ml-3">
     <div class="main">
       <div class="row">
         <div class="" id="dashboard-content">
           <div class="row">
             <div class="col-12 mx-auto pl-0 mb-4">
-              <h1 class="m-0 display-4">Create Project</h1>
             </div>
-            <div class="col-12 mx-auto rounded-lg main-dash p-0">
-              <div class="container-fluid m-0 wrapper rounded">
-                <div class="row rounded right-side shadow-lg">
-                  <div id="form" class="row m-0 p-0">
+            <div class="col-12 mx-auto rounded-lg main-dash">
+              <div class="container-fluid wrapper rounded">
+                <div class="row rounded right-side">
+                  <div id="form" class="row ">
                     <div class="col-12">
                       <form>
                         <div class="row">
                           <div class="col-lg-11 mx-auto">
                             <div class="row">
-                              <div class="col-12 mt-3">
+                              <div class="col-12">
                                 <div class="form-group mt-4">
                                   <label for="project-name">Project Name *</label>
                                   <input type="text" class="form-control" id="project-name" placeholder="eg. University of Pretoria Sentiments" name="name" required [(ngModel)]="project.project_name">

@@ -1,9 +1,24 @@
+/**
+ * Filename: register.js
+ * Author: Kevin Coetzee
+ * 
+ *      This file contains all the endpoints for the API that handles
+ *      registration with the system
+ */
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/user');
 const bcrypt = require('bcrypt-nodejs');
 
+/***
+    * request for root (/) page (string name, surname, 
+    * email, username, adminValue, password)
+    * 
+    * this function receives a collection of data associated with a certain 
+    * unregistered user and adds this user, along with his/her data to the 
+    * database 
+    */
 router.post('/', (req, res, next) => {
     let saltToSave = bcrypt.genSaltSync();
     let passwordToSave = bcrypt.hashSync(req.body.password, saltToSave);
@@ -17,7 +32,6 @@ router.post('/', (req, res, next) => {
         admin: req.body.admin,
         projects: null
     });
-
     user
     .save()
     .then(result => {
@@ -34,6 +48,5 @@ router.post('/', (req, res, next) => {
         })
     })
 });
-
 
 module.exports = router;

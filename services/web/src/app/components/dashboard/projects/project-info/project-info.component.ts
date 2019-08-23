@@ -20,6 +20,8 @@ export class ProjectInfoComponent implements OnInit {
 
   isReadOnly: boolean = true;
 
+  time: number = 30;
+
   constructor(private sharedProjectService: SharedProjectService, 
       private projectApiRequesterService: ProjectApiRequesterService,
       private activeRoute: ActivatedRoute) {

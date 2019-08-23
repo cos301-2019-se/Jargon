@@ -1,0 +1,171 @@
+<div class="container-fluid mx-auto m-0 project-component">
+  <div class="wrapper-outer">
+    <div class="main">
+      <div class="row">
+        <div class="" id="dashboard-content">
+          <div class="row">
+            <div class="col-12 mx-auto rounded-lg main-dash px-5">
+              <div class="container-fluid m-0 wrapper rounded">
+                <div class="row rounded mt-2">
+                  <div class="col-12 ml-0 pl-0">
+                    <h2 class=" display-5 text-black">COMPARE PROJECTS</h2>
+                  </div>
+                  <!-- <div class="compare-content"> -->
+
+
+                    <div class="container-fluid mx-auto m-0 ">
+                      <div class="wrapper-outer">
+                        <div class="main">
+                          <div class="row">
+                            <div class="" id="dashboard-content">
+                              <div class="row">
+                                <div class="col-12 mt-4 px-0">
+                                  <div class="card-deck">
+                                    <div class="card shadow-lg">
+                                      <div class="card-header">
+                                        <h5 class="display-5"><b>SELECT PROJECTS</b></h5>
+                                      </div>
+                                      <div class="card-body text-gray">
+                                        <div class="row">
+                                          <div class="col-auto">
+                                            <select class="browser-default custom-select" [(ngModel)]="projectOneId">
+                                              <option selected disabled value="null">Select Project 1</option>
+                                              <option *ngFor="let project of projects" [value]="project._id">{{project.project_name}}</option>
+                                            </select>
+                                          </div>
+                                          <div class="col-auto">
+                                            <select class="browser-default custom-select" [(ngModel)]="projectTwoId">
+                                              <option selected disabled value="null">Select Project 2</option>
+                                              <option *ngFor="let project of projects" [value]="project._id">{{project.project_name}}</option>
+                                            </select>
+                                          </div>
+                                          <div class="col-auto ml-auto">
+                                            <button class="btn btn-outline-primary text-light" (click)="onCompareClick()">Compare</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="card-deck mt-4">
+                                    <div class="card shadow-lg">
+                                      <div class="card-header">
+                                        <h5 class="display-5"><b>PROJECT 1 STATISTICS</b></h5>
+                                      </div>
+                                      <div class="card-body text-gray">
+                                        <div class="card-body text-gray">
+                                          <div class="pl-3 row">
+                                            <div class="col-6 text"><h6 class="display-5">Minimum:</h6></div>
+                                            <div class="col-6 text-light">{{ min1}}</div>
+                                          </div>
+                                          <br>
+                                          <div class="pl-3 row">
+                                            <div class="col-6"><h6 class="display-5">Maximum:</h6></div>
+                                            <div class="col-6 text-light">{{ max1 }}</div>
+                                          </div>
+                                          <br>
+                                          <div class="pl-3 row">
+                                            <div class="col-6"><h6 class="display-5">Mean:</h6></div>
+                                            <div class="col-6 text-light">{{ mean1 }}</div>
+                                          </div>
+                                          <br>
+                                          <div class="pl-3 row">
+                                            <div class="col-6"><h6 class="display-5">Median:</h6></div>
+                                            <div class="col-6 text-light">{{ med1 }}</div>
+                                          </div>
+                                          <br>
+                                          <div class="pl-3 row">
+                                            <div class="col-6"><h6 class="display-5">Mode:</h6></div>
+                                            <div class="col-6 text-light">{{ mode1 }}</div>
+                                          </div>
+                                          <br>
+                                          <div class="pl-3 row">
+                                            <div class="col-6"><h6 class="display-5">Standard Deviation:</h6></div>
+                                            <div class="col-6 text-light">{{ sd1 }}</div>
+                                          </div>
+                                          <br>
+                                          <div class="pl-3 row">
+                                            <div class="col-6"><h6 class="display-5">Variation:</h6></div>
+                                            <div class="col-6 text-light">{{ var1 }}</div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="card shadow-lg">
+                                      <div class="card-header">
+                                        <h5 class="display-5"><b>PROJECT 2 STATISTICS</b></h5>
+                                      </div>
+                                      <div class="card-body text-gray">
+                                        <div class="card-body text-gray">
+                                          <div class="pl-3 row">
+                                            <div class="col-6 text"><h6 class="display-5">Minimum:</h6></div>
+                                            <div class="col-6 text-light">{{ min2 }}</div>
+                                          </div>
+                                          <br>
+                                          <div class="pl-3 row">
+                                            <div class="col-6"><h6 class="display-5">Maximum:</h6></div>
+                                            <div class="col-6 text-light">{{ max2 }}</div>
+                                          </div>
+                                          <br>
+                                          <div class="pl-3 row">
+                                            <div class="col-6"><h6 class="display-5">Mean:</h6></div>
+                                            <div class="col-6 text-light">{{ mean2 }}</div>
+                                          </div>
+                                          <br>
+                                          <div class="pl-3 row">
+                                            <div class="col-6"><h6 class="display-5">Median:</h6></div>
+                                            <div class="col-6 text-light">{{ med2 }}</div>
+                                          </div>
+                                          <br>
+                                          <div class="pl-3 row">
+                                            <div class="col-6"><h6 class="display-5">Mode:</h6></div>
+                                            <div class="col-6 text-light">{{ mode2 }}</div>
+                                          </div>
+                                          <br>
+                                          <div class="pl-3 row">
+                                            <div class="col-6"><h6 class="display-5">Standard Deviation:</h6></div>
+                                            <div class="col-6 text-light">{{ sd2 }}</div>
+                                          </div>
+                                          <br>
+                                          <div class="pl-3 row">
+                                            <div class="col-6"><h6 class="display-5">Variation:</h6></div>
+                                            <div class="col-6 text-light">{{ var2 }}</div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="card-deck mt-4">
+                                    <div class="card shadow-lg">
+                                      <div class="card-header">
+                                        <h5 class="display-5"><b>ANALYSIS</b></h5>
+                                      </div>
+                                      <div class="card-body text-gray">
+                                        <div style="display: block;">
+                                          <ejs-chart id="chart-container" [primaryXAxis]='primaryXAxis' [primaryYAxis]='primaryYAxis'
+                                          [title]='title'>
+                                              <e-series-collection>
+                                                  <e-series [dataSource]='chartData' type='Line' xName='x' yName='y' name='proj1'></e-series>
+                                                  <e-series [dataSource]='chartData2' type='Line' xName='x' yName='y'  name='proj1'></e-series>
+                                              </e-series-collection>
+                                          </ejs-chart>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <!-- </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

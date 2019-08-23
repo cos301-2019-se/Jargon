@@ -9,7 +9,7 @@ mocha cleaners/test.js --timeout 15000
 #status+=$?
 
 # controller service
-mocha controller/test.js --exit 
+mocha controller/test.js --timeout 15000 --exit 
 #status+=$?
 
 # flagger service

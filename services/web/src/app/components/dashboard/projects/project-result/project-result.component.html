@@ -1,68 +1,114 @@
-<div class="container-fluid p-0 m-0">
+<div class="container-fluid px-5 mx-auto m-0 ">
   <div class="wrapper-outer">
     <div class="main">
       <div class="row">
         <div class="" id="dashboard-content">
           <div class="row">
-            <div class="col-12 mx-auto mb-4 justify-content-between">
-              <h2 class="m-0 display-4">PROJECT RESULTS <span class="ml-5"><button class="btn rounded-circle arrow-font btn-outline-secondary mb-2" [routerLink]="['../projects/project-info', project._id]"><i class="fas fa-arrow-left my-1"></i></button></span></h2>
+            <div class="col-12 mx-auto justify-content-between">
+              <h2 class="pl-0 display-5 float-left mt-2">PROJECT RESULTS </h2>
+              <span class="float-right"><button class="btn rounded-circle arrow-font btn-outline-primary mb-2" [routerLink]="['../projects/project-info', project._id]"><i class="fas fa-arrow-left my-1"></i></button></span>
             </div>
-            <div class="col-12 m-0 p-0">
+            <div class="col-12 mt-4">
               <div class="card-deck">
-                  <div class="card shadow-lg">
-                    <div class="card-header">
-                      <h5 class="display-5"><b>PROJECT DETAILS</b></h5>
+                <div class="card shadow-lg">
+                  <div class="card-header">
+                    <h5 class="display-5"><b>PROJECT DETAILS</b></h5>
+                  </div>
+                  <div class="card-body text-gray">
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Project Name:</h6></div>
+                      <div class="col-6 text-light">{{project.project_name}}</div>
                     </div>
-                    <div class="card-body text-gray">
-                      <div class="pl-3 row">
-                        <div class="col-6"><h6 class="display-5">Project Name:</h6></div>
-                        <div class="col-6 text-light">{{project.project_name}}</div>
-                      </div>
-                      <br>
-                      <div class="pl-3 row">
-                        <div class="col-6"><h6 class="display-5">Source:</h6></div>
-                        <div class="col-6 text-light">{{project.source}}</div>
-                      </div>
-                      <br>
-                      <div class="pl-3 row">
-                        <div class="col-6"><h6 class="display-5">Whitelisted Words:</h6></div>
-                        <div class="col-6 text-light">{{project.whitelist.toString()}}</div>
-                      </div>
-                      <br>
-                      <div class="pl-3 row">
-                        <div class="col-6"><h6 class="display-5">Blacklisted Words:</h6></div>
-                        <div class="col-6 text-light">{{project.blacklist.toString()}}</div>
-                      </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Source:</h6></div>
+                      <div class="col-6 text-light">{{project.source}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Whitelisted Words:</h6></div>
+                      <div class="col-6 text-light">{{project.whitelist.toString()}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Blacklisted Words:</h6></div>
+                      <div class="col-6 text-light">{{project.blacklist.toString()}}</div>
                     </div>
                   </div>
-                  <div class="card shadow-lg">
-                    <div class="card-header">
-                      <h5 class="display-5"><b>AVERAGE SCORE</b></h5>
+                </div>
+                <div class="card shadow-lg">
+                  <div class="card-header">
+                    <h5 class="display-5"><b>STATISTICS</b></h5>
+                  </div>
+                  <div class="card-body text-gray">
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Minimum:</h6></div>
+                      <div class="col-6 text-light">{{projectAnalysis.min | number}}</div>
                     </div>
-                    <div class="card-body">
-                      <div>
-                        <div style="display: block">
-                          <canvas baseChart height="100"
-                            [data]="doughnutChartData"
-                            [labels]="doughnutChartLabels"
-                            [chartType]="doughnutChartType"
-                            [options]="doughnutChartOptions"
-                            [colors]="chartColors"
-                            [plugins]="doughnutChartPlugins">
-                          </canvas>
-                        </div>
-                      </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Maximum:</h6></div>
+                      <div class="col-6 text-light">{{projectAnalysis.max | number}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Mean:</h6></div>
+                      <div class="col-6 text-light">{{projectAnalysis.mean | number}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Median:</h6></div>
+                      <div class="col-6 text-light">{{projectAnalysis.median | number}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Mode:</h6></div>
+                      <div class="col-6 text-light">{{projectAnalysis.mode[0] | number}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Standard Deviation:</h6></div>
+                      <div class="col-6 text-light">{{projectAnalysis.std_dev | number}}</div>
+                    </div>
+                    <br>
+                    <div class="pl-3 row">
+                      <div class="col-6"><h6 class="display-5">Variance:</h6></div>
+                      <div class="col-6 text-light">{{projectAnalysis.variance | number}}</div>
                     </div>
                   </div>
+                </div>
               </div>
+              
               <div class="card-deck mt-4">
+                <div class="card shadow-lg">
+                  <div class="card-header">
+                    <h5 class="display-5"><b>Average Score</b></h5>
+                  </div>
+                  <div class="card-body text-gray">
+
+                    <ejs-accumulationchart id="chart-container" [legendSettings]='legendSettings' background='rgba(1,1,1,0)'>
+                        <e-accumulation-series-collection>
+                            <e-accumulation-series [dataSource]='piedata' xName='x' yName='y' innerRadius='50%' [dataLabel]='datalabel' legendShape='Rectangle'></e-accumulation-series>
+                        </e-accumulation-series-collection>
+                    </ejs-accumulationchart>
+                  </div>
+                </div>
                 <div class="card shadow-lg">
                   <div class="card-header">
                     <h5 class="display-5"><b>History</b></h5>
                   </div>
                   <div class="card-body">
                     <div style="display: block;">
-                      <canvas baseChart width="400" height="230"
+
+                      <ejs-chart id='chart-histogram' style='display:block;' align='center' [primaryXAxis]='primaryXAxisHistogram' [primaryYAxis]='primaryYAxisHistogram' (load)='loadHistogram($event)'background='rgba(255,255,255,0)'>
+                        <e-series-collection>
+                            <e-series stroke='white' color='blue' [dataSource]='dataHistogram' type='Histogram' yName='y' name='Score' width=2 [binInterval]='binInterval' 
+                            [columnWidth]='columnWidth'> </e-series>
+                        </e-series-collection>
+                      </ejs-chart>
+                    
+
+                      <!-- <canvas baseChart width="400" height="230"
                         [datasets]="lineChartData"
                         [labels]="lineChartLabels"
                         [options]="lineChartOptions"
@@ -71,34 +117,78 @@
                         [chartType]="lineChartType"
                         [plugins]="lineChartPlugins"
                         (chartClick)="onChartClicked($event)">
-                      </canvas>
+                      </canvas> -->
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="card-deck mt-4 pb-3">
                 <div class="card shadow-lg">
                   <div class="card-header">
-                    <h5 class="display-5"><b>MOST AND LEAST POSITIVE RESULTS</b></h5>
+                    <h5 class="display-5"><b>Average Sentiment Over Time</b></h5>
                   </div>
                   <div class="card-body">
-                    <div class="row">
-                      <div class="col-10 ml-4 mb-2 display-5">MOST POSITIVE:</div>
+                    <div>
+                      <div style="display: block">
 
-                      <div class="col-10 mb-3 p-3 mx-auto border rounded">
-                        <!-- <div class="mb-2">Tweeter</div> -->
-                        <div class=" d-flex justify-content-between align-items-center">
-                          {{currentRun.bestTweet}}
-                          <span class="badge badge-primary badge-pill ml-3">{{currentRun.bestTweetSentiment}}</span>
-                        </div>
+                        <ejs-chart id="chart-average-over-time" [primaryXAxis]='primaryXAxisAvgSentiment'[primaryYAxis]='primaryYAxisAvgSentiment' background='rgba(255,255,255,0)'>
+                          <e-series-collection>
+                              <e-series [dataSource]='chartDataAvgSentiment' type='Line' xName='x' yName='y' width='4' [marker]='markerAvgSentiment'></e-series>
+                          </e-series-collection>
+                        </ejs-chart>
+
+                        <!-- <canvas baseChart height="100"
+                          [data]="doughnutChartData"
+                          [labels]="doughnutChartLabels"
+                          [chartType]="doughnutChartType"
+                          [options]="doughnutChartOptions"
+                          [colors]="chartColors"
+                          [plugins]="doughnutChartPlugins">
+                        </canvas> -->
                       </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="card shadow-lg">
+                  <div class="card-header">
+                    <h5 class="display-5"><b>ROT</b></h5>
+                  </div>
+                  <div class="card-body">
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="card-deck mt-4 pb-3">
+                <div class="card shadow-lg">
+                  <div class="card-header">
+                    <h5 class="display-5"><b>AVG</b></h5>
+                  </div>
+                  <div class="card-body">
+                     Hello
+                  </div>
+                </div> -->
+                <div class="card shadow-lg">
+                  <div class="card-header">
+                    <h5 class="display-5"><b>Average Change in Sentiment Over Time</b></h5>
+                  </div>
+                  <div class="card-body">
+                    <div>
+                      <div style="display: block">
 
-                      <div class="col-10 ml-4 mb-2 display-5">LEAST POSITIVE:</div>
+                        <ejs-chart id="chart-change-over-time" [primaryXAxis]='primaryXAxisROC'[primaryYAxis]='primaryYAxisROC' background='rgba(255,255,255,0)'>
+                          <e-series-collection>
+                              <e-series [dataSource]='chartDataROC' type='Line' xName='x' yName='y' width='4' [marker]='markerROC'></e-series>
+                          </e-series-collection>
+                        </ejs-chart>
 
-                      <div class="col-10 p-3 mx-auto border rounded">
-                        <!-- <div class="mb-2">Tweeter</div> -->
-                        <div class=" d-flex justify-content-between align-items-center">
-                          {{currentRun.worstTweet}}
-                          <span class="badge badge-primary badge-pill ml-3">{{currentRun.worstTweetSentiment}}</span>
-                        </div>
+                        <!-- <canvas baseChart height="100"
+                          [data]="doughnutChartData"
+                          [labels]="doughnutChartLabels"
+                          [chartType]="doughnutChartType"
+                          [options]="doughnutChartOptions"
+                          [colors]="chartColors"
+                          [plugins]="doughnutChartPlugins">
+                        </canvas> -->
                       </div>
                     </div>
                   </div>
@@ -162,24 +252,24 @@
 
                     <div class="row">
                       <div class="col-12">
-                        <div class="row m-0 p-0" *ngFor="let text of filteredData; let i = index">
+                        <div class="row m-0 p-0" *ngFor="let data of filteredData; let i = index">
                           <div class="col-11 mx-auto m-0 p-0">
                             <div class="row m-0 p-0">
                               <div class="col-12 mb-3 p-3 mx-auto border rounded m-0 p-0">
                                 <div class=" d-flex justify-content-between align-items-center">
-                                  {{text.text}}
-                                  <span class="badge badge-primary badge-pill ml-3">{{filteredSentiments[i] | number}}</span>
+                                  {{data.tweetObject.text}}
+                                  <span class="badge badge-primary badge-pill ml-3">{{data.tweetSentiment | number}}</span>
                                 </div>
-                                <div class="row mt-3 m-0 p-0" *ngIf="text['checked'] && activeFlagging">
+                                <div class="row mt-3 m-0 p-0" *ngIf="data['checked'] && activeFlagging">
                                   <div class="col-8 mx-auto m-0 p-0">
-                                    <input type="range" class="custom-range" min="0" max="1" step="0.001" id="customRange1" value="0.5" [(ngModel)]="text['new_sentiment']">{{text['new_sentiment']}}
+                                    <input type="range" class="custom-range" min="0" max="1" step="0.001" id="customRange1" value="0.5" [(ngModel)]="data['new_sentiment']">{{data['new_sentiment']}}
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                           <div class="col-1 m-0 my-auto mx-auto" *ngIf="activeFlagging">
-                              <input type="checkbox" [(ngModel)]="text['checked']" (click)="onCheckboxClick(i)">
+                            <input type="checkbox" [(ngModel)]="data['checked']" (click)="onCheckboxClick(i)">
                           </div>
                         </div>
                       </div>

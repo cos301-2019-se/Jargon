@@ -41,7 +41,7 @@ export class ProjectApiRequesterService {
       id: project._id,
       platform: project.source
     }
-    return this.httpClient.post(`${this.apiURL}/projects/start`, body);
+    return this.httpClient.post(`${this.apiURL}/projects/startStream`, body);
   }
 
   public updateProject(project: Project) {
@@ -53,16 +53,13 @@ export class ProjectApiRequesterService {
       {'propName': 'source', 'value': project.source},
     ];
 
-    const array = [];
-    array.push(updateValues);
-
     return this.httpClient.post(`${this.apiURL}/projects/edit`, {
       'id': project._id,
       'updateValues' : updateValues
     });
   }
 
-  public deleteProject(id: number) {
+  public deleteProject(id: string) {
     return this.httpClient.post(`${this.apiURL}/projects/delete`, {
       'id': id
     });
@@ -72,10 +69,23 @@ export class ProjectApiRequesterService {
     return this.httpClient.get(`${this.apiURL}/projects`);
   }
 
-  public  start(id: number) {
+  public start(id: number) {
     return this.httpClient.post(`${this.apiURL}/projects/start`, {
       'id': id,
       'platform': 'twitter'
     });
   }
+
+  public projectStatistics(id: string) {
+    return this.httpClient.post('http://localhost:3004/analyse/getStatistics', {
+      id: id
+    });
+  }
+
+  public analyse(id: string) {
+    return this.httpClient.post('http://localhost:3004/analyse', {
+      id: id
+    });
+  }
+
 }

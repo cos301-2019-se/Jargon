@@ -78,6 +78,31 @@ describe('/projects/search', () => {
     });
 });
 
+// describe('/projects/create', () => {
+//     const path = '/projects/create';
+
+//     describe('Creating a project with new project data', () => {
+//         it('Passed POST, valid 200 status', () => {
+//             chai
+//             .request(host)
+//             .post(path)
+//             .send({ 
+//                 {
+//                     "project_name" : "project8",
+//                     "whitelist" : ["linux"],
+//                     "blacklist" : [""],
+//                     "source" : "Twitter",
+//                     "startTime" : 0,
+//                     "trackTime" : 5000
+//                 }
+//             })
+//             .end((err, res) => {
+//                 chai.expect(res.body).to.be.object();
+//             });
+//         });
+//     });
+// });
+
 describe('/projects/delete', () => {
     const path = '/projects/delete';
 
@@ -91,6 +116,210 @@ describe('/projects/delete', () => {
             })
             .end((err, res) => {
                 chai.expect(res).to.have.status(500);
+            });
+        });
+    });
+});
+
+describe('/projects/detailedSearch', () => {
+    const path = '/projects/detailedSearch';
+
+    describe('Searching for a specific project by ID, with all detail returned', () => {
+        it('Passed POST, valid 200 status', () => {
+            chai
+            .request(host)
+            .post(path)
+            .send({ 
+                id : "5d5eb897ee0b3b4821186c59"
+            })
+            .end((err, res) => {
+                chai.expect(res).to.have.status(200);
+            });
+        });
+    });
+});
+
+describe('/projects/detailedSearch', () => {
+    const path = '/projects/detailedSearch';
+
+    describe('Searching with invalid ID', () => {
+        it('Passed POST, valid 500 status', () => {
+            chai
+            .request(host)
+            .post(path)
+            .send({ 
+                
+            })
+            .end((err, res) => {
+                chai.expect(res).to.have.status(500);
+            });
+        });
+    });
+});
+
+describe('/projects/detailedSearch', () => {
+    const path = '/projects/detailedSearch';
+
+    describe('Searching for a specific project by ID, with all detail returned', () => {
+        it('Passed POST, valid project structure returned', () => {
+            chai
+            .request(host)
+            .post(path)
+            .send({ 
+                id : "5d5eb897ee0b3b4821186c59"
+            })
+            .end((err, res) => {
+                chai.expect(res.body).to.be.object();
+            });
+        });
+    });
+});
+
+describe('/projects/start', () => {
+    const path = '/projects/start';
+
+    describe('Starting a specific project with invalid data', () => {
+        it('Failed POST, valid 500 status', () => {
+            chai
+            .request(host)
+            .post(path)
+            .send({ 
+                
+            })
+            .end((err, res) => {
+                chai.expect(res).to.have.status(500);
+            });
+        });
+    });
+});
+
+describe('/projects/start', () => {
+    const path = '/projects/start';
+
+    describe('Starting a specific project with valid data, but an invalid project id', () => {
+        it('Failed POST, valid 500 status', () => {
+            chai
+            .request(host)
+            .post(path)
+            .send({ 
+                    "id" : "notAnID",
+                    "platform" : "twitter"
+            })
+            .end((err, res) => {
+                chai.expect(res).to.have.status(500);
+            });
+        });
+    });
+});
+
+describe('/projects/start', () => {
+    const path = '/projects/start';
+
+    describe('Starting a specific project with a valid id', () => {
+        it('Passed POST, valid 200 status', () => {
+            chai
+            .request(host)
+            .post(path)
+            .send({ 
+                    "id" : "5d5f419245480a7261529251",
+                    "platform" : "twitter"
+            })
+            .end((err, res) => {
+                chai.expect(res).to.have.status(200);
+            });
+        });
+    });
+});
+
+describe('/projects/start', () => {
+    const path = '/projects/start';
+
+    describe('Starting a specific project with a valid id', () => {
+        it('Passed POST, valid return structure', () => {
+            chai
+            .request(host)
+            .post(path)
+            .send({ 
+                    "id" : "5d5f419245480a7261529251",
+                    "platform" : "twitter"
+            })
+            .end((err, res) => {
+                chai.expect(res.body).to.be.object();
+            });
+        });
+    });
+});
+
+describe('/projects/startStream', () => {
+    const path = '/projects/startStream';
+
+    describe('Starting a specific project with invalid data', () => {
+        it('Failed POST, valid 500 status', () => {
+            chai
+            .request(host)
+            .post(path)
+            .send({ 
+                
+            })
+            .end((err, res) => {
+                chai.expect(res).to.have.status(500);
+            });
+        });
+    });
+});
+
+describe('/projects/startStream', () => {
+    const path = '/projects/startStream';
+
+    describe('Starting a specific project with valid data, but an invalid project id', () => {
+        it('Failed POST, valid 500 status', () => {
+            chai
+            .request(host)
+            .post(path)
+            .send({ 
+                    "id" : "notAnID",
+                    "platform" : "twitter"
+            })
+            .end((err, res) => {
+                chai.expect(res).to.have.status(500);
+            });
+        });
+    });
+});
+
+describe('/projects/startStream', () => {
+    const path = '/projects/startStream';
+
+    describe('Starting a specific project with a valid id', () => {
+        it('Passed POST, valid 200 status', () => {
+            chai
+            .request(host)
+            .post(path)
+            .send({ 
+                    "id" : "5d5f419245480a7261529251",
+                    "platform" : "twitter"
+            })
+            .end((err, res) => {
+                chai.expect(res).to.have.status(200);
+            });
+        });
+    });
+});
+
+describe('/projects/startStream', () => {
+    const path = '/projects/startStream';
+
+    describe('Starting a specific project with a valid id', () => {
+        it('Passed POST, valid return structure', () => {
+            chai
+            .request(host)
+            .post(path)
+            .send({ 
+                    "id" : "5d5f419245480a7261529251",
+                    "platform" : "twitter"
+            })
+            .end((err, res) => {
+                chai.expect(res.body).to.be.object();
             });
         });
     });
@@ -110,9 +339,6 @@ describe('/login', () => {
             })
             .end((err, res) => {
                 chai.expect(res).to.have.status(200);
-                chai.expect(res.body).to.be.eql({
-                    authenticated: false
-                });
             });
         });
     });
@@ -132,9 +358,6 @@ describe('/login', () => {
             })
             .end((err, res) => {
                 chai.expect(res).to.have.status(200);
-                chai.expect(res.body).to.be.eql({
-                    authenticated: true
-                });
             });
         });
     });

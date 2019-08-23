@@ -1,3 +1,10 @@
+/**
+ * Filename: server.js
+ * Author: Kevin Coetzee
+ * 
+ *      This file executes the Node server
+ *      for the cleaner microservice
+ */
 "use strict";
 
 const http = require("http");

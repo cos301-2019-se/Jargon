@@ -91,6 +91,10 @@
   }
 }
 
+.navbar {
+  background: rgba(36, 75, 117,0.9) !important;
+}
+
 @media (min-width: 1200px) {
   .navbar-icon-top.navbar-expand-xl .navbar-nav .nav-link {
     text-align: center;
@@ -118,10 +122,6 @@ hr {
   border-color: rgb(35, 83, 138) !important;
 }
 
-#nav-bg {
-  background-color: rgba(0, 57, 103, 0.3);
-}
-
 #logo {
   font-size: 1.5rem;
 }
@@ -145,12 +145,8 @@ span {
   }
 }
 
-.border-bottom {
-  border-color: rgb(44, 94, 133) !important;
-}
-
 .container-fluid {
-  width: 90% !important;
+  width: 100% !important;
 }
 
 .side-nav-item:hover {
@@ -240,6 +236,7 @@ span {
 
 .dashboard {
   height: 60vh;
+  width: 100% !important;
 }
 
 #defualt {
@@ -306,7 +303,7 @@ hr {
 }
 
 .sidebar {
-  width: 550px;
+  width: 400px;
   margin-left: auto;
   margin-right:auto;
   height: fit-content;
@@ -319,10 +316,6 @@ body {
   background-color: #ccc;
   font-family: sans-serif;
   padding: 10px;
-}
-
-.container-fluid {
-  width: 90% !important;
 }
 
 .btn.focus, .btn:focus {

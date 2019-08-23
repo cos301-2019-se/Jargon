@@ -2,8 +2,7 @@ export class Project {
     public blacklist: string[] = [];
     public created: Date = null;
     public createdBy: string = "";
-    public data: any = [];
-    public dataSentiment: number[] = [];
+    public data: SocialData[] = [];
     public project_name: string = "";
     public runs: Run[] = [];
     public source: string = "";
@@ -62,4 +61,45 @@ export class Run {
     public bestTweetSentiment: number = 0;
     public worstTweet: string = "";
     public worstTweetSentiment: number = 0;
+}
+
+export class SocialData {
+    public tweetID: string = "";
+    public tweetObject: DataObject = null;
+    public tweetSentiment: number = 0.0;
+}
+
+export class DataObject {
+    public created_at: Date = null;
+    public text: string = "";
+}
+
+export class ProjectStatistic {
+    public graphs: Graphs = null;
+    public max: number = 0.0;
+    public mean: number = 0.0;
+    public median: number = 0.0;
+    public min: number = 0.0;
+    public mode: number[] = [];
+    public project: string = "";
+    public std_dev: number = 0.0;
+    public timestamp: Date = null;
+    public variance: number = 0.0;
+}
+
+export class Graphs {
+    public averageOverTime: AveragePerTime[] = null;
+    public changeOverTime: number[] = null;
+    public histogram: number[] = null;
+}
+
+export class AveragePerTime {
+    public averageSentiment: number = 0.0;
+    public tweets: Data[] = null;
+    public _id: string = "";
+}
+
+export class Data {
+    public tweet: string = "";
+    public sentiment: number = 0.0;
 }

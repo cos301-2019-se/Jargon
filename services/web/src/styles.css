@@ -9,6 +9,14 @@
   font-family: 'Amiko', sans-serif !important;
 }
 
+body {
+  background-color: #D7DBD6 !important;
+}
+
+app-project-compare {
+  width: 100%;
+}
+
 app-projects {
   width: 100%;
 }
@@ -26,10 +34,8 @@ app-project-result {
 }
 
 body {
-  /* background-color: #e3e4e5 !important; */
-  background: url('./assets/images/background-xl.jpg') no-repeat fixed;
-  /* background: lightblue !important; */
-  background-size: cover;
+  overflow: auto;
+  overflow:initial;
 }
 
 
