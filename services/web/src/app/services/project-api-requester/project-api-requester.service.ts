@@ -76,10 +76,10 @@ export class ProjectApiRequesterService {
     });
   }
 
-  public projectAnalysis(id: string, timeline: string) {
-    return this.httpClient.post(`${this.apiURL}/analyse`, {
-      id: id,
-      "timeLine": timeline
+  public projectStatistics(id: string) {
+    return this.httpClient.post('http://localhost:3004/analyse/getStatistics', {
+      id: id
     });
   }
+
 }
