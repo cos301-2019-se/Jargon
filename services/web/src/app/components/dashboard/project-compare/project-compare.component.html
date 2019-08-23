@@ -28,23 +28,19 @@
                                       <div class="card-body text-gray">
                                         <div class="row">
                                           <div class="col-auto">
-                                            <select class="browser-default custom-select">
-                                              <option selected>Select Project 1</option>
-                                              <option value="1">BEEp Boop beep bop</option>
-                                              <option value="2">bleep bllop extra lon shlong</option>
-                                              <option value="3">helo Chrissy</option>
+                                            <select class="browser-default custom-select" [(ngModel)]="projectOneId">
+                                              <option selected disabled value="null">Select Project 1</option>
+                                              <option *ngFor="let project of projects" [value]="project._id">{{project.project_name}}</option>
                                             </select>
                                           </div>
                                           <div class="col-auto">
-                                            <select class="browser-default custom-select">
-                                              <option selected>Select Project 2</option>
-                                              <option value="1">Sup noi</option>
-                                              <option value="2">Im bored af rn lmao</option>
-                                              <option value="3">Ffs im done ye</option>
+                                            <select class="browser-default custom-select" [(ngModel)]="projectTwoId">
+                                              <option selected disabled value="null">Select Project 2</option>
+                                              <option *ngFor="let project of projects" [value]="project._id">{{project.project_name}}</option>
                                             </select>
                                           </div>
                                           <div class="col-auto ml-auto">
-                                            <button class="btn btn-outline-primary text-light">Compare</button>
+                                            <button class="btn btn-outline-primary text-light" (click)="onCompareClick()">Compare</button>
                                           </div>
                                         </div>
                                       </div>
