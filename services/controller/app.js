@@ -6,6 +6,7 @@ const loginRoutes = require('./services/api/routes/login');
 const registerRoutes = require('./services/api/routes/register');
 const projectRoutes = require('./services/api/routes/projects');
 
+const socketIOClient = require('socket.io-client');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
         res.header('Access-Control-Allow-Methods', 'POST, GET');
         return res.status(200).json({});
     }
+    res.io = socketIOClient.connect("http://127.0.0.1:3005");
     next();
   });
 

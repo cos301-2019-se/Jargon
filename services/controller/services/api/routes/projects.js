@@ -425,7 +425,7 @@ router.post('/start', (req, res, next) => {
     * before the results are returned. 
     */
 router.post('/startStream', (req, res, next) => {
-    startRMQ();
+    startRMQ(res);
     const id = req.body.id;
     const platform = req.body.platform;
     Project.find({_id : id})
@@ -472,7 +472,7 @@ router.post('/startStream', (req, res, next) => {
     })
 });
 
-function startRMQ(){
+function startRMQ(res){
     var args = process.argv.slice(2);
 
     // if (args.length == 0) {
@@ -507,7 +507,29 @@ function startRMQ(){
         });
 
         channel.consume(q.queue, function(msg) {
-            console.log(" [x] %s: '%s'", msg.fields.routingKey, msg.content.toString());
+            // console.log(" [x] %s: '%s'", msg.fields.routingKey, msg.content.toString());
+            //add database stuff here
+            // console.log("message: " + msg.content);
+            let ids = msg.content.toString().split(" ");
+            const sock = res.io;
+            Project.find({_id : ids[0]})
+            .exec()
+            .then((result)=>{
+                let y = 0;
+                while((y<result[0]['data'].length)&&(result[0]['data'][y]['tweetID']!==ids[1])){
+                    y++;
+                }
+                if(y<result[0]['data'].length){
+                    console.log("sending: " + result[0]['data'][y]);
+                    sock.emit("datasend", result[0]['data'][y]);
+                }else if(ids[1]=="/t"){
+                    console.log("termination character");
+                }
+            })
+            setTimeout(() => {
+                sock.disconnect();
+            }, 6000);
+
         }, {
             noAck: true
         });
