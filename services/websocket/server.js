@@ -23,6 +23,12 @@ const io = require('socket.io')(server);
 
 server.listen(port);
 
+/***
+    * handler for incoming socket connections
+    * 
+    * this listens for a socket connection and on the emit of "datasend" from a client, routes through to all other clients listening for tweets
+    */
+
 io.on('connection', (socket) => {
     console.log("connected client");
     socket.on('datasend', (data) => {
