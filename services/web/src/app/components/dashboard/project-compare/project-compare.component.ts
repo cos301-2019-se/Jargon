@@ -76,47 +76,47 @@ export class ProjectCompareComponent {
   }
 
   onCompareClick() {
-    console.log(this.projectOneId, this.projectTwoId);
-    console.log("One:", this.projectOneStatistic);
-    console.log("Two:", this.projectTwoStatistic);
+    // console.log(this.projectOneId, this.projectTwoId);
+    // console.log("One:", this.projectOneStatistic);
+    // console.log("Two:", this.projectTwoStatistic);
 
-    if (this.projectOneId === null || this.projectTwoId === null) {
-      return;
-    }
+    // if (this.projectOneId === null || this.projectTwoId === null) {
+    //   return;
+    // }
 
-    this.projectApiRequesterService.projectStatistics(this.projectOneId).subscribe(
-      (statResult: any) => {
-        console.log(statResult);
-        this.projectOneStatistic = statResult.result[0];
-        console.log("One:", this.projectOneStatistic);
-        this.lineChartData[0].data = [];
-        this.projectOneStatistic.graphs.averageOverTime.forEach(
-          (avgPerTime: AveragePerTime) => {
+    // this.projectApiRequesterService.projectStatistics(this.projectOneId).subscribe(
+    //   (statResult: any) => {
+    //     console.log(statResult);
+    //     this.projectOneStatistic = statResult.result[0];
+    //     console.log("One:", this.projectOneStatistic);
+    //     this.lineChartData[0].data = [];
+    //     this.projectOneStatistic.graphs.averageOverTime.forEach(
+    //       (avgPerTime: AveragePerTime) => {
             
-            this.lineChartData[0].data.push(
-              avgPerTime.averageSentiment
-            );
-          }
-        );
-      }
-    );
+    //         this.lineChartData[0].data.push(
+    //           avgPerTime.averageSentiment
+    //         );
+    //       }
+    //     );
+    //   }
+    // );
 
-    this.projectApiRequesterService.projectStatistics(this.projectTwoId).subscribe(
-      (statResult: any) => {
-        console.log(statResult);
-        this.projectTwoStatistic = statResult.result[0];
-        console.log("Two:", this.projectTwoStatistic);
+    // this.projectApiRequesterService.projectStatistics(this.projectTwoId).subscribe(
+    //   (statResult: any) => {
+    //     console.log(statResult);
+    //     this.projectTwoStatistic = statResult.result[0];
+    //     console.log("Two:", this.projectTwoStatistic);
 
-        this.lineChartData[1].data = [];
-        this.projectTwoStatistic.graphs.averageOverTime.forEach(
-          (avgPerTime: AveragePerTime) => {
-            this.lineChartData[1].data.push(
-              avgPerTime.averageSentiment
-            );
-          }
-        );
-      }
-    );
+    //     this.lineChartData[1].data = [];
+    //     this.projectTwoStatistic.graphs.averageOverTime.forEach(
+    //       (avgPerTime: AveragePerTime) => {
+    //         this.lineChartData[1].data.push(
+    //           avgPerTime.averageSentiment
+    //         );
+    //       }
+    //     );
+    //   }
+    // );
   }
 
 

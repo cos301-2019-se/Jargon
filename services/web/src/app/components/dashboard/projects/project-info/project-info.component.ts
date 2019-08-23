@@ -117,13 +117,13 @@ export class ProjectInfoComponent implements OnInit {
   }
 
   onStartClick() {
-    // if (this.project == null)
-    //   return;
+    if (this.project == null)
+      return;
 
-    // this.projectApiRequesterService.startProject(this.project).subscribe(
-    //   resp => {
-    //     console.log("Complete:", resp);
-    //   }
-    // );
+    this.projectApiRequesterService.startProject(this.project).subscribe(
+      resp => {
+        console.log("Complete:", resp);
+      }
+    );
   }
 }
