@@ -507,13 +507,25 @@ function startRMQ(res){
         });
 
         channel.consume(q.queue, function(msg) {
-            console.log(" [x] %s: '%s'", msg.fields.routingKey, msg.content.toString());
+            // console.log(" [x] %s: '%s'", msg.fields.routingKey, msg.content.toString());
             //add database stuff here
-            
+            // console.log("message: " + msg.content);
+            let ids = msg.content.toString().split(" ");
             const sock = res.io;
-
-            sock.emit("datasend", {});
-
+            Project.find({_id : ids[0]})
+            .exec()
+            .then((result)=>{
+                let y = 0;
+                while((y<result[0]['data'].length)&&(result[0]['data'][y]['tweetID']!==ids[1])){
+                    y++;
+                }
+                if(y<result[0]['data'].length){
+                    console.log("sending: " + result[0]['data'][y]);
+                    sock.emit("datasend", result[0]['data'][y]);
+                }else if(ids[1]=="/t"){
+                    console.log("termination character");
+                }
+            })
             setTimeout(() => {
                 sock.disconnect();
             }, 6000);
