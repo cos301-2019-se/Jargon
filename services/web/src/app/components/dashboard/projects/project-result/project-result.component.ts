@@ -356,7 +356,7 @@ export class ProjectResultComponent implements OnInit {
                       this.projectApiRequesterService.projectStatistics(project._id).subscribe(
                         (result: any) => {
                           console.log("Response:", result);
-                          this.projectAnalysis = result.result[0];
+                          this.projectAnalysis = result.result[result.result.length-1];
                           
                           this.projectAnalysis.graphs.histogram.map(
                             (value: number) => {
