@@ -16,10 +16,7 @@ import { ILoadedEventArgs, IAccTextRenderEventArgs } from '@syncfusion/ej2-chart
 export class ProjectResultComponent implements OnInit {
 
   /* Doughnut Chart */
-  public piedata: Object[] = [
-    { x: '80', y: 80, text: '80%'},
-    { x: '20', y: 20, text: '20%'},
-  ];
+  public piedata: Object[] = [];
   public legendSettings: Object = {
     visible: true,
     textStyle: {
@@ -85,7 +82,7 @@ export class ProjectResultComponent implements OnInit {
   public binInterval: number = 10;
   public columnWidth: number = 0.99;
   public showNormalDistribution: boolean = false;
-  
+
   /* Average Sentiment Over Time */
   public chartDataAvgSentiment: Object[] = [
     // { x: 3, y: 27 },
@@ -348,6 +345,11 @@ export class ProjectResultComponent implements OnInit {
             );
 
             this.dataHistogram = [...this.dataHistogram];
+
+            this.piedata = [];
+
+            this.piedata.push({x: "Positive", y: this.projectAnalysis.mean, text: + '%'});
+            this.piedata.push({x: "Negative", y: (1-this.projectAnalysis.mean), text: + '%'});
 
             for (let i = 0; i < this.projectAnalysis.graphs.averageOverTime.length; ++i) {
               if (this.projectAnalysis.graphs.averageOverTime[i].averageSentiment >= 0.0) {

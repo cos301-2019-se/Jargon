@@ -13,6 +13,7 @@ import { NeuralnetApiRequesterService } from '../../services/neuralnet-api-reque
 import { SharedProjectService } from '../../services/shared-project/shared-project.service';
 import { HistogramSeriesService, LineSeriesService, PieSeriesService, AccumulationDataLabelService, AccumulationAnnotationService, AccumulationTooltipService, AccumulationLegendService, AccumulationChartModule, DateTimeService } from '@syncfusion/ej2-angular-charts';
 import { ProjectCompareComponent } from './project-compare/project-compare.component';
+import { ChartModule } from '@syncfusion/ej2-angular-charts'; 
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ProjectCompareComponent } from './project-compare/project-compare.compo
     ReactiveFormsModule,
     FormsModule,
     DashboardRoutingModule,
-    ChartsModule
+    ChartsModule,
+    ChartModule
   ],
   providers: [
     RefreshGuardService,

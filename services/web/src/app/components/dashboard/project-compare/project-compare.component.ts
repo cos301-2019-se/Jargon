@@ -4,44 +4,57 @@ import { Color, Label } from 'ng2-charts';
 import { Project, ProjectStatistic, AveragePerTime } from '../../../interfaces/project/project';
 import { SharedProjectService } from '../../../services/shared-project/shared-project.service';
 import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
+import { HistogramSeriesService, LineSeriesService, PieSeriesService, AccumulationDataLabelService, AccumulationAnnotationService, AccumulationTooltipService, AccumulationLegendService, AccumulationChartModule, DateTimeService } from '@syncfusion/ej2-angular-charts';
 
 @Component({
   selector: 'app-project-compare',
   templateUrl: './project-compare.component.html',
   styleUrls: ['./project-compare.component.css']
 })
-export class ProjectCompareComponent {
-  public lineChartData: ChartDataSets[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-    { data: [25, 69, 100, 31, 53, 65, 21], label: 'Series B' },
-  ];
-  public lineChartLabels: Label[] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-  public lineChartOptions: (ChartOptions) = {
-    responsive: true,
-    scales: {
-      xAxes: [{
-        ticks: { fontColor: 'white' },
-        gridLines: { color: 'rgba(255,255,255,0.1)' }
-      }],
-      yAxes: [{
-        ticks: { fontColor: 'white' },
-        gridLines: { color: 'rgba(255,255,255,0.1)' }
-      }]
-    }
+export class ProjectCompareComponent implements OnInit{
+
+  ngOnInit(): void {
+  }
+  
+  public min1 = 0;
+  public min2 = 0;
+
+  public max1 = 0;
+  public max2 = 0;
+
+  public mean1 = 0;
+  public mean2 = 0;
+
+  public med1 = 0;
+  public med2 = 0;
+
+  public mode1 = 0;
+  public mode2 = 0;
+
+  public sd1 = 0
+  public sd2 = 0;
+
+  public var1 = 0;
+  public var2 = 0;
+
+  public chartData = [];
+
+  public point : Object = {
+
   };
-  public lineChartColors: Color[] = [
-    {
-      borderColor: 'black',
-      backgroundColor: 'rgba(100,100,100,0.5)',
-    },
-    {
-      borderColor: 'black',
-      backgroundColor: 'rgba(200,200,200,0.5)',
-    },
-  ];
-  public lineChartLegend = true;
-  public lineChartType = 'line';
-  public lineChartPlugins = [];
+
+  public chartData2 = [];
+
+  public primaryXAxis : Object = {
+    interval: 1,
+    title: 'Time (Hours)',
+  };
+
+  public primaryYAxis : Object = {
+    title: 'Sentiment Value',
+  }
+
+  public title : String = 'Average Sentiment Over Time';
 
   projects: Project[] = null;
   projectOneId: string = null;
@@ -68,9 +81,6 @@ export class ProjectCompareComponent {
     }
   }
 
-  ngOnInit() {
-  }
-
   compareItemString(op1: any, op2: any) {
     return op1 === op2;
   }
@@ -89,17 +99,33 @@ export class ProjectCompareComponent {
         console.log(statResult);
         this.projectOneStatistic = statResult.result[0];
         console.log("One:", this.projectOneStatistic);
-        this.lineChartData[0].data = [];
-        this.projectOneStatistic.graphs.averageOverTime.forEach(
-          (avgPerTime: AveragePerTime) => {
-            
-            this.lineChartData[0].data.push(
-              avgPerTime.averageSentiment
+
+        this.chartData = [];
+
+        for (let i = 0; i < this.projectOneStatistic.graphs.averageOverTime.length; ++i) {
+          if (this.projectOneStatistic.graphs.averageOverTime[i].averageSentiment >= 0.0) {
+            this.chartData.push(
+              { 
+                x: i, 
+                y: this.projectOneStatistic.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+                  0.0 :
+                  this.projectOneStatistic.graphs.averageOverTime[i].averageSentiment
+              }
             );
           }
-        );
+        }
+
+        this.min1 = this.projectOneStatistic.min;
+        this.max1 = this.projectOneStatistic.max;
+        this.mean1 = this.projectOneStatistic.mean;
+        this.med1 = this.projectOneStatistic.median;
+        this.mode1 = this.projectOneStatistic.mode[0];
+        this.sd1 = this.projectOneStatistic.std_dev;
+        this.var1 = this.projectOneStatistic.variance;
       }
     );
+
+    
 
     this.projectApiRequesterService.projectStatistics(this.projectTwoId).subscribe(
       (statResult: any) => {
@@ -107,14 +133,28 @@ export class ProjectCompareComponent {
         this.projectTwoStatistic = statResult.result[0];
         console.log("Two:", this.projectTwoStatistic);
 
-        this.lineChartData[1].data = [];
-        this.projectTwoStatistic.graphs.averageOverTime.forEach(
-          (avgPerTime: AveragePerTime) => {
-            this.lineChartData[1].data.push(
-              avgPerTime.averageSentiment
+        this.chartData2 = [];
+
+        for (let i = 0; i < this.projectTwoStatistic.graphs.averageOverTime.length; ++i) {
+          if (this.projectTwoStatistic.graphs.averageOverTime[i].averageSentiment >= 0.0) {
+            this.chartData2.push(
+              { 
+                x: i, 
+                y: this.projectTwoStatistic.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+                  0.0 :
+                  this.projectTwoStatistic.graphs.averageOverTime[i].averageSentiment
+              }
             );
           }
-        );
+        }
+
+        this.min2 = this.projectTwoStatistic.min;
+        this.max2 = this.projectTwoStatistic.max;
+        this.mean2 = this.projectTwoStatistic.mean;
+        this.med2 = this.projectTwoStatistic.median;
+        this.mode2 = this.projectTwoStatistic.mode[0];
+        this.sd2 = this.projectTwoStatistic.std_dev;
+        this.var2 = this.projectTwoStatistic.variance;
       }
     );
   }
