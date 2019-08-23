@@ -56,7 +56,7 @@ export class ProjectResultComponent implements OnInit {
     }]
   };
   public primaryYAxisHistogram: Object = {
-    minimum: 0, maximum: 25, interval: 2,
+    minimum: 0, interval: 2,
     title: 'Frequency',
     titleStyle: {
       color: 'white',
