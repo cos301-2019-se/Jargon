@@ -86,13 +86,13 @@ export class ProjectCompareComponent implements OnInit{
   }
 
   onCompareClick() {
-    console.log(this.projectOneId, this.projectTwoId);
-    console.log("One:", this.projectOneStatistic);
-    console.log("Two:", this.projectTwoStatistic);
+    // console.log(this.projectOneId, this.projectTwoId);
+    // console.log("One:", this.projectOneStatistic);
+    // console.log("Two:", this.projectTwoStatistic);
 
-    if (this.projectOneId === null || this.projectTwoId === null) {
-      return;
-    }
+    // if (this.projectOneId === null || this.projectTwoId === null) {
+    //   return;
+    // }
 
     this.projectApiRequesterService.projectStatistics(this.projectOneId).subscribe(
       (statResult: any) => {

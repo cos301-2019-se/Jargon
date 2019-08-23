@@ -17,10 +17,14 @@ const twitterCleaner = require('../platforms/twitterCleaner');
     * to the rules implemented for the Twitter platform accordingly 
     */
 router.post('/', (request, response, next) =>{
-    let rawTweets = request.body.rawData;
-    twitterCleanerInstance = new twitterCleaner();
-    console.log("starting clean");
-    twitterCleanerInstance.clean(rawTweets, returnCleanedData, response);
+    try {
+        let rawTweets = request.body.rawData;
+        twitterCleanerInstance = new twitterCleaner();
+        console.log("starting clean");
+        twitterCleanerInstance.clean(rawTweets, returnCleanedData, response);   
+    } catch (err) {
+        response.status(500).json(err);
+    }
 });
 
 /***
@@ -31,6 +35,11 @@ router.post('/', (request, response, next) =>{
     * to the rules implemented for the Twitter platform accordingly 
     */
 function returnCleanedData(returnArray, response){
+    if(returnArray==null){
+        response.status(500);
+    }else{
+
+    }
     console.log("finished cleaning");
     response.status(200).json(returnArray);
 }
