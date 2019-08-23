@@ -23,7 +23,7 @@ router.post('/', (request, response, next) =>{
         console.log("starting clean");
         twitterCleanerInstance.clean(rawTweets, returnCleanedData, response);   
     } catch (err) {
-        response.status(500);
+        response.status(500).json(err);
     }
 });
 
@@ -35,6 +35,11 @@ router.post('/', (request, response, next) =>{
     * to the rules implemented for the Twitter platform accordingly 
     */
 function returnCleanedData(returnArray, response){
+    if(returnArray==null){
+        response.status(500);
+    }else{
+
+    }
     console.log("finished cleaning");
     response.status(200).json(returnArray);
 }
