@@ -212,13 +212,11 @@ class TwitterListener{
                             sendString = result[0]["_id"] + sendString;
                             console.log("saving tweet");
                             result[0].save().then(() =>{ 
-                                // console.log("here");
                                 streamStart(sendString);
                             });
                         }).catch((err) => {
                             console.log(err);
                         })
-                        //TODO send to RMQ
                     });
                 });
                 listenerRequest.write(postBodyString);
