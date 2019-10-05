@@ -10,6 +10,7 @@
   position: relative;
   z-index: 2;
 }
+
 .divider-text:after {
   content: "";
   position: absolute;

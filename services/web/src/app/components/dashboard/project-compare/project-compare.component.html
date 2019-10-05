@@ -137,17 +137,21 @@
                                   <div class="card-deck mt-4">
                                     <div class="card shadow-lg">
                                       <div class="card-header">
-                                        <h5 class="display-5"><b>ANALYSIS</b></h5>
+                                        <h5 class="display-5"><b>USERS JOINED TODAY</b></h5>
                                       </div>
                                       <div class="card-body text-gray">
                                         <div style="display: block;">
-                                          <ejs-chart id="chart-container" [primaryXAxis]='primaryXAxis' [primaryYAxis]='primaryYAxis'
-                                          [title]='title'>
-                                              <e-series-collection>
-                                                  <e-series [dataSource]='chartData' type='Line' xName='x' yName='y' name='proj1'></e-series>
-                                                  <e-series [dataSource]='chartData2' type='Line' xName='x' yName='y'  name='proj1'></e-series>
-                                              </e-series-collection>
-                                          </ejs-chart>
+                                          <div class="row">
+                                            <div class="col-11 mx-auto">
+                                              <ejs-chart id="chart-container" [primaryXAxis]='primaryXAxis' [primaryYAxis]='primaryYAxis'
+                                              [title]='title'>
+                                                <e-series-collection>
+                                                    <e-series [dataSource]='chartData' type='Line' xName='x' yName='y' name='proj1'></e-series>
+                                                    <e-series [dataSource]='chartData2' type='Line' xName='x' yName='y'  name='proj1'></e-series>
+                                                </e-series-collection>
+                                              </ejs-chart>
+                                            </div>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
@@ -159,7 +163,6 @@
                         </div>
                       </div>
                     </div>
-                  <!-- </div> -->
                 </div>
               </div>
             </div>

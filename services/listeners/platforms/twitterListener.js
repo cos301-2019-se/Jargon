@@ -124,6 +124,9 @@ class TwitterListener{
                     found = true;
                 }
             })
+            if(!(tweet.lang == "en")){
+                found = true;
+            }
             if(!found){
                 tempArray.push(tweet);
             }
@@ -150,7 +153,6 @@ class TwitterListener{
      *      are collected, to the nueral network for processing
      */
     startStreamTracking(response, projectID, callback, streamStart, streamSend){
-        // streamStart("one message");
         const twitterConsumerSecret = require('./twitterConfig').consumer_secret;
         const twitterTokenSecret = require('./twitterConfig').token_secret;
         const Twitter = require("node-tweet-stream")
@@ -167,8 +169,10 @@ class TwitterListener{
                     found = true;
                 }
             })
+            if(!(tweet.lang == "en")){
+                found = true;
+            }
             if(!found){
-                //TODO clean tweet
                 let tweetArray = [];
                 tweetArray[0] = tweet;
                 let postBody = {
@@ -187,14 +191,12 @@ class TwitterListener{
                 };
                 let responseString = "";
                 let sendString = " ";
-                // let sendString = " T";
                 var listenerRequest = http.request(options, (listenerResponse)=>{
                     responseString = "";
                     listenerResponse.on("data", (data) => {
                         responseString += data;
                     });
                     listenerResponse.on("end", () => {
-                        //TODO save tweet to DB
                         responseString = JSON.parse(responseString);
                         sendString += responseString[0]["id_str"];
                         let tweetStructure = {
