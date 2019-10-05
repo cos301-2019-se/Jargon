@@ -8,7 +8,6 @@ import { ProjectResultComponent } from './project-result/project-result.componen
 import { ProjectInitialComponent } from './project-initial/project-initial.component';
 import { ChartsModule } from 'ng2-charts';
 import { ChartModule, AccumulationChartModule, AccumulationDataLabelService, AccumulationAnnotationService, AccumulationTooltipService, AccumulationLegendService, PieSeriesService, LineSeriesService, HistogramSeriesService, DateTimeService  } from '@syncfusion/ej2-angular-charts';
-
 @NgModule({
   declarations: [
     ProjectsComponent,

@@ -33,6 +33,18 @@ app-project-result {
   width: 100%;
 }
 
+app-admin-manage-users {
+  width: 100%;
+}
+
+app-admin-manage-projects {
+  width: 100%;
+}
+
+app-admin-user-stats {
+  width: 100%;
+}
+
 body {
   overflow: auto;
   overflow:initial;

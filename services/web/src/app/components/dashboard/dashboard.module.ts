@@ -14,12 +14,20 @@ import { SharedProjectService } from '../../services/shared-project/shared-proje
 import { HistogramSeriesService, LineSeriesService, PieSeriesService, AccumulationDataLabelService, AccumulationAnnotationService, AccumulationTooltipService, AccumulationLegendService, AccumulationChartModule, DateTimeService } from '@syncfusion/ej2-angular-charts';
 import { ProjectCompareComponent } from './project-compare/project-compare.component';
 import { ChartModule } from '@syncfusion/ej2-angular-charts'; 
+import { AdminManageProjectsComponent } from './admin-manage-projects/admin-manage-projects.component';
+import { AdminManageUsersComponent } from './admin-manage-users/admin-manage-users.component';
+import { AdminNeuralNetworkComponent } from './admin-neural-network/admin-neural-network.component';
+import { AdminUserStatsComponent } from './admin-user-stats/admin-user-stats.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
     CreateProjectComponent,
     ProjectCompareComponent,
+    AdminManageProjectsComponent,
+    AdminManageUsersComponent,
+    AdminNeuralNetworkComponent,
+    AdminUserStatsComponent
   ],
   imports: [
     CommonModule,
