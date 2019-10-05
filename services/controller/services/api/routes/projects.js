@@ -12,6 +12,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Project = require('../models/project');
 const amqp = require('amqplib/callback_api');
+const jwt = require('jsonwebtoken');
+const jwtConfig = require('../../../jwtSecret');
 var amqpConn = null;
 
 /***
@@ -220,19 +222,19 @@ router.post('/edit', (req, res, next) => {
     * This function receives a specific project's id and
     * deletes this project in the database
     */
-router.post('/delete', (req, res, next) => {
-  const id = req.body.id;
-  Project.remove({ _id: id })
-    .exec()
-    .then(result => {
-      res.status(200).json(result);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
-  });
+router.post('/delete', (req, res, next) => {      
+    const id = req.body.id;
+    Project.remove({ _id: id })
+        .exec()
+        .then(result => {
+            res.status(200).json(result);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
 });
 
 /***
@@ -469,5 +471,380 @@ function startRMQ(res){
     });
     });
 }
+
+// TOKEN ROUTES
+
+/***
+* request for basic (/basic) projects page
+* 
+* this function returns a an array of simplified, less detailed projects
+*/
+router.get('/basicTokenized', (req, res, next) => {
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(200).json({
+            message: "No token provided",
+            createdProduct: null
+        });
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(200).json({
+                authenticated: false
+            });
+        }else{
+            Project.find()
+            .exec()
+            .then(results => {
+                const retProjects = [];
+                let simplify = results.forEach((proj)=>{
+                    if(proj["createdBy"]==tokenPlainText.id){
+                        let tempProj = {};
+                        tempProj["_id"] = proj["_id"];
+                        tempProj["project_name"] = proj["project_name"];
+                        tempProj["whitelist"] = proj["whitelist"];
+                        tempProj["blacklist"] = proj["blacklist"];
+                        tempProj["source"] = proj["source"];
+                        tempProj["trackTime"] = proj["trackTime"];
+                        tempProj["created"] = proj["created"];
+                        tempProj["createdBy"] = proj["createdBy"];
+                        retProjects.push(tempProj);
+                    }
+                });
+                console.log(retProjects);
+                res.status(200).json(retProjects);           
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+        }
+    })
+});
+
+/***
+    * request for detailed (/detailed) projects page
+    * 
+    * this function mirrors the default root function for legacy use cases
+    */
+   router.get('/detailedTokenized', (req, res, next) => {
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(200).json({
+            message: "No token provided",
+            createdProduct: null
+        });
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(200).json({
+                authenticated: false
+            });
+        }else{
+            Project.find()
+            .exec()
+            .then(results => {
+                const retProjects = [];
+                results.forEach((project)=>{
+                    if(project["createdBy"]==tokenPlainText.id){
+                        retProjects.push(project);
+                    }
+                });
+                res.status(200).json(retProjects);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+        }
+    })
+});
+
+/***
+    * request for detailedSearch (/detailedSearch) projects page (string id)
+    * 
+    * this function searches for a certain project by its id, and returns all
+    * detailed information about the project based upon that id
+    */
+   router.post('/detailedSearchTokenized', (req, res, next) => {
+        const id = req.body.id;
+        let token = req.headers['x-access-token'];
+        if(!token){
+            res.status(200).json({
+                message: "No token provided",
+                createdProduct: null
+            });
+        }
+        jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+            if(err){
+                res.status(200).json({
+                    authenticated: false
+                });
+            }else{
+                Project.findById(id)
+                .exec()
+                .then(result => {
+                    if(result["createdBy"]==tokenPlainText.id){
+                        console.log(result);
+                        res.status(200).json(result);
+                    }else{
+                        res.status(200).json({authenticated: false});
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json({ error: err });
+                });
+            }
+        })
+  });
+
+/***
+    * request for create (/create) projects page (string project_name, source,
+    * createdBy, string array whitelist, blacklist, integer trackTime)
+    * 
+    * This function is used to create a new project based on a set of input
+    * paramaters needed per project. These projects can then be run to aggregate
+    * Twitter data
+    */
+   router.post('/createTokenized', (req, res, next) => {
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(200).json({
+            message: "No token provided",
+            createdProduct: null
+        });
+    }
+    jwt.verify(token, jwtConfig.secret, (err, plainTextToken)=>{
+        if(err){
+            res.status(200).json({
+                message: "Token could not be authenticated",
+                createdProduct: null
+            });
+        }else{
+            const project = new Project({
+                _id: new mongoose.Types.ObjectId(),
+                project_name: req.body.project_name,
+                whitelist: req.body.whitelist,
+                blacklist: req.body.blacklist,
+                source: req.body.source,
+                status : false,
+                trackTime: req.body.trackTime,
+                data: null,
+                dataSentiment: null,
+                createdBy: plainTextToken.id,
+                runs: []
+            });
+            project
+            .save()
+            .then(result => {
+              res.status(200).json({
+                message: "Handling POST requests to /projects/create",
+                createdProduct: result
+              });
+            })
+            .catch(err => {
+              console.log(err);
+              res.status(500).json({
+                error: err
+              });
+            });
+        }
+    });
+});
+
+/***
+    * request for edit (/edit) projects page (value array)
+    * 
+    * This function receives an array of values that need to updated for a 
+    * certain project as well as the id of a certain project. The projects 
+    * specific values are then updated with the new values.
+    */
+   router.post('/editTokenized', (req, res, next) => {
+    const id = req.body.id;
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(200).json({
+            message: "No token provided",
+            createdProduct: null
+        });
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(200).json({
+                authenticated: false
+            });
+        }else{
+            Project.findById(id)
+            .exec()
+            .then(result => {
+                if(result["createdBy"]==tokenPlainText.id){
+                    console.log("authenticated successfully.")
+                    let updateVals = {};
+                    for (const vals of req.body.updateValues){
+                        updateVals[vals.propName] = vals.value;
+                    }
+                    Project.update({ _id: id }, { $set: updateVals })
+                    .exec()
+                    .then(result => {
+                        console.log(result);
+                        res.status(200).json(result);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({
+                            error: err
+                        });
+                    });
+                }else{
+                    res.status(200).json({
+                        authenticated: false
+                    });
+                }
+            })
+            .catch(err => {
+                res.status(200).json({
+                    authenticated: false
+                });
+            });
+        }
+    })
+});
+
+/***
+* request for delete (/delete) projects page ()
+* 
+* This function receives a specific project's id and
+* deletes this project in the database
+*/
+router.post('/deleteTokenized', (req, res, next) => {
+    const id = req.body.id;
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(200).json({
+            message: "No token provided",
+            createdProduct: null
+        });
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(200).json({
+                authenticated: false
+            });
+        }else{
+            Project.findById(id)
+            .exec()
+            .then(result => {
+                if(result["createdBy"]==tokenPlainText.id){
+                    console.log("authenticated successfully.")
+                    Project.remove({ _id: id })
+                    .exec()
+                    .then(result => {
+                        res.status(200).json(result);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({
+                            error: err
+                        });
+                    });
+                }else{
+                    res.status(200).json({
+                        authenticated: false
+                    });
+                }
+            })
+            .catch(err => {
+                res.status(200).json({
+                    authenticated: false
+                });
+            });
+        }
+    })
+});
+
+/***
+    * request for start (/start) projects page (string id, string platform)
+    * 
+    * This function receives a specific project's id the platform a project
+    * needs to run on (e.g. Twitter), and then starts the a listener specific
+    * to the platform specified, which aggregates data according to the project's 
+    * whitelisted words. Certain metrics are then produced based on the data returned, 
+    * before the results are returned. 
+    */
+   router.post('/startStreamTokenized', (req, res, next) => {
+    try {
+        startRMQ(res);
+        const id = req.body.id;
+        const platform = req.body.platform;
+        let token = req.headers['x-access-token'];
+        if(!token){
+            res.status(200).json({
+                message: "No token provided",
+                createdProduct: null
+            });
+        }
+        jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+            if(err){
+                res.status(200).json({
+                    authenticated: false
+                });
+            }else{
+                Project.find({_id : id})
+                .exec()
+                .then((result)=>{
+                    if(result["createdBy"]==tokenPlainText.id){
+                        result[0].status = true;
+                        result[0].save().then(
+                            ()=>{
+                                let postBody = {
+                                    'id' : id,
+                                    'platform' : platform
+                                }
+                                let postBodyString = JSON.stringify(postBody);
+                                if((platform === "twitter")||(platform === "Twitter")){
+                                    var options = {
+                                        host: "localhost",
+                                        port: 3001,
+                                        path: "/twitter/stream",
+                                        method: "POST",
+                                        headers: {
+                                            'Content-Length': Buffer.byteLength(postBodyString),
+                                            "Content-Type": "application/json"
+                                        }
+                                    };
+                                }
+                                let responseString;
+                                var listenerReq = http.request(options, (listenerRes)=>{
+                                    responseString = "";
+                                    listenerRes.on("data", (data) => {
+                                        responseString += data;
+                                    });
+                                    listenerRes.on("end", () => {
+                                        responseString = JSON.parse(responseString);
+                                        res.status(200).json(responseString);
+                                    });
+                                });
+                                listenerReq.write(postBodyString);
+                                listenerReq.end();
+                            }
+                        )
+                    }else{
+                        res.status(200).json({authenticated: false});
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                    res.status(500).json(err);
+                }) 
+            }
+        })  
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
 
 module.exports = router;
