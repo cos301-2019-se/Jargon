@@ -472,6 +472,71 @@ function startRMQ(res){
     });
 }
 
+// TOKEN ROUTES
+
+/***
+* request for basic (/basic) projects page
+* 
+* this function returns a an array of simplified, less detailed projects
+*/
+router.get('/basicTokenized', (req, res, next) => {
+    let token = req.header["x-access-token"];
+    Project.find()
+    .exec()
+    .then(results => {
+        const retProjects = [];
+        let simplify = results.forEach((proj)=>{
+            if(proj["createdBy"]==token.id){
+                let tempProj = {};
+                tempProj["_id"] = proj["_id"];
+                tempProj["project_name"] = proj["project_name"];
+                tempProj["whitelist"] = proj["whitelist"];
+                tempProj["blacklist"] = proj["blacklist"];
+                tempProj["source"] = proj["source"];
+                tempProj["trackTime"] = proj["trackTime"];
+                tempProj["created"] = proj["created"];
+                tempProj["createdBy"] = proj["createdBy"];
+                retProjects.push(tempProj);
+            }
+        });
+        console.log(retProjects);
+        res.status(200).json(retProjects);           
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
+});
+
+/***
+    * request for detailed (/detailed) projects page
+    * 
+    * this function mirrors the default root function for legacy use cases
+    */
+   router.get('/detailedTokenized', (req, res, next) => {
+    let token = req.header["x-access-token"];
+    Project.find()
+    .exec()
+    .then(results => {
+        const retProjects = [];
+        results.forEach((project)=>{
+            if(project["createdBy"]==token.id){
+                retProjects.push(project);
+            }
+        });
+        res.status(200).json(retProjects);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
+});
+
+
 /***
     * request for create (/create) projects page (string project_name, source,
     * createdBy, string array whitelist, blacklist, integer trackTime)
@@ -617,27 +682,5 @@ function startRMQ(res){
         }
     })
 });
-
-function authenticateRequest(token, projectID){
-    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
-        if(err){
-            return false;
-        }else{
-            Project.findById(projectID)
-            .exec()
-            .then(result => {
-                if(result["createdBy"]==tokenPlainText.id){
-                    console.log("authenticated successfully.")
-                    return true;
-                }else{
-                    return false;
-                }
-            })
-            .catch(err => {
-                return false;
-            });
-        }
-    })
-}
 
 module.exports = router;
