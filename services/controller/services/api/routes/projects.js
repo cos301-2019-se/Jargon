@@ -222,19 +222,19 @@ router.post('/edit', (req, res, next) => {
     * This function receives a specific project's id and
     * deletes this project in the database
     */
-router.post('/delete', (req, res, next) => {
-  const id = req.body.id;
-  Project.remove({ _id: id })
-    .exec()
-    .then(result => {
-      res.status(200).json(result);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
-  });
+router.post('/delete', (req, res, next) => {      
+    const id = req.body.id;
+    Project.remove({ _id: id })
+        .exec()
+        .then(result => {
+            res.status(200).json(result);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
 });
 
 /***
@@ -525,5 +525,119 @@ function startRMQ(res){
         }
     });
 });
+
+/***
+    * request for edit (/edit) projects page (value array)
+    * 
+    * This function receives an array of values that need to updated for a 
+    * certain project as well as the id of a certain project. The projects 
+    * specific values are then updated with the new values.
+    */
+   router.post('/editTokenized', (req, res, next) => {
+    const id = req.body.id;
+    jwt.verify(req.headers["x-access-token"], jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            return false;
+        }else{
+            Project.findById(id)
+            .exec()
+            .then(result => {
+                if(result["createdBy"]==tokenPlainText.id){
+                    console.log("authenticated successfully.")
+                    let updateVals = {};
+                    for (const vals of req.body.updateValues){
+                        updateVals[vals.propName] = vals.value;
+                    }
+                    Project.update({ _id: id }, { $set: updateVals })
+                    .exec()
+                    .then(result => {
+                        console.log(result);
+                        res.status(200).json(result);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({
+                            error: err
+                        });
+                    });
+                }else{
+                    res.status(200).json({
+                        authenticated: false
+                    });
+                }
+            })
+            .catch(err => {
+                res.status(200).json({
+                    authenticated: false
+                });
+            });
+        }
+    })
+});
+
+/***
+    * request for delete (/delete) projects page ()
+    * 
+    * This function receives a specific project's id and
+    * deletes this project in the database
+    */
+   router.post('/deleteTokenized', (req, res, next) => {
+    const id = req.body.id;
+    jwt.verify(req.headers["x-access-token"], jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            return false;
+        }else{
+            Project.findById(id)
+            .exec()
+            .then(result => {
+                if(result["createdBy"]==tokenPlainText.id){
+                    console.log("authenticated successfully.")
+                    Project.remove({ _id: id })
+                    .exec()
+                    .then(result => {
+                        res.status(200).json(result);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({
+                            error: err
+                        });
+                    });
+                }else{
+                    res.status(200).json({
+                        authenticated: false
+                    });
+                }
+            })
+            .catch(err => {
+                res.status(200).json({
+                    authenticated: false
+                });
+            });
+        }
+    })
+});
+
+function authenticateRequest(token, projectID){
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            return false;
+        }else{
+            Project.findById(projectID)
+            .exec()
+            .then(result => {
+                if(result["createdBy"]==tokenPlainText.id){
+                    console.log("authenticated successfully.")
+                    return true;
+                }else{
+                    return false;
+                }
+            })
+            .catch(err => {
+                return false;
+            });
+        }
+    })
+}
 
 module.exports = router;
