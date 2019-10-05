@@ -480,34 +480,48 @@ function startRMQ(res){
 * this function returns a an array of simplified, less detailed projects
 */
 router.get('/basicTokenized', (req, res, next) => {
-    let token = req.header["x-access-token"];
-    Project.find()
-    .exec()
-    .then(results => {
-        const retProjects = [];
-        let simplify = results.forEach((proj)=>{
-            if(proj["createdBy"]==token.id){
-                let tempProj = {};
-                tempProj["_id"] = proj["_id"];
-                tempProj["project_name"] = proj["project_name"];
-                tempProj["whitelist"] = proj["whitelist"];
-                tempProj["blacklist"] = proj["blacklist"];
-                tempProj["source"] = proj["source"];
-                tempProj["trackTime"] = proj["trackTime"];
-                tempProj["created"] = proj["created"];
-                tempProj["createdBy"] = proj["createdBy"];
-                retProjects.push(tempProj);
-            }
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(200).json({
+            message: "No token provided",
+            createdProduct: null
         });
-        console.log(retProjects);
-        res.status(200).json(retProjects);           
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(200).json({
+                authenticated: false
+            });
+        }else{
+            Project.find()
+            .exec()
+            .then(results => {
+                const retProjects = [];
+                let simplify = results.forEach((proj)=>{
+                    if(proj["createdBy"]==tokenPlainText.id){
+                        let tempProj = {};
+                        tempProj["_id"] = proj["_id"];
+                        tempProj["project_name"] = proj["project_name"];
+                        tempProj["whitelist"] = proj["whitelist"];
+                        tempProj["blacklist"] = proj["blacklist"];
+                        tempProj["source"] = proj["source"];
+                        tempProj["trackTime"] = proj["trackTime"];
+                        tempProj["created"] = proj["created"];
+                        tempProj["createdBy"] = proj["createdBy"];
+                        retProjects.push(tempProj);
+                    }
+                });
+                console.log(retProjects);
+                res.status(200).json(retProjects);           
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+        }
     })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json({
-            error: err
-        });
-    });
 });
 
 /***
@@ -516,26 +530,78 @@ router.get('/basicTokenized', (req, res, next) => {
     * this function mirrors the default root function for legacy use cases
     */
    router.get('/detailedTokenized', (req, res, next) => {
-    let token = req.header["x-access-token"];
-    Project.find()
-    .exec()
-    .then(results => {
-        const retProjects = [];
-        results.forEach((project)=>{
-            if(project["createdBy"]==token.id){
-                retProjects.push(project);
-            }
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(200).json({
+            message: "No token provided",
+            createdProduct: null
         });
-        res.status(200).json(retProjects);
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(200).json({
+                authenticated: false
+            });
+        }else{
+            Project.find()
+            .exec()
+            .then(results => {
+                const retProjects = [];
+                results.forEach((project)=>{
+                    if(project["createdBy"]==tokenPlainText.id){
+                        retProjects.push(project);
+                    }
+                });
+                res.status(200).json(retProjects);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+        }
     })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json({
-            error: err
-        });
-    });
 });
 
+/***
+    * request for detailedSearch (/detailedSearch) projects page (string id)
+    * 
+    * this function searches for a certain project by its id, and returns all
+    * detailed information about the project based upon that id
+    */
+   router.post('/detailedSearchTokenized', (req, res, next) => {
+        const id = req.body.id;
+        let token = req.headers['x-access-token'];
+        if(!token){
+            res.status(200).json({
+                message: "No token provided",
+                createdProduct: null
+            });
+        }
+        jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+            if(err){
+                res.status(200).json({
+                    authenticated: false
+                });
+            }else{
+                Project.findById(id)
+                .exec()
+                .then(result => {
+                    if(result["createdBy"]==tokenPlainText.id){
+                        console.log(result);
+                        res.status(200).json(result);
+                    }else{
+                        res.status(200).json({authenticated: false});
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json({ error: err });
+                });
+            }
+        })
+  });
 
 /***
     * request for create (/create) projects page (string project_name, source,
@@ -600,9 +666,18 @@ router.get('/basicTokenized', (req, res, next) => {
     */
    router.post('/editTokenized', (req, res, next) => {
     const id = req.body.id;
-    jwt.verify(req.headers["x-access-token"], jwtConfig.secret, (err, tokenPlainText)=>{
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(200).json({
+            message: "No token provided",
+            createdProduct: null
+        });
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
         if(err){
-            return false;
+            res.status(200).json({
+                authenticated: false
+            });
         }else{
             Project.findById(id)
             .exec()
@@ -648,9 +723,18 @@ router.get('/basicTokenized', (req, res, next) => {
     */
    router.post('/deleteTokenized', (req, res, next) => {
     const id = req.body.id;
-    jwt.verify(req.headers["x-access-token"], jwtConfig.secret, (err, tokenPlainText)=>{
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(200).json({
+            message: "No token provided",
+            createdProduct: null
+        });
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
         if(err){
-            return false;
+            res.status(200).json({
+                authenticated: false
+            });
         }else{
             Project.findById(id)
             .exec()
