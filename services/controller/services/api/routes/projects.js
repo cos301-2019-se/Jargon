@@ -12,6 +12,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Project = require('../models/project');
 const amqp = require('amqplib/callback_api');
+const jwt = require('jsonwebtoken');
+const jwtConfig = require('../../../jwtSecret');
 var amqpConn = null;
 
 /***
@@ -469,5 +471,59 @@ function startRMQ(res){
     });
     });
 }
+
+/***
+    * request for create (/create) projects page (string project_name, source,
+    * createdBy, string array whitelist, blacklist, integer trackTime)
+    * 
+    * This function is used to create a new project based on a set of input
+    * paramaters needed per project. These projects can then be run to aggregate
+    * Twitter data
+    */
+   router.post('/createTokenized', (req, res, next) => {
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(200).json({
+            message: "No token provided",
+            createdProduct: null
+        });
+    }
+    jwt.verify(token, jwtConfig.secret, (err, plainTextToken)=>{
+        if(err){
+            res.status(200).json({
+                message: "Token could not be authenticated",
+                createdProduct: null
+            });
+        }else{
+            const project = new Project({
+                _id: new mongoose.Types.ObjectId(),
+                project_name: req.body.project_name,
+                whitelist: req.body.whitelist,
+                blacklist: req.body.blacklist,
+                source: req.body.source,
+                status : false,
+                trackTime: req.body.trackTime,
+                data: null,
+                dataSentiment: null,
+                createdBy: plainTextToken.id,
+                runs: []
+            });
+            project
+            .save()
+            .then(result => {
+              res.status(200).json({
+                message: "Handling POST requests to /projects/create",
+                createdProduct: result
+              });
+            })
+            .catch(err => {
+              console.log(err);
+              res.status(500).json({
+                error: err
+              });
+            });
+        }
+    });
+});
 
 module.exports = router;
