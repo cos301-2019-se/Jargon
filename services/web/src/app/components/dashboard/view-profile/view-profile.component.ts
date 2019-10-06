@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminApiRequesterService } from '../../../services/admin-api-requester/admin-api-requester.service';
 import { User } from '../../../interfaces/login-register/login-register';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-view-profile',
@@ -14,7 +15,11 @@ export class ViewProfileComponent implements OnInit {
 
   editable: boolean = false;
 
-  constructor(private adminApiRequester: AdminApiRequesterService) { }
+  private readonly notifier: NotifierService;
+
+  constructor(private adminApiRequester: AdminApiRequesterService, notifierService: NotifierService) {
+    this.notifier = notifierService;
+   }
 
   ngOnInit() {
     this.adminApiRequester.getUser().subscribe(
@@ -31,6 +36,10 @@ export class ViewProfileComponent implements OnInit {
         this.userSnapshot.passwordConfirm = this.user.passwordConfirm;
       }
     );
+  }
+
+  cancel() {
+    this.notifier.notify( 'success', 'You are awesome! I mean it!' );
   }
 
   onEditClick() {

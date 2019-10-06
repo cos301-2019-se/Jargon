@@ -1,3 +1,4 @@
+<notifier-container></notifier-container>
 <div class="container-fluid mx-auto m-0 project-component">
     <div class="wrapper-outer">
       <div class="main">
@@ -112,7 +113,8 @@
                                               <button class="btn btn-outline-success save">Save <i class="fas fa-check"></i></button>
                                           </div>
                                           <div class="col-auto mr-auto" data-toggle="tooltip" data-placement="left" title="Cancel all changes">
-                                              <button class="btn btn-outline-warning cancel">Cancel <i class="fas fa-ban"></i></button>
+                                              <button class="btn btn-outline-warning cancel" (click)="cancel()">Cancel <i class="fas fa-ban"></i></button>
+                                              
                                           </div>
                                         </div>
                                       </div>

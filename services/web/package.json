@@ -31,6 +31,7 @@
     "@syncfusion/ej2-angular-grids": "^17.2.41",
     "@types/chart.js": "^2.7.52",
     "@types/jquery": "^3.3.31",
+    "angular-notifier": "^4.1.1",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.8.0",
     "chartjs": "^0.3.24",

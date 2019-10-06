@@ -22,6 +22,9 @@ import { HttpInterceptorService } from '../../services/http-interceptor/http-int
 import { ViewProfileComponent } from './view-profile/view-profile.component';
 import { AdminApiRequesterService } from '../../services/admin-api-requester/admin-api-requester.service';
 
+import { NotifierModule } from 'angular-notifier';
+import { rightToLeft } from '@syncfusion/ej2-base';
+
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -40,7 +43,17 @@ import { AdminApiRequesterService } from '../../services/admin-api-requester/adm
     FormsModule,
     DashboardRoutingModule,
     ChartsModule,
-    ChartModule
+    ChartModule,
+    NotifierModule.withConfig( {
+      position: {
+        horizontal : {
+          position: 'right'
+        },
+        'vertical': {
+          position: 'top'
+        }
+      }
+    } )
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
