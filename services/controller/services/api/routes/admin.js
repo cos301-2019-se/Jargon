@@ -56,17 +56,16 @@ router.post('/createAdminUser', (req, res, next) => {
                     });
                 })
                 .catch(err =>{
-                    console.log(err),
-                    res.status(200).json({
-                        message: "Could not register",
-                        success: false,
-                        createdProduct: null
-                    })
+                    console.log(err);
+                    res.status(500).json({
+                        error: "Could not register"
+                    });
                 })
             }else{
                 res.status(200).json({
-                    authenticated: false,
-                    message: "This is an admin function."
+                    success: false,
+                    message: "This is an admin function.",
+                    createdProduct: null
                 });
             }
         }
@@ -109,13 +108,14 @@ router.post('/deleteUser', (req, res, next) => {
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error: err
+                        error: "Could not register"
                     });
                 });
             }else{
                 res.status(200).json({
-                    authenticated: false,
-                    message: "This is an admin function."
+                    success: false,
+                    message: "This is an admin function.",
+                    createdProduct: null
                 });
             }
         }
@@ -159,13 +159,14 @@ router.post('/basicAllProjects', (req, res, next) => {
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error: err
+                        error: "Could not register"
                     });
                 });
             }else{
                 res.status(200).json({
-                    authenticated: false,
-                    message: "This is an admin function."
+                    success: false,
+                    message: "This is an admin function.",
+                    createdProduct: null
                 });
             }
         }
@@ -199,13 +200,14 @@ router.post('/detailedAllProjects', (req, res, next) => {
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error: err
+                        error: "Could not register"
                     });
                 });
             }else{
                 res.status(200).json({
-                    authenticated: false,
-                    message: "This is an admin function."
+                    success: false,
+                    message: "This is an admin function.",
+                    createdProduct: null
                 });
             }
         }
@@ -237,12 +239,15 @@ router.post('/detailedSearch', (req, res, next) => {
                 })
                 .catch(err => {
                     console.log(err);
-                    res.status(500).json({ error: err });
+                    res.status(500).json({
+                        error: "Could not register"
+                    });
                 });
             }else{
                 res.status(200).json({
-                    authenticated: false,
-                    message: "This is an admin function."
+                    success: false,
+                    message: "This is an admin function.",
+                    createdProduct: null
                 });
             }
         }
