@@ -32,6 +32,7 @@ router.post('/', (req, res, next) => {
                         if(err){
                             res.status(200).json({
                                 status : true,
+                                result : "Could not sign in",
                                 authenticated : false,
                                 token: err,
                                 admin: false
@@ -39,6 +40,7 @@ router.post('/', (req, res, next) => {
                         }else{
                             res.status(200).json({
                                 status : true,
+                                result : "Logged in successfully",
                                 authenticated : true,
                                 token: _token,
                                 admin: data[0].admin
@@ -48,6 +50,7 @@ router.post('/', (req, res, next) => {
                 }else{
                     res.status(200).json({
                         status : false,
+                        result : "Incorrect username or password",
                         authenticated : false,
                         token: null,
                         admin: false
@@ -56,6 +59,7 @@ router.post('/', (req, res, next) => {
             }else{
                 res.status(200).json({
                     status : false,
+                    result : "Incorrect username or password",
                     authenticated : false,
                     token: null,
                     admin: false
@@ -64,7 +68,10 @@ router.post('/', (req, res, next) => {
         }else{
             res.status(200).json({
                 status: false,
-                result: "User does not exist."
+                result: "Incorrect username or password",
+                authenticated : false,
+                token: null,
+                admin: false
             });
         }
     })
