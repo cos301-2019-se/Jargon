@@ -9,7 +9,7 @@ out tests (units, API routes and system integration).
 ## Contents
 * [Installation](#installation)
 * [Procedure](#procedure)
-* [Testing Policies](#testing policies)
+* [Testing Policies](#testing-policies)
 
 ## Installation
 From the `tests` directory (the same directory in which this `README.md` is located), 
