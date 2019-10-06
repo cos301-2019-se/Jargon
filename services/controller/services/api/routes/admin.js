@@ -64,7 +64,7 @@ router.post('/createAdminUser', (req, res, next) => {
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "This is an admin function.",
+                    message: "Unauthorised to use this function.",
                     createdProduct: null
                 });
             }
@@ -114,7 +114,7 @@ router.post('/deleteUser', (req, res, next) => {
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "This is an admin function.",
+                    message: "Unauthorised to use this function.",
                     createdProduct: null
                 });
             }
@@ -165,7 +165,7 @@ router.post('/basicAllProjects', (req, res, next) => {
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "This is an admin function.",
+                    message: "Unauthorised to use this function.",
                     createdProduct: null
                 });
             }
@@ -206,7 +206,7 @@ router.post('/detailedAllProjects', (req, res, next) => {
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "This is an admin function.",
+                    message: "Unauthorised to use this function.",
                     createdProduct: null
                 });
             }
@@ -246,7 +246,7 @@ router.post('/detailedSearch', (req, res, next) => {
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "This is an admin function.",
+                    message: "Unauthorised to use this function.",
                     createdProduct: null
                 });
             }
@@ -363,17 +363,20 @@ router.post('/editUserAdmin', (req, res, next) => {
                     });
                 });
             }else{
-
+                res.status(200).json({
+                    success: false,
+                    message: "Unauthorised to use this function."
+                });
             }
         }
     })
 });
 
 /***
-* request for detailedSearch (/detailedSearch) projects page (string id)
+* request for getUser (/getUser) page
 * 
-* this function searches for a certain project by its id, and returns all
-* detailed information about the project based upon that id
+* this function searches for a certain user by their token id, and returns
+* basic information about the user based upon that id
 */
 router.post('/getUser', (req, res, next) => {
     let token = req.headers['x-access-token'];
@@ -405,6 +408,55 @@ router.post('/getUser', (req, res, next) => {
                     error : "Could not perform action."
                 });
             });
+        }
+    })
+});
+
+/***
+* request for getUser (/getUser) page
+* 
+* this function searches for a certain user by their token id, and returns
+* basic information about the user based upon that id
+*/
+router.post('/getUserAdmin', (req, res, next) => {
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(401).json({});
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(401).json({});
+        }else{
+            if(tokenPlainText.admin==true){
+                User.find()
+                .exec()
+                .then(results => {
+                    let retUsers = [];
+                    results.forEach((user)=>{
+                        let tempUser = {};
+                        tempUser["name"] = results["name"];
+                        tempUser["surname"] = results["surname"];
+                        tempUser["email"] = results["email"];
+                        tempUser["username"] = results["username"];
+                        tempUser["admin"] = results["admin"];
+                        tempUser["deleted"] = results["deleted"];
+                        retUsers.push(tempUser);
+                    });
+                    console.log(retUsers);
+                    res.status(200).json(retUsers);
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json({
+                        error : "Could not perform action."
+                    });
+                });
+            }else{
+                res.status(200).json({
+                    success: false,
+                    message: "Unauthorised to use this function."
+                });
+            }
         }
     })
 });
