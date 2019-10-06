@@ -10,7 +10,7 @@ import { AdminNeuralNetworkComponent } from './admin-neural-network/admin-neural
 import { AdminManageUsersComponent } from './admin-manage-users/admin-manage-users.component';
 import { AdminManageProjectsComponent } from './admin-manage-projects/admin-manage-projects.component';
 import { AuthGuardService } from '../../services/auth-guard/auth-guard.service';
-import { ViewProfileComponent } from './view-profile/view-profile/view-profile.component';
+import { ViewProfileComponent } from './view-profile/view-profile.component';
 
 const routes: Routes = [
   { 

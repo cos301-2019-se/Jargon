@@ -26,3 +26,31 @@ export class RegisterDetails {
         this.admin = false;
     }
 }
+
+export class User {
+    public id: string;
+    public name: string;
+    public surname: string;
+    public email: string;
+    public username: string;
+    public password: string;
+    public passwordConfirm: string;
+
+    constructor() {
+        this.id = "";
+        this.name = "";
+        this.surname = "";
+        this.email = "";
+        this.username = "";
+        this.password = "";
+    }
+
+    compare(user: User) {
+        return this.name === user.name &&
+            this.surname === user.surname &&
+            this.email === user.email &&
+            this.username === user.username &&
+            this.password === this.password &&
+            this.passwordConfirm == user.passwordConfirm;
+    }
+}

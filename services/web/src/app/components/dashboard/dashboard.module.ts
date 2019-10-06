@@ -19,7 +19,8 @@ import { AdminManageUsersComponent } from './admin-manage-users/admin-manage-use
 import { AdminNeuralNetworkComponent } from './admin-neural-network/admin-neural-network.component';
 import { AdminUserStatsComponent } from './admin-user-stats/admin-user-stats.component';
 import { HttpInterceptorService } from '../../services/http-interceptor/http-interceptor.service';
-import { ViewProfileComponent } from './view-profile/view-profile/view-profile.component';
+import { ViewProfileComponent } from './view-profile/view-profile.component';
+import { AdminApiRequesterService } from '../../services/admin-api-requester/admin-api-requester.service';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ViewProfileComponent } from './view-profile/view-profile/view-profile.c
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
     RefreshGuardService,
     ProjectApiRequesterService,
+    AdminApiRequesterService,
     NeuralnetApiRequesterService,
     SharedProjectService,
     HistogramSeriesService,
