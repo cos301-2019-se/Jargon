@@ -1,6 +1,6 @@
 # Jargon
 ## Description
-[Jargon](../) is a tool that streams opinionated data from a publicly available source
+[Jargon](/) is a tool that streams opinionated data from a publicly available source
 (such as [Twitter](https://twitter.com/)) about a certain topic, parses and analyzes 
 the data, and presents the information in a dashboard for executives to view.
 
@@ -25,40 +25,37 @@ this.
 * [docker](https://www.docker.com/) (specidfically, `dockerd` and `docker-compose`)
 
 ## Installation
-To install each service, simply execute the installation script found in the
-`services` directory (the same directory where this `README.md` is located), with the
-followng command:
+All services are dockerized (docker containerized), thus installation takes place 
+within each container. Simply execute the `run.sh` script:
 
-```bash
-    $ ./install.sh
+```
+    $ ./run.sh
 ```
 
-This will install the necessary dependencies and will carry out the necessary 
-compilation required for each service appropriately. The dependencies in particular
-will require an active internet connection.
+From the `services` directory (the same directory where this `README.md` is located).
+This will spin up a container for each service, install the necessary dependencies ,
+and will carry out the necessary compilation required for each service appropriately. 
+The dependencies in particular will require an active internet connection.
 
-> __Note__: The sentiment analysis service (the neural network) has large
-> dependencies, it could take up to an hour or two for the downloads to complete 
-> depending on the internet connection strength.
+> __Note__: Keep in mind that docker containers are quite resource intensive.
+> The first execution of the the script will build the images which can take
+> anywhere between __20 minutes__ to a __few hours__ to complete depending on 
+> the internet connection and hardware.
 
-Alternatively, each service can be individually installed by switching to the
-relevant directory and executing the respective `install.sh`.
+> __Note__: The sentiment analysis service (the neural network) requires 
+> large downloads the first time a container is spun up for it. It can take 
+> up to an hour or two for the downloads to complete depending on the internet 
+> connection strength.
+
+Further executions of the `run.sh` script will not take as long as the initial
 
 ## Deployment
-
-From the `services` directory, execute the startup script:
+Starting the system, again, only involves the deployment of each container. 
+From the `services` directory, execute the `run.sh` script:
 
 ```bash
     $ ./run.sh
 ```
-
-This will spin up a container for each service. All services are dockerized 
-(docker containerized), thus starting the system only involves the 
-deployment of each container. 
-
-> __Note__: The sentiment analysis requires large downloads the first time a
-> container is spun up for it. It can take up to an hour or two for the 
-> downloads to complete depending on the internet connection strength.
 
 > __Note__: The sentiment analysis service (the neural network) can take
 > anywhere between 10 and 20 minutes on average to fully startup, depending on 
@@ -78,4 +75,3 @@ Please see [tests](../tests) for more information.
 It is worth noting that Travis-CI configurations are already present within this
 repository's root directory. One can make use of these configurations if they 
 wish to make a live deployment of the system themselves.
-
