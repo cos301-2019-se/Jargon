@@ -45,7 +45,7 @@
               <input name="pass2" class="form-control" placeholder="Confirm password" type="password" [(ngModel)]="registerDetails.passwordConfirm" required>
             </div> <!-- form-group// -->
             <div class="form-group">
-              <button type="submit" class="btn btn-primary btn-block" [disabled]="!f.valid" (click)="onRegisterClick()"> Create Account  </button>
+              <button type="submit" class="btn btn-outline-primary btn-block" [disabled]="!f.valid" (click)="onRegisterClick()"> Create Account  </button>
             </div> <!-- form-group// -->
             <p class="text-center">Have an account? <a href="">Log In</a> </p>
           </form>
