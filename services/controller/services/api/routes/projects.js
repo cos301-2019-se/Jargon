@@ -512,7 +512,7 @@ router.get('/basicTokenized', (req, res, next) => {
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error: err
+                    error : "Could not perform action."
                 });
             });
         }
@@ -547,7 +547,7 @@ router.get('/basicTokenized', (req, res, next) => {
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error: err
+                    error : "Could not perform action."
                 });
             });
         }
@@ -582,7 +582,9 @@ router.get('/basicTokenized', (req, res, next) => {
                 })
                 .catch(err => {
                     console.log(err);
-                    res.status(500).json({ error: err });
+                    res.status(500).json({
+                        error : "Could not perform action."
+                    });
                 });
             }
         })
@@ -627,10 +629,10 @@ router.get('/basicTokenized', (req, res, next) => {
                 });
             })
             .catch(err => {
-              console.log(err);
-              res.status(500).json({
-                error: err
-              });
+                console.log(err);
+                res.status(500).json({
+                    error : "Could not perform action."
+                });
             });
         }
     });
@@ -671,7 +673,7 @@ router.get('/basicTokenized', (req, res, next) => {
                     .catch(err => {
                         console.log(err);
                         res.status(500).json({
-                            error: err
+                            error : "Could not perform action."
                         });
                     });
                 }else{
@@ -681,8 +683,9 @@ router.get('/basicTokenized', (req, res, next) => {
                 }
             })
             .catch(err => {
-                res.status(200).json({
-                    authenticated: false
+                console.log(err);
+                res.status(500).json({
+                    error : "Could not perform action."
                 });
             });
         }
@@ -728,8 +731,9 @@ router.post('/deleteTokenized', (req, res, next) => {
                 }
             })
             .catch(err => {
-                res.status(200).json({
-                    authenticated: false
+                console.log(err);
+                res.status(500).json({
+                    error : "Could not perform action."
                 });
             });
         }
@@ -802,12 +806,17 @@ router.post('/deleteTokenized', (req, res, next) => {
                     }
                 }).catch((err) => {
                     console.log(err);
-                    res.status(500).json(err);
+                    res.status(500).json({
+                        error : "Could not perform action."
+                    });
                 }) 
             }
         })  
     } catch (error) {
-        res.status(500).json(error);
+        console.log(err);
+        res.status(500).json({
+            error : "Could not perform action."
+        });
     }
 });
 
