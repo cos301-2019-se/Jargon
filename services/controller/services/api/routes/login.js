@@ -31,10 +31,10 @@ router.post('/', (req, res, next) => {
                     jwt.sign({id: data[0]._id, admin: data[0].admin}, jwtConfig.secret, {expiresIn: 86400}, (err, _token) => {
                         if(err){
                             res.status(200).json({
-                                status : true,
+                                status : false,
                                 result : "Could not sign in",
                                 authenticated : false,
-                                token: err,
+                                token: null,
                                 admin: false
                             });
                         }else{
@@ -77,7 +77,7 @@ router.post('/', (req, res, next) => {
     })
     .catch(err => {
         res.status(500).json({
-            error: err
+            error : "Could not log into Jargon."
         });
     });
 });
