@@ -22,7 +22,7 @@
 }
 
 .main-card {
-  background: rgba(6, 57, 116, 0.6) !important;
+  background: rgba(6, 57, 116, 1) !important;
   overflow-y: auto;
   height:  auto;
   
@@ -38,7 +38,16 @@ select, input {
 }
 
 .span-background {
-  background: rgba(40, 109, 189, 0.6) !important;
-  border-color: rgba(6, 57, 116, 0.6) !important;
+  background: rgba(40, 109, 189, 1) !important;
+  border-color: rgba(6, 57, 116, 1) !important;
   color: white;
+}
+
+input {
+  color: white !important;
+}
+
+input:focus {
+  border:none;
+  box-shadow: none;
 }

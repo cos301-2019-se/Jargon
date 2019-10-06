@@ -115,14 +115,7 @@
 }
 
 #nav-bg {
-  background: rgba(8,162,233,1);
-  background: -moz-linear-gradient(left, rgba(8,162,233,1) 0%, rgba(0,60,125,1) 100%);
-  /* background: -webkit-gradient(left top, right top, color-stop(0%, rgba(8,162,233,1)), color-stop(100%, rgba(0,60,125,1))); */
-  background: -webkit-linear-gradient(left, rgba(8,162,233,1) 0%, rgba(0,60,125,1) 100%);
-  background: -o-linear-gradient(left, rgba(8,162,233,1) 0%, rgba(0,60,125,1) 100%);
-  background: -ms-linear-gradient(left, rgba(8,162,233,1) 0%, rgba(0,60,125,1) 100%);
-  background: linear-gradient(to right, rgba(8,162,233,1) 0%, rgba(0,60,125,1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#08a2e9', endColorstr='#003c7d', GradientType=1 );
+  background: rgb(1, 72, 153) !important;
 }
 
 #logo {
