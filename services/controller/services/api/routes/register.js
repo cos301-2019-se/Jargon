@@ -30,7 +30,8 @@ router.post('/', (req, res, next) => {
         username: req.body.username,
         password: passwordToSave,
         admin: req.body.admin,
-        projects: null
+        projects: null,
+        deleted: false
     });
     user
     .save()

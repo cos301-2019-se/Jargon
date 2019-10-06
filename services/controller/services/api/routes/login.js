@@ -27,30 +27,41 @@ router.post('/', (req, res, next) => {
     .then(data => {
         if(data.length > 0){
             if(bcrypt.compareSync(req.body.password, data[0].password)){
-                jwt.sign({id: data[0]._id, admin: data[0].admin}, jwtConfig.secret, {expiresIn: 86400}, (err, _token) => {
-                    if(err){
-                        res.status(200).json({
-                            status : true,
-                            authenticated : false,
-                            token: err
-                        });
-                    }else{
-                        res.status(200).json({
-                            status : true,
-                            authenticated : true,
-                            token: _token,
-                            admin: data[0].admin
-                        });   
-                    }
-                });
+                if(data[0].deleted==false){
+                    jwt.sign({id: data[0]._id, admin: data[0].admin}, jwtConfig.secret, {expiresIn: 86400}, (err, _token) => {
+                        if(err){
+                            res.status(200).json({
+                                status : true,
+                                authenticated : false,
+                                token: err,
+                                admin: false
+                            });
+                        }else{
+                            res.status(200).json({
+                                status : true,
+                                authenticated : true,
+                                token: _token,
+                                admin: data[0].admin
+                            });   
+                        }
+                    });
+                }else{
+                    res.status(200).json({
+                        status : false,
+                        authenticated : false,
+                        token: null,
+                        admin: false
+                    });
+                }
             }else{
                 res.status(200).json({
-                    status : true,
-                    authenticated : false
+                    status : false,
+                    authenticated : false,
+                    token: null,
+                    admin: false
                 });
             }
-        }
-        else{
+        }else{
             res.status(200).json({
                 status: false,
                 result: "User does not exist."
