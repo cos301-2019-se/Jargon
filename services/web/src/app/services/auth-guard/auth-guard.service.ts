@@ -19,14 +19,4 @@ export class AuthGuardService {
 
     return true;
   }
-
-  public canActivateChild() {
-    const token = this.globalService.getTokenValue();
-    if (token == undefined || token == null) {
-      this.router.navigateByUrl("/login");
-      return false;
-    }
-
-    return true;
-  }
 }

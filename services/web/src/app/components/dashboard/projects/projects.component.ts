@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Project } from '../../../interfaces/project/project';
 import { SharedProjectService } from '../../../services/shared-project/shared-project.service';
 import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
@@ -33,6 +33,7 @@ export class ProjectsComponent implements OnInit {
     if (this.projects === null) {
       this.onRefreshProjectsClick();
     } else {
+      this.pages = [];
       this.projectsLength = this.projects.length/this.PAGE_SIZE;
 
       for (let i = 0; i < this.projects.length; i += this.PAGE_SIZE ) {
