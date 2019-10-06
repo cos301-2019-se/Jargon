@@ -4,13 +4,13 @@
       <div class="row">
         <div class="col-lg-11 mx-auto">
           <div class="row">
-            <div class="col-12 mt-4">
+            <!-- <div class="col-12 mt-4">
               <div class="row">
                 <div class="col-1 ml-auto mr-4">
                   <i class="fas fa-cog settings_icon" (click)="onEditClick()"></i>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="col-12 mt-3">
               <div class="form-group">
                 <label for="project-name">Project Name *</label>
@@ -67,17 +67,20 @@
     </div> -->
     <div class="container">
       <div class="row mt-3 mb-3">
-        <div class="col-auto ml-auto" [hidden]="!isReadOnly">
-            <button class="btn btn-white results" [routerLink]="['../../../project-result']">Results</button>
+        <div class="col-auto ml-auto" [hidden]="!isReadOnly" data-placement="left" title="View results for project">
+            <button class="btn btn-outline-primary results" [routerLink]="['../../../project-result']">Results</button>
         </div>
-        <div class="col-auto mr-auto" [hidden]="!isReadOnly">
-          <button class="btn btn-white results" (click)="onStartClick()">Start</button>
+        <div class="col-auto " [hidden]="!isReadOnly">
+          <button class="btn btn-outline-primary results" (click)="onStartClick()" data-placement="left" title="Start collecting and analysing tweets">Start</button>
         </div>
-        <div class="col-auto ml-auto" [hidden]="isReadOnly">
-            <button class="btn btn-white save" (click)="onSaveClick()">Save <i class="fas fa-check"></i></button>
+        <div class="col-auto mr-auto" [hidden]="!isReadOnly" data-placement="left" title="Make changes to project">
+          <button class="btn btn-outline-primary results" (click)="onEditClick()">Edit</button>
         </div>
-        <div class="col-auto mr-auto" [hidden]="isReadOnly">
-            <button class="btn btn-white cancel" (click)="onCancelClick()">Cancel <i class="fas fa-ban"></i></button>
+        <div class="col-auto ml-auto" [hidden]="isReadOnly" data-toggle="tooltip" data-placement="left" title="Save changes">
+            <button class="btn btn-outline-success save" (click)="onSaveClick()">Save <i class="fas fa-check"></i></button>
+        </div>
+        <div class="col-auto mr-auto" [hidden]="isReadOnly" data-toggle="tooltip" data-placement="left" title="Cancel all changes">
+            <button class="btn btn-outline-warning cancel" (click)="onCancelClick()">Cancel <i class="fas fa-ban"></i></button>
         </div>
       </div>
     </div>
