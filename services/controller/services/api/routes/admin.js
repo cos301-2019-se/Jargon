@@ -430,12 +430,12 @@ router.post('/getUserAdmin', (req, res, next) => {
                     let retUsers = [];
                     results.forEach((user)=>{
                         let tempUser = {};
-                        tempUser["name"] = results["name"];
-                        tempUser["surname"] = results["surname"];
-                        tempUser["email"] = results["email"];
-                        tempUser["username"] = results["username"];
-                        tempUser["admin"] = results["admin"];
-                        tempUser["deleted"] = results["deleted"];
+                        tempUser["name"] = user["name"];
+                        tempUser["surname"] = user["surname"];
+                        tempUser["email"] = user["email"];
+                        tempUser["username"] = user["username"];
+                        tempUser["admin"] = user["admin"];
+                        tempUser["deleted"] = user["deleted"];
                         retUsers.push(tempUser);
                     });
                     console.log(retUsers);
