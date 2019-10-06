@@ -482,10 +482,7 @@ function startRMQ(res){
 router.get('/basicTokenized', (req, res, next) => {
     let token = req.headers['x-access-token'];
     if(!token){
-        res.status(200).json({
-            message: "No token provided",
-            createdProduct: null
-        });
+        res.status(401).json({});
     }
     jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
         if(err){
@@ -534,9 +531,7 @@ router.get('/basicTokenized', (req, res, next) => {
     }
     jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
         if(err){
-            res.status(200).json({
-                authenticated: false
-            });
+            res.status(401).json({});
         }else{
             Project.find()
             .exec()
@@ -573,9 +568,7 @@ router.get('/basicTokenized', (req, res, next) => {
         }
         jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
             if(err){
-                res.status(200).json({
-                    authenticated: false
-                });
+                res.status(401).json({});
             }else{
                 Project.findById(id)
                 .exec()
@@ -610,10 +603,7 @@ router.get('/basicTokenized', (req, res, next) => {
     }
     jwt.verify(token, jwtConfig.secret, (err, plainTextToken)=>{
         if(err){
-            res.status(200).json({
-                message: "Token could not be authenticated",
-                createdProduct: null
-            });
+            res.status(401).json({});
         }else{
             const project = new Project({
                 _id: new mongoose.Types.ObjectId(),
@@ -631,10 +621,10 @@ router.get('/basicTokenized', (req, res, next) => {
             project
             .save()
             .then(result => {
-              res.status(200).json({
-                message: "Handling POST requests to /projects/create",
-                createdProduct: result
-              });
+                res.status(200).json({
+                    message: "Handling POST requests to /projects/create",
+                    createdProduct: result
+                });
             })
             .catch(err => {
               console.log(err);
@@ -661,9 +651,7 @@ router.get('/basicTokenized', (req, res, next) => {
     }
     jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
         if(err){
-            res.status(200).json({
-                authenticated: false
-            });
+            res.status(401).json({});
         }else{
             Project.findById(id)
             .exec()
@@ -715,9 +703,7 @@ router.post('/deleteTokenized', (req, res, next) => {
     }
     jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
         if(err){
-            res.status(200).json({
-                authenticated: false
-            });
+            res.status(401).json({});
         }else{
             Project.findById(id)
             .exec()
@@ -770,9 +756,7 @@ router.post('/deleteTokenized', (req, res, next) => {
         }
         jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
             if(err){
-                res.status(200).json({
-                    authenticated: false
-                });
+                res.status(401).json({});
             }else{
                 Project.find({_id : id})
                 .exec()
