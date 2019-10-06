@@ -331,13 +331,15 @@ router.post('/editUserAdmin', (req, res, next) => {
                     console.log("authenticated successfully.")
                     let updateVals = {};
                     for (const vals of req.body.updateValues){
-                        if(!((vals.propName=="admin")||(vals.propName=="deleted")||(vals.propName=="projects")||(vals.propName=="_id"))){
+                        if(!((vals.propName=="_id"))){
                             if(vals.propName=="password"){
                                 let saltToSave = bcrypt.genSaltSync();
                                 let passwordToSave = bcrypt.hashSync(vals.value, saltToSave);
                                 updateVals[vals.propName] = passwordToSave;
                             }else{
-                                updateVals[vals.propName] = vals.value;
+                                if((vals.propName=="name")||(vals.propName=="surname")||(vals.propName=="email")||(vals.propName=="username")||(vals.propName=="admin")||(vals.propName=="deleted")){
+                                    updateVals[vals.propName] = vals.value;
+                                }
                             }
                         }
                     }
@@ -363,6 +365,46 @@ router.post('/editUserAdmin', (req, res, next) => {
             }else{
 
             }
+        }
+    })
+});
+
+/***
+* request for detailedSearch (/detailedSearch) projects page (string id)
+* 
+* this function searches for a certain project by its id, and returns all
+* detailed information about the project based upon that id
+*/
+router.post('/getUser', (req, res, next) => {
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(401).json({});
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(401).json({});
+        }else{
+            User.findById(tokenPlainText.id)
+            .exec()
+            .then(result => {
+                if(result["createdBy"]==tokenPlainText.id){
+                    console.log(result);
+                    res.status(200).json({
+                        "name" : result["name"],
+                        "surname" : result["surname"],
+                        "email" : result["email"],
+                        "username" : result["username"]
+                    });
+                }else{
+                    res.status(200).json({authenticated: false});
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error : "Could not perform action."
+                });
+            });
         }
     })
 });
