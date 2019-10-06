@@ -664,7 +664,7 @@ router.get('/basicTokenized', (req, res, next) => {
                     for (const vals of req.body.updateValues){
                         updateVals[vals.propName] = vals.value;
                     }
-                    Project.update({ _id: id }, { $set: updateVals })
+                    Project.updateOne({ _id: id }, { $set: updateVals })
                     .exec()
                     .then(result => {
                         console.log(result);
