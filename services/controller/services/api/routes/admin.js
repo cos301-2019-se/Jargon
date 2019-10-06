@@ -390,17 +390,13 @@ router.post('/getUser', (req, res, next) => {
             User.findById(tokenPlainText.id)
             .exec()
             .then(result => {
-                if(result["createdBy"]==tokenPlainText.id){
-                    console.log(result);
-                    res.status(200).json({
-                        "name" : result["name"],
-                        "surname" : result["surname"],
-                        "email" : result["email"],
-                        "username" : result["username"]
-                    });
-                }else{
-                    res.status(200).json({authenticated: false});
-                }
+                console.log(result);
+                res.status(200).json({
+                    "name" : result["name"],
+                    "surname" : result["surname"],
+                    "email" : result["email"],
+                    "username" : result["username"]
+                });
             })
             .catch(err => {
                 console.log(err);
