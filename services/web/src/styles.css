@@ -45,6 +45,10 @@ app-admin-user-stats {
   width: 100%;
 }
 
+app-view-profile {
+  width: 50%;
+}
+
 body {
   overflow: auto;
   overflow:initial;
