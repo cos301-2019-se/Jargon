@@ -15,12 +15,10 @@ Slack (link reserved for team members) | N/A | Project communications tool
 
 ### Meet the Team
 
-![alt text](https://github.com/cos301-2019-se/Jargon/blob/development/documentation/images/group-photo.jpg "Group Photo")
-
-Position In Photo | Member | Roles in Project
---- | --- | ---
-Middle | [Ethan Lindeman](https://github.com/plethargy) | Team Leader, Backend Services
-Left | [Graeme Coetzee](https://github.com/GraemeCoetzee)| Fontend and UI Services
-Middle Left | [Christiaan Nel](https://github.com/nelcht) | Frontend and UI, Machine Learning and AI Services
-Middle Right | [Kevin Coetzee](https://github.com/KevinCoetzee10) | Backend and Third-party Interactive Services
-Right | [Herbert Magaya](https://github.com/sarrost) | DevOps, Machine Learning and AI Services
+Member | Roles in Project
+--- | ---
+[Ethan Lindeman](https://github.com/plethargy) | Team Leader, Backend Services
+[Graeme Coetzee](https://github.com/GraemeCoetzee)| Fontend and UI Services
+[Christiaan Nel](https://github.com/nelcht) | Frontend and UI, Machine Learning and AI Services
+[Kevin Coetzee](https://github.com/KevinCoetzee10) | Backend and Third-party Interactive Services
+[Herbert Magaya](https://github.com/sarrost) | DevOps, Machine Learning and AI Services
