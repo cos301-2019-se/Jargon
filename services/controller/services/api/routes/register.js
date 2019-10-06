@@ -38,13 +38,16 @@ router.post('/', (req, res, next) => {
         console.log(result);
         res.status(200).json({
             message: "Handled post request to /register",
+            success: true,
             createdProduct: result
         });
     })
     .catch(err =>{
         console.log(err),
-        res.status(500).json({
-            error: err
+        res.status(200).json({
+            message: "Could not register",
+            success: true,
+            createdProduct: null
         })
     })
 });
