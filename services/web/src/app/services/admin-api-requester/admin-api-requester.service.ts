@@ -44,7 +44,7 @@ export class AdminApiRequesterService {
 
   public getUsersAdmin() {
     const body = {};
-    return this.httpClient.post(`${this.apiURL}/getUsersAdmin`, body);
+    return this.httpClient.post(`${this.apiURL}/getUserAdmin`, body);
   }
 
   public editUser(user: User) {

@@ -18,6 +18,7 @@ export class AdminManageProjectsComponent implements OnInit {
   ngOnInit() {
     this.adminApiRequester.basicAllProjects().subscribe(
       (res: any) => {
+        console.log(res);
         this.projects = res.result;
       }
     );
