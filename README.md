@@ -15,7 +15,7 @@ Link | Ver | Description
 <a href="documentation/testing-policy/testing-policy-latest.pdf" target="blank">Testing Policies</a> | 1.2 | Testing policies document
 [Trello](https://trello.com/b/3q7zGrE5/jargon) | N/A | Project management tool
 Slack (link reserved for team members) | N/A | Project communications tool
-<a href="documentation/user-manual/user-manual-1.2.pdf" target="blank">User Manual</a> | 1.2 | User manual document
+<a href="documentation/user-manual/user-manual-latest.pdf" target="blank">User Manual</a> | 1.2 | User manual document
 
 ### The Team
 Member | Roles in Project
