@@ -38,7 +38,8 @@ router.post('/', (req, res, next) => {
                         res.status(200).json({
                             status : true,
                             authenticated : true,
-                            token: _token
+                            token: _token,
+                            admin: data[0].admin
                         });   
                     }
                 });
