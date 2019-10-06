@@ -62,7 +62,7 @@ router.post('/createAdminUser', (req, res, next) => {
                     console.log(err),
                     res.status(200).json({
                         message: "Could not register",
-                        success: true,
+                        success: false,
                         createdProduct: null
                     })
                 })

@@ -631,10 +631,10 @@ router.get('/basicTokenized', (req, res, next) => {
             project
             .save()
             .then(result => {
-              res.status(200).json({
-                message: "Handling POST requests to /projects/create",
-                createdProduct: result
-              });
+                res.status(200).json({
+                    message: "Handling POST requests to /projects/create",
+                    createdProduct: result
+                });
             })
             .catch(err => {
               console.log(err);
