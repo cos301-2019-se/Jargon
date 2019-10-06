@@ -11,16 +11,16 @@ Link | Ver | Description
 <a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/testing-policy/testing-policy-1.2.pdf" target="blank">Testing Policies</a> | 1.2 | Testing policies document
 <a href="https://github.com/cos301-2019-se/Jargon/blob/development/documentation/coding-standards/coding-standards-1.2.pdf" target="blank">Coding Standards</a> | 1.2 | Coding standards document
 [Trello](https://trello.com/b/3q7zGrE5/jargon) | N/A | Project management tool
-[Slack](https://www.google.com) | N/A | Project communications tool
+Slack (link reserved for team members) | N/A | Project communications tool
 
 ### Meet the Team
 
 ![alt text](https://github.com/cos301-2019-se/Jargon/blob/development/documentation/images/group-photo.jpg "Group Photo")
 
-Position In Photo | Member | Role
+Position In Photo | Member | Roles in Project
 --- | --- | ---
-a | b | c
-a | b | c
-a | b | c
-a | b | c
-a | b | c
+Middle | [Ethan Lindeman](https://github.com/plethargy) | Team Leader, Backend Services
+Left | [Graeme Coetzee](https://github.com/GraemeCoetzee)| Fontend and UI Services
+Middle Left | [Christiaan Nel](https://github.com/nelcht) | Frontend and UI, Machine Learning and AI Services
+Middle Right | [Kevin Coetzee](https://github.com/KevinCoetzee10) | Backend and Third-party Interactive Services
+Right | [Herbert Magaya](https://github.com/sarrost) | DevOps, Machine Learning and AI Services
