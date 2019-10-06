@@ -19,6 +19,7 @@ import { AdminManageUsersComponent } from './admin-manage-users/admin-manage-use
 import { AdminNeuralNetworkComponent } from './admin-neural-network/admin-neural-network.component';
 import { AdminUserStatsComponent } from './admin-user-stats/admin-user-stats.component';
 import { HttpInterceptorService } from '../../services/http-interceptor/http-interceptor.service';
+import { ViewProfileComponent } from './view-profile/view-profile/view-profile.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { HttpInterceptorService } from '../../services/http-interceptor/http-int
     AdminManageProjectsComponent,
     AdminManageUsersComponent,
     AdminNeuralNetworkComponent,
-    AdminUserStatsComponent
+    AdminUserStatsComponent,
+    ViewProfileComponent
   ],
   imports: [
     CommonModule,

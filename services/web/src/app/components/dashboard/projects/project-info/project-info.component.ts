@@ -92,15 +92,16 @@ export class ProjectInfoComponent implements OnInit {
 
   onSaveClick() {
     this.isReadOnly = true;
-
+    console.log("Snap:", this.projectSnapshot);
+    console.log("Proj:", this.project);
     if (!this.projectSnapshot.compare(this.project)) {
-      this.projectApiRequesterService.updateProject(this.project).subscribe(
-        (project: Project) => {
-          this.project.blacklist = project.blacklist;
-          this.project.whitelist = project.whitelist;
-          this.project.project_name = project.project_name;
-          this.project.source = project.source;
-          this.project.trackTime = project.trackTime;
+      this.projectApiRequesterService.updateProject(this.projectSnapshot).subscribe(
+        (resp: any) => {
+          this.project.blacklist = this.projectSnapshot.blacklist;
+          this.project.whitelist = this.projectSnapshot.whitelist;
+          this.project.project_name = this.projectSnapshot.project_name;
+          this.project.source = this.projectSnapshot.source;
+          this.project.trackTime = this.projectSnapshot.trackTime;
         }
       );
     }
