@@ -39,8 +39,8 @@
                                               <option *ngFor="let project of projects" [value]="project._id">{{project.project_name}}</option>
                                             </select>
                                           </div>
-                                          <div class="col-auto ml-auto">
-                                            <button class="btn btn-outline-primary text-light" (click)="onCompareClick()">Compare</button>
+                                          <div class="col-auto ml-auto" data-placement="left" title="Compare two selected projects">
+                                            <button class="btn btn-outline-primary" (click)="onCompareClick()">Compare</button>
                                           </div>
                                         </div>
                                       </div>

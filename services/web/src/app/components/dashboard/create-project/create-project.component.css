@@ -187,12 +187,6 @@ body {
   transition-duration: 0s;
 }
 
-.btn {
-  background: rgba(22, 111, 175, 0.3) !important;
-  color: white;
-  text-align: left;
-}
-
 select, input {
   background-color: rgb(0, 18, 37) !important;
   border-color:  rgb(36, 75, 117) !important;
@@ -216,11 +210,6 @@ select:focus, input:focus {
 
 ::placeholder {
   color: rgb(136, 136, 156) !important;
-}
-
-.btn.focus, .btn:focus {
-  -webkit-box-shadow: none !important;
-  box-shadow: none !important;
 }
 
 .active_project {

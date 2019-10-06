@@ -94,11 +94,6 @@ select:focus, input:focus {
     color: rgb(136, 136, 156) !important;
 }
 
-.btn.focus, .btn:focus {
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-}
-
 .settings_icon {
     font-size: 27px;
     color: rgb(1, 109, 216) !important;
@@ -106,30 +101,6 @@ select:focus, input:focus {
 
 .settings_icon:hover {
     color: white !important;
-}
-
-.cancel {
-    background: grey !important;
-}
-
-.save {
-    background: green !important;
-}
-
-.results {
-    background: rgb(1, 109, 216) !important;
-}
-
-.cancel:hover {
-    background: rgb(161, 157, 157) !important;
-}
-
-.save:hover {
-    background: rgb(4, 202, 4) !important;
-} 
-
-.results:hover {
-    background: rgb(45, 135, 231) !important; 
 }
 
 .pill {
