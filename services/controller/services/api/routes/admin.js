@@ -25,10 +25,7 @@ const bcrypt = require('bcrypt-nodejs');
 router.post('/createAdminUser', (req, res, next) => {
     let token = req.headers['x-access-token'];
     if(!token){
-        res.status(200).json({
-            message: "No token provided",
-            createdProduct: null
-        });
+        res.status(401).json({});
     }
     jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
         if(err){
@@ -86,10 +83,7 @@ router.post('/deleteUser', (req, res, next) => {
     const id = req.body.id;
     let token = req.headers['x-access-token'];
     if(!token){
-        res.status(200).json({
-            message: "No token provided",
-            createdProduct: null
-        });
+        res.status(401).json({});
     }
     jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
         if(err){
@@ -136,10 +130,7 @@ router.post('/deleteUser', (req, res, next) => {
 router.post('/basicAllProjects', (req, res, next) => {
     let token = req.headers['x-access-token'];
     if(!token){
-        res.status(200).json({
-            message: "No token provided",
-            createdProduct: null
-        });
+        res.status(401).json({});
     }
     jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
         if(err){
@@ -189,10 +180,7 @@ router.post('/basicAllProjects', (req, res, next) => {
 router.post('/detailedAllProjects', (req, res, next) => {
     let token = req.headers['x-access-token'];
     if(!token){
-        res.status(200).json({
-            message: "No token provided",
-            createdProduct: null
-        });
+        res.status(401).json({});
     }
     jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
         if(err){
@@ -238,9 +226,7 @@ router.post('/detailedSearch', (req, res, next) => {
     }
     jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
         if(err){
-            res.status(200).json({
-                authenticated: false
-            });
+            res.status(401).json({});
         }else{
             if(tokenPlainText.admin == true){
                 Project.findById(id)
