@@ -489,9 +489,7 @@ router.get('/basicTokenized', (req, res, next) => {
     }
     jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
         if(err){
-            res.status(200).json({
-                authenticated: false
-            });
+            res.status(401).json({});
         }else{
             Project.find()
             .exec()
@@ -532,10 +530,7 @@ router.get('/basicTokenized', (req, res, next) => {
    router.get('/detailedTokenized', (req, res, next) => {
     let token = req.headers['x-access-token'];
     if(!token){
-        res.status(200).json({
-            message: "No token provided",
-            createdProduct: null
-        });
+        res.status(401).json({});
     }
     jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
         if(err){
@@ -574,10 +569,7 @@ router.get('/basicTokenized', (req, res, next) => {
         const id = req.body.id;
         let token = req.headers['x-access-token'];
         if(!token){
-            res.status(200).json({
-                message: "No token provided",
-                createdProduct: null
-            });
+            res.status(401).json({});
         }
         jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
             if(err){
@@ -614,10 +606,7 @@ router.get('/basicTokenized', (req, res, next) => {
    router.post('/createTokenized', (req, res, next) => {
     let token = req.headers['x-access-token'];
     if(!token){
-        res.status(200).json({
-            message: "No token provided",
-            createdProduct: null
-        });
+        res.status(401).json({});
     }
     jwt.verify(token, jwtConfig.secret, (err, plainTextToken)=>{
         if(err){
@@ -668,10 +657,7 @@ router.get('/basicTokenized', (req, res, next) => {
     const id = req.body.id;
     let token = req.headers['x-access-token'];
     if(!token){
-        res.status(200).json({
-            message: "No token provided",
-            createdProduct: null
-        });
+        res.status(401).json({});
     }
     jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
         if(err){
@@ -725,10 +711,7 @@ router.post('/deleteTokenized', (req, res, next) => {
     const id = req.body.id;
     let token = req.headers['x-access-token'];
     if(!token){
-        res.status(200).json({
-            message: "No token provided",
-            createdProduct: null
-        });
+        res.status(401).json({});
     }
     jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
         if(err){
@@ -783,10 +766,7 @@ router.post('/deleteTokenized', (req, res, next) => {
         const platform = req.body.platform;
         let token = req.headers['x-access-token'];
         if(!token){
-            res.status(200).json({
-                message: "No token provided",
-                createdProduct: null
-            });
+            res.status(401).json({});
         }
         jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
             if(err){
