@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit {
       ]);
     }
     this.directories.push([
-      { caption: "Account Settings", path: "dashboard/account-settings", icon: "fa-cog"},
+      // { caption: "Account Settings", path: "dashboard/account-settings", icon: "fa-cog"},
       { caption: "View Profile", path: "dashboard/view-profile", icon: "fa-users" },
     ]);
 
