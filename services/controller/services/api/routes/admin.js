@@ -254,4 +254,59 @@ router.post('/detailedSearch', (req, res, next) => {
     })
 });
 
+/***
+* request for edit (/edit) projects page (value array)
+* 
+* This function receives an array of values that need to updated for a 
+* certain project as well as the id of a certain project. The projects 
+* specific values are then updated with the new values.
+*/
+router.post('/editUser', (req, res, next) => {
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(401).json({});
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(401).json({});
+        }else{
+            User.findById(tokenPlainText.id)
+            .exec()
+            .then(result => {
+                console.log("authenticated successfully.")
+                let updateVals = {};
+                for (const vals of req.body.updateValues){
+                    if(!((vals.propName=="admin")||(vals.propName=="deleted")||(vals.propName=="projects")||(vals.propName=="_id"))){
+                        if(vals.propName=="password"){
+                            let saltToSave = bcrypt.genSaltSync();
+                            let passwordToSave = bcrypt.hashSync(vals.value, saltToSave);
+                            updateVals[vals.propName] = passwordToSave;
+                        }else{
+                            updateVals[vals.propName] = vals.value;
+                        }
+                    }
+                }
+                User.updateOne({ _id: tokenPlainText.id }, { $set: updateVals })
+                .exec()
+                .then(result => {
+                    console.log(result);
+                    res.status(200).json(result);
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json({
+                        error : "Could not perform action."
+                    });
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error : "Could not perform action."
+                });
+            });
+        }
+    })
+});
+
 module.exports = router;
