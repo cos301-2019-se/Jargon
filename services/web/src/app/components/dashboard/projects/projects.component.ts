@@ -57,6 +57,7 @@ export class ProjectsComponent implements OnInit {
     this.projectApiRequesterService.getProjectsBasic().subscribe(
       (projects: Project[]) => {
         console.log(projects);
+        this.pages = [];
         this.sharedProjectService.setProjects(projects);
         this.projects = this.sharedProjectService.getProjects();
         this.projectsLength = this.projects.length/this.PAGE_SIZE;
@@ -74,7 +75,7 @@ export class ProjectsComponent implements OnInit {
         this.loading = false;
       },
       error => {
-        console.log("Error");
+        console.log("Error:", error);
         this.loading = true;
       }
     );

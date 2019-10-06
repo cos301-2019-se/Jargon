@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ChartsModule } from 'ng2-charts';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { DashboardComponent } from './dashboard.component';
@@ -18,6 +18,7 @@ import { AdminManageProjectsComponent } from './admin-manage-projects/admin-mana
 import { AdminManageUsersComponent } from './admin-manage-users/admin-manage-users.component';
 import { AdminNeuralNetworkComponent } from './admin-neural-network/admin-neural-network.component';
 import { AdminUserStatsComponent } from './admin-user-stats/admin-user-stats.component';
+import { HttpInterceptorService } from '../../services/http-interceptor/http-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { AdminUserStatsComponent } from './admin-user-stats/admin-user-stats.com
     ChartModule
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
     RefreshGuardService,
     ProjectApiRequesterService,
     NeuralnetApiRequesterService,

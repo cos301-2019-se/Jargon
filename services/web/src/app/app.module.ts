@@ -9,12 +9,14 @@ import { LoginComponent } from './components/login/login.component';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { ChartsModule } from 'ng2-charts';
 import { LoginApiRequesterService } from './services/login-api-requester/login-api-requester.service';
 import { RegisterApiRequesterService } from './services/register-api-requester/register-api-requester.service';
+import { GlobalService } from './services/global-service/global-service.service';
+import { HttpInterceptorService } from './services/http-interceptor/http-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,8 @@ import { RegisterApiRequesterService } from './services/register-api-requester/r
   ],
   providers: [
     LoginApiRequesterService,
-    RegisterApiRequesterService
+    RegisterApiRequesterService,
+    GlobalService,
   ],
   bootstrap: [AppComponent]
 })

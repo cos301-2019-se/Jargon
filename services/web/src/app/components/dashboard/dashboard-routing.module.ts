@@ -9,6 +9,7 @@ import { AdminUserStatsComponent } from './admin-user-stats/admin-user-stats.com
 import { AdminNeuralNetworkComponent } from './admin-neural-network/admin-neural-network.component';
 import { AdminManageUsersComponent } from './admin-manage-users/admin-manage-users.component';
 import { AdminManageProjectsComponent } from './admin-manage-projects/admin-manage-projects.component';
+import { AuthGuardService } from '../../services/auth-guard/auth-guard.service';
 
 const routes: Routes = [
   { 
@@ -16,15 +17,15 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
-      { path: 'projects', loadChildren: './projects/projects.module#ProjectsModule' },
-      { path: 'create-project', component: CreateProjectComponent },
-      { path: 'compare-project', component: ProjectCompareComponent },
-      { path: 'project-result', component: ProjectResultComponent, canActivate: [RefreshGuardService] },
+      { path: 'projects', loadChildren: './projects/projects.module#ProjectsModule', canActivate: [AuthGuardService] },
+      { path: 'create-project', component: CreateProjectComponent, canActivate: [AuthGuardService] },
+      { path: 'compare-project', component: ProjectCompareComponent, canActivate: [AuthGuardService] },
+      { path: 'project-result', component: ProjectResultComponent, canActivate: [AuthGuardService] },
 
-      { path: 'manage-projects', component: AdminManageProjectsComponent },
-      { path: 'manage-users', component: AdminManageUsersComponent },
-      { path: 'neural-network', component: AdminNeuralNetworkComponent },
-      { path: 'user-stats', component: AdminUserStatsComponent },
+      { path: 'manage-projects', component: AdminManageProjectsComponent, canActivate: [AuthGuardService] },
+      { path: 'manage-users', component: AdminManageUsersComponent, canActivate: [AuthGuardService] },
+      { path: 'neural-network', component: AdminNeuralNetworkComponent, canActivate: [AuthGuardService] },
+      { path: 'user-stats', component: AdminUserStatsComponent, canActivate: [AuthGuardService] },
 
       { path: '**', redirectTo: 'projects' }
     ]
