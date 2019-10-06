@@ -430,6 +430,7 @@ router.post('/getUserAdmin', (req, res, next) => {
                     let retUsers = [];
                     results.forEach((user)=>{
                         let tempUser = {};
+                        tempUser["id"] = user["_id"];
                         tempUser["name"] = user["name"];
                         tempUser["surname"] = user["surname"];
                         tempUser["email"] = user["email"];
