@@ -10,12 +10,12 @@ More specifically, docker containers are used to streamline the development and 
 process.
 
 ## Contents
-* [Requirements](##Requirements)
-* [Installation](##Installation)
-* [Deployment](##Deployment)
-* [Usage](##Usage)
-* [Testing](##Testing)
-* [Travis-CI](##Travis-CI)
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Deployment](#deployment)
+* [Usage](#usage)
+* [Testing](#testing)
+* [Travis-CI](#travis-ci)
 
 ## Requirements
 * [Node.js](https://nodejs.org/en/) and [npm](https://www.npmjs.com/)
