@@ -13,9 +13,9 @@ export class GlobalService {
   public currentAdmin: Observable<boolean>;
 
   constructor() {
-    this.currentTokenSubject = new BehaviorSubject<string>(localStorage.getItem('token'));
+    this.currentTokenSubject = new BehaviorSubject<string>(JSON.parse(localStorage.getItem('token')));
     this.currentToken = this.currentTokenSubject.asObservable();
-    this.currentAdminSubject = new BehaviorSubject<boolean>(false);
+    this.currentAdminSubject = new BehaviorSubject<boolean>(localStorage.getItem('admin') === "true");
     this.currentAdmin = this.currentAdminSubject.asObservable();
   }
 
@@ -39,6 +39,7 @@ export class GlobalService {
   }
 
   public setAdminValue(admin: boolean) {
+    localStorage.setItem('admin', JSON.stringify(admin));
     this.currentAdminSubject.next(admin);
   }
 }
