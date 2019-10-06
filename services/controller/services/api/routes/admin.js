@@ -9,6 +9,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/user');
+const Project = require('../models/project');
 const jwt = require('jsonwebtoken');
 const jwtConfig = require('../../../jwtSecret');
 const bcrypt = require('bcrypt-nodejs');
@@ -132,14 +133,112 @@ router.post('/deleteUser', (req, res, next) => {
 });
 
 /***
-* request for createAdminUser (/) route (string name, surname, 
-* email, username, password)
+* request for basic (/basicAllProjects) projects route
 * 
-* this function receives a collection of data associated with a certain 
-* unregistered user and adds this user, along with his/her data to the 
-* database, as an admin user 
+* this function returns a an array of simplified, less detailed projects
 */
-router.post('/', (req, res, next) => {
+router.post('/basicAllProjects', (req, res, next) => {
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(200).json({
+            message: "No token provided",
+            createdProduct: null
+        });
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(200).json({
+                authenticated: false
+            });
+        }else{
+            if(tokenPlainText.admin == true){
+                Project.find()
+                .exec()
+                .then(results => {
+                    const retProjects = [];
+                    let simplify = results.forEach((proj)=>{
+                        let tempProj = {};
+                        tempProj["_id"] = proj["_id"];
+                        tempProj["project_name"] = proj["project_name"];
+                        tempProj["whitelist"] = proj["whitelist"];
+                        tempProj["blacklist"] = proj["blacklist"];
+                        tempProj["source"] = proj["source"];
+                        tempProj["trackTime"] = proj["trackTime"];
+                        tempProj["created"] = proj["created"];
+                        tempProj["createdBy"] = proj["createdBy"];
+                        retProjects.push(tempProj);
+                    });
+                    console.log(retProjects);
+                    res.status(200).json(retProjects);           
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json({
+                        error: err
+                    });
+                });
+            }else{
+                res.status(200).json({
+                    authenticated: false,
+                    message: "This is an admin function."
+                });
+            }
+        }
+    })
+});
+
+/***
+    * request for detailed (/detailedAllProjects) projects page
+    * 
+    * this function returns detailed data on all projects
+    */
+router.post('/detailedAllProjects', (req, res, next) => {
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(200).json({
+            message: "No token provided",
+            createdProduct: null
+        });
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(200).json({
+                authenticated: false
+            });
+        }else{
+            if(tokenPlainText.admin == true){
+                Project.find()
+                .exec()
+                .then(results => {
+                    const retProjects = [];
+                    results.forEach((project)=>{
+                        retProjects.push(project);
+                    });
+                    res.status(200).json(retProjects);
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json({
+                        error: err
+                    });
+                });
+            }else{
+                res.status(200).json({
+                    authenticated: false,
+                    message: "This is an admin function."
+                });
+            }
+        }
+    })
+});
+
+/***
+    * request for detailedSearch (/detailedSearch) projects page (string id)
+    * 
+    * this function searches for a certain project by its id, and returns all
+    * detailed information about the project based upon that id
+    */
+router.post('/detailedSearch', (req, res, next) => {
     const id = req.body.id;
     let token = req.headers['x-access-token'];
     if(!token){
@@ -155,7 +254,16 @@ router.post('/', (req, res, next) => {
             });
         }else{
             if(tokenPlainText.admin == true){
-                
+                Project.findById(id)
+                .exec()
+                .then(result => {
+                    console.log(result);
+                    res.status(200).json(result);
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json({ error: err });
+                });
             }else{
                 res.status(200).json({
                     authenticated: false,
