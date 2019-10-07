@@ -3,9 +3,8 @@
 
 ![alt text](images/group-photo.jpg "Group Photo")
 
-## Ethan Lindeman (Team Leader, Backend Services)
-Bachelor of Information Technology (3rd year)
-[GitHub](https://github.com/plethargy)
+## [Ethan Lindeman](https://github.com/plethargy) (Team Leader, Backend Services)
+Bachelor of Information Technology (3rd year
 
 ### Skills include:
 C++ • JavaScript • Java • C#.NET • PHP • MEAN Stack • React framework
@@ -17,7 +16,7 @@ Teaching Assistant at the University of Pretoria, First Semester of 2019 (Data S
 ### About me:
 At my core, I’m a problem solver. I love solving complex problems, and the more complex, the better. Technology and software development are what support thispassion of mine. I take pride in creating well-designed, easily understandable software that solves real world problemsefficiently. I could imagine no other career for myself other than one that is based in Software Development.
 
-## Herbert Magaya
+## [Herbert Magaya](https://github.com/sarrost) (DevOps, Machine Learning and AI Services)
 BSc Information Technology (3rd year)
 
 ### Skills include:
@@ -29,7 +28,7 @@ Short internship with EduOne, July of 2018
 ### About me:
 I enjoy all things gaming, technology and multimedia related, basically I am obsessed with geek culture as a whole. I have been fascinated with computers from a very young age and am very passionate about computer programming. Since starting university I have also found myself interested in academia.
 
-## Graeme Coetzee
+## [Graeme Coetzee](https://github.com/GraemeCoetzee) (Frontend Design, Frontend and UI Services)
 Bachelor of Information Technology (3rd year)
 
 ### Skills include:
@@ -41,7 +40,7 @@ Teaching Assistant at the University of Pretoria, First Semester of 2019 (Data S
 ### About me:
 I am a hard worker, and a problem solver. I am persistent in finding solutions to problems. I am a perfectionist, and I am very proud of my work. I have been passionate about computers and programming for as long as I can remember. I thoroughly enjoy taking on new challenges and furthering my knowledge. I envision myself in no other career other than in software development.
 
-## Kevin Coetzee
+## [Kevin Coetzee](https://github.com/KevinCoetzee10) (Backend and Third-party Interactive Services)
 Bachelor of Information Technology (3rd year)
 
 ### Skills include:
@@ -54,7 +53,7 @@ Teaching Assistant at the University of Pretoria, First Semester of 2019 (Impera
 ### About me:
 Coding and finding solutions to software problems is my way of creating something that matters. I enjoy building things that make peoples’ lives easier through the use of technology, and being able to learn in the process excites me.
 
-## Christiaan Nel
+## [Christiaan Nel](https://github.com/nelcht) (Frontend and UI, Machine Learning and AI Services)
 BSc Computer Science (3rd year)
 
 ### Skills include:
@@ -66,9 +65,3 @@ Teaching Assistant at the University of Pretoria, Second Semester of 2018 (Softw
 
 ### About me:
 I am a tenacious Computer Science student that is eager to learn new concepts and I like to take on personal projects to increase my knowledge. I would like to see myself as a system programmer in the future. Technology and how they work on lower levels has always fascinated me, especially older hardware that can be emulated.
-
-
-[Graeme Coetzee](https://github.com/GraemeCoetzee)| Fontend and UI Services
-[Christiaan Nel](https://github.com/nelcht) | Frontend and UI, Machine Learning and AI Services
-[Kevin Coetzee](https://github.com/KevinCoetzee10) | Backend and Third-party Interactive Services
-[Herbert Magaya](https://github.com/sarrost) | DevOps, Machine Learning and AI Services
