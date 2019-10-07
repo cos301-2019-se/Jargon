@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {HostListener} from '@angular/core';
 import * as $ from 'jquery';
 import { GlobalService } from '../../services/global-service/global-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -40,7 +41,8 @@ export class DashboardComponent implements OnInit {
     // }
   }
 
-  constructor(private globalService: GlobalService) {}
+  constructor(private globalService: GlobalService,
+      private router: Router) {}
 
   ngOnInit() {
     this.directories.push([
@@ -101,6 +103,11 @@ export class DashboardComponent implements OnInit {
     if(this.innerWidth < 1200) {
       this.collapse= true;
     }
+  }
+
+  onLogoutClick() {
+    this.globalService.logout();
+    this.router.navigateByUrl('/login');
   }
 
 }

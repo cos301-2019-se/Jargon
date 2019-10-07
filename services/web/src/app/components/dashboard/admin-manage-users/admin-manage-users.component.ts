@@ -11,6 +11,8 @@ import { ProjectApiRequesterService } from '../../../services/project-api-reques
 export class AdminManageUsersComponent implements OnInit {
 
   users: User[][] = [];
+  user: User = new User();
+
   constructor(private adminApiRequester: AdminApiRequesterService,
       private projectApiRequester: ProjectApiRequesterService) {}
 
@@ -70,8 +72,8 @@ export class AdminManageUsersComponent implements OnInit {
     );
   }
 
-  onViewUserClick() {
-
+  onViewUserClick(user: User) {
+    this.user = user;
   }
 
   onCreateUserClick() {
