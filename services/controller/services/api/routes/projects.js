@@ -507,12 +507,18 @@ router.get('/basicTokenized', (req, res, next) => {
                     }
                 });
                 console.log(retProjects);
-                res.status(200).json(retProjects);           
+                res.status(200).json({
+                    success: true,
+                    message: "Successfully retrieved projects",
+                    result: retProjects  
+                });           
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to retrieve projects",
+                    success: false,
+                    result: null
                 });
             });
         }
@@ -542,12 +548,18 @@ router.get('/basicTokenized', (req, res, next) => {
                         retProjects.push(project);
                     }
                 });
-                res.status(200).json(retProjects);
+                res.status(200).json({
+                    success: true,
+                    message: "Successfully retrieved projects",
+                    result: retProjects 
+                });
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to retrieve projects",
+                    success: false,
+                    result: null
                 });
             });
         }
@@ -572,18 +584,28 @@ router.get('/basicTokenized', (req, res, next) => {
             }else{
                 Project.findById(id)
                 .exec()
-                .then(result => {
-                    if(result["createdBy"]==tokenPlainText.id){
-                        console.log(result);
-                        res.status(200).json(result);
+                .then(result_ => {
+                    if(result_["createdBy"]==tokenPlainText.id){
+                        console.log(result_);
+                        res.status(200).json({
+                            message: "Successfully retrieved project",
+                            success: true,
+                            result: result_ 
+                        });
                     }else{
-                        res.status(200).json({authenticated: false});
+                        res.status(200).json({
+                            message: "Failed to retrieve project",
+                            success: false,
+                            result: null
+                        });
                     }
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error : "Could not perform action."
+                        message: "Failed to retrieve project",
+                        success: false,
+                        result: null
                     });
                 });
             }
@@ -624,14 +646,17 @@ router.get('/basicTokenized', (req, res, next) => {
             .save()
             .then(result => {
                 res.status(200).json({
-                    message: "Handling POST requests to /projects/create",
-                    createdProduct: result
+                    message: "Successfully created project",
+                    success: true,
+                    result: null
                 });
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to create project",
+                    success: false,
+                    result: null
                 });
             });
         }
@@ -668,24 +693,34 @@ router.get('/basicTokenized', (req, res, next) => {
                     .exec()
                     .then(result => {
                         console.log(result);
-                        res.status(200).json(result);
+                        res.status(200).json({
+                            message: "Successfully edited project",
+                            success: true,
+                            result: null
+                        });
                     })
                     .catch(err => {
                         console.log(err);
                         res.status(500).json({
-                            error : "Could not perform action."
+                            message: "Failed to edit project",
+                            success: false,
+                            result: null
                         });
                     });
                 }else{
                     res.status(200).json({
-                        authenticated: false
+                        message: "Failed to edit project",
+                        success: false,
+                        result: null
                     });
                 }
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to edit project",
+                    success: false,
+                    result: null
                 });
             });
         }
@@ -716,24 +751,34 @@ router.post('/deleteTokenized', (req, res, next) => {
                     Project.remove({ _id: id })
                     .exec()
                     .then(result => {
-                        res.status(200).json(result);
+                        res.status(200).json({
+                            message: "Successfully deleted project",
+                            success: true,
+                            result: null
+                        });
                     })
                     .catch(err => {
                         console.log(err);
                         res.status(500).json({
-                            error: err
+                            message: "Failed to delete project",
+                            success: false,
+                            result: null
                         });
                     });
                 }else{
                     res.status(200).json({
-                        authenticated: false
+                        message: "Failed to delete project",
+                        success: false,
+                        result: null
                     });
                 }
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to delete project",
+                    success: false,
+                    result: null
                 });
             });
         }
@@ -794,7 +839,11 @@ router.post('/deleteTokenized', (req, res, next) => {
                                     });
                                     listenerRes.on("end", () => {
                                         responseString = JSON.parse(responseString);
-                                        res.status(200).json(responseString);
+                                        res.status(200).json({
+                                            message: "Successfully ran project",
+                                            success: true,
+                                            result: responseString
+                                        });
                                     });
                                 });
                                 listenerReq.write(postBodyString);
@@ -802,20 +851,28 @@ router.post('/deleteTokenized', (req, res, next) => {
                             }
                         )
                     }else{
-                        res.status(200).json({authenticated: false});
+                        res.status(200).json({
+                            message: "Failed to run project",
+                            success: false,
+                            result: null
+                        });
                     }
                 }).catch((err) => {
                     console.log(err);
                     res.status(500).json({
-                        error : "Could not perform action."
+                        message: "Failed to run project",
+                        success: false,
+                        result: null
                     });
                 }) 
             }
         })  
     } catch (error) {
-        console.log(err);
+        console.log(error);
         res.status(500).json({
-            error : "Could not perform action."
+            message: "Failed to run project",
+            success: false,
+            result: null
         });
     }
 });

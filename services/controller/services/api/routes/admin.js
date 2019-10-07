@@ -47,25 +47,27 @@ router.post('/createAdminUser', (req, res, next) => {
                 });
                 user
                 .save()
-                .then(result => {
-                    console.log(result);
+                .then(_result => {
+                    console.log(_result);
                     res.status(200).json({
-                        message: "Handled post request to /createAdminUser",
+                        message: "Successfully created admin user",
                         success: true,
-                        createdProduct: result
+                        result: null
                     });
                 })
                 .catch(err =>{
                     console.log(err);
                     res.status(500).json({
-                        error: "Could not register"
+                        message: "Failed to create admin user",
+                        success: false,
+                        result: null
                     });
                 })
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "Unauthorised to use this function.",
-                    createdProduct: null
+                    message: "User does not have sufficient privileges",
+                    result: null
                 });
             }
         }
@@ -103,19 +105,25 @@ router.post('/deleteUser', (req, res, next) => {
                 .exec()
                 .then(result => {
                     console.log(result);
-                    res.status(200).json(result);
+                    res.status(200).json({
+                        success: true,
+                        message: "Successfully deleted user",
+                        result: null
+                    });
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error: "Could not register"
+                        message: "Failed to delete user",
+                        success: false,
+                        result: null
                     });
                 });
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "Unauthorised to use this function.",
-                    createdProduct: null
+                    message: "User does not have sufficient privileges",
+                    result: null
                 });
             }
         }
@@ -154,19 +162,25 @@ router.post('/basicAllProjects', (req, res, next) => {
                         retProjects.push(tempProj);
                     });
                     console.log(retProjects);
-                    res.status(200).json(retProjects);           
+                    res.status(200).json({
+                        success: true,
+                        message: "Successfully retrieved projects",
+                        result: retProjects
+                    });           
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error: "Could not register"
+                        message: "Failed to retrieve projects",
+                        success: false,
+                        result: null
                     });
                 });
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "Unauthorised to use this function.",
-                    createdProduct: null
+                    message: "User does not have sufficient privileges",
+                    result: null
                 });
             }
         }
@@ -195,19 +209,25 @@ router.post('/detailedAllProjects', (req, res, next) => {
                     results.forEach((project)=>{
                         retProjects.push(project);
                     });
-                    res.status(200).json(retProjects);
+                    res.status(200).json({
+                        success: true,
+                        message: "Successfully retrieved projects",
+                        result: retProjects
+                    });
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error: "Could not register"
+                        message: "Failed to retrieve projects",
+                        success: false,
+                        result: null
                     });
                 });
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "Unauthorised to use this function.",
-                    createdProduct: null
+                    message: "User does not have sufficient privileges",
+                    result: null
                 });
             }
         }
@@ -235,19 +255,25 @@ router.post('/detailedSearch', (req, res, next) => {
                 .exec()
                 .then(result => {
                     console.log(result);
-                    res.status(200).json(result);
+                    res.status(200).json({
+                        success: true,
+                        message: "Successfully retrieved project",
+                        result: result
+                    });
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error: "Could not register"
+                        message: "Failed to retrieve project",
+                        success: false,
+                        result: null
                     });
                 });
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "Unauthorised to use this function.",
-                    createdProduct: null
+                    message: "User does not have sufficient privileges",
+                    result: null
                 });
             }
         }
@@ -289,19 +315,27 @@ router.post('/editUser', (req, res, next) => {
                 .exec()
                 .then(result => {
                     console.log(result);
-                    res.status(200).json(result);
+                    res.status(200).json({
+                        success: true,
+                        message: "Successfully edited user",
+                        result: null
+                    });
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error : "Could not perform action."
+                        message: "Failed to edit user",
+                        success: false,
+                        result: null
                     });
                 });
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to edit user",
+                    success: false,
+                    result: null
                 });
             });
         }
@@ -347,25 +381,34 @@ router.post('/editUserAdmin', (req, res, next) => {
                     .exec()
                     .then(result => {
                         console.log(result);
-                        res.status(200).json(result);
+                        res.status(200).json({
+                            success: true,
+                            message: "Successfully edited user",
+                            result: null
+                        });
                     })
                     .catch(err => {
                         console.log(err);
                         res.status(500).json({
-                            error : "Could not perform action."
+                            message: "Failed to edit user",
+                            success: false,
+                            result: null
                         });
                     });
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error : "Could not perform action."
+                        message: "Failed to edit user",
+                        success: false,
+                        result: null
                     });
                 });
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "Unauthorised to use this function."
+                    message: "User does not have sufficient privileges",
+                    result: null
                 });
             }
         }
@@ -389,19 +432,25 @@ router.post('/getUser', (req, res, next) => {
         }else{
             User.findById(tokenPlainText.id)
             .exec()
-            .then(result => {
-                console.log(result);
+            .then(_result => {
+                console.log(_result);
                 res.status(200).json({
-                    "name" : result["name"],
-                    "surname" : result["surname"],
-                    "email" : result["email"],
-                    "username" : result["username"]
+                    message: "Successfully retrieved user",
+                    success: true,
+                    result: {
+                    "name" : _result["name"],
+                    "surname" : _result["surname"],
+                    "email" : _result["email"],
+                    "username" : _result["username"]
+                    }
                 });
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to retrieve user",
+                    success: false,
+                    result: null
                 });
             });
         }
@@ -440,18 +489,25 @@ router.post('/getUserAdmin', (req, res, next) => {
                         retUsers.push(tempUser);
                     });
                     console.log(retUsers);
-                    res.status(200).json(retUsers);
+                    res.status(200).json({
+                        message: "Successfully retrieved users",
+                        success: true,
+                        result: retUsers
+                    });
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error : "Could not perform action."
+                        message: "Failed to retrieve users",
+                        success: false,
+                        result: null
                     });
                 });
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "Unauthorised to use this function."
+                    message: "User does not have sufficient privileges",
+                    result: null
                 });
             }
         }
@@ -486,27 +542,36 @@ router.post('/getUserAdmin', (req, res, next) => {
                     }
                     Project.updateOne({ _id: id }, { $set: updateVals })
                     .exec()
-                    .then(result => {
-                        console.log(result);
-                        res.status(200).json(result);
+                    .then(_result => {
+                        console.log(_result);
+                        res.status(200).json({
+                            message: "Successfully edited project",
+                            success: true,
+                            result: null
+                        });
                     })
                     .catch(err => {
                         console.log(err);
                         res.status(500).json({
-                            error : "Could not perform action."
+                            message: "Failed to edit project",
+                            success: false,
+                            result: null
                         });
                     });
                 }else{
                     res.status(200).json({
                         success: false,
-                        message: "Unauthorised to use this function."
+                        message: "User does not have sufficient privileges",
+                        result: null
                     });
                 }
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to edit project",
+                    success: false,
+                    result: null
                 });
             });
         }
@@ -537,24 +602,34 @@ router.post('/deleteProjectAdmin', (req, res, next) => {
                     Project.remove({ _id: id })
                     .exec()
                     .then(result => {
-                        res.status(200).json(result);
+                        res.status(200).json({
+                            message: "Successfully deleted project",
+                            success: true,
+                            result: null
+                        });
                     })
                     .catch(err => {
                         console.log(err);
                         res.status(500).json({
-                            error: err
+                            message: "Failed to delete project",
+                            success: false,
+                            result: null
                         });
                     });
                 }else{
                     res.status(200).json({
-                        authenticated: false
+                        success: false,
+                        message: "User does not have sufficient privileges",
+                        result: null
                     });
                 }
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to delete project",
+                    success: false,
+                    result: null
                 });
             });
         }
