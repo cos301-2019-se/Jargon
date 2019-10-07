@@ -17,11 +17,4 @@ Link | Ver | Description
 Slack (link reserved for team members) | N/A | Project communications tool
 <a href="documentation/user-manual/user-manual-latest.pdf" target="blank">User Manual</a> | 1.2 | User manual document
 
-### The Team
-Member | Roles in Project
---- | ---
-[Ethan Lindeman](https://github.com/plethargy) | Team Leader, Backend Services
-[Graeme Coetzee](https://github.com/GraemeCoetzee)| Fontend and UI Services
-[Christiaan Nel](https://github.com/nelcht) | Frontend and UI, Machine Learning and AI Services
-[Kevin Coetzee](https://github.com/KevinCoetzee10) | Backend and Third-party Interactive Services
-[Herbert Magaya](https://github.com/sarrost) | DevOps, Machine Learning and AI Services
+### [Meet the Team](documentation/TEAM.md)
