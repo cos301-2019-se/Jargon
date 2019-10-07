@@ -43,8 +43,14 @@ import { NotifierModule } from 'angular-notifier';
           position: 'right'
         },
         'vertical': {
-          position: 'top'
+          position: 'top',
+          distance: 75
         }
+      },
+      behaviour: {
+        autoHide: 2500,
+        showDismissButton: true,
+        stacking: 10
       }
     }),
     AppRoutingModule,
