@@ -24,7 +24,7 @@ const routes: Routes = [
       { path: 'project-result', component: ProjectResultComponent, canActivate: [AuthGuardService] },
       { path: 'view-profile', component: ViewProfileComponent, canActivate: [AuthGuardService] },
 
-      { path: 'manage-projects', component: AdminManageProjectsComponent, canActivate: [AuthGuardService] },
+      { path: 'manage-projects', loadChildren: './admin-manage-projects/admin-manage-projects.module#AdminManageProjectsModule', canActivate: [AuthGuardService] },
       { path: 'manage-users', component: AdminManageUsersComponent, canActivate: [AuthGuardService] },
       { path: 'neural-network', component: AdminNeuralNetworkComponent, canActivate: [AuthGuardService] },
       { path: 'user-stats', component: AdminUserStatsComponent, canActivate: [AuthGuardService] },

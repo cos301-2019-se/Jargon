@@ -16,7 +16,7 @@ import { ChartsModule } from 'ng2-charts';
 import { LoginApiRequesterService } from './services/login-api-requester/login-api-requester.service';
 import { RegisterApiRequesterService } from './services/register-api-requester/register-api-requester.service';
 import { GlobalService } from './services/global-service/global-service.service';
-import { HttpInterceptorService } from './services/http-interceptor/http-interceptor.service';
+import { NotifierModule } from 'angular-notifier';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,17 @@ import { HttpInterceptorService } from './services/http-interceptor/http-interce
     ReactiveFormsModule,
     FormsModule,
     ChartsModule,
-    AppRoutingModule
+    NotifierModule.withConfig({
+      position: {
+        horizontal : {
+          position: 'right'
+        },
+        'vertical': {
+          position: 'top'
+        }
+      }
+    }),
+    AppRoutingModule,
   ],
   providers: [
     LoginApiRequesterService,

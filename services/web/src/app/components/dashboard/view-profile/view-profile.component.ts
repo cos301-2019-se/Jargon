@@ -17,9 +17,10 @@ export class ViewProfileComponent implements OnInit {
 
   private readonly notifier: NotifierService;
 
-  constructor(private adminApiRequester: AdminApiRequesterService, notifierService: NotifierService) {
+  constructor(private adminApiRequester: AdminApiRequesterService, 
+      private notifierService: NotifierService) {
     this.notifier = notifierService;
-   }
+  }
 
   ngOnInit() {
     this.adminApiRequester.getUser().subscribe(

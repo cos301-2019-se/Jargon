@@ -30,7 +30,6 @@ import { rightToLeft } from '@syncfusion/ej2-base';
     DashboardComponent,
     CreateProjectComponent,
     ProjectCompareComponent,
-    AdminManageProjectsComponent,
     AdminManageUsersComponent,
     AdminNeuralNetworkComponent,
     AdminUserStatsComponent,
@@ -44,16 +43,16 @@ import { rightToLeft } from '@syncfusion/ej2-base';
     DashboardRoutingModule,
     ChartsModule,
     ChartModule,
-    NotifierModule.withConfig( {
-      position: {
-        horizontal : {
-          position: 'right'
-        },
-        'vertical': {
-          position: 'top'
-        }
-      }
-    } )
+    // NotifierModule.withConfig({
+    //   position: {
+    //     horizontal : {
+    //       position: 'right'
+    //     },
+    //     'vertical': {
+    //       position: 'top'
+    //     }
+    //   }
+    // }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },

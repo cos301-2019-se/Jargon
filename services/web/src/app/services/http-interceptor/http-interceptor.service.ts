@@ -16,7 +16,6 @@ export class HttpInterceptorService implements HttpInterceptor {
     const isLoggedIn = token != undefined && token != null 
         && token !== "";
     //const isApiUrl = request.url.startsWith(config.apiUrl);
-    console.log("HttpInterceptor");
     if (isLoggedIn) {
       request = request.clone({
         setHeaders: {

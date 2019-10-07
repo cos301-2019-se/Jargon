@@ -67,12 +67,12 @@
     </div> -->
     <div class="container">
       <div class="row mt-3 mb-3">
-        <div class="col-auto ml-auto" *ngIf="!isReadOnly" data-placement="left" title="View results for project">
+        <!-- <div class="col-auto ml-auto" [hidden]="!isReadOnly" data-placement="left" title="View results for project">
             <button class="btn btn-outline-primary results" [routerLink]="['../../../project-result']">Results</button>
-        </div>
-        <div class="col-auto " *ngIf="!isReadOnly">
+        </div> -->
+        <!-- <div class="col-auto " [hidden]="!isReadOnly">
           <button class="btn btn-outline-primary results" (click)="onStartClick()" data-placement="left" title="Start collecting and analysing tweets">Start</button>
-        </div>
+        </div> -->
         <div class="col-auto mr-auto" *ngIf="!isReadOnly" data-placement="left" title="Make changes to project">
           <button class="btn btn-outline-primary results" (click)="onEditClick()">Edit</button>
         </div>
