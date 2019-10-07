@@ -10,8 +10,8 @@ The intended use is focused on, but not limited to, market research. The user in
 ### Project Links
 Link | Ver | Description
 --- | --- | ---
-<a href="documentation/srs/srs-latest.pdf" target="blank">SRS</a> | 2.1 | System requirements specification/architectural design document
-<a href="documentation/coding-standards/coding-standards-latest.pdf" target="blank">Coding Standards</a> | 1.2 | Coding standards document
+<a href="documentation/srs/srs-latest.pdf" target="blank">SRS</a> | 4.0 | System requirements specification/architectural design document
+<a href="documentation/coding-standards/coding-standards-latest.pdf" target="blank">Coding Standards</a> | 1.3 | Coding standards document
 <a href="documentation/testing-policy/testing-policy-latest.pdf" target="blank">Testing Policies</a> | 1.2 | Testing policies document
 [Trello](https://trello.com/b/3q7zGrE5/jargon) | N/A | Project management tool
 Slack (link reserved for team members) | N/A | Project communications tool
