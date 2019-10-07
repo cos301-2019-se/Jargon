@@ -332,7 +332,7 @@ router.post('/editUserAdmin', (req, res, next) => {
                     let updateVals = {};
                     for (const vals of req.body.updateValues){
                         if(!((vals.propName=="_id"))){
-                            if(vals.propName=="password"){
+                            if((vals.propName=="password")&&(vals.propName!="")){
                                 let saltToSave = bcrypt.genSaltSync();
                                 let passwordToSave = bcrypt.hashSync(vals.value, saltToSave);
                                 updateVals[vals.propName] = passwordToSave;
