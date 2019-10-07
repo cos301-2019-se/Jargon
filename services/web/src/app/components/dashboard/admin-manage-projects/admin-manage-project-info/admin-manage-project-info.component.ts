@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Form, NgForm } from '@angular/forms';
 import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
 import { AdminApiRequesterService } from '../../../../services/admin-api-requester/admin-api-requester.service';
+import { SharedAdminProjectService } from '../../../../services/shared-admin-project/shared-admin-project.service';
 
 @Component({
   selector: 'app-admin-manage-project-info',
@@ -23,7 +24,7 @@ export class AdminManageProjectInfoComponent implements OnInit {
 
   time: number = 30;
 
-  constructor(private sharedProjectService: SharedProjectService, 
+  constructor(private sharedAdminProjectService: SharedAdminProjectService, 
       private adminApiRequester: AdminApiRequesterService,
       private activeRoute: ActivatedRoute) {
   }
@@ -35,7 +36,7 @@ export class AdminManageProjectInfoComponent implements OnInit {
       }
     );
     this.isReadOnly = true;
-    this.sharedProjectService.project.subscribe(
+    this.sharedAdminProjectService.project.subscribe(
       (project: Project) => {
         this.project = project;
         this.projectSnapshot = JSON.parse(JSON.stringify(this.project));
@@ -89,6 +90,9 @@ export class AdminManageProjectInfoComponent implements OnInit {
 
   onEditClick() {
     this.isReadOnly = false;
+    this.projectSnapshot = JSON.parse(JSON.stringify(this.project));
+        
+    this.projectSnapshot = Object.assign(new Project, this.projectSnapshot);
   }
 
   onSaveClick() {
@@ -116,6 +120,7 @@ export class AdminManageProjectInfoComponent implements OnInit {
     }
 
     this.projectSnapshot = JSON.parse(JSON.stringify(this.project));
+    this.projectSnapshot = Object.assign(new Project, this.projectSnapshot);
   }
 
 }

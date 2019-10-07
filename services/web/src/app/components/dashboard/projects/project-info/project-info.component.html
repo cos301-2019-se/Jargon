@@ -67,19 +67,19 @@
     </div> -->
     <div class="container">
       <div class="row mt-3 mb-3">
-        <div class="col-auto ml-auto" *ngIf="!isReadOnly" data-placement="left" title="View results for project">
+        <div class="col-auto ml-auto" *ngIf="isReadOnly" data-placement="left" title="View results for project">
             <button class="btn btn-outline-primary results" [routerLink]="['../../../project-result']">Results</button>
         </div>
-        <div class="col-auto " *ngIf="!isReadOnly">
+        <div class="col-auto " *ngIf="isReadOnly">
           <button class="btn btn-outline-primary results" (click)="onStartClick()" data-placement="left" title="Start collecting and analysing tweets">Start</button>
         </div>
-        <div class="col-auto mr-auto" *ngIf="!isReadOnly" data-placement="left" title="Make changes to project">
+        <div class="col-auto mr-auto" *ngIf="isReadOnly" data-placement="left" title="Make changes to project">
           <button class="btn btn-outline-primary results" (click)="onEditClick()">Edit</button>
         </div>
-        <div class="col-auto ml-auto" *ngIf="isReadOnly" data-toggle="tooltip" data-placement="left" title="Save changes">
+        <div class="col-auto ml-auto" *ngIf="!isReadOnly" data-toggle="tooltip" data-placement="left" title="Save changes">
             <button class="btn btn-outline-success save" (click)="onSaveClick()">Save <i class="fas fa-check"></i></button>
         </div>
-        <div class="col-auto mr-auto" *ngIf="isReadOnly" data-toggle="tooltip" data-placement="left" title="Cancel all changes">
+        <div class="col-auto mr-auto" *ngIf="!isReadOnly" data-toggle="tooltip" data-placement="left" title="Cancel all changes">
             <button class="btn btn-outline-warning cancel" (click)="onCancelClick()">Cancel <i class="fas fa-ban"></i></button>
         </div>
       </div>

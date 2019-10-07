@@ -24,6 +24,10 @@ export class SharedProjectService {
     this.projectSource.next(proj);
   }
 
+  getCurrentProject() {
+    return this.projectSource.value;
+  }
+
   setProjects(projects: Project[]) {
     this.projects = projects;
   }

@@ -40,7 +40,6 @@ export class ProjectInfoComponent implements OnInit {
       (project: Project) => {
         this.project = project;
         this.projectSnapshot = JSON.parse(JSON.stringify(this.project));
-        
         this.projectSnapshot = Object.assign(new Project, this.projectSnapshot);
       }
     );
@@ -90,6 +89,9 @@ export class ProjectInfoComponent implements OnInit {
 
   onEditClick() {
     this.isReadOnly = false;
+    this.projectSnapshot = JSON.parse(JSON.stringify(this.project));
+        
+    this.projectSnapshot = Object.assign(new Project, this.projectSnapshot);
   }
 
   onSaveClick() {
@@ -122,6 +124,7 @@ export class ProjectInfoComponent implements OnInit {
     }
 
     this.projectSnapshot = JSON.parse(JSON.stringify(this.project));
+    this.projectSnapshot = Object.assign(new Project, this.projectSnapshot);
   }
 
   onStartClick() {
