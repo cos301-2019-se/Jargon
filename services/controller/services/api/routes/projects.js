@@ -479,7 +479,7 @@ function startRMQ(res){
 * 
 * this function returns a an array of simplified, less detailed projects
 */
-router.get('/basicTokenized', (req, res, next) => {
+router.post('/basicTokenized', (req, res, next) => {
     let token = req.headers['x-access-token'];
     if(!token){
         res.status(401).json({});
@@ -530,7 +530,7 @@ router.get('/basicTokenized', (req, res, next) => {
     * 
     * this function mirrors the default root function for legacy use cases
     */
-   router.get('/detailedTokenized', (req, res, next) => {
+   router.post('/detailedTokenized', (req, res, next) => {
     let token = req.headers['x-access-token'];
     if(!token){
         res.status(401).json({});
@@ -539,6 +539,7 @@ router.get('/basicTokenized', (req, res, next) => {
         if(err){
             res.status(401).json({});
         }else{
+            console.log();
             Project.find()
             .exec()
             .then(results => {
