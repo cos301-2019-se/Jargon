@@ -4,7 +4,7 @@
 #    Type    : Containerization
 #    
 #       This file contains the docker build instructions for
-#       the flagger service.
+#       the analysis service.
 ##
 # Base image
 FROM node:12-alpine
@@ -31,7 +31,7 @@ RUN set -ex && \
 USER node
 
 # Expose ports
-EXPOSE 3002
+EXPOSE 3004
 
 # Default command
 CMD yarn start

@@ -31,7 +31,7 @@ RUN set -ex && \
 USER node
 
 # Expose ports
-EXPOSE 3002
+EXPOSE 3005
 
 # Default command
 CMD yarn start
