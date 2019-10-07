@@ -39,6 +39,7 @@ export class AdminManageProjectsComponent implements OnInit {
   PAGE_SIZE: number = 5;
 
   ngOnInit() {
+    this.projects = this.sharedAdminProjectService.getProjects();
     if (this.projects === null) {
       this.onRefreshProjectsClick();
     } else {

@@ -60,8 +60,9 @@ export class ViewProfileComponent implements OnInit {
 
     this.adminApiRequester.editUser(this.user).subscribe(
       (res: any) => {
-        if (res.status) {
+        if (res != null) {
           //saved
+          this.notifierService.notify('success', 'Save Successful');
           this.userSnapshot.email = this.user.email;
           this.userSnapshot.name = this.user.name;
           this.userSnapshot.surname = this.user.surname;
@@ -71,6 +72,7 @@ export class ViewProfileComponent implements OnInit {
           this.editable = false;
         } else {
           //failed
+          this.notifierService.notify('error', 'Profile could not be saved');
         }
       }
     );

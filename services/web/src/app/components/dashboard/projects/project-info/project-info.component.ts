@@ -4,6 +4,7 @@ import { SharedProjectService } from '../../../../services/shared-project/shared
 import { Router, ActivatedRoute } from '@angular/router';
 import { Form, NgForm } from '@angular/forms';
 import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-project-info',
@@ -24,7 +25,8 @@ export class ProjectInfoComponent implements OnInit {
 
   constructor(private sharedProjectService: SharedProjectService, 
       private projectApiRequesterService: ProjectApiRequesterService,
-      private activeRoute: ActivatedRoute) {
+      private activeRoute: ActivatedRoute,
+      private notifierService: NotifierService) {
   }
 
   ngOnInit() {
@@ -97,11 +99,16 @@ export class ProjectInfoComponent implements OnInit {
     if (!this.projectSnapshot.compare(this.project)) {
       this.projectApiRequesterService.updateProject(this.projectSnapshot).subscribe(
         (resp: any) => {
-          this.project.blacklist = this.projectSnapshot.blacklist;
-          this.project.whitelist = this.projectSnapshot.whitelist;
-          this.project.project_name = this.projectSnapshot.project_name;
-          this.project.source = this.projectSnapshot.source;
-          this.project.trackTime = this.projectSnapshot.trackTime;
+          if (resp !== null) {
+            this.notifierService.notify('success', 'Save Successful');
+            this.project.blacklist = this.projectSnapshot.blacklist;
+            this.project.whitelist = this.projectSnapshot.whitelist;
+            this.project.project_name = this.projectSnapshot.project_name;
+            this.project.source = this.projectSnapshot.source;
+            this.project.trackTime = this.projectSnapshot.trackTime;
+          } else {
+            this.notifierService.notify('error', "Project could not be saved");
+          }
         }
       );
     }

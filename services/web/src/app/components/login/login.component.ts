@@ -28,8 +28,10 @@ export class LoginComponent implements OnInit {
 
       this.loginDetails = new LoginDetails();
       if (res.authenticated) {
-        this.notifierService.notify('success', 'Login Successful')
+        this.notifierService.notify('success', 'Login Successful');
         this.router.navigateByUrl("/dashboard");
+      } else {
+        this.notifierService.notify('error', res.result);
       }
     });
   }
