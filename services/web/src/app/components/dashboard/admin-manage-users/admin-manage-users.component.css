@@ -290,3 +290,18 @@ img {
 .ellipsis:focus {
    text-shadow: 2px 2px 4px #000000;
 }
+
+.modal-content {
+   background: rgba(6, 57, 116, 1) !important;
+}
+
+.modal-header {
+   background: rgb(11, 84, 167) !important;
+   border-bottom-color:  rgb(5, 34, 68) !important;
+   color: white !important;
+   /* font-size: 25px; */
+}
+
+span {
+   color: white !important;
+}
