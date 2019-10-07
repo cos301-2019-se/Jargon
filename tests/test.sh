@@ -15,25 +15,25 @@ status=0
 echo "->    Begin testing cleaner service."
 mocha cleaners/test.js --timeout 15000
 status=$(( $status + $? ))
-echo "->    Done testing cleaner service.\n\n"
+echo "->    Done testing cleaner service."
 
-# controller service
-echo "->    Begin testing controller service."
-mocha controller/test.js --timeout 15000 --exit 
-status=$(( $status + $? ))
-echo "->    Done testing controller service.\n\n"
+# # controller service
+# echo "->    Begin testing controller service."
+# mocha controller/test.js --timeout 15000 --exit 
+# status=$(( $status + $? ))
+# echo "->    Done testing controller service.\n\n"
 
 # flagger service
 echo "->    Begin testing flagger service."
 mocha flagger/test.js --timeout 15000
 status=$(( $status + $? ))
-echo "->    Done testing flagger service.\n\n"
+echo "->    Done testing flagger service."
 
-# listener service
-echo "->    Begin testing listeners service."
-mocha listeners/test.js --timeout 150000
-status=$(( $status + $? ))
-echo "->    Done testing listeners service.\n\n"
+# # listener service
+# echo "->    Begin testing listeners service."
+# mocha listeners/test.js --timeout 150000
+# status=$(( $status + $? ))
+# echo "->    Done testing listeners service.\n\n"
 
 # finish
 cd ..
