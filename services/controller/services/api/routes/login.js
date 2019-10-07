@@ -32,13 +32,13 @@ router.post('/', (req, res, next) => {
                         if(err){
                             res.status(200).json({
                                 message: "Failed to log in",
-                                status : false,
+                                success : false,
                                 result : null
                             });
                         }else{
                             res.status(200).json({
                                 message : "Successfully logged in",
-                                status : true,
+                                success : true,
                                 result : {
                                     user : data[0],
                                     token : _token
