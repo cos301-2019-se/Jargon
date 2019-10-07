@@ -1,3 +1,4 @@
+
 @import url("//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
 
 .navbar-icon-top .navbar-nav .nav-link > .fa {
@@ -92,7 +93,7 @@
 }
 
 .navbar {
-  background: rgba(36, 75, 117,0.9) !important;
+  background: rgb(1, 72, 153) !important;
 }
 
 @media (min-width: 1200px) {
@@ -303,7 +304,7 @@ hr {
 }
 
 .sidebar {
-  width: 400px;
+  min-width: 350px;
   margin-left: auto;
   margin-right:auto;
   height: fit-content;
@@ -325,4 +326,8 @@ body {
 
 .auto-height {
   height:auto;
+}
+
+.user-icon:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

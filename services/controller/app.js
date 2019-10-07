@@ -12,6 +12,7 @@ const bodyParser = require('body-parser');
 const loginRoutes = require('./services/api/routes/login');
 const registerRoutes = require('./services/api/routes/register');
 const projectRoutes = require('./services/api/routes/projects');
+const adminRoutes = require('./services/api/routes/admin');
 
 const socketIOClient = require('socket.io-client');
 
@@ -49,6 +50,7 @@ app.use((req, res, next) => {
 app.use('/login', loginRoutes);
 app.use('/register', registerRoutes);
 app.use('/projects', projectRoutes);
+app.use('/admin', adminRoutes);
 
 /***
     *   use function for the default error page

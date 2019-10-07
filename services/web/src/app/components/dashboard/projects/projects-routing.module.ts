@@ -5,6 +5,7 @@ import { ProjectInfoComponent } from './project-info/project-info.component';
 import { ProjectResultComponent } from './project-result/project-result.component';
 import { ProjectInitialComponent } from './project-initial/project-initial.component';
 import { RefreshGuardService } from '../../../services/refresh-guard/refresh-guard.service';
+import { AuthGuardService } from '../../../services/auth-guard/auth-guard.service';
 
 const routes: Routes = [
   { 
@@ -12,7 +13,7 @@ const routes: Routes = [
     component: ProjectsComponent,    
     children: [
       { path: '', redirectTo: 'project-initial', pathMatch: 'full' },
-      { path: 'project-initial', component: ProjectInitialComponent },
+      { path: 'project-initial', component: ProjectInitialComponent, canActivate: [AuthGuardService] },
       { path: 'project-info/:id', component: ProjectInfoComponent, canActivate: [RefreshGuardService] },
       { path: '**', redirectTo: 'project-initial' }
     ]

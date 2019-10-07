@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginApiRequesterService } from '../../services/login-api-requester/login-api-requester.service';
-import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginDetails } from '../../interfaces/login-register/login-register';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-login',
@@ -11,31 +12,26 @@ import { Router } from '@angular/router';
 
 export class LoginComponent implements OnInit {
 
-  
+  public loginDetails: LoginDetails = new LoginDetails();
 
-  constructor(private router : Router, private loginApiRequester : LoginApiRequesterService) { }
+  constructor(private router : Router, 
+      private loginApiRequester : LoginApiRequesterService,
+      private notifierService: NotifierService) { }
 
   ngOnInit() {
+    this.loginDetails = new LoginDetails();
   }
 
-  onUserLogin(form : NgForm)
-  {
-    const values = form.value;
-    const email = values.email;
-    const pass = values.password;
-
-    console.log(values);
-    console.log(`${email}   ${pass}`);
-
-    this.loginApiRequester.authenticateUser(email, pass).subscribe((res : any) => {
+  onLoginClick() {
+    this.loginApiRequester.login(this.loginDetails).subscribe((res : any) => {
       console.log(res);
-      if (res.authenticated)
-      {
-        //router here
-      }
-      else
-      {
 
+      this.loginDetails = new LoginDetails();
+      if (res.authenticated) {
+        this.notifierService.notify('success', 'Login Successful');
+        this.router.navigateByUrl("/dashboard");
+      } else {
+        this.notifierService.notify('error', res.result);
       }
     });
   }

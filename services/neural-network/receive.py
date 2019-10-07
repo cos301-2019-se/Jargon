@@ -149,8 +149,8 @@ def callback(ch, method, properties, body):
 
         sentiment = evaluate(t)
         print(f'-> Result:\t{sentiment}')
-        print(f'Updating database entry')
-        proj.update_one(
+        print(f'-> Updating database entry')
+        update_result = proj.update_one(
             {'_id': ObjectId(project_id)},
             {
                 "$set": {
@@ -158,6 +158,10 @@ def callback(ch, method, properties, body):
                 }
             },
             upsert=False
+        )
+        print(
+            f'-> Matched {update_result.matched_count} doc, '
+            f'modified {update_result.modified_count} doc.'
         )
         client.close()
     s = Sender()

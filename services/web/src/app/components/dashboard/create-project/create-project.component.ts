@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Project } from '../../../interfaces/project/project';
 import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-create-project',
@@ -15,7 +16,8 @@ export class CreateProjectComponent implements OnInit {
   whitelistword: string = "";
 
 
-  constructor(private projectApi: ProjectApiRequesterService) {
+  constructor(private projectApi: ProjectApiRequesterService,
+      private notifierService: NotifierService) {
   }
 
   ngOnInit() {
@@ -60,8 +62,11 @@ export class CreateProjectComponent implements OnInit {
   onCreateClick() {
     this.projectApi.createProject(this.project).subscribe(
       (project: any) => {
-        console.log("response:", project);
-        this.project = new Project();
+        if (project != undefined || project != null) {
+          this.notifierService.notify('success', "Project created successfully")
+          console.log("response:", project);
+          this.project = new Project();
+        }
       }
     );
   }

@@ -247,10 +247,10 @@ function getRateOfChange(data)
 
 function mapToTime(elem)
 {
-    let stamp = elem.tweetObject.timestamp_ms;
-    let d = new Date(stamp * 1000);
+    let stamp = Number(elem.tweetObject.timestamp_ms);
+    let d = new Date(stamp);
     return {
-        hour : d.getHours(),
+        hour : d.getUTCHours(),
         tweet : elem.tweetObject,
         sentiment : elem.tweetSentiment
     };

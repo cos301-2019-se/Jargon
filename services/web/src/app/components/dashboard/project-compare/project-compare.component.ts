@@ -5,6 +5,7 @@ import { Project, ProjectStatistic, AveragePerTime } from '../../../interfaces/p
 import { SharedProjectService } from '../../../services/shared-project/shared-project.service';
 import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
 import { HistogramSeriesService, LineSeriesService, PieSeriesService, AccumulationDataLabelService, AccumulationAnnotationService, AccumulationTooltipService, AccumulationLegendService, AccumulationChartModule, DateTimeService } from '@syncfusion/ej2-angular-charts';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-project-compare',
@@ -85,15 +86,20 @@ export class ProjectCompareComponent implements OnInit{
   projectTwoStatistic: ProjectStatistic = null;
 
   constructor(private sharedProjectService: SharedProjectService,
-      private projectApiRequesterService: ProjectApiRequesterService) {
+      private projectApiRequesterService: ProjectApiRequesterService,
+      private notifierService: NotifierService) {
 
     this.projects = this.sharedProjectService.getProjects();
 
     if (this.projects === null) {
       this.projectApiRequesterService.getProjectsBasic().subscribe(
         (projects: Project[]) => {
-          this.sharedProjectService.setProjects(projects);
-          this.projects = this.sharedProjectService.getProjects();
+          if (projects != null) {
+            this.sharedProjectService.setProjects(projects);
+            this.projects = this.sharedProjectService.getProjects();
+          } else {
+            this.notifierService.notify('error', 'Could not load projects');
+          }
         },
         error => {
           console.log("Error", error);
@@ -117,40 +123,44 @@ export class ProjectCompareComponent implements OnInit{
 
     this.projectApiRequesterService.projectStatistics(this.projectOneId).subscribe(
       (statResult: any) => {
-        console.log(statResult);
-        this.projectOneStatistic = statResult.result[0];
-        console.log("One:", this.projectOneStatistic);
+        if (statResult != null && statResult.length != 0) {
+          console.log(statResult);
+          this.projectOneStatistic = statResult.result[0];
+          console.log("One:", this.projectOneStatistic);
 
-// <<<<<<< Updated upstream
-        this.chartData = [];
+  // <<<<<<< Updated upstream
+          this.chartData = [];
 
-        for (let i = 0; i < this.projectOneStatistic.graphs.averageOverTime.length; ++i) {
-          if (this.projectOneStatistic.graphs.averageOverTime[i].averageSentiment >= 0.0) {
-            this.chartData.push(
-              { 
-                x: i, 
-                y: this.projectOneStatistic.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
-                  0.0 :
-                  this.projectOneStatistic.graphs.averageOverTime[i].averageSentiment
-              }
-            );
-// =======
-//         this.projectOneStatistic.graphs.averageOverTime.forEach(
-//           (avgPerTime: AveragePerTime) => {
-//             // this.lineChartData[0].data.push(
-//             //   avgPerTime.averageSentiment
-//             // );
-// >>>>>>> Stashed changes
+          for (let i = 0; i < this.projectOneStatistic.graphs.averageOverTime.length; ++i) {
+            if (this.projectOneStatistic.graphs.averageOverTime[i].averageSentiment >= 0.0) {
+              this.chartData.push(
+                { 
+                  x: i, 
+                  y: this.projectOneStatistic.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+                    0.0 :
+                    this.projectOneStatistic.graphs.averageOverTime[i].averageSentiment
+                }
+              );
+  // =======
+  //         this.projectOneStatistic.graphs.averageOverTime.forEach(
+  //           (avgPerTime: AveragePerTime) => {
+  //             // this.lineChartData[0].data.push(
+  //             //   avgPerTime.averageSentiment
+  //             // );
+  // >>>>>>> Stashed changes
+            }
           }
-        }
 
-        this.min1 = this.projectOneStatistic.min;
-        this.max1 = this.projectOneStatistic.max;
-        this.mean1 = this.projectOneStatistic.mean;
-        this.med1 = this.projectOneStatistic.median;
-        this.mode1 = this.projectOneStatistic.mode[0];
-        this.sd1 = this.projectOneStatistic.std_dev;
-        this.var1 = this.projectOneStatistic.variance;
+          this.min1 = this.projectOneStatistic.min;
+          this.max1 = this.projectOneStatistic.max;
+          this.mean1 = this.projectOneStatistic.mean;
+          this.med1 = this.projectOneStatistic.median;
+          this.mode1 = this.projectOneStatistic.mode[0];
+          this.sd1 = this.projectOneStatistic.std_dev;
+          this.var1 = this.projectOneStatistic.variance;
+        } else {
+          this.notifierService.notify('error', 'Could not load statistics');
+        }
       }
     );
 
@@ -159,39 +169,43 @@ export class ProjectCompareComponent implements OnInit{
     this.projectApiRequesterService.projectStatistics(this.projectTwoId).subscribe(
       (statResult: any) => {
         console.log(statResult);
-        this.projectTwoStatistic = statResult.result[0];
-        console.log("Two:", this.projectTwoStatistic);
+        if (statResult != null && statResult.length != 0) {
+          this.projectTwoStatistic = statResult.result[0];
+          console.log("Two:", this.projectTwoStatistic);
 
-// <<<<<<< Updated upstream
-        this.chartData2 = [];
+  // <<<<<<< Updated upstream
+          this.chartData2 = [];
 
-        for (let i = 0; i < this.projectTwoStatistic.graphs.averageOverTime.length; ++i) {
-          if (this.projectTwoStatistic.graphs.averageOverTime[i].averageSentiment >= 0.0) {
-            this.chartData2.push(
-              { 
-                x: i, 
-                y: this.projectTwoStatistic.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
-                  0.0 :
-                  this.projectTwoStatistic.graphs.averageOverTime[i].averageSentiment
-              }
-            );
-// =======
-//         this.projectTwoStatistic.graphs.averageOverTime.forEach(
-//           (avgPerTime: AveragePerTime) => {
-//             // this.lineChartData[1].data.push(
-//             //   avgPerTime.averageSentiment
-//             // );
-// >>>>>>> Stashed changes
+          for (let i = 0; i < this.projectTwoStatistic.graphs.averageOverTime.length; ++i) {
+            if (this.projectTwoStatistic.graphs.averageOverTime[i].averageSentiment >= 0.0) {
+              this.chartData2.push(
+                { 
+                  x: i, 
+                  y: this.projectTwoStatistic.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+                    0.0 :
+                    this.projectTwoStatistic.graphs.averageOverTime[i].averageSentiment
+                }
+              );
+  // =======
+  //         this.projectTwoStatistic.graphs.averageOverTime.forEach(
+  //           (avgPerTime: AveragePerTime) => {
+  //             // this.lineChartData[1].data.push(
+  //             //   avgPerTime.averageSentiment
+  //             // );
+  // >>>>>>> Stashed changes
+            }
           }
-        }
 
-        this.min2 = this.projectTwoStatistic.min;
-        this.max2 = this.projectTwoStatistic.max;
-        this.mean2 = this.projectTwoStatistic.mean;
-        this.med2 = this.projectTwoStatistic.median;
-        this.mode2 = this.projectTwoStatistic.mode[0];
-        this.sd2 = this.projectTwoStatistic.std_dev;
-        this.var2 = this.projectTwoStatistic.variance;
+          this.min2 = this.projectTwoStatistic.min;
+          this.max2 = this.projectTwoStatistic.max;
+          this.mean2 = this.projectTwoStatistic.mean;
+          this.med2 = this.projectTwoStatistic.median;
+          this.mode2 = this.projectTwoStatistic.mode[0];
+          this.sd2 = this.projectTwoStatistic.std_dev;
+          this.var2 = this.projectTwoStatistic.variance;
+        } else {
+          this.notifierService.notify('error', 'Could not load statistics');
+        }
       }
     );
   }

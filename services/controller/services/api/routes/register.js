@@ -13,7 +13,7 @@ const bcrypt = require('bcrypt-nodejs');
 
 /***
     * request for root (/) page (string name, surname, 
-    * email, username, adminValue, password)
+    * email, username, password)
     * 
     * this function receives a collection of data associated with a certain 
     * unregistered user and adds this user, along with his/her data to the 
@@ -29,8 +29,9 @@ router.post('/', (req, res, next) => {
         email: req.body.email,
         username: req.body.username,
         password: passwordToSave,
-        admin: req.body.admin,
-        projects: null
+        admin: false,
+        projects: null,
+        deleted: false
     });
     user
     .save()
@@ -38,14 +39,15 @@ router.post('/', (req, res, next) => {
         console.log(result);
         res.status(200).json({
             message: "Handled post request to /register",
+            success: true,
             createdProduct: result
         });
     })
     .catch(err =>{
-        console.log(err),
+        console.log(err);
         res.status(500).json({
-            error: err
-        })
+            error : "Could not register to Jargon."
+        });
     })
 });
 

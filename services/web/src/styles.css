@@ -5,6 +5,8 @@
 
 @import url('https://fonts.googleapis.com/css?family=Amiko&display=swap');
 
+@import '../node_modules/angular-notifier/styles/core.css';
+
 .display-4 {
   font-family: 'Amiko', sans-serif !important;
 }
@@ -31,6 +33,22 @@ app-create-project {
 
 app-project-result {
   width: 100%;
+}
+
+app-admin-manage-users {
+  width: 100%;
+}
+
+app-admin-manage-projects {
+  width: 100%;
+}
+
+app-admin-user-stats {
+  width: 100%;
+}
+
+app-view-profile {
+  width: 50%;
 }
 
 body {

@@ -105,11 +105,48 @@ router.post('/stream', (req, res, next) => {
     .exec()
     .then(results => {
         if((results[0].source).toUpperCase()==='TWITTER'){
-            twitterListenerInstance = new twitterListener(results[0].whitelist, results[0].blacklist, results[0].trackTime);
-            // send("");     
+            twitterListenerInstance = new twitterListener(results[0].whitelist, results[0].blacklist, results[0].trackTime);    
             twitterListenerInstance.startStreamTracking(res, results[0].id, returnListenerDataStream, send);   
         }else{
             console.log("Platform does not match project's chosen platform.");
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
+});
+
+router.post('/fixTweets', (req, res, next) => {
+    const id = req.body.id;
+    let unprocessedTweets = [];
+    Project.find({_id: id})
+    .exec()
+    .then(results => {
+        console.log("project found");
+        let countSent = 0;
+        results[0].data.forEach((element) => {
+            // console.log(element);
+            console.log("checking tweet");
+            if(element['tweetSentiment']<0){
+                countSent++;
+                unprocessedTweets.push(id + " " + element['tweetID']);
+                console.log("unprocessed tweet found");
+            }
+        });
+        if(countSent==0){
+            res.status(200).json();
+        }else{
+            countSent=0;
+            unprocessedTweets.forEach((element) => {
+                send(element);
+                countSent++;
+                if(countSent==unprocessedTweets.length){
+                    res.status(200).json();
+                }
+            });
         }
     })
     .catch(err => {
@@ -200,6 +237,6 @@ function returnListenerData(response, projID, tempArray){
     function returnListenerDataStream(response, projID, requestSuccess){ 
         // closeQueue();
         response.status(200).json({success : requestSuccess});
-    }   
+    }  
 
 module.exports = router;
