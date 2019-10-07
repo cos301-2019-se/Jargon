@@ -49,21 +49,21 @@ router.post('/', (req, res, next) => {
                 }else{
                     res.status(200).json({
                         message : "Incorrect username or password",
-                        status : false,
+                        success : false,
                         result : null
                     });
                 }
             }else{
                 res.status(200).json({
                     message : "Incorrect username or password",
-                    status : false,
+                    success : false,
                     result : null
                 });
             }
         }else{
             res.status(200).json({
                 message : "Incorrect username or password",
-                status : false,
+                success : false,
                 result : null
             });
         }
@@ -71,7 +71,7 @@ router.post('/', (req, res, next) => {
     .catch(err => {
         res.status(500).json({
             message : "Failed to log in",
-            status : false,
+            success : false,
             result : null
         });
     });

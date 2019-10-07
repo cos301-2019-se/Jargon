@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit {
       { caption: "Create Project", path: "dashboard/create-project", icon: "fa-tasks" },
       { caption: "Compare Project", path: "dashboard/compare-project", icon: "fa-clone" }
     ]);
-    if (this.globalService.getAdminValue()) {
+    if (this.globalService.getUserValue().admin) {
       this.directories.push([
         { caption: "Manage Projects", path: "dashboard/manage-projects", icon: "fa-project-diagram"},
         { caption: "Manage Users", path: "dashboard/manage-users", icon: "fa-users"},

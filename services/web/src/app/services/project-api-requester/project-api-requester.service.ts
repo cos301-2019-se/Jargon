@@ -8,7 +8,7 @@ import { Project } from '../../interfaces/project/project';
 })
 
 export class ProjectApiRequesterService {
-  apiURL = 'http://localhost:3000';
+  apiURL = 'http://127.0.0.1:3000';
   public firstPage = '';
   public prevPage = '';
   public nextPage = '';

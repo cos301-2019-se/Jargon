@@ -35,6 +35,7 @@ export class User {
     public username: string;
     public password: string;
     public passwordConfirm: string;
+    public admin: boolean;
 
     constructor() {
         this.id = "";
@@ -43,6 +44,7 @@ export class User {
         this.email = "";
         this.username = "";
         this.password = "";
+        this.admin = false;
     }
 
     compare(user: User) {

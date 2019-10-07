@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Project } from '../../../interfaces/project/project';
 import { SharedProjectService } from '../../../services/shared-project/shared-project.service';
 import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
+import { ApiResponse } from '../../../interfaces/api-response/api-response';
 
 @Component({
   selector: 'app-projects',
@@ -56,10 +57,10 @@ export class ProjectsComponent implements OnInit {
     this.loading = true;
     this.projects = null;
     this.projectApiRequesterService.getProjectsBasic().subscribe(
-      (projects: Project[]) => {
-        console.log(projects);
+      (response: ApiResponse) => {
+        console.log(response);
         this.pages = [];
-        this.sharedProjectService.setProjects(projects);
+        this.sharedProjectService.setProjects(response.result);
         this.projects = this.sharedProjectService.getProjects();
         this.projectsLength = this.projects.length/this.PAGE_SIZE;
 
@@ -77,7 +78,7 @@ export class ProjectsComponent implements OnInit {
       },
       error => {
         console.log("Error:", error);
-        this.loading = true;
+        this.loading = false;
       }
     );
   }
