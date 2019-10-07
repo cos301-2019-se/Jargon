@@ -458,4 +458,107 @@ router.post('/getUserAdmin', (req, res, next) => {
     })
 });
 
+/***
+    * request for edit (/edit) projects page (value array)
+    * 
+    * This function receives an array of values that need to updated for a 
+    * certain project as well as the id of a certain project. The projects 
+    * specific values are then updated with the new values.
+    */
+   router.post('/editProjectAdmin', (req, res, next) => {
+    const id = req.body.id;
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(401).json({});
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(401).json({});
+        }else{
+            Project.findById(id)
+            .exec()
+            .then(result => {
+                if(tokenPlainText.admin==true){
+                    console.log("authenticated successfully.")
+                    let updateVals = {};
+                    for (const vals of req.body.updateValues){
+                        updateVals[vals.propName] = vals.value;
+                    }
+                    Project.updateOne({ _id: id }, { $set: updateVals })
+                    .exec()
+                    .then(result => {
+                        console.log(result);
+                        res.status(200).json(result);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({
+                            error : "Could not perform action."
+                        });
+                    });
+                }else{
+                    res.status(200).json({
+                        success: false,
+                        message: "Unauthorised to use this function."
+                    });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error : "Could not perform action."
+                });
+            });
+        }
+    })
+});
+
+/***
+* request for delete (/delete) projects page ()
+* 
+* This function receives a specific project's id and
+* deletes this project in the database
+*/
+router.post('/deleteProjectAdmin', (req, res, next) => {
+    const id = req.body.id;
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(401).json({});
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(401).json({});
+        }else{
+            Project.findById(id)
+            .exec()
+            .then(result => {
+                if(tokenPlainText.admin==true){
+                    console.log("authenticated successfully.")
+                    Project.remove({ _id: id })
+                    .exec()
+                    .then(result => {
+                        res.status(200).json(result);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({
+                            error: err
+                        });
+                    });
+                }else{
+                    res.status(200).json({
+                        authenticated: false
+                    });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error : "Could not perform action."
+                });
+            });
+        }
+    })
+});
+
 module.exports = router;
