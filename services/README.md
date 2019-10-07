@@ -23,6 +23,7 @@ this.
 * [Python3](https://www.python.org/)
 * [pip](https://pypi.org/project/pip/)
 * [docker](https://www.docker.com/) (specidfically, `dockerd` and `docker-compose`)
+* Secret files (tokens and credentials, available on request)
 
 ## Installation
 All services are dockerized (docker containerized), thus installation takes place 
