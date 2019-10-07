@@ -46,11 +46,9 @@ export class User {
     }
 
     compare(user: User) {
-        return this.name === user.name &&
-            this.surname === user.surname &&
-            this.email === user.email &&
-            this.username === user.username &&
-            this.password === this.password &&
-            this.passwordConfirm == user.passwordConfirm;
+        return this.name == user.name &&
+            this.surname == user.surname &&
+            this.email == user.email &&
+            this.username == user.username;
     }
 }

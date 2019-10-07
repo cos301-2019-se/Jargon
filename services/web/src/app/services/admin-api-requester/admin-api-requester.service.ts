@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { GlobalService } from '../global-service/global-service.service';
 import { HttpClient } from '@angular/common/http';
 import { RegisterDetails, User } from '../../interfaces/login-register/login-register';
+import { Project } from '../../interfaces/project/project';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,10 @@ export class AdminApiRequesterService {
     return this.httpClient.post(`${this.apiURL}/detailedSearch`, body);
   }
 
+  public updateProject(project: Project) {
+    return this.httpClient.post(`${this.apiURL}/updateProject`, project)
+  }
+
   public getUser() {
     const body = {};
     return this.httpClient.post(`${this.apiURL}/getUser`, body);
@@ -44,7 +49,7 @@ export class AdminApiRequesterService {
 
   public getUsersAdmin() {
     const body = {};
-    return this.httpClient.post(`${this.apiURL}/getUsersAdmin`, body);
+    return this.httpClient.post(`${this.apiURL}/getUserAdmin`, body);
   }
 
   public editUser(user: User) {

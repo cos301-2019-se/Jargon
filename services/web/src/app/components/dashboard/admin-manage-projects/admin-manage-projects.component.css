@@ -1,4 +1,4 @@
-.dash {
+/* .dash {
    height: 80vh;
    overflow-y: auto;
 }
@@ -249,4 +249,267 @@ body {
    background: rgb(17, 104, 202) !important; 
    color: white !important;
    cursor: pointer;
-}
+} */
+
+.dash {
+   height: 80vh;
+   overflow-y: auto;
+ }
+ 
+ .raise:hover,
+ .raise:focus {
+   box-shadow: 0 0.5em 0.5em -0.4em;
+ }
+ 
+ .style-5::-webkit-scrollbar-track
+ {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+ }
+ 
+ .style-5::-webkit-scrollbar
+ {
+    width: 10px;
+    background-color: #F5F5F5;
+ }
+ 
+ .style-5::-webkit-scrollbar-thumb
+ {
+    background-color: #0ae;
+ 
+   background-image:
+     -webkit-gradient(linear, 0 0, 0 100%,
+      color-stop(.5, rgba(255, 255, 255, .2)),
+       color-stop(.5, transparent), to(transparent));
+ }
+ 
+ .dashboard {
+   height: 70vh;
+ }
+ 
+ #page-icon {
+   height: 30vh;
+   font-size: 30vh;
+   padding-top: 15vh;
+   color: gray;
+   opacity: 0.2;
+ }
+ 
+ #icon-holder {
+   text-align: center;
+ }
+ 
+ #no-proj {
+   margin-top: 4vh;
+ }
+ 
+ #no-proj-heading {
+   color: gray;
+   opacity: 0.6;
+ }
+ 
+ h2 {
+   color: black;
+   /* font-weight: bold; */
+   /* text-align: center;
+   font-family: Georgia;
+   color: rgba(8,162,233,1); */
+ }
+ 
+ .round {
+   border-radius: 0px 50px 50px 0px;
+ }
+ 
+ .center {
+   text-align: center;
+ }
+ 
+ #heading {
+   text-shadow: 1px 1px 2px #000000;
+ }
+ 
+ span {
+   font-weight: 400 !important;
+ }
+ 
+ .tweets {
+   font-size: 12px;
+ }
+ 
+ 
+ .side-bar {
+   background-color: rgba(0, 18, 37, 1);
+ }
+ 
+ .left-align-text {
+   text-align: left;
+ }
+ 
+ .text-size-medium {
+   font-size: 18px;
+ }
+ 
+ .icon {
+   color: rgb(31, 96, 165);
+ }
+ 
+ hr {
+   border-color: rgb(10, 36, 65) !important;
+ }
+ 
+ .wrapper-outer {
+   /* display: flex; */
+   justify-content: space-between;
+ }
+ 
+ .main,
+ .sidebar {
+   padding: 15px;
+ }
+ 
+ .main {
+   width: 100%;
+   margin-left: auto;
+   margin-right: auto;
+   height: auto;
+ }
+ 
+ .sidebar {
+   width: 600px;
+   margin-left: auto;
+   margin-right:auto;
+   height: fit-content;
+   top:15px;
+   position: sticky;
+   display: inline-block;
+ }
+ 
+ body {
+   background-color: #ccc;
+   font-family: sans-serif;
+   padding: 10px;
+ }
+ 
+ .container-fluid {
+   width: 100% !important;
+ }
+ 
+ .main-dash {
+   /* background-color: rgba(0, 57, 103, 0); */
+   /* min-width: 90vh; */ 
+   height:auto;
+ }
+ 
+ #dashboard-content {
+   width: 100%;
+ }
+ 
+ :host(selector) {
+   width:  90%;
+ }
+ 
+ .wrapper {
+   /* background: rgba(36, 179, 255, 0.4); */
+   /* overflow-y: auto; */
+ }
+ 
+ 
+ .project-list {
+   /* overflow-y: auto; */
+   max-height: auto;
+ }
+ 
+ .main-content {
+   height: auto;
+   /* overflow-y: auto; */
+   border-color: rgb(15, 65, 122) !important;
+   border-width: 2px !important;
+ }
+ 
+ .right-side {
+   background: rgba(6, 57, 116, 1) !important;
+   /* overflow-y: auto; */
+   /* height: 75vh; */
+   height: auto;
+ }
+ 
+ .project-item:hover {
+   background: rgb(12, 65, 163) !important;
+   transition-duration: 0s;
+ } 
+ 
+ /* .project-item:hover {
+   background-color: rgb(31, 96, 165);
+   transition-duration: 0s;
+ } */
+ 
+ .project-item:not(:hover) {
+   transition-duration: 0s;
+ }
+ 
+ .btn {
+   background: rgba(22, 111, 175, 1) !important;
+   color: white;
+   text-align: left;
+ }
+ 
+ .search-bar {
+   background: rgba(22, 111, 175, 1) !important;
+   color: white;
+   text-align: left;
+ }
+ 
+ select, input {
+   background-color: rgb(0, 18, 37) !important;
+   border-color:  rgb(36, 75, 117) !important;
+ }
+ 
+ select option {
+   background-color: rgb(21, 48, 77) !important;
+ }
+ 
+ select option:hover {
+   background-color: rgb(36, 75, 117) !important;
+ }
+ 
+ select, option, input {
+   color: white;
+ }
+ 
+ select:focus, input:focus {
+   color: white !important;
+ }
+ 
+ ::placeholder {
+   color: rgb(209, 209, 211) !important;
+ }
+ 
+ .btn.focus, .btn:focus {
+   -webkit-box-shadow: none !important;
+   box-shadow: none !important;
+ }
+ 
+ .active_project {
+   background: rgb(40, 123, 211) !important; 
+ }
+ 
+ .active_project:hover {
+   background: rgb(42, 129, 223) !important; 
+ }
+ 
+ /* * {
+   height: auto !important;
+ } */
+ 
+ .project-component {
+   height:auto;
+ }
+ 
+ .active_page {
+   background: rgb(62, 50, 168) !important;
+   color: white !important;
+ }
+ .paginate {
+   background : rgba(0,0,0,0);
+   border: none;
+ }

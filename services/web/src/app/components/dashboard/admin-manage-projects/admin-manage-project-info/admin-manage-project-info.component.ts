@@ -4,14 +4,15 @@ import { SharedProjectService } from '../../../../services/shared-project/shared
 import { Router, ActivatedRoute } from '@angular/router';
 import { Form, NgForm } from '@angular/forms';
 import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
-import { NotifierService } from 'angular-notifier';
+import { AdminApiRequesterService } from '../../../../services/admin-api-requester/admin-api-requester.service';
+import { SharedAdminProjectService } from '../../../../services/shared-admin-project/shared-admin-project.service';
 
 @Component({
-  selector: 'app-project-info',
-  templateUrl: './project-info.component.html',
-  styleUrls: ['./project-info.component.css']
+  selector: 'app-admin-manage-project-info',
+  templateUrl: './admin-manage-project-info.component.html',
+  styleUrls: ['./admin-manage-project-info.component.css']
 })
-export class ProjectInfoComponent implements OnInit {
+export class AdminManageProjectInfoComponent implements OnInit {
 
   project: Project = new Project();
   projectSnapshot: Project = new Project();
@@ -23,10 +24,9 @@ export class ProjectInfoComponent implements OnInit {
 
   time: number = 30;
 
-  constructor(private sharedProjectService: SharedProjectService, 
-      private projectApiRequesterService: ProjectApiRequesterService,
-      private activeRoute: ActivatedRoute,
-      private notifierService: NotifierService) {
+  constructor(private sharedAdminProjectService: SharedAdminProjectService, 
+      private adminApiRequester: AdminApiRequesterService,
+      private activeRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -36,10 +36,11 @@ export class ProjectInfoComponent implements OnInit {
       }
     );
     this.isReadOnly = true;
-    this.sharedProjectService.project.subscribe(
+    this.sharedAdminProjectService.project.subscribe(
       (project: Project) => {
         this.project = project;
         this.projectSnapshot = JSON.parse(JSON.stringify(this.project));
+        
         this.projectSnapshot = Object.assign(new Project, this.projectSnapshot);
       }
     );
@@ -99,18 +100,13 @@ export class ProjectInfoComponent implements OnInit {
     console.log("Snap:", this.projectSnapshot);
     console.log("Proj:", this.project);
     if (!this.projectSnapshot.compare(this.project)) {
-      this.projectApiRequesterService.updateProject(this.projectSnapshot).subscribe(
+      this.adminApiRequester.updateProject(this.projectSnapshot).subscribe(
         (resp: any) => {
-          if (resp !== null) {
-            this.notifierService.notify('success', 'Save Successful');
-            this.project.blacklist = this.projectSnapshot.blacklist;
-            this.project.whitelist = this.projectSnapshot.whitelist;
-            this.project.project_name = this.projectSnapshot.project_name;
-            this.project.source = this.projectSnapshot.source;
-            this.project.trackTime = this.projectSnapshot.trackTime;
-          } else {
-            this.notifierService.notify('error', "Project could not be saved");
-          }
+          this.project.blacklist = this.projectSnapshot.blacklist;
+          this.project.whitelist = this.projectSnapshot.whitelist;
+          this.project.project_name = this.projectSnapshot.project_name;
+          this.project.source = this.projectSnapshot.source;
+          this.project.trackTime = this.projectSnapshot.trackTime;
         }
       );
     }
@@ -127,14 +123,4 @@ export class ProjectInfoComponent implements OnInit {
     this.projectSnapshot = Object.assign(new Project, this.projectSnapshot);
   }
 
-  onStartClick() {
-    if (this.project == null)
-      return;
-
-    this.projectApiRequesterService.startProject(this.project).subscribe(
-      resp => {
-        console.log("Complete:", resp);
-      }
-    );
-  }
 }

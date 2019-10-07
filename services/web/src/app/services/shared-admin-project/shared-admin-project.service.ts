@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Project } from '../../interfaces/project/project';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Project } from '../../interfaces/project/project';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SharedProjectService {
-
+export class SharedAdminProjectService {
+  
   private projectSource: BehaviorSubject<Project> = new BehaviorSubject<Project>(null);
   project: Observable<Project> = this.projectSource.asObservable();
 
@@ -24,10 +24,6 @@ export class SharedProjectService {
     this.projectSource.next(proj);
   }
 
-  getCurrentProject() {
-    return this.projectSource.value;
-  }
-
   setProjects(projects: Project[]) {
     this.projects = projects;
   }
@@ -35,5 +31,4 @@ export class SharedProjectService {
   getProjects(): Project[] {
     return this.projects;
   }
-
 }
