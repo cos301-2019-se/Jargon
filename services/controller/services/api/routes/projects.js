@@ -493,7 +493,7 @@ router.get('/basicTokenized', (req, res, next) => {
             .then(results => {
                 const retProjects = [];
                 let simplify = results.forEach((proj)=>{
-                    if(proj["createdBy"]==tokenPlainText.id){
+                    if((proj["createdBy"]==tokenPlainText.id)&&(proj["deleted"]==false)){
                         let tempProj = {};
                         tempProj["_id"] = proj["_id"];
                         tempProj["project_name"] = proj["project_name"];
@@ -544,7 +544,7 @@ router.get('/basicTokenized', (req, res, next) => {
             .then(results => {
                 const retProjects = [];
                 results.forEach((project)=>{
-                    if(project["createdBy"]==tokenPlainText.id){
+                    if((proj["createdBy"]==tokenPlainText.id)&&(proj["deleted"]==false)){
                         retProjects.push(project);
                     }
                 });
@@ -585,7 +585,7 @@ router.get('/basicTokenized', (req, res, next) => {
                 Project.findById(id)
                 .exec()
                 .then(result_ => {
-                    if(result_["createdBy"]==tokenPlainText.id){
+                    if((result_["createdBy"]==tokenPlainText.id)&&(result_["deleted"]==false)){
                         console.log(result_);
                         res.status(200).json({
                             message: "Successfully retrieved project",
@@ -640,7 +640,8 @@ router.get('/basicTokenized', (req, res, next) => {
                 data: null,
                 dataSentiment: null,
                 createdBy: plainTextToken.id,
-                runs: []
+                runs: [],
+                deleted: false
             });
             project
             .save()
@@ -683,7 +684,7 @@ router.get('/basicTokenized', (req, res, next) => {
             Project.findById(id)
             .exec()
             .then(result => {
-                if(result["createdBy"]==tokenPlainText.id){
+                if((result["createdBy"]==tokenPlainText.id)&&(result["deleted"]==false)){
                     console.log("authenticated successfully.")
                     let updateVals = {};
                     for (const vals of req.body.updateValues){
@@ -746,9 +747,19 @@ router.post('/deleteTokenized', (req, res, next) => {
             Project.findById(id)
             .exec()
             .then(result => {
-                if(result["createdBy"]==tokenPlainText.id){
+                if((result["createdBy"]==tokenPlainText.id)&&(result["deleted"]==false)){
                     console.log("authenticated successfully.")
-                    Project.remove({ _id: id })
+                    let updateValues = [
+                        {
+                            "propName" : "deleted",
+                            "value" : true
+                        }
+                    ]
+                    let updateVals = {};
+                    for (const vals of updateValues){
+                        updateVals[vals.propName] = vals.value;
+                    }
+                    Project.update({ _id: id }, {$set: updateVals})
                     .exec()
                     .then(result => {
                         res.status(200).json({
@@ -810,7 +821,7 @@ router.post('/deleteTokenized', (req, res, next) => {
                 Project.find({_id : id})
                 .exec()
                 .then((result)=>{
-                    if(result["createdBy"]==tokenPlainText.id){
+                    if((result["createdBy"]==tokenPlainText.id)&&(result["deleted"]==false)){
                         result[0].status = true;
                         result[0].save().then(
                             ()=>{

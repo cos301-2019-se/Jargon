@@ -599,7 +599,17 @@ router.post('/deleteProjectAdmin', (req, res, next) => {
             .then(result => {
                 if(tokenPlainText.admin==true){
                     console.log("authenticated successfully.")
-                    Project.remove({ _id: id })
+                    let updateValues = [
+                        {
+                            "propName" : "deleted",
+                            "value" : true
+                        }
+                    ]
+                    let updateVals = {};
+                    for (const vals of updateValues){
+                        updateVals[vals.propName] = vals.value;
+                    }
+                    Project.update({ _id: id }, {$set: updateVals})
                     .exec()
                     .then(result => {
                         res.status(200).json({
