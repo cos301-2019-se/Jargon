@@ -17,4 +17,6 @@ Link | Ver | Description
 Slack (link reserved for team members) | N/A | Project communications tool
 <a href="documentation/user-manual/user-manual-latest.pdf" target="blank">User Manual</a> | 1.2 | User manual document
 
+### [Introduction](documentation/presentation/syntactic-sugar-jargon-intro.pdf)
+
 ### [Meet the Team](documentation/TEAM.md)
