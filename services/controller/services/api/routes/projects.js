@@ -690,7 +690,7 @@ router.post('/tweets', (req, res, next) => {
                             });
                         });
                     }else{
-                        Project.find({{"_id" : projectID, "createdBy" : tokenPlainText.id, "deleted" : false}, {data: {$slice: [firstIndex, (size-firstIndex+1)]}})
+                        Project.find({"_id" : projectID, "createdBy" : tokenPlainText.id, "deleted" : false}, {data: {$slice: [firstIndex, (size-firstIndex+1)]}})
                         .exec()
                         .then(() => {
                             console.log(result_[0]["data"]);
