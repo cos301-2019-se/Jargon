@@ -422,19 +422,33 @@ router.post('/getUserStatistics', (req, res, next) => {
     
     User.find()
     .exec()
-    .then(res => {
-        let userNum = res.length;
+    .then(res1 => {
+        console.log(res1);
+        let userNum = res1.length;
         let numToday = 0;
         for (let i = 0; i < userNum; i++)
         {
-            if (res[i].created === undefined) continue;
-            if (isCurrentDate(res[i].created))
+            if (res1[i].created === undefined) continue;
+            if (isCurrentDate(res1[i].created))
                 numToday++;
         }
 
+        let total = 0;
+
+        for (let i = 0; i < userNum; i++)
+        {
+            if (res1[i].projects === null)
+                continue;
+
+            total += res1[i].projects.length;
+        }
+
+        let avgProjPerUser = total / userNum;
+
         const obj = {
             totalUsers : userNum,
-            todayUsers : numToday
+            todayUsers : numToday,
+            averageProjectsPerUser : avgProjPerUser
         }
         res.status(200).json({
             status: true,
@@ -443,6 +457,7 @@ router.post('/getUserStatistics', (req, res, next) => {
 
     })
     .catch(err => {
+        console.log(err);
         res.status(200).json({
             status: false,
             result : "Error finding users"
