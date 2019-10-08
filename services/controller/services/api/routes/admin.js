@@ -148,24 +148,42 @@ router.post('/basicAllProjects', (req, res, next) => {
                 Project.find()
                 .exec()
                 .then(results => {
+                    const allProj = results;
                     const retProjects = [];
+                    let count = 0;
                     let simplify = results.forEach((proj)=>{
-                        let tempProj = {};
-                        tempProj["_id"] = proj["_id"];
-                        tempProj["project_name"] = proj["project_name"];
-                        tempProj["whitelist"] = proj["whitelist"];
-                        tempProj["blacklist"] = proj["blacklist"];
-                        tempProj["source"] = proj["source"];
-                        tempProj["trackTime"] = proj["trackTime"];
-                        tempProj["created"] = proj["created"];
-                        tempProj["createdBy"] = proj["createdBy"];
-                        retProjects.push(tempProj);
-                    });
-                    console.log(retProjects);
-                    res.status(200).json({
-                        success: true,
-                        message: "Successfully retrieved projects",
-                        result: retProjects
+                        Project.aggregate([{$match: {_id: mongoose.Types.ObjectId(proj["_id"])}}, {$project: {data: {$size: '$data'}}}])
+                        .exec()
+                        .then(result_ => {
+                            let tempProj = {};
+                            tempProj["_id"] = proj["_id"];
+                            tempProj["project_name"] = proj["project_name"];
+                            tempProj["whitelist"] = proj["whitelist"];
+                            tempProj["blacklist"] = proj["blacklist"];
+                            tempProj["source"] = proj["source"];
+                            tempProj["trackTime"] = proj["trackTime"];
+                            tempProj["created"] = proj["created"];
+                            tempProj["createdBy"] = proj["createdBy"];
+                            tempProj["size"] = result_[0]['data'];
+                            retProjects.push(tempProj);
+                            count++;
+                            if(count==allProj.length){
+                                console.log(retProjects);
+                                res.status(200).json({
+                                    success: true,
+                                    message: "Successfully retrieved projects",
+                                    result: retProjects
+                                });
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            res.status(500).json({
+                                message: "Failed to retrieve projects",
+                                success: false,
+                                result: null
+                            });
+                        });
                     });           
                 })
                 .catch(err => {

@@ -491,29 +491,47 @@ router.post('/basicTokenized', (req, res, next) => {
             Project.find( {"createdBy" : tokenPlainText.id}, "_id project_name whitelist blacklist source trackTime created createdBy deleted status")
             .exec()
             .then(results => {
+                const allProj = results;
                 const retProjects = [];
+                let count = 0;
                 let simplify = results.forEach((proj)=>{
                     if(proj["deleted"]==false){
-                        let tempProj = {};
-                        tempProj["_id"] = proj["_id"];
-                        tempProj["project_name"] = proj["project_name"];
-                        tempProj["whitelist"] = proj["whitelist"];
-                        tempProj["blacklist"] = proj["blacklist"];
-                        tempProj["source"] = proj["source"];
-                        tempProj["trackTime"] = proj["trackTime"];
-                        tempProj["created"] = proj["created"];
-                        tempProj["createdBy"] = proj["createdBy"];
-                        tempProj["deleted"] = proj["deleted"];
-                        tempProj["status"] = proj["status"];
-                        retProjects.push(tempProj);
+                        Project.aggregate([{$match: {_id: mongoose.Types.ObjectId(proj["_id"])}}, {$project: {data: {$size: '$data'}}}])
+                        .exec()
+                        .then(result_ => {
+                            let tempProj = {};
+                            tempProj["_id"] = proj["_id"];
+                            tempProj["project_name"] = proj["project_name"];
+                            tempProj["whitelist"] = proj["whitelist"];
+                            tempProj["blacklist"] = proj["blacklist"];
+                            tempProj["source"] = proj["source"];
+                            tempProj["trackTime"] = proj["trackTime"];
+                            tempProj["created"] = proj["created"];
+                            tempProj["createdBy"] = proj["createdBy"];
+                            tempProj["deleted"] = proj["deleted"];
+                            tempProj["status"] = proj["status"];
+                            tempProj["size"] = result_[0]['data'];
+                            retProjects.push(tempProj);
+                            count++;
+                            if(count==allProj.length){
+                                console.log(retProjects);
+                                res.status(200).json({
+                                    success: true,
+                                    message: "Successfully retrieved projects",
+                                    result: retProjects
+                                });
+                            }
+                        })
+                        .catch((err)=>{
+                            console.log(err);
+                            res.status(500).json({
+                                message: "Failed to retrieve projects",
+                                success: false,
+                                result: null
+                            });
+                        })
                     }
-                });
-                console.log(retProjects);
-                res.status(200).json({
-                    success: true,
-                    message: "Successfully retrieved projects",
-                    result: retProjects  
-                });           
+                });          
             })
             .catch(err => {
                 console.log(err);
