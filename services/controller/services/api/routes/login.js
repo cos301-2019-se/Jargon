@@ -36,11 +36,21 @@ router.post('/', (req, res, next) => {
                                 result : null
                             });
                         }else{
+                            safeData = {
+                                "_id" : data[0]._id,
+                                "name" : data[0].name,
+                                "surname" : data[0].surname,
+                                "email" : data[0].email,
+                                "username" : data[0].username,
+                                "deleted" : data[0].deleted,
+                                "admin" : data[0].admin,
+                                "projects" : data[0].projects
+                            }
                             res.status(200).json({
                                 message : "Successfully logged in",
                                 success : true,
                                 result : {
-                                    user : data[0],
+                                    user : safeData,
                                     token : _token
                                 } 
                             });   

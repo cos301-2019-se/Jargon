@@ -488,12 +488,12 @@ router.post('/basicTokenized', (req, res, next) => {
         if(err){
             res.status(401).json({});
         }else{
-            Project.find()
+            Project.find( {"createdBy" : tokenPlainText.id}, "_id project_name whitelist blacklist source trackTime created createdBy deleted status")
             .exec()
             .then(results => {
                 const retProjects = [];
                 let simplify = results.forEach((proj)=>{
-                    if((proj["createdBy"]==tokenPlainText.id)&&(proj["deleted"]==false)){
+                    if(proj["deleted"]==false){
                         let tempProj = {};
                         tempProj["_id"] = proj["_id"];
                         tempProj["project_name"] = proj["project_name"];
@@ -503,6 +503,8 @@ router.post('/basicTokenized', (req, res, next) => {
                         tempProj["trackTime"] = proj["trackTime"];
                         tempProj["created"] = proj["created"];
                         tempProj["createdBy"] = proj["createdBy"];
+                        tempProj["deleted"] = proj["deleted"];
+                        tempProj["status"] = proj["status"];
                         retProjects.push(tempProj);
                     }
                 });
@@ -540,12 +542,12 @@ router.post('/basicTokenized', (req, res, next) => {
             res.status(401).json({});
         }else{
             console.log();
-            Project.find()
+            Project.find( {"createdBy" : tokenPlainText.id}, "_id project_name whitelist blacklist source trackTime created createdBy deleted")
             .exec()
             .then(results => {
                 const retProjects = [];
                 results.forEach((project)=>{
-                    if((proj["createdBy"]==tokenPlainText.id)&&(proj["deleted"]==false)){
+                    if(proj["deleted"]==false){
                         retProjects.push(project);
                     }
                 });
