@@ -9,7 +9,7 @@ import { Project } from '../../interfaces/project/project';
 })
 export class AdminApiRequesterService {
 
-  apiURL = 'http://localhost:3000/admin';
+  apiURL = 'http://127.0.0.1:3000/admin';
   constructor(private httpClient : HttpClient) {}
 
   public createAdminUser(registerDetail: RegisterDetails) {
