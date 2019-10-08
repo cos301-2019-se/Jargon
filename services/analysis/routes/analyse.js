@@ -427,6 +427,7 @@ router.post('/getUserStatistics', (req, res, next) => {
         let numToday = 0;
         for (let i = 0; i < userNum; i++)
         {
+            if (res[i].created === undefined) continue;
             if (isCurrentDate(res[i].created))
                 numToday++;
         }
@@ -445,6 +446,52 @@ router.post('/getUserStatistics', (req, res, next) => {
         res.status(200).json({
             status: false,
             result : "Error finding users"
+        });
+    });
+});
+
+router.post('/getProjectStatistics', (req, res, next) => {
+    
+    Project.find()
+    .exec()
+    .then(res1 => {
+        let projNum = res1.length;
+        let projAnalysedTotal = 0;
+        Statistic.find()
+        .exec()
+        .then(res2 => {
+            projAnalysedTotal = res2.length;
+            let total = 0;
+            for (let i = 0; i < projAnalysedTotal; i++)
+            {
+                total += res2[i].median;
+            }
+            totalAvgSentiment = total / projAnalysedTotal;
+
+            const obj = {
+                totalProjects : projNum,
+                totalTimesAnalysed : projAnalysedTotal,
+                totalAverageSentiment : totalAvgSentiment
+            }
+            res.status(200).json({
+                status: true,
+                result: obj
+            });
+        })
+        .catch(err2 => {
+            res.status(200).json({
+                status: false,
+                error: "Error occurred finding statistics."
+            });
+        });
+
+        
+
+    })
+    .catch(err => {
+        res.status(200).json({
+            status: false,
+            result : "Error finding projects"
         });
     });
 });
