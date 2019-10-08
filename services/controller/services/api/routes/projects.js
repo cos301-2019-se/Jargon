@@ -616,6 +616,90 @@ router.post('/basicTokenized', (req, res, next) => {
   });
 
 /***
+* request for tweets (/tweets) page (string id)
+* 
+* this function searches for a certain project by its id, and returns
+* an array of tweets stored in that project based on the page and count specified
+*/
+router.post('/tweets', (req, res, next) => {
+    const projectID = req.body.id;
+    const page = req.body.page;
+    const count = req.body.count;
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(401).json({});
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(401).json({});
+        }else{
+            Project.aggregate([{$match: {_id: mongoose.Types.ObjectId(projectID)}}, {$project: {data: {$size: '$data'}}}])
+            .exec()
+            .then(result_ => {
+                let size = result_[0]['data'];
+                let firstIndex = (page-1)*count;
+                let lastIndex = (page*count)-1; 
+                if(firstIndex<size){
+                    if(lastIndex<size){
+                        Project.find({"_id" : projectID, "createdBy" : tokenPlainText.id}, {data: {$slice: [firstIndex, (lastIndex-firstIndex+1)]}})
+                        .exec()
+                        .then((result_) => {
+                            console.log(result_[0]["data"]);
+                            res.status(200).json({
+                                message: "Successfully retrieved project",
+                                success: true,
+                                result: result_[0]["data"] 
+                            });
+                        })
+                        .catch(() => {
+                            console.log(err);
+                            res.status(500).json({
+                                message: "Failed to retrieve tweets",
+                                success: false,
+                                result: null
+                            });
+                        });
+                    }else{
+                        Project.find({"_id" : projectID}, {data: {$slice: [firstIndex, (size-firstIndex+1)]}})
+                        .exec()
+                        .then(() => {
+                            console.log(result_[0]["data"]);
+                            res.status(200).json({
+                                message: "Successfully retrieved project",
+                                success: true,
+                                result: result_[0]["data"] 
+                            });
+                        })
+                        .catch(() => {
+                            console.log(err);
+                            res.status(500).json({
+                                message: "Failed to retrieve tweets",
+                                success: false,
+                                result: null
+                            });
+                        });
+                    }
+                }else{
+                    res.status(200).json({
+                        success: false,
+                        message: "Invalid index given",
+                        result: null
+                    });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    message: "Failed to retrieve project",
+                    success: false,
+                    result: null
+                });
+            });
+        }
+    })
+});
+
+/***
     * request for create (/create) projects page (string project_name, source,
     * createdBy, string array whitelist, blacklist, integer trackTime)
     * 
