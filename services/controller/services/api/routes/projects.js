@@ -488,9 +488,10 @@ router.post('/basicTokenized', (req, res, next) => {
         if(err){
             res.status(401).json({});
         }else{
-            Project.find( {"createdBy" : tokenPlainText.id}, "_id project_name whitelist blacklist source trackTime created createdBy deleted status")
+            Project.find( {"createdBy" : tokenPlainText.id, "deleted" : false}, "_id project_name whitelist blacklist source trackTime created createdBy deleted status")
             .exec()
             .then(results => {
+                console.log(results);
                 const allProj = results;
                 const retProjects = [];
                 let count = 0;
@@ -530,6 +531,17 @@ router.post('/basicTokenized', (req, res, next) => {
                                 result: null
                             });
                         })
+                    }else{
+                        count++;
+                        console.log("project is soft deleted.");
+                        if(count==allProj.length){
+                            console.log(retProjects);
+                            res.status(200).json({
+                                success: true,
+                                message: "Successfully retrieved projects",
+                                result: retProjects
+                            });
+                        }
                     }
                 });          
             })
@@ -742,8 +754,8 @@ router.post('/tweets', (req, res, next) => {
                 source: req.body.source,
                 status : false,
                 trackTime: req.body.trackTime,
-                data: null,
-                dataSentiment: null,
+                data: [],
+                dataSentiment: [],
                 createdBy: plainTextToken.id,
                 runs: [],
                 deleted: false

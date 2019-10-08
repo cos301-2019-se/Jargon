@@ -145,7 +145,7 @@ router.post('/basicAllProjects', (req, res, next) => {
             res.status(401).json({});
         }else{
             if(tokenPlainText.admin == true){
-                Project.find()
+                Project.find({"deleted" : false}, "_id project_name whitelist blacklist source trackTime created createdBy deleted status")
                 .exec()
                 .then(results => {
                     const allProj = results;
