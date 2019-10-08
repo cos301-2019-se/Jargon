@@ -471,11 +471,12 @@ router.post('/getProjectStatistics', (req, res, next) => {
     .exec()
     .then(res1 => {
         let projNum = res1.length;
-        let projAnalysedTotal = 0;
+        console.log(res1);
         Statistic.find()
         .exec()
         .then(res2 => {
-            projAnalysedTotal = res2.length;
+            console.log(res2);
+           let projAnalysedTotal = res2.length;
             let total = 0;
             for (let i = 0; i < projAnalysedTotal; i++)
             {
@@ -488,6 +489,7 @@ router.post('/getProjectStatistics', (req, res, next) => {
                 totalTimesAnalysed : projAnalysedTotal,
                 totalAverageSentiment : totalAvgSentiment
             }
+            console.log(obj);
             res.status(200).json({
                 status: true,
                 result: obj
