@@ -671,7 +671,7 @@ router.post('/tweets', (req, res, next) => {
                 let lastIndex = (page*count)-1; 
                 if(firstIndex<size){
                     if(lastIndex<size){
-                        Project.find({"_id" : projectID, "createdBy" : tokenPlainText.id}, {data: {$slice: [firstIndex, (lastIndex-firstIndex+1)]}})
+                        Project.find({"_id" : projectID, "createdBy" : tokenPlainText.id, "deleted" : false}, {data: {$slice: [firstIndex, (lastIndex-firstIndex+1)]}})
                         .exec()
                         .then((result_) => {
                             console.log(result_[0]["data"]);
@@ -690,7 +690,7 @@ router.post('/tweets', (req, res, next) => {
                             });
                         });
                     }else{
-                        Project.find({"_id" : projectID}, {data: {$slice: [firstIndex, (size-firstIndex+1)]}})
+                        Project.find({{"_id" : projectID, "createdBy" : tokenPlainText.id, "deleted" : false}, {data: {$slice: [firstIndex, (size-firstIndex+1)]}})
                         .exec()
                         .then(() => {
                             console.log(result_[0]["data"]);
