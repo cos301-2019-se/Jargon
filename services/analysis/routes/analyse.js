@@ -419,11 +419,27 @@ router.post('/getStatistics', (req, res, next) => {
 });
 
 router.post('/getUserStatistics', (req, res, next) => {
-    let userNum = 0;
+    
     User.find()
     .exec()
     .then(res => {
-        userNum = res.length;
+        let userNum = res.length;
+        let numToday = 0;
+        for (let i = 0; i < userNum; i++)
+        {
+            if (isCurrentDate(res[i].created))
+                numToday++;
+        }
+
+        const obj = {
+            totalUsers : userNum,
+            todayUsers : numToday
+        }
+        res.status(200).json({
+            status: true,
+            result: obj
+        });
+
     })
     .catch(err => {
         res.status(200).json({
@@ -432,5 +448,12 @@ router.post('/getUserStatistics', (req, res, next) => {
         });
     });
 });
+
+
+function isCurrentDate(d)
+{
+    const today = new Date();
+    return today.getDate() == d.getDate() && today.getMonth() == d.getMonth() && today.getFullYear() == d.getFullYear();
+}
 
 module.exports = router;
