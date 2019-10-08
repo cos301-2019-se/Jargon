@@ -10,7 +10,8 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Statistic = require('../models/statistic');
-const Project = require('../models/project')
+const Project = require('../models/project');
+const User = require('../models/user');
 
 const INTERVAL = 0.05;
 const TOTAL = 1;
@@ -416,5 +417,107 @@ router.post('/getStatistics', (req, res, next) => {
         });
     });
 });
+
+router.post('/getUserStatistics', (req, res, next) => {
+    
+    User.find()
+    .exec()
+    .then(res1 => {
+        console.log(res1);
+        let userNum = res1.length;
+        let numToday = 0;
+        for (let i = 0; i < userNum; i++)
+        {
+            if (res1[i].created === undefined) continue;
+            if (isCurrentDate(res1[i].created))
+                numToday++;
+        }
+
+        let total = 0;
+
+        for (let i = 0; i < userNum; i++)
+        {
+            if (res1[i].projects === null)
+                continue;
+
+            total += res1[i].projects.length;
+        }
+
+        let avgProjPerUser = total / userNum;
+
+        const obj = {
+            totalUsers : userNum,
+            todayUsers : numToday,
+            averageProjectsPerUser : avgProjPerUser
+        }
+        res.status(200).json({
+            status: true,
+            result: obj
+        });
+
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(200).json({
+            status: false,
+            result : "Error finding users"
+        });
+    });
+});
+
+router.post('/getProjectStatistics', (req, res, next) => {
+    
+    Project.find()
+    .exec()
+    .then(res1 => {
+        let projNum = res1.length;
+        console.log(res1);
+        Statistic.find()
+        .exec()
+        .then(res2 => {
+            console.log(res2);
+           let projAnalysedTotal = res2.length;
+            let total = 0;
+            for (let i = 0; i < projAnalysedTotal; i++)
+            {
+                total += res2[i].median;
+            }
+            totalAvgSentiment = total / projAnalysedTotal;
+
+            const obj = {
+                totalProjects : projNum,
+                totalTimesAnalysed : projAnalysedTotal,
+                totalAverageSentiment : totalAvgSentiment
+            }
+            console.log(obj);
+            res.status(200).json({
+                status: true,
+                result: obj
+            });
+        })
+        .catch(err2 => {
+            res.status(200).json({
+                status: false,
+                error: "Error occurred finding statistics."
+            });
+        });
+
+        
+
+    })
+    .catch(err => {
+        res.status(200).json({
+            status: false,
+            result : "Error finding projects"
+        });
+    });
+});
+
+
+function isCurrentDate(d)
+{
+    const today = new Date();
+    return today.getDate() == d.getDate() && today.getMonth() == d.getMonth() && today.getFullYear() == d.getFullYear();
+}
 
 module.exports = router;
