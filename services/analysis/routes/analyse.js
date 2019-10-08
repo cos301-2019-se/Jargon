@@ -10,7 +10,8 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Statistic = require('../models/statistic');
-const Project = require('../models/project')
+const Project = require('../models/project');
+const User = require('../models/user');
 
 const INTERVAL = 0.05;
 const TOTAL = 1;
@@ -413,6 +414,21 @@ router.post('/getStatistics', (req, res, next) => {
         res.status(200).json({
             status: false,
             result : "Error finding first project"
+        });
+    });
+});
+
+router.post('/getUserStatistics', (req, res, next) => {
+    let userNum = 0;
+    User.find()
+    .exec()
+    .then(res => {
+        userNum = res.length;
+    })
+    .catch(err => {
+        res.status(200).json({
+            status: false,
+            result : "Error finding users"
         });
     });
 });
