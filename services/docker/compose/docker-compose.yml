@@ -1,23 +1,48 @@
 version: '2'
 services:
-    neural-network:
-        build: ../../neural-network/
+    analysis:
+        build: ../../analysis/
         ports:
-            - "5000:5000"
-    controller:
-        build: ../../controller/
-        ports:
-            - "3000:3000"
-    listeners:
-        build: ../../listeners/
-        ports:
-            - "3001:3001"
-    flagger:
-        build: ../../flagger/
-        ports:
-            - "3002:3002"
+            - "3004:3004"
     cleaners:
         build: ../../cleaners/
         ports:
             - "3003:3003"
-
+    controller:
+        build: ../../controller/
+        links: 
+          - rabbitmq 
+        ports:
+            - "3000:3000"
+        depends_on:
+          - rabbitmq
+    flagger:
+        build: ../../flagger/
+        ports:
+            - "3002:3002"
+    listeners:
+        build: ../../listeners/
+        links: 
+          - rabbitmq 
+        ports:
+            - "3001:3001"
+        depends_on:
+          - rabbitmq
+    rabbitmq:
+        image: rabbitmq
+        ports:
+          - "4369:4369"
+          - "5672:5672"
+          - "15672:15672" 
+          - "25672:25672"
+          - "35197:35197"
+    websocket:
+        build: ../../websocket/
+        ports:
+            - "3005:3005"
+    neural-network:
+        build: ../../neural-network/
+        links: 
+          - rabbitmq 
+        depends_on:
+          - rabbitmq
