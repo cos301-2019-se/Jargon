@@ -73,9 +73,17 @@
         <!-- <div class="col-auto " [hidden]="!isReadOnly">
           <button class="btn btn-outline-primary results" (click)="onStartClick()" data-placement="left" title="Start collecting and analysing tweets">Start</button>
         </div> -->
-        <div class="col-auto mx-auto" *ngIf="isReadOnly" data-placement="left" title="Make changes to project">
+        <div class="col-auto ml-auto" *ngIf="isReadOnly" data-placement="left" title="Make changes to project">
           <button class="btn btn-outline-primary results" (click)="onEditClick()">Edit</button>
         </div>
+
+
+        <!--Here is new button-->
+        <div class="col-auto mr-auto" *ngIf="isReadOnly" data-placement="left" title="Delete Project">
+            <button class="btn btn-outline-primary results">Remove</button>
+        </div>
+
+
         <div class="col-auto ml-auto" *ngIf="!isReadOnly" data-toggle="tooltip" data-placement="left" title="Save changes">
             <button class="btn btn-outline-success save" (click)="onSaveClick()">Save <i class="fas fa-check"></i></button>
         </div>
