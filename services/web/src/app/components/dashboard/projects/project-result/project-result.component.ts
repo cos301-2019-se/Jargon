@@ -8,6 +8,8 @@ import { FlagData } from '../../../../interfaces/flagger/flag-data';
 import { FlaggerApiRequesterService } from '../../../../services/flagger-api-requester/flagger-api-requester.service';
 import { ILoadedEventArgs, IAccTextRenderEventArgs } from '@syncfusion/ej2-charts';
 import { SocketService } from '../../../../services/socket-service/socket-service.service';
+import { Router } from '@angular/router';
+import { ApiResponse } from '../../../../interfaces/api-response/api-response';
 
 @Component({
   selector: 'app-project-result',
@@ -15,6 +17,13 @@ import { SocketService } from '../../../../services/socket-service/socket-servic
   styleUrls: ['./project-result.component.css']
 })
 export class ProjectResultComponent implements OnInit {
+
+  /* Data Pagination */
+  public pageIndex: number = 0;
+  public pageData: any[] = [];
+  public PAGE_SIZE: number = 100;
+  public dataSize: number;
+  public pages: any[] = [];
 
   /* Doughnut Chart */
   public piedata: Object[] = [];
@@ -299,7 +308,8 @@ export class ProjectResultComponent implements OnInit {
   constructor(private shareProjectService: SharedProjectService,
       private projectApiRequesterService: ProjectApiRequesterService,
       private flaggerApiRequesterService: FlaggerApiRequesterService,
-      private socketService: SocketService) {
+      private socketService: SocketService,
+      private router: Router) {
     
     
   }
@@ -308,16 +318,30 @@ export class ProjectResultComponent implements OnInit {
     // var list = {"you": 100, "me": 75, "foo": 116, "bar": 15};
     // let keysSorted = Object.keys(list).sort(function(a,b){return list[a]-list[b]})
     // console.log(keysSorted);     // bar,me,you,foo
+    
     this.init();
   }
 
-  init() {
+  private init() {
     // this.initIoConnection();
+    this.pageIndex = 1;
     this.shareProjectService.project.subscribe(
       (project: Project) => {
-        this.projectApiRequesterService.getProjectDetailed(project._id).subscribe(
-          (project: any) => {
-            this.project = project;
+        console.log("Proj Serv:",project);
+        if (project == undefined || project == null) {
+          this.router.navigateByUrl('project-initial');
+          return;
+        }
+        this.project = project;
+        this.dataSize = this.project.size;
+        // Retrieve the project that was selected from the project list
+        this.projectApiRequesterService.getData(project._id, 1, this.PAGE_SIZE).subscribe(
+          (response: ApiResponse) => {
+            if (response == undefined || response == null || !response.success ) {
+              return;
+            }
+    
+            this.pageData = response.result;
 
             // let index = this.project.runs.length - 1;
             // this.selectCurrentRun(index);
@@ -325,8 +349,8 @@ export class ProjectResultComponent implements OnInit {
             // let data: number[] = [];
             // let label: string[] = [];
 
-            console.log(this.project);
-            console.log(this.piedata);
+            console.log("Data:", response);
+            this.filteredData = response.result;
             // this.project.runs.forEach(
             //   (run: Run) => {
             //     data.push(run.averageScore);
@@ -343,74 +367,71 @@ export class ProjectResultComponent implements OnInit {
             
             this.onSortItemClick(this.sorting);
             this.onFilterItemClick(this.filter);
+            this.setPagination();
 
-            console.log("TIMEOUT START");
-            // setTimeout(
-            //   () => {
-                console.log("TIMEOUT DONE");
-                this.projectApiRequesterService.analyse(project._id).subscribe(
-                  (response: any) => {
-                    console.log('ANALYSE:', response);
-                    if (response.status) {
-                      console.log("Get Stats");
-                      this.projectApiRequesterService.projectStatistics(project._id).subscribe(
-                        (result: any) => {
-                          console.log("Response:", result);
-                          this.projectAnalysis = result.result[result.result.length-1];
-                          
-                          this.projectAnalysis.graphs.histogram.map(
-                            (value: number) => {
-                              this.dataHistogram.push({
-                                y: value
-                              });
-                            }
-                          );
-              
-                          this.dataHistogram = [...this.dataHistogram];
-
-                          this.piedata = [];
-
-                          this.piedata.push({x: "Positive", y: this.projectAnalysis.mean, text: + '%'});
-                          this.piedata.push({x: "Negative", y: (1-this.projectAnalysis.mean), text: + '%'});
-              
-                          for (let i = 0; i < this.projectAnalysis.graphs.averageOverTime.length; ++i) {
-                            if (this.projectAnalysis.graphs.averageOverTime[i].averageSentiment >= 0.0) {
-                              this.chartDataAvgSentiment.push(
-                                { 
-                                  x: i, 
-                                  y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
-                                    0.0 :
-                                    this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
-                                }
-                              );
-                            }
-                            // this.chartDataAvgSentiment.push(
-                            //   { 
-                            //     x: i, 
-                            //     y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
-                            //       0.0 :
-                            //       this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
-                            //   }
-                            // );
-                          }
-                          this.chartDataAvgSentiment = [...this.chartDataAvgSentiment];
-              
-                          for (let i = 0; i < this.projectAnalysis.graphs.changeOverTime.length; ++i) {
-                            this.chartDataROC.push(
-                              { 
-                                x: i, 
-                                y: this.projectAnalysis.graphs.changeOverTime[i]
-                              }
-                            );
-                          }
-                          this.chartDataROC = [...this.chartDataROC];
+            return; // do not call analyse from UI
+            console.log("TIMEOUT DONE");
+            this.projectApiRequesterService.analyse(project._id).subscribe(
+              (response: any) => {
+                console.log('ANALYSE:', response);
+                if (response.status) {
+                  console.log("Get Stats");
+                  this.projectApiRequesterService.projectStatistics(project._id).subscribe(
+                    (result: any) => {
+                      console.log("Response:", result);
+                      this.projectAnalysis = result.result[result.result.length-1];
+                      
+                      this.projectAnalysis.graphs.histogram.map(
+                        (value: number) => {
+                          this.dataHistogram.push({
+                            y: value
+                          });
                         }
                       );
+          
+                      this.dataHistogram = [...this.dataHistogram];
+
+                      this.piedata = [];
+
+                      this.piedata.push({x: "Positive", y: this.projectAnalysis.mean, text: + '%'});
+                      this.piedata.push({x: "Negative", y: (1-this.projectAnalysis.mean), text: + '%'});
+          
+                      for (let i = 0; i < this.projectAnalysis.graphs.averageOverTime.length; ++i) {
+                        if (this.projectAnalysis.graphs.averageOverTime[i].averageSentiment >= 0.0) {
+                          this.chartDataAvgSentiment.push(
+                            { 
+                              x: i, 
+                              y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+                                0.0 :
+                                this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+                            }
+                          );
+                        }
+                        // this.chartDataAvgSentiment.push(
+                        //   { 
+                        //     x: i, 
+                        //     y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+                        //       0.0 :
+                        //       this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+                        //   }
+                        // );
+                      }
+                      this.chartDataAvgSentiment = [...this.chartDataAvgSentiment];
+          
+                      for (let i = 0; i < this.projectAnalysis.graphs.changeOverTime.length; ++i) {
+                        this.chartDataROC.push(
+                          { 
+                            x: i, 
+                            y: this.projectAnalysis.graphs.changeOverTime[i]
+                          }
+                        );
+                      }
+                      this.chartDataROC = [...this.chartDataROC];
                     }
-                  }
-                );
-            //   }, this.project.trackTime
-            // );
+                  );
+                }
+              }
+            );
           }
         );
 
@@ -489,6 +510,77 @@ export class ProjectResultComponent implements OnInit {
       });
   }
 
+  onNextClick() {
+    const MAX_PAGE = Math.ceil(this.dataSize/this.PAGE_SIZE);
+    if (this.pageIndex + 1 <= MAX_PAGE) {
+      this.pageIndex++;
+      this.setPagination();
+      this.retrieveData();
+    }
+  }
+
+  onPreviousClick() {
+    if (this.pageIndex - 1 >= 1) {
+      this.pageIndex--;
+      this.setPagination();
+      this.retrieveData();
+    }
+  }
+
+  onPageClick(index: number) {
+    if (this.pageIndex >= 1 && this.pageIndex < this.dataSize/this.PAGE_SIZE) {
+      this.pageIndex = <number>index;
+      this.setPagination();
+      this.retrieveData();
+    }
+  }
+
+  private setPagination() {
+    const MAX_PAGE = Math.ceil(this.dataSize/this.PAGE_SIZE);
+    this.pages = [];
+    let index = this.pageIndex;
+    if (index == MAX_PAGE) {
+      index -= 4;
+    } else if (index == MAX_PAGE - 1) {
+      index -= 3;
+    } else if (index == MAX_PAGE - 2) {
+      index -= 2;
+    } else {
+      index -= 2;
+    }
+    if (index < 1) {
+      index = 1;
+    }
+    for (let i = index, count = 0; i <= MAX_PAGE && count < 5; ++i, ++count) {
+      this.pages.push(i);
+    }
+  }
+
+  private retrieveData() {
+    this.projectApiRequesterService.getData(this.project._id, this.pageIndex, this.PAGE_SIZE).subscribe(
+      (response: ApiResponse) => {
+        if (response == undefined || response == null || !response.success ) {
+          return;
+        }
+        if (response.result == undefined || response.result == null) {
+          // no data received
+          console.log("No Tweets Received");
+          return;
+        }
+        if (response.result.length == 0) {
+          console.log("Empty Tweet Array");
+        }
+
+        this.filteredData = [];
+        this.filteredData = [...response.result];
+        
+        this.onSortItemClick(this.sorting);
+        this.onFilterItemClick(this.filter);
+        this.setPagination();
+      }
+    );
+  }
+
   onChartClicked(event: any) {
     if (event.active == undefined || event.active == null || event.active.length == 0) {
       return;
@@ -527,7 +619,6 @@ export class ProjectResultComponent implements OnInit {
   }
 
   onSortItemClick(value: string) {
-    console.log("AAAA");
     if (value === "Oldest") {
       this.filteredData.sort(
         (itm1, itm2) => {
@@ -554,6 +645,7 @@ export class ProjectResultComponent implements OnInit {
 
   onFilterItemClick(value: string) {
     console.log("BBBB");
+    return;
     if (value === "All") {
       console.log("ALL");
       this.filteredData = [...this.project.data];

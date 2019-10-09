@@ -3,6 +3,7 @@ import {HostListener} from '@angular/core';
 import * as $ from 'jquery';
 import { GlobalService } from '../../services/global-service/global-service.service';
 import { Router } from '@angular/router';
+import { User } from '../../interfaces/login-register/login-register';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,6 +14,8 @@ export class DashboardComponent implements OnInit {
   public innerWidth: any;
   public collapse: boolean;
   public displaySideBarText: boolean;
+
+  public user: User = null;
 
   directories: any[][] = [];
     // [
@@ -45,6 +48,7 @@ export class DashboardComponent implements OnInit {
       private router: Router) {}
 
   ngOnInit() {
+    this.user = this.globalService.getUserValue();
     this.directories.push([
       { caption: "Home", path: "a", icon: "fa-home" },
     ]);

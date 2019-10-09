@@ -8,7 +8,7 @@ import { Project } from '../../interfaces/project/project';
 })
 
 export class ProjectApiRequesterService {
-  apiURL = 'http://127.0.0.1:3000';
+  apiURL = 'http://localhost:3000/projects';
   public firstPage = '';
   public prevPage = '';
   public nextPage = '';
@@ -17,19 +17,19 @@ export class ProjectApiRequesterService {
   constructor(private httpClient: HttpClient) {}
  
   public getProjectsBasic() {
-    return this.httpClient.get(`${this.apiURL}/projects/basicTokenized`);
+    return this.httpClient.post(`${this.apiURL}/basicTokenized`, {});
   }
 
   public getProjectsDetailed() {
-    return this.httpClient.get(`${this.apiURL}/projects/detailedTokenized`);
+    return this.httpClient.get(`${this.apiURL}/detailedTokenized`);
   }
 
   public getProjectDetailed(id: string) {
-    return this.httpClient.post(`${this.apiURL}/projects/detailedSearchTokenized`, { id: id });
+    return this.httpClient.post(`${this.apiURL}/detailedSearchTokenized`, { id: id });
   }
 
   public createProject(project: Project) {
-    return this.httpClient.post(`${this.apiURL}/projects/createTokenized`, project);
+    return this.httpClient.post(`${this.apiURL}/createTokenized`, project);
   }
 
   public searchProject(project: Projects, name: string, type: string){
@@ -41,7 +41,7 @@ export class ProjectApiRequesterService {
       id: project._id,
       platform: project.source
     }
-    return this.httpClient.post(`${this.apiURL}/projects/startStreamTokenized`, body);
+    return this.httpClient.post(`${this.apiURL}/startStreamTokenized`, body);
   }
 
   public updateProject(project: Project) {
@@ -53,14 +53,23 @@ export class ProjectApiRequesterService {
       {'propName': 'source', 'value': project.source},
     ];
 
-    return this.httpClient.post(`${this.apiURL}/projects/editTokenized`, {
+    return this.httpClient.post(`${this.apiURL}/editTokenized`, {
       'id': project._id,
       'updateValues' : updateValues
     });
   }
 
+  public getData(projectId: string, page: number, count: number){
+    const body = {
+      id: projectId,
+      page: page,
+      count: count
+    };
+    return this.httpClient.post(`${this.apiURL}/tweets`, body);
+  }
+
   public deleteProject(id: string) {
-    return this.httpClient.post(`${this.apiURL}/projects/deleteTokenized`, {
+    return this.httpClient.post(`${this.apiURL}/deleteTokenized`, {
       'id': id
     });
   }
@@ -70,7 +79,7 @@ export class ProjectApiRequesterService {
   }
 
   public start(id: number) {
-    return this.httpClient.post(`${this.apiURL}/projects/startTokenized`, {
+    return this.httpClient.post(`${this.apiURL}/startTokenized`, {
       'id': id,
       'platform': 'twitter'
     });

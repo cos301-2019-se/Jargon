@@ -246,7 +246,7 @@
                         </div>
                       </div>
                       <div class="col-auto ml-auto">
-                        Total Tweets: {{project.data.length}}
+                        Total Tweets: {{project.size}}
                       </div>
                     </div>
 
@@ -272,6 +272,19 @@
                             <input type="checkbox" [(ngModel)]="data['checked']" (click)="onCheckboxClick(i)">
                           </div>
                         </div>
+                        <ul class="list-group project-list main-content style-5">
+                          <li class="list-group-item mb-4 paginate">
+                            <nav aria-label="mx-auto Page navigation example">
+                              <ul class="pagination">
+                                <li class="page-item"><a class="page-link" (click)="onPreviousClick()">Previous</a></li>
+    
+                                <li *ngFor="let page of pages; let i = index" class="page-item"><a [ngClass]="page == pageIndex ? 'active_page' : 'inactive_page'" class="page-link" (click)="onPageClick(page)">{{page}}</a></li>
+    
+                                <li class="page-item"><a class="page-link" (click)="onNextClick()">Next</a></li>
+                              </ul>
+                            </nav>
+                          </li>
+                        </ul>
                       </div>
                     </div>
                   </div>

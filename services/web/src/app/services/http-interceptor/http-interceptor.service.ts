@@ -31,19 +31,17 @@ export class HttpInterceptorService implements HttpInterceptor {
     return next.handle(request).pipe(
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
-          //add success/failure dialog
-          // if (event.status == 200) {
-          //   console.log("Event 200:", event);
-          //   let response: ApiResponse = event.body;
-          //   if (response.success == true) {
-          //     this.notifierService.notify('success', response.message);
-          //   } else {
-          //     this.notifierService.notify('error', response.message);
-          //   }
-          // } else {
-          //   let response: ApiResponse = event.body;
-          //   this.notifierService.notify('error', response.message);
-          // }
+          if (event.status == 200) {
+            let response: ApiResponse = event.body;
+            if (response.success == true) {
+              this.notifierService.notify('success', response.message);
+            } else {
+              this.notifierService.notify('error', response.message);
+            }
+          } else {
+            let response: ApiResponse = event.body;
+            this.notifierService.notify('error', response.message);
+          }
         }
         return event;
       }),
@@ -52,12 +50,19 @@ export class HttpInterceptorService implements HttpInterceptor {
           console.log(error);
           if (error.status === 0) {
             this.notifierService.notify('error', error.statusText);
-          }
-          if (error.status === 401) {
+          } else if (error.status === 401) {
             // auto logout if 401 response returned from api
+            this.notifierService.notify('error', 'Unauthorised. Logging out');
             this.globalService.logout();
             location.reload(true);
-            this.notifierService.notify('error', 'Unauthorised. Logging out');
+          } else {
+            if (error.error != undefined && error.error != null) {
+              if (error.error.message != undefined || error.error.message != null) {
+                this.notifierService.notify('error', error.error.message);
+              }
+            } else {
+              this.notifierService.notify('error', 'An error has occured');
+            }
           }
 
           // const error = err.error.message || err.statusText;

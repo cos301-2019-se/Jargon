@@ -42,6 +42,13 @@ export class AdminApiRequesterService {
     return this.httpClient.post(`${this.apiURL}/updateProject`, project)
   }
 
+  public deleteProject(projectId: string) {
+    const body = {
+      id: projectId
+    };
+    return this.httpClient.post(`${this.apiURL}//deleteProjectAdmin`, body);
+  }
+
   public getUser() {
     const body = {};
     return this.httpClient.post(`${this.apiURL}/getUser`, body);
@@ -59,8 +66,8 @@ export class AdminApiRequesterService {
         {'propName': 'surname', 'value': user.surname},
         {'propName': 'email', 'value': user.email},
         {'propName': 'username', 'value': user.username},
-        {'propName': 'password', 'value': user.password},
-        {'propName': 'passwordConfirm', 'value': user.passwordConfirm}
+        // {'propName': 'password', 'value': user.password},
+        // {'propName': 'passwordConfirm', 'value': user.passwordConfirm}
       ]
     };
     return this.httpClient.post(`${this.apiURL}/editUser`, body);
@@ -74,8 +81,8 @@ export class AdminApiRequesterService {
         {'propName': 'surname', 'value': user.surname},
         {'propName': 'email', 'value': user.email},
         {'propName': 'username', 'value': user.username},
-        {'propName': 'password', 'value': user.password},
-        {'propName': 'passwordConfirm', 'value': user.passwordConfirm}
+        // {'propName': 'password', 'value': user.password},
+        // {'propName': 'passwordConfirm', 'value': user.passwordConfirm}
       ]
     };
     return this.httpClient.post(`${this.apiURL}/editUserAdmin`, body);

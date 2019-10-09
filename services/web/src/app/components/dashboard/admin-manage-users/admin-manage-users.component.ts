@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AdminApiRequesterService } from '../../../services/admin-api-requester/admin-api-requester.service';
 import { User } from '../../../interfaces/login-register/login-register';
 import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
+import { ApiResponse } from '../../../interfaces/api-response/api-response';
 
 @Component({
   selector: 'app-admin-manage-users',
@@ -18,12 +19,13 @@ export class AdminManageUsersComponent implements OnInit {
 
   ngOnInit() {
     this.adminApiRequester.getUsersAdmin().subscribe(
-      (users: User[]) => {
-        console.log(users);
+      (response: ApiResponse) => {
+        console.log(response);
 
-        if (users !== undefined && users !== null && users.length !== undefined) {
+        if (response.result !== undefined && response.result !== null && response.result.length !== undefined) {
           let list = [];
           let count = 0;
+          let users = response.result;
           for (let i = 0; i < users.length; ++i) {
             let temp = {
               id: "",
@@ -66,8 +68,8 @@ export class AdminManageUsersComponent implements OnInit {
 
   onRemoveUserClick(id: string) {
     this.adminApiRequester.deleteUser(id).subscribe(
-      (res: any) => {
-        console.log(res);
+      (response: ApiResponse) => {
+        console.log(response);
       }
     );
   }

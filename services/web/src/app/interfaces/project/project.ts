@@ -9,6 +9,7 @@ export class Project {
     public status: boolean = false;
     public trackTime: number = 0;
     public whitelist: string[] = [];
+    public size: number = 0;
     public _id: string = "";
 
     compare(object: Project) : boolean {

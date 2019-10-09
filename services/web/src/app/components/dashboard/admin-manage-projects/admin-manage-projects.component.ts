@@ -3,6 +3,7 @@ import { GlobalService } from '../../../services/global-service/global-service.s
 import { AdminApiRequesterService } from '../../../services/admin-api-requester/admin-api-requester.service';
 import { Project } from '../../../interfaces/project/project';
 import { SharedAdminProjectService } from '../../../services/shared-admin-project/shared-admin-project.service';
+import { ApiResponse } from '../../../interfaces/api-response/api-response';
 
 @Component({
   selector: 'app-admin-manage-projects',
@@ -40,6 +41,7 @@ export class AdminManageProjectsComponent implements OnInit {
 
   ngOnInit() {
     this.projects = this.sharedAdminProjectService.getProjects();
+    console.log("Projects:", this.projects);
     if (this.projects === null) {
       this.onRefreshProjectsClick();
     } else {
@@ -66,10 +68,10 @@ export class AdminManageProjectsComponent implements OnInit {
     this.loading = true;
     this.projects = null;
     this.adminApiRequester.basicAllProjects().subscribe(
-      (projects: Project[]) => {
-        console.log(projects);
+      (response: ApiResponse) => {
+        console.log(response);
         this.pages = [];
-        this.sharedAdminProjectService.setProjects(projects);
+        this.sharedAdminProjectService.setProjects(response.result);
         this.projects = this.sharedAdminProjectService.getProjects();
         this.projectsLength = this.projects.length/this.PAGE_SIZE;
 
