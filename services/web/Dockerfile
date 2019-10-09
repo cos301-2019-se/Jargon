@@ -19,14 +19,16 @@ RUN npm install
 
 COPY . .
 
-ARG ENV
+ARG NODE_ENV
 
 # RUN npm run build:prod
 RUN npm run build
-RUN run start
+# CMD [ "ng", "serve" ]
 
 # Stage 2
 FROM nginx:1.13.12-alpine
 
-COPY --from=node /usr/src/app/dist /usr/share/nginx/html
+COPY --from=node /usr/src/app/dist/Jargon /usr/share/nginx/html
 COPY docker/nginx /etc/nginx/conf.d
+
+# CMD [ "ng", "serve" ]

@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 services:
     analysis:
         build: ../../analysis/
@@ -28,6 +28,12 @@ services:
             - "3001:3001"
         depends_on:
           - rabbitmq
+    neural-network:
+        build: ../../neural-network/
+        links: 
+          - rabbitmq 
+        depends_on:
+          - rabbitmq
     rabbitmq:
         image: rabbitmq
         ports:
@@ -36,13 +42,12 @@ services:
           - "15672:15672" 
           - "25672:25672"
           - "35197:35197"
+    web:
+        build: ../../web/
+        ports:
+            - "80:80"
     websocket:
         build: ../../websocket/
         ports:
             - "3005:3005"
-    neural-network:
-        build: ../../neural-network/
-        links: 
-          - rabbitmq 
-        depends_on:
-          - rabbitmq
+
