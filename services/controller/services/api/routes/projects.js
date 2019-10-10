@@ -946,7 +946,7 @@ router.post('/deleteTokenized', (req, res, next) => {
                 Project.find({_id : id})
                 .exec()
                 .then((result)=>{
-                    if((result["createdBy"]==tokenPlainText.id)&&(result["deleted"]==false)){
+                    if((result[0]["createdBy"]==tokenPlainText.id)&&(result[0]["deleted"]==false)){
                         result[0].status = true;
                         result[0].save().then(
                             ()=>{
