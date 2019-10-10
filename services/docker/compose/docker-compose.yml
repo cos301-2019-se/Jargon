@@ -10,38 +10,38 @@ services:
             - "3003:3003"
     controller:
         build: ../../controller/
-        links: 
-          - rabbitmq 
+        # links: 
+        #   - rabbitmq 
         ports:
             - "3000:3000"
-        depends_on:
-          - rabbitmq
+        # depends_on:
+        #   - rabbitmq
     flagger:
         build: ../../flagger/
         ports:
             - "3002:3002"
     listeners:
         build: ../../listeners/
-        links: 
-          - rabbitmq 
+        # links: 
+        #   - rabbitmq 
         ports:
             - "3001:3001"
-        depends_on:
-          - rabbitmq
+        # depends_on:
+        #   - rabbitmq
     neural-network:
         build: ../../neural-network/
-        links: 
-          - rabbitmq 
-        depends_on:
-          - rabbitmq
-    rabbitmq:
-        image: rabbitmq
-        ports:
-          - "4369:4369"
-          - "5672:5672"
-          - "15672:15672" 
-          - "25672:25672"
-          - "35197:35197"
+        # links: 
+        #   - rabbitmq 
+        # depends_on:
+        #   - rabbitmq
+    # rabbitmq:
+    #     image: rabbitmq
+    #     ports:
+    #       - "4369:4369"
+    #       - "5672:5672"
+    #       - "15672:15672" 
+    #       - "25672:25672"
+    #       - "35197:35197"
     web:
         build: ../../web/
         ports:
