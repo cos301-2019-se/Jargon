@@ -718,11 +718,19 @@ router.post('/tweets', (req, res, next) => {
                         });
                     }
                 }else{
-                    res.status(200).json({
-                        success: false,
-                        message: "Invalid index given",
-                        result: null
-                    });
+                    if(page==1){
+                        res.status(200).json({
+                            success: true,
+                            message: "No tweets saved yet",
+                            result: []
+                        });
+                    }else{
+                        res.status(200).json({
+                            success: false,
+                            message: "Invalid index given",
+                            result: []
+                        });
+                    }
                 }
             })
             .catch(err => {
