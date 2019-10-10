@@ -15,11 +15,13 @@
               <div class="form-group">
                 <label for="project-name">Project Name *</label>
                 <input type="text" class="form-control" id="project-name" placeholder="eg. University of Pretoria Sentiments" name="name" [readonly]="isReadOnly" required [(ngModel)]="projectSnapshot.project_name">
+                <div class="ml-5 text-secondary">Hello</div>
               </div>
             </div>
             <div class="col-12 float-left">
               <div class="form-group">
                 <label for="Source">Source *</label>
+                <div class="ml-5 text-secondary">Hehehe</div>
                 <select class="form-control" id="source" name="source" [disabled]="isReadOnly" required [(ngModel)]="projectSnapshot.source" [compareWith]="compareSource">
                   <option value="" selected disabled>Please select a source</option>
                   <option value="Twitter">Twitter</option>
@@ -32,6 +34,7 @@
             <div class="col-12 mb-1">
               <div class="form-group">
                 <label for="project-name">Track Time (s) min(30) * </label>
+                <div class="ml-5 text-secondary">lalala</div>
                 <input type="number" class="form-control" min="30" value="30" name="track" [readonly]="isReadOnly" required [(ngModel)]="projectSnapshot.trackTime">
               </div>
             </div>
@@ -39,6 +42,7 @@
             <div class="col-12 ">
               <div class="form-group">
                 <label for="whitelist1">Whitelisted Words *</label>
+                <div class="ml-5 text-secondary">hehelala</div>
                 <input class="form-control mb-2" id="whitlist1" name="whitelist" placeholder="Press Enter key to select word" required [readonly]="isReadOnly" [(ngModel)]="whitelistword" (keyup.enter)="addWhitelistWord()">
                 <span class="btn btn-white pr-1 pill mr-3 mt-2" *ngFor="let whitelistword of projectSnapshot.whitelist; let i = index">
                   {{whitelistword}}<span class="badge m-1 mr-0"><i class="fas fa-close" (click)="removeWhitelistWord(i)"></i></span>
@@ -51,6 +55,7 @@
                 <label for="blacklist1">Blacklisted Words</label>
                 <div>
                   <input class="form-control mb-2" id="blacklist1" name="blacklist" [readonly]="isReadOnly" placeholder="Press Enter key to select word" [(ngModel)]="blacklistword" (keyup.enter)="addBlacklistWord()">
+                  <div class="ml-5 text-secondary">seesese</div>
                   <span class="btn btn-white pr-1 pill mr-3 mt-2" *ngFor="let blacklistword of projectSnapshot.blacklist; let i = index">
                     {{blacklistword}}<span class="badge m-1 mr-0"><i class="fas fa-close" (click)="removeBlacklistWord(i)"></i></span>
                   </span>
@@ -79,7 +84,7 @@
 
 
         <!--Here is new button-->
-        <div class="col-auto mr-auto" *ngIf="isReadOnly" data-placement="left" title="Delete Project">
+        <div class="col-auto mr-auto" *ngIf="isReadOnly" data-toggle="modal" data-target="#exampleModal2" data-placement="left" title="Delete Project">
             <button class="btn btn-outline-primary results">Remove</button>
         </div>
 
@@ -94,6 +99,8 @@
     </div>
   </div>
 </div>
+
+<!-- Running Project Modal -->
 
 <div class="modal fade mt-5 text-dark" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -111,6 +118,28 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-white btn-danger" data-dismiss="modal">Stop</button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<!-- Confirmation Modal -->
+
+<div class="modal fade text-dark" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirm Removal</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you would like to delete this project?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal"><i class="mr-3 fas fa-check"></i>Confirm</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="mr-3 fas fa-ban"></i>Cancel</button>
       </div>
     </div>
   </div>

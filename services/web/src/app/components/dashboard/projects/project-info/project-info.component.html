@@ -83,7 +83,7 @@
         </div>
 
         <!--Here is new button-->
-        <div class="col-auto mr-auto" *ngIf="isReadOnly" data-placement="left" title="Delete Project">
+        <div class="col-auto mr-auto" *ngIf="isReadOnly" data-toggle="modal" data-target="#exampleModal2"  data-placement="left" title="Delete Project">
             <button class="btn btn-outline-primary results">Remove</button>
         </div>
 
@@ -98,6 +98,8 @@
     </div>
   </div>
 </div>
+
+<!-- Project Status modal -->
 
 <div class="modal fade mt-5 text-dark" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -115,6 +117,28 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-white btn-danger" data-dismiss="modal">Stop</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmtion modal -->
+
+<div class="modal fade text-dark" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirm Removal</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you would like to delete this project?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal"><i class="mr-3 fas fa-check"></i>Confirm</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="mr-3 fas fa-ban"></i>Cancel</button>
       </div>
     </div>
   </div>
