@@ -20,11 +20,17 @@ class TwitterCleaner{
      */
     clean(tweetCollections, callback, response){
         try {
+            let urlRegex = /(https?:\/\/[^\s]+)/g;
+            // let urlRegex = /(https?:\/\/.*[\r\n]*);
             tweetCollections.forEach((tweet)=>{
                 let tweetText = tweet["text"];
                 if((tweetText.indexOf("RT")>-1)&&(tweetText.indexOf("RT")<4)){
                     tweetText = tweetText.slice(tweetText.indexOf(":")+2, tweetText.length);
                 }
+                let removeUrl = tweetText.replace(urlRegex, (url) =>{
+                    return "";
+                });
+                console.log(removeUrl);
                 tweet["text"] = tweetText;     
             })
             callback(tweetCollections, response);
