@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Form, NgForm } from '@angular/forms';
 import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
 import { NotifierService } from 'angular-notifier';
+import { ApiResponse } from '../../../../interfaces/api-response/api-response';
 
 @Component({
   selector: 'app-project-info',
@@ -26,7 +27,8 @@ export class ProjectInfoComponent implements OnInit {
   constructor(private sharedProjectService: SharedProjectService, 
       private projectApiRequesterService: ProjectApiRequesterService,
       private activeRoute: ActivatedRoute,
-      private notifierService: NotifierService) {
+      private notifierService: NotifierService,
+      private router: Router) {
   }
 
   ngOnInit() {
@@ -134,6 +136,30 @@ export class ProjectInfoComponent implements OnInit {
     this.projectApiRequesterService.startProject(this.project).subscribe(
       resp => {
         console.log("Complete:", resp);
+      }
+    );
+  }
+
+  onRemoveProjectClick() {
+    this.projectApiRequesterService.deleteProject(this.project._id).subscribe(
+      (response: ApiResponse) => {
+        if (response == undefined || response == null || !response.success) {
+          return;
+        }
+
+        let tempProjects = this.sharedProjectService.getProjects();
+        let index = -1;
+        for (let i = 0; i < tempProjects.length; ++i) {
+          if (tempProjects[i]._id == this.project._id) {
+            index = i;
+            break;
+          }
+        }
+        if (index >= 0) {
+          tempProjects.splice(index, 1);
+          this.sharedProjectService.setProjects(tempProjects);
+        }
+        this.router.navigateByUrl('/dashboard/projects/project-initial');
       }
     );
   }

@@ -11,11 +11,11 @@ import { ApiResponse } from '../../../interfaces/api-response/api-response';
 })
 export class AdminManageUsersComponent implements OnInit {
 
+  userSnapshot: User[] = [];
   users: User[][] = [];
   user: User = new User();
 
-  constructor(private adminApiRequester: AdminApiRequesterService,
-      private projectApiRequester: ProjectApiRequesterService) {}
+  constructor(private adminApiRequester: AdminApiRequesterService) {}
 
   ngOnInit() {
     this.adminApiRequester.getUsersAdmin().subscribe(
@@ -23,63 +23,85 @@ export class AdminManageUsersComponent implements OnInit {
         console.log(response);
 
         if (response.result !== undefined && response.result !== null && response.result.length !== undefined) {
-          let list = [];
-          let count = 0;
-          let users = response.result;
-          for (let i = 0; i < users.length; ++i) {
-            let temp = {
-              id: "",
-              username: "",
-              name: "",
-              surname: "",
-              email: "",
-            };
-            if (users[i].id != undefined && users[i].id != null) {
-              temp.id = users[i].id;
-            }
-            if (users[i].username != undefined && users[i].username != null) {
-              temp.username = users[i].username;
-            }
-            if (users[i].name != undefined && users[i].name != null) {
-              temp.name = users[i].name;
-            }
-            if (users[i].surname != undefined && users[i].surname != null) {
-              temp.surname = users[i].surname;
-            }
-            if (users[i].email != undefined && users[i].email != null) {
-              temp.email = users[i].email;
-            }
-            list.push(temp);
-            if (++count >= 3) {
-              count = 0;
-              this.users.push([...list]);
-              list = [];
-            }
-          }
-          if (count != 0) {
-            this.users.push([...list]);
-            list = [];
-          }
+          this.userSnapshot = response.result;
+          this.setUserArray();
         }
-        console.log(this.users);
       }
     );
   }
 
-  onRemoveUserClick(id: string) {
-    this.adminApiRequester.deleteUser(id).subscribe(
+  onRemoveUserClick() {
+    console.log("user:", this.user);
+    this.adminApiRequester.deleteUser(this.user.id).subscribe(
       (response: ApiResponse) => {
-        console.log(response);
+        if (response == undefined || response == null || !response.success) {
+          return;
+        }
+        return;
+
+        let index = -1;
+        for (let i = 0; i < this.userSnapshot.length; ++i) {
+          let tempUser = this.userSnapshot[i];
+          if (this.user.id == tempUser.id) {
+            index = i;
+            break;
+          }
+        }
+        if (index >= 0) {
+          this.userSnapshot.splice(index, 1);
+        }
+        this.setUserArray();
       }
     );
   }
 
   onViewUserClick(user: User) {
     this.user = user;
+    console.log("Selected:", user);
   }
 
   onCreateUserClick() {
     
+  }
+
+  private setUserArray() {
+    let list = [];
+    let count = 0;
+    for (let i = 0; i < this.userSnapshot.length; ++i) {
+      let temp = {
+        id: "",
+        username: "",
+        name: "",
+        surname: "",
+        email: "",
+      };
+      if (this.userSnapshot[i].id != undefined && this.userSnapshot[i].id != null) {
+        temp.id = this.userSnapshot[i].id;
+      }
+      if (this.userSnapshot[i].username != undefined && this.userSnapshot[i].username != null) {
+        temp.username = this.userSnapshot[i].username;
+      }
+      if (this.userSnapshot[i].name != undefined && this.userSnapshot[i].name != null) {
+        temp.name = this.userSnapshot[i].name;
+      }
+      if (this.userSnapshot[i].surname != undefined && this.userSnapshot[i].surname != null) {
+        temp.surname = this.userSnapshot[i].surname;
+      }
+      if (this.userSnapshot[i].email != undefined && this.userSnapshot[i].email != null) {
+        temp.email = this.userSnapshot[i].email;
+      }
+      list.push(temp);
+      if (++count >= 3) {
+        count = 0;
+        this.users.push([...list]);
+        list = [];
+      }
+    }
+    if (count != 0) {
+      this.users.push([...list]);
+      list = [];
+    }
+    console.log(this.users);
   }
 
 }
