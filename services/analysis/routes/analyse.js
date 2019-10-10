@@ -325,23 +325,26 @@ router.post('/', (req, res, next) => {
         stat.save()
         .then(result => {
             res.status(200).json({
-                status: true,
-                result : "Statistics calculated and added"
+                success: true,
+                message: "Statistics calculated and added",
+                result: null
             });
         })
         .catch(err => {
             console.log(err);
             res.status(200).json({
-                status: false,
-                result: "Failed to add stats"
+                success: false,
+                message: "Failed to add statistics",
+                result: null
             });
         });
     })
     .catch(err => {
         console.log(err);
         res.status(200).json({
-            status: false,
-            result: "Error finding project"
+            success: false,
+            message: "Error finding project",
+            result: null
         });
     });
     
@@ -372,22 +375,25 @@ router.post('/compare', (req, res, next) => {
                 secondProject : res2
             }
             res.send(200).json({
-                status: true,
+                success: true,
+                message: "Successfully retrieved statistics",
                 result: obj
             })
             
         })
         .catch(err2 => {
             res.status(200).json({
-                status: false,
-                result : "Error finding second project"
+                success: false,
+                message: "Error finding second project",
+                result: null
             })
         });
     })
     .catch(err1 => {
         res.status(200).json({
-            status: false,
-            result : "Error finding first project"
+            success: false,
+            messsage: "Error finding first project",
+            result: null
         });
     });
 });
@@ -412,7 +418,7 @@ router.post('/getStatistics', (req, res, next) => {
     })
     .catch(err1 => {
         res.status(200).json({
-            status: false,
+            success: false,
             result : "Error finding first project"
         });
     });
@@ -423,7 +429,7 @@ router.post('/getUserStatistics', (req, res, next) => {
     User.find()
     .exec()
     .then(res1 => {
-        console.log(res1);
+        console.log(res1.length);
         let userNum = res1.length;
         let numToday = 0;
         for (let i = 0; i < userNum; i++)
@@ -433,33 +439,47 @@ router.post('/getUserStatistics', (req, res, next) => {
                 numToday++;
         }
 
-        let total = 0;
+        //let total = 0;
 
-        for (let i = 0; i < userNum; i++)
-        {
-            if (res1[i].projects === null)
-                continue;
+        //for (let i = 0; i < userNum; i++)
+        //{
+        //    if (res1[i].projects === null)
+        //        continue;
 
-            total += res1[i].projects.length;
-        }
+        //    total += res1[i].projects.length;
+        //}
 
-        let avgProjPerUser = total / userNum;
+        Project.count({})
+        .exec()
+        .then(res2 => {
+            console.log(res2);
+            let total = res2;
+            let avgProjPerUser = total / userNum;
 
-        const obj = {
-            totalUsers : userNum,
-            todayUsers : numToday,
-            averageProjectsPerUser : avgProjPerUser
-        }
-        res.status(200).json({
-            status: true,
-            result: obj
+            const obj = {
+                totalUsers : userNum,
+                todayUsers : numToday,
+                averageProjectsPerUser : avgProjPerUser
+            }
+            res.status(200).json({
+                success: true,
+                message: "Successfully retrieved User Statistics",
+                result: obj
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(200).json({
+                success: false,
+                result : "Failed to count projects"
+            });
         });
 
     })
     .catch(err => {
         console.log(err);
         res.status(200).json({
-            status: false,
+            success: false,
             result : "Error finding users"
         });
     });
@@ -467,10 +487,10 @@ router.post('/getUserStatistics', (req, res, next) => {
 
 router.post('/getProjectStatistics', (req, res, next) => {
     
-    Project.find()
+    Project.count({})
     .exec()
     .then(res1 => {
-        let projNum = res1.length;
+        let projNum = res1;
         console.log(res1);
         Statistic.find()
         .exec()
@@ -491,24 +511,24 @@ router.post('/getProjectStatistics', (req, res, next) => {
             }
             console.log(obj);
             res.status(200).json({
-                status: true,
+                success: true,
+                message: "Successfully retrieved Project Statistics",
                 result: obj
             });
         })
         .catch(err2 => {
             res.status(200).json({
-                status: false,
-                error: "Error occurred finding statistics."
+                success: false,
+                message: "Error occurred finding statistics",
+                result: null
             });
         });
-
-        
-
     })
     .catch(err => {
         res.status(200).json({
-            status: false,
-            result : "Error finding projects"
+            success: false,
+            message: "Error finding projects",
+            result: null
         });
     });
 });

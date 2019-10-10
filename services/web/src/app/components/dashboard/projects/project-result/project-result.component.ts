@@ -8,6 +8,7 @@ import { ILoadedEventArgs } from '@syncfusion/ej2-charts';
 import { SocketService } from '../../../../services/socket-service/socket-service.service';
 import { Router } from '@angular/router';
 import { ApiResponse } from '../../../../interfaces/api-response/api-response';
+import { AnalyseApiRequesterService } from '../../../../services/analyse-api-requester/analyse-api-requester.service';
 
 @Component({
   selector: 'app-project-result',
@@ -306,6 +307,7 @@ export class ProjectResultComponent implements OnInit {
   constructor(private shareProjectService: SharedProjectService,
       private projectApiRequesterService: ProjectApiRequesterService,
       private flaggerApiRequesterService: FlaggerApiRequesterService,
+      private analyseApiRequesterService: AnalyseApiRequesterService,
       private router: Router) {
     
     
@@ -334,6 +336,7 @@ export class ProjectResultComponent implements OnInit {
         // Retrieve the project that was selected from the project list
         this.projectApiRequesterService.getData(project._id, 1, this.PAGE_SIZE).subscribe(
           (response: ApiResponse) => {
+            console.log("Tweets:", response);
             if (response == undefined || response == null || !response.success ) {
               return;
             }
@@ -365,67 +368,68 @@ export class ProjectResultComponent implements OnInit {
             this.onSortItemClick(this.sorting);
             this.onFilterItemClick(this.filter);
             this.setPagination();
+          }
+        );
 
-            // return; // do not call analyse from UI
-            this.projectApiRequesterService.analyse(project._id).subscribe(
-              (response: ApiResponse) => {
-                if (response != undefined && response != null && response.success) {
-                  this.projectApiRequesterService.projectStatistics(project._id).subscribe(
-                    (response: ApiResponse) => {
-                      console.log("Response:", response);
-                      this.projectAnalysis = response.result[response.result.length-1];
-                      
-                      this.projectAnalysis.graphs.histogram.map(
-                        (value: number) => {
-                          this.dataHistogram.push({
-                            y: value
-                          });
-                        }
-                      );
-          
-                      this.dataHistogram = [...this.dataHistogram];
-
-                      this.piedata = [];
-
-                      this.piedata.push({x: "Positive", y: this.projectAnalysis.mean, text: + '%'});
-                      this.piedata.push({x: "Negative", y: (1-this.projectAnalysis.mean), text: + '%'});
-          
-                      for (let i = 0; i < this.projectAnalysis.graphs.averageOverTime.length; ++i) {
-                        if (this.projectAnalysis.graphs.averageOverTime[i].averageSentiment >= 0.0) {
-                          this.chartDataAvgSentiment.push(
-                            { 
-                              x: i, 
-                              y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
-                                0.0 :
-                                this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
-                            }
-                          );
-                        }
-                        // this.chartDataAvgSentiment.push(
-                        //   { 
-                        //     x: i, 
-                        //     y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
-                        //       0.0 :
-                        //       this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
-                        //   }
-                        // );
-                      }
-                      this.chartDataAvgSentiment = [...this.chartDataAvgSentiment];
-          
-                      for (let i = 0; i < this.projectAnalysis.graphs.changeOverTime.length; ++i) {
-                        this.chartDataROC.push(
-                          { 
-                            x: i, 
-                            y: this.projectAnalysis.graphs.changeOverTime[i]
-                          }
-                        );
-                      }
-                      this.chartDataROC = [...this.chartDataROC];
+        // return; // do not call analyse from UI
+        this.analyseApiRequesterService.analyse(project._id).subscribe(
+          (response: ApiResponse) => {
+            console.log("Analyse:", response);
+            if (response != undefined && response != null && response.success) {
+              this.analyseApiRequesterService.projectStatistics(project._id).subscribe(
+                (response: ApiResponse) => {
+                  console.log("Statistics:", response);
+                  this.projectAnalysis = response.result[response.result.length-1];
+                  
+                  this.projectAnalysis.graphs.histogram.map(
+                    (value: number) => {
+                      this.dataHistogram.push({
+                        y: value
+                      });
                     }
                   );
+      
+                  this.dataHistogram = [...this.dataHistogram];
+
+                  this.piedata = [];
+
+                  this.piedata.push({x: "Positive", y: this.projectAnalysis.mean, text: + '%'});
+                  this.piedata.push({x: "Negative", y: (1-this.projectAnalysis.mean), text: + '%'});
+      
+                  for (let i = 0; i < this.projectAnalysis.graphs.averageOverTime.length; ++i) {
+                    if (this.projectAnalysis.graphs.averageOverTime[i].averageSentiment >= 0.0) {
+                      this.chartDataAvgSentiment.push(
+                        { 
+                          x: i, 
+                          y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+                            0.0 :
+                            this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+                        }
+                      );
+                    }
+                    // this.chartDataAvgSentiment.push(
+                    //   { 
+                    //     x: i, 
+                    //     y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+                    //       0.0 :
+                    //       this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+                    //   }
+                    // );
+                  }
+                  this.chartDataAvgSentiment = [...this.chartDataAvgSentiment];
+      
+                  for (let i = 0; i < this.projectAnalysis.graphs.changeOverTime.length; ++i) {
+                    this.chartDataROC.push(
+                      { 
+                        x: i, 
+                        y: this.projectAnalysis.graphs.changeOverTime[i]
+                      }
+                    );
+                  }
+                  this.chartDataROC = [...this.chartDataROC];
                 }
-              }
-            );
+              );
+            }
           }
         );
 

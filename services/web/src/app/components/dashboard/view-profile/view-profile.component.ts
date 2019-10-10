@@ -16,11 +16,8 @@ export class ViewProfileComponent implements OnInit {
 
   isReadOnly: boolean = true;
 
-  private readonly notifier: NotifierService;
-
   constructor(private adminApiRequester: AdminApiRequesterService, 
       private notifierService: NotifierService) {
-    this.notifier = notifierService;
   }
 
   ngOnInit() {

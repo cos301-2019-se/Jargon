@@ -83,16 +83,4 @@ export class ProjectApiRequesterService {
     });
   }
 
-  public projectStatistics(id: string) {
-    return this.httpClient.post('http://localhost:3004/analyse/getStatistics', {
-      id: id
-    });
-  }
-
-  public analyse(id: string) {
-    return this.httpClient.post('http://localhost:3004/analyse', {
-      id: id
-    });
-  }
-
 }

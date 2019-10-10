@@ -26,6 +26,7 @@ import { NotifierModule } from 'angular-notifier';
 import { rightToLeft } from '@syncfusion/ej2-base';
 import { HomeComponent } from './home/home/home.component';
 import { StreamComponent } from './stream/stream/stream.component';
+import { AnalyseApiRequesterService } from '../../services/analyse-api-requester/analyse-api-requester.service';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { StreamComponent } from './stream/stream/stream.component';
     ProjectApiRequesterService,
     AdminApiRequesterService,
     NeuralnetApiRequesterService,
+    AnalyseApiRequesterService,
     SharedProjectService,
     HistogramSeriesService,
     LineSeriesService,

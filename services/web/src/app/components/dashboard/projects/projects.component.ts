@@ -87,7 +87,6 @@ export class ProjectsComponent implements OnInit {
   }
 
   onPreviousClick() {
-    console.log("Page Index:", this.pageIndex);
     if (this.pageIndex - 1 >= 1) {
       this.pageIndex--;
       this.setPagination();
@@ -95,7 +94,8 @@ export class ProjectsComponent implements OnInit {
   }
 
   onPageClick(index: number) {
-    if (this.pageIndex >= 1 && this.pageIndex < this.projects.length/this.PAGE_SIZE) {
+    const MAX_PAGE = Math.ceil(this.projects.length/this.PAGE_SIZE);
+    if (index >= 1 && index <= MAX_PAGE) {
       this.pageIndex = <number>index;
       this.setPagination();
     }

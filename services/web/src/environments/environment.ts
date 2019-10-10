@@ -8,7 +8,8 @@ export const environment = {
   urlFlagger: "http://localhost:3002/flag",
   urlProject: "http://localhost:3000/projects",
   urlLogin: "http://localhost:3000/login",
-  urlRegister: "http://localhost:3000/register"
+  urlRegister: "http://localhost:3000/register",
+  urlAnalyse: "http://localhost:3004/analyse"
 };
 
 /*

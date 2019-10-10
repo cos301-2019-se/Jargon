@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
       this.directories.push([
         { caption: "Manage Projects", path: "dashboard/manage-projects", icon: "fa-project-diagram"},
         { caption: "Manage Users", path: "dashboard/manage-users", icon: "fa-users"},
-        // { caption: "User Statistics", path: "dashboard/user-stats", icon: "fa-chart-area"},
+        { caption: "User Statistics", path: "dashboard/user-stats", icon: "fa-chart-area"},
         // { caption: "Neural Network", path: "dashboard/neural-network", icon: "fa-network-wired" },
       ]);
     }
