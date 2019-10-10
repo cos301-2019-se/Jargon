@@ -486,38 +486,42 @@ router.post('/getUserStatistics', (req, res, next) => {
 });
 
 router.post('/getProjectStatistics', (req, res, next) => {
-    
     Project.count({})
     .exec()
     .then(res1 => {
         let projNum = res1;
         console.log(res1);
-        Statistic.find()
+        Statistic.count({})
         .exec()
         .then(res2 => {
             console.log(res2);
-           let projAnalysedTotal = res2.length;
-            let total = 0;
-            for (let i = 0; i < projAnalysedTotal; i++)
-            {
-                total += res2[i].median;
-            }
-            totalAvgSentiment = total / projAnalysedTotal;
-
-            const obj = {
-                totalProjects : projNum,
-                totalTimesAnalysed : projAnalysedTotal,
-                totalAverageSentiment : totalAvgSentiment
-            }
-            console.log(obj);
-            res.status(200).json({
-                success: true,
-                message: "Successfully retrieved Project Statistics",
-                result: obj
-            });
+            let projAnalysedTotal = res2;
+            Statistic.aggregate([{$group: {_id: null, total : {$sum: '$mean'}}}])
+            .exec()
+            .then((result)=>{
+                const returnObject = {
+                    totalProjects : projNum,
+                    totalTimesAnalysed : projAnalysedTotal,
+                    totalAverageSentiment : result[0]["total"]
+                }
+                console.log(returnObject);
+                res.status(200).json({
+                    success: true,
+                    message: "Successfully retrieved Project Statistics",
+                    result: returnObject
+                });
+            }).catch((err)=>{
+                console.log(err);
+                res.status(500).json({
+                    success: false,
+                    message: "Error occurred finding statistics",
+                    result: null
+                });
+            })
         })
         .catch(err2 => {
-            res.status(200).json({
+            console.log(err2);
+            res.status(500).json({
                 success: false,
                 message: "Error occurred finding statistics",
                 result: null
