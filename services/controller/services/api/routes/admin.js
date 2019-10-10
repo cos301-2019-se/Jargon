@@ -271,11 +271,20 @@ router.post('/tweetsAdmin', (req, res, next) => {
                             Project.find({"_id" : projectID, "deleted" : false}, {data: {$slice: [firstIndex, (size-firstIndex+1)]}})
                             .exec()
                             .then(() => {
-                                console.log(result_[0]["data"]);
+                                let returnArray = [];
+                                result_[0]["data"].forEach((element)=>{
+                                    let tempObject = {}
+                                    tempObject["tweetID"] = element["tweetID"];
+                                    tempObject["tweetSentiment"] = element["tweetSentiment"];
+                                    tempObject["tweetText"] = element["tweetObject"]["text"];
+                                    tempObject["id"] = element["id"];
+                                    returnArray.push(tempObject);
+                                })
+                                console.log(returnArray);
                                 res.status(200).json({
                                     message: "Successfully retrieved data",
                                     success: true,
-                                    result: result_[0]["data"] 
+                                    result: returnArray
                                 });
                             })
                             .catch(() => {
