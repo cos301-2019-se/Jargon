@@ -305,3 +305,8 @@ img {
 span {
    color: white !important;
 }
+
+a:hover {
+   cursor: pointer;
+}
+

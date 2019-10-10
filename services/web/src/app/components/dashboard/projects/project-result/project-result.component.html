@@ -14,25 +14,38 @@
                   <div class="card-header">
                     <h5 class="display-5"><b>PROJECT DETAILS</b></h5>
                   </div>
+                  
                   <div class="card-body text-gray">
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Project Name:</h6></div>
-                      <div class="col-6 text-light">{{project.project_name}}</div>
+
+                    <div class="row text-light">
+                      <div class="col-auto mx-auto">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
                     </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Source:</h6></div>
-                      <div class="col-6 text-light">{{project.source}}</div>
-                    </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Whitelisted Words:</h6></div>
-                      <div class="col-6 text-light">{{project.whitelist.toString()}}</div>
-                    </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Blacklisted Words:</h6></div>
-                      <div class="col-6 text-light">{{project.blacklist.toString()}}</div>
+                    
+                    <!-- NG IF here -->
+                    <div>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Project Name:</h6></div>
+                        <div class="col-6 text-light">{{project.project_name}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Source:</h6></div>
+                        <div class="col-6 text-light">{{project.source}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Whitelisted Words:</h6></div>
+                        <div class="col-6 text-light">{{project.whitelist.toString()}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Blacklisted Words:</h6></div>
+                        <div class="col-6 text-light">{{project.blacklist.toString()}}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -41,40 +54,53 @@
                     <h5 class="display-5"><b>STATISTICS</b></h5>
                   </div>
                   <div class="card-body text-gray">
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Minimum:</h6></div>
-                      <div class="col-6 text-light">{{projectAnalysis.min | number}}</div>
+
+                    <div class="row text-light">
+                      <div class="col-auto mx-auto">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
                     </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Maximum:</h6></div>
-                      <div class="col-6 text-light">{{projectAnalysis.max | number}}</div>
-                    </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Mean:</h6></div>
-                      <div class="col-6 text-light">{{projectAnalysis.mean | number}}</div>
-                    </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Median:</h6></div>
-                      <div class="col-6 text-light">{{projectAnalysis.median | number}}</div>
-                    </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Mode:</h6></div>
-                      <div class="col-6 text-light">{{projectAnalysis.mode[0] | number}}</div>
-                    </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Standard Deviation:</h6></div>
-                      <div class="col-6 text-light">{{projectAnalysis.std_dev | number}}</div>
-                    </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Variance:</h6></div>
-                      <div class="col-6 text-light">{{projectAnalysis.variance | number}}</div>
-                    </div>
+
+                    <!-- NG if Here -->
+                    
+                    <div>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Minimum:</h6></div>
+                        <div class="col-6 text-light">{{projectAnalysis.min | number}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Maximum:</h6></div>
+                        <div class="col-6 text-light">{{projectAnalysis.max | number}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Mean:</h6></div>
+                        <div class="col-6 text-light">{{projectAnalysis.mean | number}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Median:</h6></div>
+                        <div class="col-6 text-light">{{projectAnalysis.median | number}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Mode:</h6></div>
+                        <div class="col-6 text-light">{{projectAnalysis.mode[0] | number}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Standard Deviation:</h6></div>
+                        <div class="col-6 text-light">{{projectAnalysis.std_dev | number}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Variance:</h6></div>
+                        <div class="col-6 text-light">{{projectAnalysis.variance | number}}</div>
+                      </div>
+                     </div>
                   </div>
                 </div>
               </div>
@@ -86,11 +112,24 @@
                   </div>
                   <div class="card-body text-gray">
 
-                    <ejs-accumulationchart id="chart-container" [legendSettings]='legendSettings' background='rgba(1,1,1,0)'>
-                        <e-accumulation-series-collection>
-                            <e-accumulation-series [dataSource]='piedata' xName='x' yName='y' innerRadius='50%' [dataLabel]='datalabel' legendShape='Rectangle'></e-accumulation-series>
-                        </e-accumulation-series-collection>
-                    </ejs-accumulationchart>
+                    <div class="row text-light">
+                      <div class="col-auto mx-auto">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ng if here -->
+
+                    <div>
+                      <ejs-accumulationchart id="chart-container" [legendSettings]='legendSettings' background='rgba(1,1,1,0)'>
+                          <e-accumulation-series-collection>
+                              <e-accumulation-series [dataSource]='piedata' xName='x' yName='y' innerRadius='50%' [dataLabel]='datalabel' legendShape='Rectangle'></e-accumulation-series>
+                          </e-accumulation-series-collection>
+                      </ejs-accumulationchart>
+                    </div>
+
                   </div>
                 </div>
                 <div class="card shadow-lg">
@@ -98,6 +137,15 @@
                     <h5 class="display-5"><b>History</b></h5>
                   </div>
                   <div class="card-body">
+
+                    <div class="row">
+                      <div class="col-auto mx-auto">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </div>
+
                     <div style="display: block;">
 
                       <ejs-chart id='chart-histogram' style='display:block;' align='center' [primaryXAxis]='primaryXAxisHistogram' [primaryYAxis]='primaryYAxisHistogram' (load)='loadHistogram($event)'background='rgba(255,255,255,0)'>
@@ -128,6 +176,14 @@
                     <h5 class="display-5"><b>Average Sentiment Over Time</b></h5>
                   </div>
                   <div class="card-body">
+                    <div class="row">
+                      <div class="col-auto mx-auto">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </div>
+
                     <div>
                       <div style="display: block">
 
@@ -172,6 +228,15 @@
                     <h5 class="display-5"><b>Average Change in Sentiment Over Time</b></h5>
                   </div>
                   <div class="card-body">
+
+                    <div class="row">
+                      <div class="col-auto mx-auto">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </div>
+
                     <div>
                       <div style="display: block">
 
