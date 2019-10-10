@@ -326,3 +326,7 @@ select:focus, input:focus {
 ::placeholder {
    color: rgb(136, 136, 156) !important;
 }
+
+a:hover {
+   cursor: pointer;
+}

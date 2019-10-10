@@ -46,7 +46,7 @@
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                               <a class="dropdown-item" href="#" data-toggle="modal" data-target="#myModal" (click)="onViewUserClick(user)"><i class="fas fa-eye mr-3"></i>View user</a>
                                               <div class="dropdown-divider"></div>
-                                              <a class="dropdown-item" href="#"><i class="fas fa-trash mr-3"></i>Remove user</a>
+                                              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModal2"><i class="fas fa-trash mr-3"></i>Remove user</a>
                                             </div>
                                           </div>
                                         </div>
@@ -73,8 +73,8 @@
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
+    <div class="modal-content modal-content-color">
+      <div class="modal-header modal-header-color">
         <h5>User Details</h5>
         <button type="button" class="text-light" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -104,3 +104,25 @@
     </div>
   </div>
 </div>
+
+<!-- Confirmtion modal -->
+
+<div class="modal fade text-dark" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirm Removal</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you would like to remove this user?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal"><i class="mr-3 fas fa-check"></i>Confirm</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="mr-3 fas fa-ban"></i>Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
