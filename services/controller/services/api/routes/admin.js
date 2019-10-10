@@ -282,7 +282,7 @@ router.post('/tweetsAdmin', (req, res, next) => {
                         res.status(200).json({
                             success: false,
                             message: "Invalid index given",
-                            result: null
+                            result: []
                         });
                     }
                 })

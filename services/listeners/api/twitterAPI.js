@@ -119,7 +119,7 @@ router.post('/stream', (req, res, next) => {
     });
 });
 
-router.post('/fixTweets', (req, res, next) => {
+router.post('/fixTweetsSentiments', (req, res, next) => {
     const id = req.body.id;
     let unprocessedTweets = [];
     Project.find({_id: id})
@@ -153,6 +153,54 @@ router.post('/fixTweets', (req, res, next) => {
         console.log(err);
         res.status(500).json({
             error: err
+        });
+    });
+});
+
+router.post('/fixTweetsLanguage', (req, res, next) => {
+    const id = req.body.id;
+    let allowedTweets = [];
+    Project.find()
+    .exec()
+    .then(results => {
+        console.log(results.length + " projects found");
+        if(results.length>0){
+            for(let x=0; x<results.length; x++){
+                let countRemoved = 0;
+                results[x].data.forEach((element) => {
+                    // console.log("checking tweet");
+                    if(element['tweetObject']['lang']=="en"){
+                        allowedTweets.push(element);
+                        console.log("english tweet found");
+                    }else{
+                        countRemoved++;
+                    }
+                });
+                results[x].data = allowedTweets;
+                results[x].save().then(
+                    (result)=>{   
+                        console.log("Unprocessable tweets removed: " + countRemoved);  
+                    }
+                ).catch((err) =>{
+                    console.log(err);
+                    response.status(500).json({
+                        success: false
+                    });
+                })
+            }
+            res.status(200).json({
+                success: true
+            });
+        }else{
+            res.status(200).json({
+                success: true
+            });
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            success: false
         });
     });
 });
