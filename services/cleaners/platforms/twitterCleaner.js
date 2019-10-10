@@ -31,7 +31,7 @@ class TwitterCleaner{
                     return "";
                 });
                 console.log(removeUrl);
-                tweet["text"] = tweetText;     
+                tweet["text"] = removeUrl;     
             })
             callback(tweetCollections, response);
         } catch (error) {
