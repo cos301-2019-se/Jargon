@@ -4,18 +4,20 @@ import { map } from 'rxjs/operators';
 import { GlobalService } from '../global-service/global-service.service';
 import { LoginDetails } from '../../interfaces/login-register/login-register';
 import { ApiResponse } from '../../interfaces/api-response/api-response';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginApiRequesterService {
 
-  apiURL = 'http://localhost:3000';
+  apiURL = environment.urlLogin;
+
   constructor(private httpClient : HttpClient, 
       private globalService: GlobalService) {}
 
   public login(loginDetails: LoginDetails) {
-    return this.httpClient.post(`${this.apiURL}/login`, loginDetails)
+    return this.httpClient.post(`${this.apiURL}`, loginDetails)
     .pipe(
       map(
         (response: ApiResponse) => {

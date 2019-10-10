@@ -1,9 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Project } from '../../../../interfaces/project/project';
-import { SharedProjectService } from '../../../../services/shared-project/shared-project.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Form, NgForm } from '@angular/forms';
-import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
 import { AdminApiRequesterService } from '../../../../services/admin-api-requester/admin-api-requester.service';
 import { SharedAdminProjectService } from '../../../../services/shared-admin-project/shared-admin-project.service';
 import { ApiResponse } from '../../../../interfaces/api-response/api-response';

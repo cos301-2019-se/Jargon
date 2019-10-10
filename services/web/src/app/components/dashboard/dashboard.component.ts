@@ -50,19 +50,20 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.user = this.globalService.getUserValue();
     this.directories.push([
-      { caption: "Home", path: "a", icon: "fa-home" },
+      { caption: "Home", path: "dashboard/home", icon: "fa-home" },
     ]);
     this.directories.push([
       { caption: "Projects", path: "dashboard/projects", icon: "fa-clipboard" },
       { caption: "Create Project", path: "dashboard/create-project", icon: "fa-tasks" },
-      { caption: "Compare Project", path: "dashboard/compare-project", icon: "fa-clone" }
+      { caption: "Compare Project", path: "dashboard/compare-project", icon: "fa-clone" },
+      { caption: "Realtime Streaming", path: "dashboard/stream", icon: "fa-stream" }
     ]);
     if (this.globalService.getUserValue().admin) {
       this.directories.push([
         { caption: "Manage Projects", path: "dashboard/manage-projects", icon: "fa-project-diagram"},
         { caption: "Manage Users", path: "dashboard/manage-users", icon: "fa-users"},
-        { caption: "User Statistics", path: "dashboard/user-stats", icon: "fa-chart-area"},
-        { caption: "Neural Network", path: "dashboard/neural-network", icon: "fa-network-wired" },
+        // { caption: "User Statistics", path: "dashboard/user-stats", icon: "fa-chart-area"},
+        // { caption: "Neural Network", path: "dashboard/neural-network", icon: "fa-network-wired" },
       ]);
     }
     this.directories.push([

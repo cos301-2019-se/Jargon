@@ -3,13 +3,15 @@ import { GlobalService } from '../global-service/global-service.service';
 import { HttpClient } from '@angular/common/http';
 import { RegisterDetails, User } from '../../interfaces/login-register/login-register';
 import { Project } from '../../interfaces/project/project';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminApiRequesterService {
 
-  apiURL = 'http://127.0.0.1:3000/admin';
+  apiURL = environment.urlAdmin;
+
   constructor(private httpClient : HttpClient) {}
 
   public createAdminUser(registerDetail: RegisterDetails) {

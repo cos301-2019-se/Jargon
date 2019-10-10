@@ -24,6 +24,8 @@ import { AdminApiRequesterService } from '../../services/admin-api-requester/adm
 
 import { NotifierModule } from 'angular-notifier';
 import { rightToLeft } from '@syncfusion/ej2-base';
+import { HomeComponent } from './home/home/home.component';
+import { StreamComponent } from './stream/stream/stream.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { rightToLeft } from '@syncfusion/ej2-base';
     AdminManageUsersComponent,
     AdminNeuralNetworkComponent,
     AdminUserStatsComponent,
-    ViewProfileComponent
+    ViewProfileComponent,
+    HomeComponent,
+    StreamComponent
   ],
   imports: [
     CommonModule,

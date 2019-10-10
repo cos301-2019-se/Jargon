@@ -2,17 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Projects } from '../../shared/project/projects';
 import { Project } from '../../interfaces/project/project';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ProjectApiRequesterService {
-  apiURL = 'http://localhost:3000/projects';
-  public firstPage = '';
-  public prevPage = '';
-  public nextPage = '';
-  public lastPage = '';
+  
+  apiURL = environment.urlProject;
 
   constructor(private httpClient: HttpClient) {}
  

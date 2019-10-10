@@ -1,12 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SharedProjectService } from '../../../../services/shared-project/shared-project.service';
-import { Project, Run, SocialData, ProjectStatistic, AveragePerTime } from '../../../../interfaces/project/project';
-import { Label, MultiDataSet, PluginServiceGlobalRegistrationAndOptions, Color} from 'ng2-charts';
-import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
+import { Project, Run, SocialData, ProjectStatistic } from '../../../../interfaces/project/project';
 import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
 import { FlagData } from '../../../../interfaces/flagger/flag-data';
 import { FlaggerApiRequesterService } from '../../../../services/flagger-api-requester/flagger-api-requester.service';
-import { ILoadedEventArgs, IAccTextRenderEventArgs } from '@syncfusion/ej2-charts';
+import { ILoadedEventArgs } from '@syncfusion/ej2-charts';
 import { SocketService } from '../../../../services/socket-service/socket-service.service';
 import { Router } from '@angular/router';
 import { ApiResponse } from '../../../../interfaces/api-response/api-response';
@@ -303,12 +301,11 @@ export class ProjectResultComponent implements OnInit {
   // lineChartType = 'line';
   // lineChartPlugins = [];
 
-  ioConnection: any;
+  // ioConnection: any;
 
   constructor(private shareProjectService: SharedProjectService,
       private projectApiRequesterService: ProjectApiRequesterService,
       private flaggerApiRequesterService: FlaggerApiRequesterService,
-      private socketService: SocketService,
       private router: Router) {
     
     
@@ -323,7 +320,7 @@ export class ProjectResultComponent implements OnInit {
   }
 
   private init() {
-    this.initIoConnection();
+    // this.initIoConnection();
     this.pageIndex = 1;
     this.shareProjectService.project.subscribe(
       (project: Project) => {
@@ -335,7 +332,6 @@ export class ProjectResultComponent implements OnInit {
         this.project = project;
         this.dataSize = this.project.size;
         // Retrieve the project that was selected from the project list
-        return;
         this.projectApiRequesterService.getData(project._id, 1, this.PAGE_SIZE).subscribe(
           (response: ApiResponse) => {
             if (response == undefined || response == null || !response.success ) {
@@ -370,17 +366,14 @@ export class ProjectResultComponent implements OnInit {
             this.onFilterItemClick(this.filter);
             this.setPagination();
 
-            return; // do not call analyse from UI
-            console.log("TIMEOUT DONE");
+            // return; // do not call analyse from UI
             this.projectApiRequesterService.analyse(project._id).subscribe(
-              (response: any) => {
-                console.log('ANALYSE:', response);
-                if (response.status) {
-                  console.log("Get Stats");
+              (response: ApiResponse) => {
+                if (response != undefined && response != null && response.success) {
                   this.projectApiRequesterService.projectStatistics(project._id).subscribe(
-                    (result: any) => {
-                      console.log("Response:", result);
-                      this.projectAnalysis = result.result[result.result.length-1];
+                    (response: ApiResponse) => {
+                      console.log("Response:", response);
+                      this.projectAnalysis = response.result[response.result.length-1];
                       
                       this.projectAnalysis.graphs.histogram.map(
                         (value: number) => {
@@ -489,28 +482,25 @@ export class ProjectResultComponent implements OnInit {
     );
   }
 
-  private initIoConnection(): void {
-    console.log("Websocket init");
-    this.socketService.initSocket();
+  // private initIoConnection(): void {
+  //   this.socketService.initSocket();
 
-    this.ioConnection = this.socketService.onMessage()
-      .subscribe((message: any) => {
-        console.log("PUSHING BRUH");
-        console.log("Message: ", message);
-        // this.project.data.push(message);
-        // this.project.data = [...this.project.data];
-      });
+  //   this.ioConnection = this.socketService.onMessage()
+  //     .subscribe((message: any) => {
+  //       // this.project.data.push(message);
+  //       // this.project.data = [...this.project.data];
+  //     });
 
-    // this.socketService.onEvent(<any>'connected')
-    //   .subscribe(() => {
-    //     console.log('connected');
-    //   });
+  //   // this.socketService.onEvent(<any>'connected')
+  //   //   .subscribe(() => {
+  //   //     console.log('connected');
+  //   //   });
       
-    // this.socketService.onEvent(<any>'disconnect')
-    //   .subscribe(() => {
-    //     console.log('disconnected');
-    //   });
-  }
+  //   // this.socketService.onEvent(<any>'disconnect')
+  //   //   .subscribe(() => {
+  //   //     console.log('disconnected');
+  //   //   });
+  // }
 
   onNextClick() {
     const MAX_PAGE = Math.ceil(this.dataSize/this.PAGE_SIZE);
