@@ -55,6 +55,10 @@ app-home {
   width: 100%;
 }
 
+app-stream {
+  width: 100%;
+}
+
 body {
   overflow: auto;
   overflow:initial;

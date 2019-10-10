@@ -310,3 +310,7 @@ a:hover {
    cursor: pointer;
 }
 
+.tweet {
+    background: rgb(5, 61, 124) !important;
+    color: white;
+}
