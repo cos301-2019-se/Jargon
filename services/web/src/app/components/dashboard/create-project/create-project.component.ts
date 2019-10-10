@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Project } from '../../../interfaces/project/project';
 import { ProjectApiRequesterService } from '../../../services/project-api-requester/project-api-requester.service';
 import { NotifierService } from 'angular-notifier';
+import { ApiResponse } from '../../../interfaces/api-response/api-response';
 
 @Component({
   selector: 'app-create-project',
@@ -61,12 +62,13 @@ export class CreateProjectComponent implements OnInit {
 
   onCreateClick() {
     this.projectApi.createProject(this.project).subscribe(
-      (project: any) => {
-        if (project != undefined || project != null) {
-          this.notifierService.notify('success', "Project created successfully")
-          console.log("response:", project);
-          this.project = new Project();
+      (response: ApiResponse) => {
+        if (response == undefined || response == null) {
         }
+        
+        this.project = new Project();
+        this.whitelistword = "";
+        this.blacklistword = "";
       }
     );
   }

@@ -13,9 +13,9 @@ export class SharedProjectService {
   // private projectsSource: BehaviorSubject<Project[]> = new BehaviorSubject<Project[]>(null);
   // projects: Observable<Project[]> = this.projectsSource.asObservable();
 
-  private projects: Project[] = null;
-  // private hideSource: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  // hide: Observable<boolean> = this.hideSource.asObservable();
+  // private projects: Project[] = null;
+  private projectsSource: BehaviorSubject<Project[]> = new BehaviorSubject<Project[]>(null);
+  projects: Observable<Project[]> = this.projectsSource.asObservable();
 
   constructor() {
   }
@@ -29,11 +29,11 @@ export class SharedProjectService {
   }
 
   setProjects(projects: Project[]) {
-    this.projects = projects;
+    this.projectsSource.next(projects);
   }
 
   getProjects(): Project[] {
-    return this.projects;
+    return this.projectsSource.value;
   }
 
 }

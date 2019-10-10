@@ -44,9 +44,9 @@
                                               <i class="fas fa-ellipsis-v"></i>
                                             </div>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#myModal" (click)="onViewUserClick(user)"><i class="fas fa-eye mr-3"></i>View user</a>
+                                              <a class="dropdown-item" data-toggle="modal" data-target="#myModal" (click)="onViewUserClick(user)"><i class="fas fa-eye mr-3"></i>View user</a>
                                               <div class="dropdown-divider"></div>
-                                              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModal2"><i class="fas fa-trash mr-3"></i>Remove user</a>
+                                              <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal2"><i class="fas fa-trash mr-3"></i>Remove user</a>
                                             </div>
                                           </div>
                                         </div>
@@ -120,7 +120,7 @@
           Are you sure you would like to remove this user?
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success" data-dismiss="modal"><i class="mr-3 fas fa-check"></i>Confirm</button>
+          <button type="button" class="btn btn-success" data-dismiss="modal" (click)="onRemoveUserClick()"><i class="mr-3 fas fa-check"></i>Confirm</button>
           <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="mr-3 fas fa-ban"></i>Cancel</button>
         </div>
       </div>

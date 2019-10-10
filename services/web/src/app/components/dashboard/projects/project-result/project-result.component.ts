@@ -323,7 +323,7 @@ export class ProjectResultComponent implements OnInit {
   }
 
   private init() {
-    // this.initIoConnection();
+    this.initIoConnection();
     this.pageIndex = 1;
     this.shareProjectService.project.subscribe(
       (project: Project) => {
@@ -335,6 +335,7 @@ export class ProjectResultComponent implements OnInit {
         this.project = project;
         this.dataSize = this.project.size;
         // Retrieve the project that was selected from the project list
+        return;
         this.projectApiRequesterService.getData(project._id, 1, this.PAGE_SIZE).subscribe(
           (response: ApiResponse) => {
             if (response == undefined || response == null || !response.success ) {
@@ -495,19 +496,20 @@ export class ProjectResultComponent implements OnInit {
     this.ioConnection = this.socketService.onMessage()
       .subscribe((message: any) => {
         console.log("PUSHING BRUH");
-        this.project.data.push(message);
-        this.project.data = [...this.project.data];
+        console.log("Message: ", message);
+        // this.project.data.push(message);
+        // this.project.data = [...this.project.data];
       });
 
-    this.socketService.onEvent(<any>'connected')
-      .subscribe(() => {
-        console.log('connected');
-      });
+    // this.socketService.onEvent(<any>'connected')
+    //   .subscribe(() => {
+    //     console.log('connected');
+    //   });
       
-    this.socketService.onEvent(<any>'disconnect')
-      .subscribe(() => {
-        console.log('disconnected');
-      });
+    // this.socketService.onEvent(<any>'disconnect')
+    //   .subscribe(() => {
+    //     console.log('disconnected');
+    //   });
   }
 
   onNextClick() {

@@ -17,7 +17,7 @@ export class ProjectsComponent implements OnInit {
 
   projectsLength: number = 0;
   pageProjects: Project[] = [];
-  pageIndex: number = 0;
+  pageIndex: number = 1;
   pages: number[] = [];
 
   hide: boolean = true;
@@ -30,7 +30,18 @@ export class ProjectsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.sharedProjectService.projects.subscribe(
+      (projects: Project[]) => {
+        console.log("PROJ:", projects);
+        this.projects = [];
+        if (projects != null) {
+          this.projects = projects;
+        }
+        this.setPagination();
+      }
+    );
     this.projects = this.sharedProjectService.getProjects();
+    console.log("ngOnInit Projects:", this.projects);
     if (this.projects === null) {
       this.onRefreshProjectsClick();
     } else {
@@ -40,11 +51,7 @@ export class ProjectsComponent implements OnInit {
       for (let i = 0; i < this.projects.length; i += this.PAGE_SIZE ) {
           this.pages.push(0);
       }
-  
-      this.pageProjects = [];
-      for (let i = 0; i < this.PAGE_SIZE && i < this.projects.length; ++i) {
-        this.pageProjects.push(this.projects[i]);
-      }
+
     }
     console.log(this.projects);
   }
@@ -61,57 +68,65 @@ export class ProjectsComponent implements OnInit {
         console.log(response);
         this.pages = [];
         this.sharedProjectService.setProjects(response.result);
-        this.projects = this.sharedProjectService.getProjects();
-        this.projectsLength = this.projects.length/this.PAGE_SIZE;
-
-        for (let i = 0; i < this.projects.length; i += this.PAGE_SIZE ) {
-            this.pages.push(0);
-        }
-
-
-        this.pageProjects = [];
-        for (let i = 0; i < this.PAGE_SIZE && i < this.projects.length; ++i) {
-          this.pageProjects.push(this.projects[i]);
-        }
-
         this.loading = false;
       },
       error => {
         console.log("Error:", error);
         this.loading = false;
+        this.projects = [];
       }
     );
   }
 
   onNextClick() {
-    if (this.pageIndex + 1 < this.projects.length/this.PAGE_SIZE) {
+    const MAX_PAGE = Math.ceil(this.projects.length/this.PAGE_SIZE);
+    if (this.pageIndex + 1 <= MAX_PAGE) {
       this.pageIndex++;
-      this.pageProjects = [];
-      
-      for (let i = this.pageIndex * this.PAGE_SIZE, count = 0; i < this.projects.length && count < this.PAGE_SIZE; ++i, ++count) {
-        this.pageProjects.push(this.projects[i]);
-      }
+      this.setPagination();
     }
   }
 
   onPreviousClick() {
-    if (this.pageIndex - 1 >= 0) {
+    console.log("Page Index:", this.pageIndex);
+    if (this.pageIndex - 1 >= 1) {
       this.pageIndex--;
-      this.pageProjects = [];
-      
-      for (let i = this.pageIndex * this.PAGE_SIZE, count = 0; i < this.projects.length && count < this.PAGE_SIZE; ++i, ++count) {
-        this.pageProjects.push(this.projects[i]);
-      }
+      this.setPagination();
     }
   }
 
   onPageClick(index: number) {
-    this.pageIndex = index;
+    if (this.pageIndex >= 1 && this.pageIndex < this.projects.length/this.PAGE_SIZE) {
+      this.pageIndex = <number>index;
+      this.setPagination();
+    }
+  }
+
+  private setPagination() {
+    const MAX_PAGE = Math.ceil(this.projects.length/this.PAGE_SIZE);
+    this.pages = [];
+    let index = this.pageIndex;
+    if (index == MAX_PAGE) {
+      index -= 4;
+    } else if (index == MAX_PAGE - 1) {
+      index -= 3;
+    } else if (index == MAX_PAGE - 2) {
+      index -= 2;
+    } else {
+      index -= 2;
+    }
+    if (index < 1) {
+      index = 1;
+    }
+    for (let i = index, count = 0; i <= MAX_PAGE && count < 5; ++i, ++count) {
+      this.pages.push(i);
+    }
+    console.log("Pages:",this.pages);
+    console.log("Pages:",this.projects);
     this.pageProjects = [];
-    
-    for (let i = this.pageIndex * this.PAGE_SIZE, count = 0; i < this.projects.length && count < this.PAGE_SIZE; ++i, ++count) {
+    for (let i = (this.pageIndex-1) * this.PAGE_SIZE, count = 0; count < this.PAGE_SIZE && i < this.projects.length; ++i, ++count) {
       this.pageProjects.push(this.projects[i]);
     }
+    console.log("Projects Per Page:", this.pageProjects);
   }
 
   // public innerWidth: any;

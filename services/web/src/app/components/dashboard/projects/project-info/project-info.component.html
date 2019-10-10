@@ -14,15 +14,15 @@
             <div class="col-12 mt-3">
               <div class="form-group">
                 <label for="project-name">Project Name *</label>
-                <input type="text" class="form-control" id="project-name" placeholder="eg. University of Pretoria Sentiments" name="name" [readonly]="isReadOnly" required [(ngModel)]="projectSnapshot.project_name">
-                <div class="ml-5 text-secondary">Hello</div>
+                <input type="text" class="form-control" id="project-name" placeholder="eg. University of Pretoria Sentiments" name="name" *ngIf="!isReadOnly" [readonly]="isReadOnly" required [(ngModel)]="projectSnapshot.project_name">
+                <div class="ml-5 text-secondary" *ngIf="isReadOnly">{{projectSnapshot.project_name}}</div>
               </div>
             </div>
             <div class="col-12 float-left">
               <div class="form-group">
                 <label for="Source">Source *</label>
-                <div class="ml-5 text-secondary">Hehehe</div>
-                <select class="form-control" id="source" name="source" [disabled]="isReadOnly" required [(ngModel)]="projectSnapshot.source" [compareWith]="compareSource">
+                <div class="ml-5 text-secondary" *ngIf="isReadOnly">{{projectSnapshot.source}}</div>
+                <select class="form-control" id="source" name="source" [disabled]="isReadOnly" required *ngIf="!isReadOnly" [(ngModel)]="projectSnapshot.source" [compareWith]="compareSource">
                   <option value="" selected disabled>Please select a source</option>
                   <option value="Twitter">Twitter</option>
                   <option value="Facebook">Facebook</option>
@@ -34,19 +34,21 @@
             <div class="col-12 mb-1">
               <div class="form-group">
                 <label for="project-name">Track Time (s) min(30) * </label>
-                <div class="ml-5 text-secondary">lalala</div>
-                <input type="number" class="form-control" min="30" value="30" name="track" [readonly]="isReadOnly" required [(ngModel)]="projectSnapshot.trackTime">
+                <div class="ml-5 text-secondary" *ngIf="isReadOnly">{{projectSnapshot.trackTime}}</div>
+                <input type="number" class="form-control" min="30" value="30" name="track" [readonly]="isReadOnly" required *ngIf="!isReadOnly" [(ngModel)]="projectSnapshot.trackTime">
               </div>
             </div>
 
             <div class="col-12 ">
               <div class="form-group">
                 <label for="whitelist1">Whitelisted Words *</label>
-                <div class="ml-5 text-secondary">hehelala</div>
-                <input class="form-control mb-2" id="whitlist1" name="whitelist" placeholder="Press Enter key to select word" required [readonly]="isReadOnly" [(ngModel)]="whitelistword" (keyup.enter)="addWhitelistWord()">
-                <span class="btn btn-white pr-1 pill mr-3 mt-2" *ngFor="let whitelistword of projectSnapshot.whitelist; let i = index">
-                  {{whitelistword}}<span class="badge m-1 mr-0"><i class="fas fa-close" (click)="removeWhitelistWord(i)"></i></span>
-                </span>
+                <div class="ml-5 text-secondary" *ngIf="isReadOnly">{{projectSnapshot.whitelist}}</div>
+                <input class="form-control mb-2" id="whitlist1" name="whitelist" placeholder="Press Enter key to select word" required *ngIf="!isReadOnly" [readonly]="isReadOnly" [(ngModel)]="whitelistword" (keyup.enter)="addWhitelistWord()">
+                <div *ngIf="!isReadOnly">
+                  <span class="btn btn-white pr-1 pill mr-3 mt-2" *ngFor="let whitelistword of projectSnapshot.whitelist; let i = index">
+                    {{whitelistword}}<span class="badge m-1 mr-0"><i class="fas fa-close" (click)="removeWhitelistWord(i)"></i></span>
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -54,11 +56,13 @@
               <div class="form-group">
                 <label for="blacklist1">Blacklisted Words</label>
                 <div>
-                  <div class="ml-5 text-secondary">seesese</div>
-                  <input class="form-control mb-2" id="blacklist1" name="blacklist" [readonly]="isReadOnly" placeholder="Press Enter key to select word" [(ngModel)]="blacklistword" (keyup.enter)="addBlacklistWord()">
-                  <span class="btn btn-white pr-1 pill mr-3 mt-2" *ngFor="let blacklistword of projectSnapshot.blacklist; let i = index">
-                    {{blacklistword}}<span class="badge m-1 mr-0"><i class="fas fa-close" (click)="removeBlacklistWord(i)"></i></span>
-                  </span>
+                  <div class="ml-5 text-secondary" *ngIf="isReadOnly">{{projectSnapshot.blacklist}}</div>
+                  <input class="form-control mb-2" id="blacklist1" name="blacklist" [readonly]="isReadOnly" *ngIf="!isReadOnly" placeholder="Press Enter key to select word" [(ngModel)]="blacklistword" (keyup.enter)="addBlacklistWord()">
+                  <div *ngIf="!isReadOnly">
+                    <span class="btn btn-white pr-1 pill mr-3 mt-2" *ngFor="let blacklistword of projectSnapshot.blacklist; let i = index">
+                      {{blacklistword}}<span class="badge m-1 mr-0"><i class="fas fa-close" (click)="removeBlacklistWord(i)"></i></span>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -137,7 +141,7 @@
         Are you sure you would like to delete this project?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-dismiss="modal"><i class="mr-3 fas fa-check"></i>Confirm</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" (click)="onRemoveProjectClick()"><i class="mr-3 fas fa-check"></i>Confirm</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="mr-3 fas fa-ban"></i>Cancel</button>
       </div>
     </div>
