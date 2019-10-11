@@ -253,7 +253,7 @@ function mapToTime(elem)
     let d = new Date(stamp);
     return {
         hour : d.getUTCHours(),
-        tweet : elem.tweetObject,
+        tweet : elem.tweetObject.text,
         sentiment : elem.tweetSentiment
     };
 
@@ -273,8 +273,8 @@ router.post('/', (req, res, next) => {
     .exec()
     .then(proj => {
         console.log(proj);
-        res.status(200).json({result: proj});
-       /* let projectData = proj[0].data.filter(function(elem){
+     //   res.status(200).json({result: proj});
+        let projectData = proj[0].data.filter(function(elem){
             return elem.tweetSentiment > 0;
         });
         let initial = projectData.map(function(elem) {
@@ -339,7 +339,7 @@ router.post('/', (req, res, next) => {
                 message: "Failed to add statistics",
                 result: null
             });
-        });*/
+        });
     })
     .catch(err => {
         console.log(err);
