@@ -365,10 +365,10 @@ router.post('/compare', (req, res, next) => {
     let idOne = req.body.first;
     let idTwo = req.body.second;
 
-    Statistic.find({project: idOne})
+    Statistic.aggregate([{$match : {"project" : ObjectId(idOne)}}, {$sort : { timestamp : -1}}, {$limit : 1}])
     .exec()
     .then(res1 => {
-        Statistic.find({project: idTwo})
+        Statistic.aggregate([{$match : {"project" : ObjectId(idTwo)}}, {$sort : { timestamp : -1}}, {$limit : 1}])
         .exec()
         .then(res2 => {
 
@@ -376,11 +376,11 @@ router.post('/compare', (req, res, next) => {
                 firstProject : res1,
                 secondProject : res2
             }
-            res.send(200).json({
+            res.status(200).json({
                 success: true,
                 message: "Successfully retrieved statistics",
                 result: obj
-            })
+            });
             
         })
         .catch(err2 => {
@@ -410,7 +410,7 @@ router.post('/compare', (req, res, next) => {
 router.post('/getStatistics', (req, res, next) => {
     let id = req.body.id;
 
-    Statistic.find({project: id})
+    Statistic.aggregate([{$match : {"project" : ObjectId(req.body.id)}}, {$sort : { timestamp : -1}}, {$limit : 1}])
     .exec()
     .then(res1 => {
         res.status(200).json({
