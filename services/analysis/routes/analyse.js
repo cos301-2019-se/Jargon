@@ -12,6 +12,7 @@ const mongoose = require('mongoose');
 const Statistic = require('../models/statistic');
 const Project = require('../models/project');
 const User = require('../models/user');
+const ObjectId = mongoose.Types.ObjectId;
 
 const INTERVAL = 0.05;
 const TOTAL = 1;
@@ -268,7 +269,7 @@ router.post('/', (req, res, next) => {
 
     
 
-    Project.aggregate([ {$match : {_id : req.body.id}}, {$project : {tweetSentiment : 1, timestamp_ms : 1, text: 1 }}])
+    Project.aggregate([ {$match : {_id : ObjectId(req.body.id)}}])
     .exec()
     .then(proj => {
         console.log(proj);
