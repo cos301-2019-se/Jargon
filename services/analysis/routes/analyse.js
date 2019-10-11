@@ -427,6 +427,13 @@ router.post('/getStatistics', (req, res, next) => {
     });
 });
 
+
+/***
+    * request for getUserStatistics (analyse/getUserStatistics) route ()
+    * 
+    * this function aggregates the data on all users in the DB and returns a json object with the results
+    * the data is read from the Database inside the User model
+*/
 router.post('/getUserStatistics', (req, res, next) => {
     
     User.find()
@@ -487,6 +494,13 @@ router.post('/getUserStatistics', (req, res, next) => {
         });
     });
 });
+
+/***
+    * request for getProjectStatistics (analyse/getProjectStatistics) route ()
+    * 
+    * this function aggregates the data on all projects in the DB and returns a json object with the results
+    * the data is read from the Database inside the Project and Statistics model
+*/
 
 router.post('/getProjectStatistics', (req, res, next) => {
     Project.count({})
