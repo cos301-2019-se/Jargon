@@ -18,4 +18,7 @@ RUN pip install connexion[swagger-ui]
 
 COPY . .
 
-CMD [ "python", "./server.py" ]
+# Expose ports
+EXPOSE 80
+
+CMD [ "python3", "./receive.py" ]
