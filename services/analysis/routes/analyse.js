@@ -268,11 +268,11 @@ router.post('/', (req, res, next) => {
 
     
 
-    Project.find({_id : req.body.id})
+    Project.aggregate([ {$match : {_id : req.body.id}}, {$project : {tweetSentiment : 1, timestamp_ms : 1, text: 1 }}])
     .exec()
     .then(proj => {
-        // console.log(proj);
-        let projectData = proj[0].data.filter(function(elem){
+        console.log(proj);
+       /* let projectData = proj[0].data.filter(function(elem){
             return elem.tweetSentiment > 0;
         });
         let initial = projectData.map(function(elem) {
@@ -337,7 +337,7 @@ router.post('/', (req, res, next) => {
                 message: "Failed to add statistics",
                 result: null
             });
-        });
+        });*/
     })
     .catch(err => {
         console.log(err);
