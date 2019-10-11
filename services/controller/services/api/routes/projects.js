@@ -455,7 +455,11 @@ function startRMQ(res){
                 }
                 if(y<result[0]['data'].length){
                     console.log("sending message");
-                    sock.emit("datasend", result[0]['data'][y]);
+                    let returnObject = {
+                        tweetText: result[0]['data'][y]['tweetObject']['text'],
+                        tweetSentiment: result[0]['data'][y]['tweetSentiment']
+                    };
+                    sock.emit("datasend", returnObject);
                 }else if(ids[1]=="/t"){
                     console.log("termination character");
                 }
