@@ -12,6 +12,7 @@ const mongoose = require('mongoose');
 const Statistic = require('../models/statistic');
 const Project = require('../models/project');
 const User = require('../models/user');
+const ObjectId = mongoose.Types.ObjectId;
 
 const INTERVAL = 0.05;
 const TOTAL = 1;
@@ -252,7 +253,7 @@ function mapToTime(elem)
     let d = new Date(stamp);
     return {
         hour : d.getUTCHours(),
-        tweet : elem.tweetObject,
+        tweet : elem.tweetObject.text,
         sentiment : elem.tweetSentiment
     };
 
@@ -268,10 +269,11 @@ router.post('/', (req, res, next) => {
 
     
 
-    Project.find({_id : req.body.id})
+    Project.aggregate([ {$match : {_id : ObjectId(req.body.id)}}, {$project : {"data.tweetSentiment" : 1, "data.tweetObject.text" : 1, "data.tweetObject.timestamp_ms" : 1}}])
     .exec()
     .then(proj => {
-        // console.log(proj);
+        console.log(proj);
+     //   res.status(200).json({result: proj});
         let projectData = proj[0].data.filter(function(elem){
             return elem.tweetSentiment > 0;
         });
@@ -425,6 +427,13 @@ router.post('/getStatistics', (req, res, next) => {
     });
 });
 
+
+/***
+    * request for getUserStatistics (analyse/getUserStatistics) route ()
+    * 
+    * this function aggregates the data on all users in the DB and returns a json object with the results
+    * the data is read from the Database inside the User model
+*/
 router.post('/getUserStatistics', (req, res, next) => {
     
     User.find()
@@ -485,6 +494,13 @@ router.post('/getUserStatistics', (req, res, next) => {
         });
     });
 });
+
+/***
+    * request for getProjectStatistics (analyse/getProjectStatistics) route ()
+    * 
+    * this function aggregates the data on all projects in the DB and returns a json object with the results
+    * the data is read from the Database inside the Project and Statistics model
+*/
 
 router.post('/getProjectStatistics', (req, res, next) => {
     Project.count({})
