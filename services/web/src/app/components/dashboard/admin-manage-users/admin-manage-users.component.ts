@@ -14,10 +14,12 @@ export class AdminManageUsersComponent implements OnInit {
   userSnapshot: User[] = [];
   users: User[][] = [];
   user: User = new User();
+  isLoading: boolean = false;
 
   constructor(private adminApiRequester: AdminApiRequesterService) {}
 
   ngOnInit() {
+    this.isLoading = true;
     this.adminApiRequester.getUsersAdmin().subscribe(
       (response: ApiResponse) => {
         console.log(response);
@@ -26,6 +28,10 @@ export class AdminManageUsersComponent implements OnInit {
           this.userSnapshot = response.result;
           this.setUserArray();
         }
+        this.isLoading = false;
+      },
+      error => {
+        this.isLoading = false;
       }
     );
   }
