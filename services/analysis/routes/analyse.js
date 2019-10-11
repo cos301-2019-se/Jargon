@@ -410,7 +410,7 @@ router.post('/compare', (req, res, next) => {
 router.post('/getStatistics', (req, res, next) => {
     let id = req.body.id;
 
-    Statistic.find({project: id})
+    Statistic.aggregate([{$match : {"project" : ObjectId(req.body.id)}}, {$sort : { timestamp : -1}}, {$limit : 1}])
     .exec()
     .then(res1 => {
         res.status(200).json({
