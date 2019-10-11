@@ -269,10 +269,11 @@ router.post('/', (req, res, next) => {
 
     
 
-    Project.aggregate([ {$match : {_id : ObjectId(req.body.id)}}])
+    Project.aggregate([ {$match : {_id : ObjectId(req.body.id)}}, {$project : {"data.tweetSentiment" : 1, "data.tweetObject.text" : 1, "data.tweetObject.timestamp_ms" : 1}}])
     .exec()
     .then(proj => {
         console.log(proj);
+        res.status(200).json({result: proj});
        /* let projectData = proj[0].data.filter(function(elem){
             return elem.tweetSentiment > 0;
         });
