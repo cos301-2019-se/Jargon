@@ -412,8 +412,9 @@ router.post('/getStatistics', (req, res, next) => {
     .exec()
     .then(res1 => {
         res.status(200).json({
-            status : true,
-            result : res1
+            success: true,
+            message: "Successfully retrieved statistics",
+            result: res1
         });
     })
     .catch(err1 => {

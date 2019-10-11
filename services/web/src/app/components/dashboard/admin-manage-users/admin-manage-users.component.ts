@@ -37,20 +37,19 @@ export class AdminManageUsersComponent implements OnInit {
         if (response == undefined || response == null || !response.success) {
           return;
         }
-        return;
 
-        let index = -1;
-        for (let i = 0; i < this.userSnapshot.length; ++i) {
-          let tempUser = this.userSnapshot[i];
-          if (this.user.id == tempUser.id) {
-            index = i;
-            break;
-          }
-        }
-        if (index >= 0) {
-          this.userSnapshot.splice(index, 1);
-        }
-        this.setUserArray();
+        // let index = -1;
+        // for (let i = 0; i < this.userSnapshot.length; ++i) {
+        //   let tempUser = this.userSnapshot[i];
+        //   if (this.user.id == tempUser.id) {
+        //     index = i;
+        //     break;
+        //   }
+        // }
+        // if (index >= 0) {
+        //   this.userSnapshot.splice(index, 1);
+        // }
+        // this.setUserArray();
       }
     );
   }

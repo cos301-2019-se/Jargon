@@ -66,6 +66,7 @@ export class Run {
 
 export class SocialData {
     public tweetID: string = "";
+    public tweetText: string = "";
     public tweetObject: DataObject = null;
     public tweetSentiment: number = 0.0;
 }

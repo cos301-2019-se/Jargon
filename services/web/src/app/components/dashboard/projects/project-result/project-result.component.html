@@ -17,7 +17,7 @@
                   
                   <div class="card-body text-gray">
 
-                    <div class="row text-light">
+                    <div class="row text-light" *ngIf="isLoadingStats">
                       <div class="col-auto mx-auto">
                         <div class="spinner-border" role="status">
                           <span class="sr-only">Loading...</span>
@@ -26,7 +26,7 @@
                     </div>
                     
                     <!-- NG IF here -->
-                    <div>
+                    <div *ngIf="!isLoadingStats">
                       <div class="pl-3 row">
                         <div class="col-6"><h6 class="display-5">Project Name:</h6></div>
                         <div class="col-6 text-light">{{project.project_name}}</div>
@@ -55,7 +55,7 @@
                   </div>
                   <div class="card-body text-gray">
 
-                    <div class="row text-light">
+                    <div class="row text-light" *ngIf="isLoadingStats">
                       <div class="col-auto mx-auto">
                         <div class="spinner-border" role="status">
                           <span class="sr-only">Loading...</span>
@@ -65,7 +65,7 @@
 
                     <!-- NG if Here -->
                     
-                    <div>
+                    <div *ngIf="!isLoadingStats">
                       <div class="pl-3 row">
                         <div class="col-6"><h6 class="display-5">Minimum:</h6></div>
                         <div class="col-6 text-light">{{projectAnalysis.min | number}}</div>
@@ -112,7 +112,7 @@
                   </div>
                   <div class="card-body text-gray">
 
-                    <div class="row text-light">
+                    <div class="row text-light" *ngIf="isLoadingStats">
                       <div class="col-auto mx-auto">
                         <div class="spinner-border" role="status">
                           <span class="sr-only">Loading...</span>
@@ -122,7 +122,7 @@
 
                     <!-- ng if here -->
 
-                    <div>
+                    <div *ngIf="!isLoadingStats">
                       <ejs-accumulationchart id="chart-container" [legendSettings]='legendSettings' background='rgba(1,1,1,0)'>
                           <e-accumulation-series-collection>
                               <e-accumulation-series [dataSource]='piedata' xName='x' yName='y' innerRadius='50%' [dataLabel]='datalabel' legendShape='Rectangle'></e-accumulation-series>
@@ -138,7 +138,7 @@
                   </div>
                   <div class="card-body">
 
-                    <div class="row">
+                    <div class="row" *ngIf="isLoadingStats">
                       <div class="col-auto mx-auto">
                         <div class="spinner-border" role="status">
                           <span class="sr-only">Loading...</span>
@@ -146,7 +146,7 @@
                       </div>
                     </div>
 
-                    <div style="display: block;">
+                    <div style="display: block;" *ngIf="!isLoadingStats">
 
                       <ejs-chart id='chart-histogram' style='display:block;' align='center' [primaryXAxis]='primaryXAxisHistogram' [primaryYAxis]='primaryYAxisHistogram' (load)='loadHistogram($event)'background='rgba(255,255,255,0)'>
                         <e-series-collection>
@@ -176,7 +176,7 @@
                     <h5 class="display-5"><b>Average Sentiment Over Time</b></h5>
                   </div>
                   <div class="card-body">
-                    <div class="row">
+                    <div class="row" *ngIf="isLoadingStats">
                       <div class="col-auto mx-auto">
                         <div class="spinner-border" role="status">
                           <span class="sr-only">Loading...</span>
@@ -184,7 +184,7 @@
                       </div>
                     </div>
 
-                    <div>
+                    <div *ngIf="!isLoadingStats">
                       <div style="display: block">
 
                         <ejs-chart id="chart-average-over-time" [primaryXAxis]='primaryXAxisAvgSentiment'[primaryYAxis]='primaryYAxisAvgSentiment' background='rgba(255,255,255,0)'>
@@ -229,7 +229,7 @@
                   </div>
                   <div class="card-body">
 
-                    <div class="row">
+                    <div class="row" *ngIf="isLoadingStats">
                       <div class="col-auto mx-auto">
                         <div class="spinner-border" role="status">
                           <span class="sr-only">Loading...</span>
@@ -237,7 +237,7 @@
                       </div>
                     </div>
 
-                    <div>
+                    <div *ngIf="!isLoadingStats">
                       <div style="display: block">
 
                         <ejs-chart id="chart-change-over-time" [primaryXAxis]='primaryXAxisROC'[primaryYAxis]='primaryYAxisROC' background='rgba(255,255,255,0)'>
@@ -322,7 +322,7 @@
                             <div class="row m-0 p-0">
                               <div class="col-12 mb-3 p-3 mx-auto border rounded m-0 p-0">
                                 <div class=" d-flex justify-content-between align-items-center">
-                                  {{data.tweetObject.text}}
+                                  {{data.tweetText}}
                                   <span class="badge badge-primary badge-pill ml-3">{{data.tweetSentiment | number}}</span>
                                 </div>
                                 <div class="row mt-3 m-0 p-0" *ngIf="data['checked'] && activeFlagging">

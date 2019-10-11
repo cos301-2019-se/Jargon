@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SocketService } from '../../../../services/socket-service/socket-service.service';
 import { Data } from '../../../../interfaces/project/project';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-stream',
@@ -10,31 +11,24 @@ import { Data } from '../../../../interfaces/project/project';
 export class StreamComponent implements OnInit {
 
   ioConnection: any = null;
-  data: Data[] = [];
+  datas: Data[] = [];
+  totalData: number = 0;
 
   constructor(private socketService: SocketService) {}
 
   ngOnInit() {
+    console.log("Init");
     this.socketService.initSocket();
 
     this.ioConnection = this.socketService.onMessage().subscribe(
       (message: Data) => {
         // this.project.data.push(message);
         // this.project.data = [...this.project.data];
-        this.data.push(message);
-        
-        setTimeout(
-          function() {
-            this.removeTop();
-          },
-          2000
-        );
+        console.log(message);
+        this.datas.unshift(message);
+        ++this.totalData;
       }
     );
-  }
-
-  removeTop() {
-    this.data.shift();
   }
 
 }

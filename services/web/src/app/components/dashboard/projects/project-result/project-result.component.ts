@@ -17,12 +17,16 @@ import { AnalyseApiRequesterService } from '../../../../services/analyse-api-req
 })
 export class ProjectResultComponent implements OnInit {
 
-  /* Data Pagination */
+  /* Data and Data Pagination */
   public pageIndex: number = 0;
   public pageData: any[] = [];
   public PAGE_SIZE: number = 100;
   public dataSize: number;
   public pages: any[] = [];
+  public isLoadingData: boolean = false;
+
+  /* Statistical Data */
+  public isLoadingStats: boolean = false;
 
   /* Doughnut Chart */
   public piedata: Object[] = [];
@@ -46,7 +50,7 @@ export class ProjectResultComponent implements OnInit {
     canResize: true,
   };
   public dataHistogram: Object[] = [];
-  public primaryXAxisHistogram: Object = {
+  public primaryXAxisHistogram: any = {
     minimum: 0, maximum: 100, interval: 10,
     title: 'Sentiment (%)',
     titleStyle: {
@@ -334,6 +338,7 @@ export class ProjectResultComponent implements OnInit {
         this.project = project;
         this.dataSize = this.project.size;
         // Retrieve the project that was selected from the project list
+        this.isLoadingData = true;
         this.projectApiRequesterService.getData(project._id, 1, this.PAGE_SIZE).subscribe(
           (response: ApiResponse) => {
             console.log("Tweets:", response);
@@ -368,68 +373,82 @@ export class ProjectResultComponent implements OnInit {
             this.onSortItemClick(this.sorting);
             this.onFilterItemClick(this.filter);
             this.setPagination();
+            this.isLoadingData = false;
+          },
+          error => {
+            this.isLoadingData = false;
           }
         );
 
         // return; // do not call analyse from UI
+        this.isLoadingStats = true;
         this.analyseApiRequesterService.analyse(project._id).subscribe(
           (response: ApiResponse) => {
             console.log("Analyse:", response);
-            if (response != undefined && response != null && response.success) {
-              this.analyseApiRequesterService.projectStatistics(project._id).subscribe(
-                (response: ApiResponse) => {
-                  console.log("Statistics:", response);
-                  this.projectAnalysis = response.result[response.result.length-1];
-                  
-                  this.projectAnalysis.graphs.histogram.map(
-                    (value: number) => {
-                      this.dataHistogram.push({
-                        y: value
-                      });
-                    }
-                  );
-      
-                  this.dataHistogram = [...this.dataHistogram];
-
-                  this.piedata = [];
-
-                  this.piedata.push({x: "Positive", y: this.projectAnalysis.mean, text: + '%'});
-                  this.piedata.push({x: "Negative", y: (1-this.projectAnalysis.mean), text: + '%'});
-      
-                  for (let i = 0; i < this.projectAnalysis.graphs.averageOverTime.length; ++i) {
-                    if (this.projectAnalysis.graphs.averageOverTime[i].averageSentiment >= 0.0) {
-                      this.chartDataAvgSentiment.push(
-                        { 
-                          x: i, 
-                          y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
-                            0.0 :
-                            this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
-                        }
-                      );
-                    }
-                    // this.chartDataAvgSentiment.push(
-                    //   { 
-                    //     x: i, 
-                    //     y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
-                    //       0.0 :
-                    //       this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
-                    //   }
-                    // );
+            this.analyseApiRequesterService.projectStatistics(project._id).subscribe(
+              (response: ApiResponse) => {
+                console.log("Statistics:", response);
+                if (response == undefined || response == null || !response.success) {
+                  this.isLoadingStats = false;
+                  return;
+                }
+                this.projectAnalysis = response.result[response.result.length-1];
+                
+                this.projectAnalysis.graphs.histogram.map(
+                  (value: number) => {
+                    this.dataHistogram.push({
+                      y: value
+                    });
                   }
-                  this.chartDataAvgSentiment = [...this.chartDataAvgSentiment];
-      
-                  for (let i = 0; i < this.projectAnalysis.graphs.changeOverTime.length; ++i) {
-                    this.chartDataROC.push(
+                );
+    
+                this.dataHistogram = [...this.dataHistogram];
+
+                let maxHisto = Math.max(...this.projectAnalysis.graphs.histogram);
+                this.primaryXAxisHistogram.interval = maxHisto/4;
+
+                this.piedata = [];
+
+                this.piedata.push({x: "Positive", y: this.projectAnalysis.mean, text: + '%'});
+                this.piedata.push({x: "Negative", y: (1-this.projectAnalysis.mean), text: + '%'});
+    
+                for (let i = 0; i < this.projectAnalysis.graphs.averageOverTime.length; ++i) {
+                  if (this.projectAnalysis.graphs.averageOverTime[i].averageSentiment >= 0.0) {
+                    this.chartDataAvgSentiment.push(
                       { 
                         x: i, 
-                        y: this.projectAnalysis.graphs.changeOverTime[i]
+                        y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+                          0.0 :
+                          this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
                       }
                     );
                   }
-                  this.chartDataROC = [...this.chartDataROC];
+                  // this.chartDataAvgSentiment.push(
+                  //   { 
+                  //     x: i, 
+                  //     y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+                  //       0.0 :
+                  //       this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+                  //   }
+                  // );
                 }
-              );
-            }
+                this.chartDataAvgSentiment = [...this.chartDataAvgSentiment];
+    
+                for (let i = 0; i < this.projectAnalysis.graphs.changeOverTime.length; ++i) {
+                  this.chartDataROC.push(
+                    { 
+                      x: i, 
+                      y: this.projectAnalysis.graphs.changeOverTime[i]
+                    }
+                  );
+                }
+                this.chartDataROC = [...this.chartDataROC];
+                this.isLoadingStats = false;
+              }
+            );
+          },
+          error => {
+            this.isLoadingStats = false;
           }
         );
 
@@ -560,11 +579,9 @@ export class ProjectResultComponent implements OnInit {
         }
         if (response.result == undefined || response.result == null) {
           // no data received
-          console.log("No Tweets Received");
           return;
         }
         if (response.result.length == 0) {
-          console.log("Empty Tweet Array");
         }
 
         this.filteredData = [];
@@ -596,7 +613,6 @@ export class ProjectResultComponent implements OnInit {
     const decimals = 4;
     this.currentRun.bestTweetSentiment = parseFloat(this.currentRun.bestTweetSentiment.toFixed(decimals));
     this.currentRun.worstTweetSentiment = parseFloat(this.currentRun.worstTweetSentiment.toFixed(decimals));
-    console.log('Current Run:',this.currentRun);
     let avg = Math.round(this.currentRun.averageScore*100);
     // this.doughnutChartData = [
     //   [
@@ -642,28 +658,28 @@ export class ProjectResultComponent implements OnInit {
   onFilterItemClick(value: string) {
     console.log("BBBB");
     return;
-    if (value === "All") {
-      console.log("ALL");
-      this.filteredData = [...this.project.data];
-    } else if (value === "Positive") {
-      console.log("POS");
-      this.filteredData = [];
-      for (let i = 0; i < this.project.data.length; ++i) {
-        let sentiment = this.project.data[i].tweetSentiment;
-        if (sentiment >= 0.5) {
-          this.filteredData.push(this.project.data[i]);
-        }
-      }
-    } else if (value === "Negative") {
-      console.log("NEG");
-      this.filteredData = [];
-      for (let i = 0; i < this.project.data.length; ++i) {
-        let sentiment = this.project.data[i].tweetSentiment;
-        if (sentiment < 0.5) {
-          this.filteredData.push(this.project.data[i]);
-        }
-      }
-    }
+    // if (value === "All") {
+    //   console.log("ALL");
+    //   this.filteredData = [...this.project.data];
+    // } else if (value === "Positive") {
+    //   console.log("POS");
+    //   this.filteredData = [];
+    //   for (let i = 0; i < this.project.data.length; ++i) {
+    //     let sentiment = this.project.data[i].tweetSentiment;
+    //     if (sentiment >= 0.5) {
+    //       this.filteredData.push(this.project.data[i]);
+    //     }
+    //   }
+    // } else if (value === "Negative") {
+    //   console.log("NEG");
+    //   this.filteredData = [];
+    //   for (let i = 0; i < this.project.data.length; ++i) {
+    //     let sentiment = this.project.data[i].tweetSentiment;
+    //     if (sentiment < 0.5) {
+    //       this.filteredData.push(this.project.data[i]);
+    //     }
+    //   }
+    // }
   }
 
   onFlagTweetsClick() {
@@ -712,7 +728,8 @@ export class ProjectResultComponent implements OnInit {
     console.log(flaggedData);
 
     this.flaggerApiRequesterService.flagData(flaggedData).subscribe(
-      list => {
+      (response: ApiResponse) => {
+        console.log(response);
         this.activeFlagging = false;
       },
       error => {
