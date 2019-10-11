@@ -48,10 +48,7 @@ export class ProjectsComponent implements OnInit {
       this.pages = [];
       this.projectsLength = this.projects.length/this.PAGE_SIZE;
 
-      for (let i = 0; i < this.projects.length; i += this.PAGE_SIZE ) {
-          this.pages.push(0);
-      }
-
+        this.setPagination();
     }
     console.log(this.projects);
   }

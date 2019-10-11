@@ -48,11 +48,6 @@ export class AdminManageProjectsComponent implements OnInit {
       this.projectsLength = this.projects.length/this.PAGE_SIZE;
 
       this.setPagination();
-  
-      this.pageProjects = [];
-      for (let i = 0; i < this.PAGE_SIZE && i < this.projects.length; ++i) {
-        this.pageProjects.push(this.projects[i]);
-      }
     }
     console.log(this.projects);
   }
