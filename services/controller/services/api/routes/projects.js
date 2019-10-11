@@ -466,7 +466,7 @@ function startRMQ(res){
             })
             setTimeout(() => {
                 sock.disconnect();
-            }, 45000);
+            }, 4788000);
 
         }, {
             noAck: true
