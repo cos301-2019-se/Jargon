@@ -328,181 +328,180 @@ export class ProjectResultComponent implements OnInit {
   private init() {
     // this.initIoConnection();
     this.pageIndex = 1;
-    this.shareProjectService.project.subscribe(
-      (project: Project) => {
-        console.log("Proj Serv:",project);
-        if (project == undefined || project == null) {
-          this.router.navigateByUrl('project-initial');
+
+    let project = this.shareProjectService.getCurrentProject();
+    console.log("Proj Serv:",project);
+    if (project == undefined || project == null) {
+      this.router.navigateByUrl('/dashboard/projects/project-initial');
+      return;
+    }
+    this.project = project;
+    this.dataSize = this.project.size;
+    // Retrieve the project that was selected from the project list
+    this.isLoadingData = true;
+    this.projectApiRequesterService.getData(project._id, 1, this.PAGE_SIZE).subscribe(
+      (response: ApiResponse) => {
+        console.log("Tweets:", response);
+        if (response == undefined || response == null || !response.success ) {
           return;
         }
-        this.project = project;
-        this.dataSize = this.project.size;
-        // Retrieve the project that was selected from the project list
-        this.isLoadingData = true;
-        this.projectApiRequesterService.getData(project._id, 1, this.PAGE_SIZE).subscribe(
+
+        this.pageData = response.result;
+
+        // let index = this.project.runs.length - 1;
+        // this.selectCurrentRun(index);
+
+        // let data: number[] = [];
+        // let label: string[] = [];
+
+        console.log("Data:", response);
+        this.filteredData = response.result;
+        // this.project.runs.forEach(
+        //   (run: Run) => {
+        //     data.push(run.averageScore);
+        //     label.push(run.dateRun.toString());
+        //   }
+        // );
+
+        // this.lineChartData = [
+        //   { data: [...data], label:'' },
+        // ];
+        // this.lineChartLabels = [...label];
+
+        // this.chartData = [];
+        
+        this.onSortItemClick(this.sorting);
+        this.onFilterItemClick(this.filter);
+        this.setPagination();
+        this.isLoadingData = false;
+      },
+      error => {
+        this.isLoadingData = false;
+      }
+    );
+
+    // return; // do not call analyse from UI
+    this.isLoadingStats = true;
+    this.analyseApiRequesterService.analyse(project._id).subscribe(
+      (response: ApiResponse) => {
+        console.log("Analyse:", response);
+        this.analyseApiRequesterService.projectStatistics(project._id).subscribe(
           (response: ApiResponse) => {
-            console.log("Tweets:", response);
-            if (response == undefined || response == null || !response.success ) {
+            console.log("Statistics:", response);
+            if (response == undefined || response == null || !response.success) {
+              this.isLoadingStats = false;
               return;
             }
-    
-            this.pageData = response.result;
-
-            // let index = this.project.runs.length - 1;
-            // this.selectCurrentRun(index);
-
-            // let data: number[] = [];
-            // let label: string[] = [];
-
-            console.log("Data:", response);
-            this.filteredData = response.result;
-            // this.project.runs.forEach(
-            //   (run: Run) => {
-            //     data.push(run.averageScore);
-            //     label.push(run.dateRun.toString());
-            //   }
-            // );
-
-            // this.lineChartData = [
-            //   { data: [...data], label:'' },
-            // ];
-            // this.lineChartLabels = [...label];
-
-            // this.chartData = [];
+            this.projectAnalysis = response.result[response.result.length-1];
             
-            this.onSortItemClick(this.sorting);
-            this.onFilterItemClick(this.filter);
-            this.setPagination();
-            this.isLoadingData = false;
-          },
-          error => {
-            this.isLoadingData = false;
-          }
-        );
-
-        // return; // do not call analyse from UI
-        this.isLoadingStats = true;
-        this.analyseApiRequesterService.analyse(project._id).subscribe(
-          (response: ApiResponse) => {
-            console.log("Analyse:", response);
-            this.analyseApiRequesterService.projectStatistics(project._id).subscribe(
-              (response: ApiResponse) => {
-                console.log("Statistics:", response);
-                if (response == undefined || response == null || !response.success) {
-                  this.isLoadingStats = false;
-                  return;
-                }
-                this.projectAnalysis = response.result[response.result.length-1];
-                
-                this.projectAnalysis.graphs.histogram.map(
-                  (value: number) => {
-                    this.dataHistogram.push({
-                      y: value
-                    });
-                  }
-                );
-    
-                this.dataHistogram = [...this.dataHistogram];
-
-                let maxHisto = Math.max(...this.projectAnalysis.graphs.histogram);
-                this.primaryXAxisHistogram.interval = maxHisto/4;
-
-                this.piedata = [];
-
-                this.piedata.push({x: "Positive", y: this.projectAnalysis.mean, text: + '%'});
-                this.piedata.push({x: "Negative", y: (1-this.projectAnalysis.mean), text: + '%'});
-    
-                for (let i = 0; i < this.projectAnalysis.graphs.averageOverTime.length; ++i) {
-                  if (this.projectAnalysis.graphs.averageOverTime[i].averageSentiment >= 0.0) {
-                    this.chartDataAvgSentiment.push(
-                      { 
-                        x: i, 
-                        y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
-                          0.0 :
-                          this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
-                      }
-                    );
-                  }
-                  // this.chartDataAvgSentiment.push(
-                  //   { 
-                  //     x: i, 
-                  //     y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
-                  //       0.0 :
-                  //       this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
-                  //   }
-                  // );
-                }
-                this.chartDataAvgSentiment = [...this.chartDataAvgSentiment];
-    
-                for (let i = 0; i < this.projectAnalysis.graphs.changeOverTime.length; ++i) {
-                  this.chartDataROC.push(
-                    { 
-                      x: i, 
-                      y: this.projectAnalysis.graphs.changeOverTime[i]
-                    }
-                  );
-                }
-                this.chartDataROC = [...this.chartDataROC];
-                this.isLoadingStats = false;
+            this.projectAnalysis.graphs.histogram.map(
+              (value: number) => {
+                this.dataHistogram.push({
+                  y: value
+                });
               }
             );
-          },
-          error => {
+
+            this.dataHistogram = [...this.dataHistogram];
+
+            let maxHisto = Math.max(...this.projectAnalysis.graphs.histogram);
+            this.primaryXAxisHistogram.interval = maxHisto/4;
+
+            this.piedata = [];
+
+            this.piedata.push({x: "Positive", y: this.projectAnalysis.mean, text: + '%'});
+            this.piedata.push({x: "Negative", y: (1-this.projectAnalysis.mean), text: + '%'});
+
+            for (let i = 0; i < this.projectAnalysis.graphs.averageOverTime.length; ++i) {
+              if (this.projectAnalysis.graphs.averageOverTime[i].averageSentiment >= 0.0) {
+                this.chartDataAvgSentiment.push(
+                  { 
+                    x: i, 
+                    y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+                      0.0 :
+                      this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+                  }
+                );
+              }
+              // this.chartDataAvgSentiment.push(
+              //   { 
+              //     x: i, 
+              //     y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+              //       0.0 :
+              //       this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+              //   }
+              // );
+            }
+            this.chartDataAvgSentiment = [...this.chartDataAvgSentiment];
+
+            for (let i = 0; i < this.projectAnalysis.graphs.changeOverTime.length; ++i) {
+              this.chartDataROC.push(
+                { 
+                  x: i, 
+                  y: this.projectAnalysis.graphs.changeOverTime[i]
+                }
+              );
+            }
+            this.chartDataROC = [...this.chartDataROC];
             this.isLoadingStats = false;
           }
         );
-
-        // this.projectApiRequesterService.projectStatistics(project._id).subscribe(
-        //   (result: any) => {
-        //     console.log("Response:", result);
-        //     this.projectAnalysis = result.result[0];
-            
-            
-        //     this.projectAnalysis.graphs.histogram.map(
-        //       (value: number) => {
-        //         this.dataHistogram.push({
-        //           y: value
-        //         });
-        //       }
-        //     );
-
-        //     this.dataHistogram = [...this.dataHistogram];
-
-        //     for (let i = 0; i < this.projectAnalysis.graphs.averageOverTime.length; ++i) {
-        //       if (this.projectAnalysis.graphs.averageOverTime[i].averageSentiment >= 0.0) {
-        //         this.chartDataAvgSentiment.push(
-        //           { 
-        //             x: i, 
-        //             y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
-        //               0.0 :
-        //               this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
-        //           }
-        //         );
-        //       }
-        //       // this.chartDataAvgSentiment.push(
-        //       //   { 
-        //       //     x: i, 
-        //       //     y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
-        //       //       0.0 :
-        //       //       this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
-        //       //   }
-        //       // );
-        //     }
-        //     this.chartDataAvgSentiment = [...this.chartDataAvgSentiment];
-
-        //     for (let i = 0; i < this.projectAnalysis.graphs.changeOverTime.length; ++i) {
-        //       this.chartDataROC.push(
-        //         { 
-        //           x: i, 
-        //           y: this.projectAnalysis.graphs.changeOverTime[i]
-        //         }
-        //       );
-        //     }
-        //     this.chartDataROC = [...this.chartDataROC];
-        //   }
-        // );
+      },
+      error => {
+        this.isLoadingStats = false;
       }
     );
+
+    // this.projectApiRequesterService.projectStatistics(project._id).subscribe(
+    //   (result: any) => {
+    //     console.log("Response:", result);
+    //     this.projectAnalysis = result.result[0];
+        
+        
+    //     this.projectAnalysis.graphs.histogram.map(
+    //       (value: number) => {
+    //         this.dataHistogram.push({
+    //           y: value
+    //         });
+    //       }
+    //     );
+
+    //     this.dataHistogram = [...this.dataHistogram];
+
+    //     for (let i = 0; i < this.projectAnalysis.graphs.averageOverTime.length; ++i) {
+    //       if (this.projectAnalysis.graphs.averageOverTime[i].averageSentiment >= 0.0) {
+    //         this.chartDataAvgSentiment.push(
+    //           { 
+    //             x: i, 
+    //             y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+    //               0.0 :
+    //               this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+    //           }
+    //         );
+    //       }
+    //       // this.chartDataAvgSentiment.push(
+    //       //   { 
+    //       //     x: i, 
+    //       //     y: this.projectAnalysis.graphs.averageOverTime[i].averageSentiment < 0.0 ? 
+    //       //       0.0 :
+    //       //       this.projectAnalysis.graphs.averageOverTime[i].averageSentiment
+    //       //   }
+    //       // );
+    //     }
+    //     this.chartDataAvgSentiment = [...this.chartDataAvgSentiment];
+
+    //     for (let i = 0; i < this.projectAnalysis.graphs.changeOverTime.length; ++i) {
+    //       this.chartDataROC.push(
+    //         { 
+    //           x: i, 
+    //           y: this.projectAnalysis.graphs.changeOverTime[i]
+    //         }
+    //       );
+    //     }
+    //     this.chartDataROC = [...this.chartDataROC];
+    //   }
+    // );
+      
   }
 
   // private initIoConnection(): void {
@@ -587,8 +586,8 @@ export class ProjectResultComponent implements OnInit {
         this.filteredData = [];
         this.filteredData = [...response.result];
         
-        this.onSortItemClick(this.sorting);
-        this.onFilterItemClick(this.filter);
+        //this.onSortItemClick(this.sorting);
+        //this.onFilterItemClick(this.filter);
         this.setPagination();
       }
     );

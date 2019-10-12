@@ -198,8 +198,6 @@ export class ProjectsComponent implements OnInit {
   //   this.blacklistword = '';
   // }
 
-1
-
   // changeMode(form: NgForm, id: number) {
   //   if (this.editMode) {
   //     this.update(form, id);
