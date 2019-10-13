@@ -3,6 +3,7 @@ import { LoginApiRequesterService } from '../../services/login-api-requester/log
 import { Router } from '@angular/router';
 import { LoginDetails } from '../../interfaces/login-register/login-register';
 import { NotifierService } from 'angular-notifier';
+import { ApiResponse } from '../../interfaces/api-response/api-response';
 
 @Component({
   selector: 'app-login',
@@ -23,17 +24,16 @@ export class LoginComponent implements OnInit {
   }
 
   onLoginClick() {
-    this.loginApiRequester.login(this.loginDetails).subscribe((res : any) => {
-      console.log(res);
-
-      this.loginDetails = new LoginDetails();
-      if (res.authenticated) {
-        this.notifierService.notify('success', 'Login Successful');
-        this.router.navigateByUrl("/dashboard");
-      } else {
-        this.notifierService.notify('error', res.result);
+    this.loginApiRequester.login(this.loginDetails).subscribe(
+      (response: ApiResponse) => {
+        console.log("LoginClick:",response);
+        this.loginDetails = new LoginDetails();
+        this.notifierService.notify(response.success ? 'success' : 'error', response.message);
+        if (response.success) {
+          this.router.navigateByUrl("/dashboard");
+        }
       }
-    });
+    );
   }
 
 }

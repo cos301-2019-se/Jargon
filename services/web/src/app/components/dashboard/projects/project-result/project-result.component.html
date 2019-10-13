@@ -14,25 +14,38 @@
                   <div class="card-header">
                     <h5 class="display-5"><b>PROJECT DETAILS</b></h5>
                   </div>
+                  
                   <div class="card-body text-gray">
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Project Name:</h6></div>
-                      <div class="col-6 text-light">{{project.project_name}}</div>
+
+                    <div class="row text-light" *ngIf="isLoadingStats">
+                      <div class="col-auto mx-auto">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
                     </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Source:</h6></div>
-                      <div class="col-6 text-light">{{project.source}}</div>
-                    </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Whitelisted Words:</h6></div>
-                      <div class="col-6 text-light">{{project.whitelist.toString()}}</div>
-                    </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Blacklisted Words:</h6></div>
-                      <div class="col-6 text-light">{{project.blacklist.toString()}}</div>
+                    
+                    <!-- NG IF here -->
+                    <div *ngIf="!isLoadingStats">
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Project Name:</h6></div>
+                        <div class="col-6 text-light">{{project.project_name}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Source:</h6></div>
+                        <div class="col-6 text-light">{{project.source}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Whitelisted Words:</h6></div>
+                        <div class="col-6 text-light">{{project.whitelist.toString()}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Blacklisted Words:</h6></div>
+                        <div class="col-6 text-light">{{project.blacklist.toString()}}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -41,40 +54,53 @@
                     <h5 class="display-5"><b>STATISTICS</b></h5>
                   </div>
                   <div class="card-body text-gray">
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Minimum:</h6></div>
-                      <div class="col-6 text-light">{{projectAnalysis.min | number}}</div>
+
+                    <div class="row text-light" *ngIf="isLoadingStats">
+                      <div class="col-auto mx-auto">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
                     </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Maximum:</h6></div>
-                      <div class="col-6 text-light">{{projectAnalysis.max | number}}</div>
-                    </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Mean:</h6></div>
-                      <div class="col-6 text-light">{{projectAnalysis.mean | number}}</div>
-                    </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Median:</h6></div>
-                      <div class="col-6 text-light">{{projectAnalysis.median | number}}</div>
-                    </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Mode:</h6></div>
-                      <div class="col-6 text-light">{{projectAnalysis.mode[0] | number}}</div>
-                    </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Standard Deviation:</h6></div>
-                      <div class="col-6 text-light">{{projectAnalysis.std_dev | number}}</div>
-                    </div>
-                    <br>
-                    <div class="pl-3 row">
-                      <div class="col-6"><h6 class="display-5">Variance:</h6></div>
-                      <div class="col-6 text-light">{{projectAnalysis.variance | number}}</div>
-                    </div>
+
+                    <!-- NG if Here -->
+                    
+                    <div *ngIf="!isLoadingStats">
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Minimum:</h6></div>
+                        <div class="col-6 text-light">{{projectAnalysis.min | number}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Maximum:</h6></div>
+                        <div class="col-6 text-light">{{projectAnalysis.max | number}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Mean:</h6></div>
+                        <div class="col-6 text-light">{{projectAnalysis.mean | number}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Median:</h6></div>
+                        <div class="col-6 text-light">{{projectAnalysis.median | number}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Mode:</h6></div>
+                        <div class="col-6 text-light">{{projectAnalysis.mode[0] | number}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Standard Deviation:</h6></div>
+                        <div class="col-6 text-light">{{projectAnalysis.std_dev | number}}</div>
+                      </div>
+                      <br>
+                      <div class="pl-3 row">
+                        <div class="col-6"><h6 class="display-5">Variance:</h6></div>
+                        <div class="col-6 text-light">{{projectAnalysis.variance | number}}</div>
+                      </div>
+                     </div>
                   </div>
                 </div>
               </div>
@@ -86,11 +112,24 @@
                   </div>
                   <div class="card-body text-gray">
 
-                    <ejs-accumulationchart id="chart-container" [legendSettings]='legendSettings' background='rgba(1,1,1,0)'>
-                        <e-accumulation-series-collection>
-                            <e-accumulation-series [dataSource]='piedata' xName='x' yName='y' innerRadius='50%' [dataLabel]='datalabel' legendShape='Rectangle'></e-accumulation-series>
-                        </e-accumulation-series-collection>
-                    </ejs-accumulationchart>
+                    <div class="row text-light" *ngIf="isLoadingStats">
+                      <div class="col-auto mx-auto">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ng if here -->
+
+                    <div *ngIf="!isLoadingStats">
+                      <ejs-accumulationchart id="chart-container" [legendSettings]='legendSettings' background='rgba(1,1,1,0)'>
+                          <e-accumulation-series-collection>
+                              <e-accumulation-series [dataSource]='piedata' xName='x' yName='y' innerRadius='50%' [dataLabel]='datalabel' legendShape='Rectangle'></e-accumulation-series>
+                          </e-accumulation-series-collection>
+                      </ejs-accumulationchart>
+                    </div>
+
                   </div>
                 </div>
                 <div class="card shadow-lg">
@@ -98,7 +137,16 @@
                     <h5 class="display-5"><b>History</b></h5>
                   </div>
                   <div class="card-body">
-                    <div style="display: block;">
+
+                    <div class="row" *ngIf="isLoadingStats">
+                      <div class="col-auto mx-auto">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style="display: block;" *ngIf="!isLoadingStats">
 
                       <ejs-chart id='chart-histogram' style='display:block;' align='center' [primaryXAxis]='primaryXAxisHistogram' [primaryYAxis]='primaryYAxisHistogram' (load)='loadHistogram($event)'background='rgba(255,255,255,0)'>
                         <e-series-collection>
@@ -128,7 +176,15 @@
                     <h5 class="display-5"><b>Average Sentiment Over Time</b></h5>
                   </div>
                   <div class="card-body">
-                    <div>
+                    <div class="row" *ngIf="isLoadingStats">
+                      <div class="col-auto mx-auto">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div *ngIf="!isLoadingStats">
                       <div style="display: block">
 
                         <ejs-chart id="chart-average-over-time" [primaryXAxis]='primaryXAxisAvgSentiment'[primaryYAxis]='primaryYAxisAvgSentiment' background='rgba(255,255,255,0)'>
@@ -172,7 +228,16 @@
                     <h5 class="display-5"><b>Average Change in Sentiment Over Time</b></h5>
                   </div>
                   <div class="card-body">
-                    <div>
+
+                    <div class="row" *ngIf="isLoadingStats">
+                      <div class="col-auto mx-auto">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div *ngIf="!isLoadingStats">
                       <div style="display: block">
 
                         <ejs-chart id="chart-change-over-time" [primaryXAxis]='primaryXAxisROC'[primaryYAxis]='primaryYAxisROC' background='rgba(255,255,255,0)'>
@@ -246,7 +311,7 @@
                         </div>
                       </div>
                       <div class="col-auto ml-auto">
-                        Total Tweets: {{project.data.length}}
+                        Total Tweets: {{project.size}}
                       </div>
                     </div>
 
@@ -257,7 +322,7 @@
                             <div class="row m-0 p-0">
                               <div class="col-12 mb-3 p-3 mx-auto border rounded m-0 p-0">
                                 <div class=" d-flex justify-content-between align-items-center">
-                                  {{data.tweetObject.text}}
+                                  {{data.tweetText}}
                                   <span class="badge badge-primary badge-pill ml-3">{{data.tweetSentiment | number}}</span>
                                 </div>
                                 <div class="row mt-3 m-0 p-0" *ngIf="data['checked'] && activeFlagging">
@@ -272,6 +337,19 @@
                             <input type="checkbox" [(ngModel)]="data['checked']" (click)="onCheckboxClick(i)">
                           </div>
                         </div>
+                        <ul class="list-group project-list main-content style-5 text-dark">
+                          <li class="list-group-item mb-4 paginate">
+                            <nav aria-label="mx-auto Page navigation example">
+                              <ul class="pagination">
+                                <li class="page-item"><a class="page-link" (click)="onPreviousClick()">Previous</a></li>
+    
+                                <li *ngFor="let page of pages; let i = index" class="page-item"><a [ngClass]="page == pageIndex ? 'active_page' : 'inactive_page'" class="page-link" (click)="onPageClick(page)">{{page}}</a></li>
+    
+                                <li class="page-item"><a class="page-link" (click)="onNextClick()">Next</a></li>
+                              </ul>
+                            </nav>
+                          </li>
+                        </ul>
                       </div>
                     </div>
                   </div>

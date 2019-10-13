@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { GlobalService } from '../global-service/global-service.service';
 import { Observable, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { tap, map, catchError } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
+import { ApiResponse } from '../../interfaces/api-response/api-response';
 
 @Injectable({
   providedIn: 'root'
@@ -26,20 +27,42 @@ export class HttpInterceptorService implements HttpInterceptor {
       });
     }
 
+    console.log("HttpRequest intercepted. Added token to header");
     return next.handle(request).pipe(
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
-          //add success/failure dialog
+          if (event.status == 200) {
+            let response: ApiResponse = event.body;
+            if (response.success == true) {
+              this.notifierService.notify('success', response.message);
+            } else {
+              this.notifierService.notify('error', response.message);
+            }
+          } else {
+            let response: ApiResponse = event.body;
+            this.notifierService.notify('error', response.message);
+          }
         }
         return event;
       }),
       catchError(
         (error: HttpErrorResponse) => {
-          if (error.status === 401) {
+          console.log(error);
+          if (error.status === 0) {
+            this.notifierService.notify('error', error.statusText);
+          } else if (error.status === 401) {
             // auto logout if 401 response returned from api
+            this.notifierService.notify('error', 'Unauthorised. Logging out');
             this.globalService.logout();
             location.reload(true);
-            this.notifierService.notify('error', 'Unauthorised. Logging out');
+          } else {
+            if (error.error != undefined && error.error != null) {
+              if (error.error.message != undefined || error.error.message != null) {
+                this.notifierService.notify('error', error.error.message);
+              }
+            } else {
+              this.notifierService.notify('error', 'An error has occured');
+            }
           }
 
           // const error = err.error.message || err.statusText;

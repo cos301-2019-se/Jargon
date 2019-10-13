@@ -33,7 +33,8 @@ const projectSchema = mongoose.Schema({
         {
             type : Object
         }
-    ]
+    ],
+    deleted: Boolean
 });
 
 module.exports = mongoose.model('Project', projectSchema);

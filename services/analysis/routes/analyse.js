@@ -10,7 +10,9 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Statistic = require('../models/statistic');
-const Project = require('../models/project')
+const Project = require('../models/project');
+const User = require('../models/user');
+const ObjectId = mongoose.Types.ObjectId;
 
 const INTERVAL = 0.05;
 const TOTAL = 1;
@@ -251,7 +253,7 @@ function mapToTime(elem)
     let d = new Date(stamp);
     return {
         hour : d.getUTCHours(),
-        tweet : elem.tweetObject,
+        tweet : elem.tweetObject.text,
         sentiment : elem.tweetSentiment
     };
 
@@ -267,10 +269,11 @@ router.post('/', (req, res, next) => {
 
     
 
-    Project.find({_id : req.body.id})
+    Project.aggregate([ {$match : {_id : ObjectId(req.body.id)}}, {$project : {"data.tweetSentiment" : 1, "data.tweetObject.text" : 1, "data.tweetObject.timestamp_ms" : 1}}])
     .exec()
     .then(proj => {
-        // console.log(proj);
+        console.log(proj);
+     //   res.status(200).json({result: proj});
         let projectData = proj[0].data.filter(function(elem){
             return elem.tweetSentiment > 0;
         });
@@ -324,23 +327,26 @@ router.post('/', (req, res, next) => {
         stat.save()
         .then(result => {
             res.status(200).json({
-                status: true,
-                result : "Statistics calculated and added"
+                success: true,
+                message: "Statistics calculated and added",
+                result: null
             });
         })
         .catch(err => {
             console.log(err);
             res.status(200).json({
-                status: false,
-                result: "Failed to add stats"
+                success: false,
+                message: "Failed to add statistics",
+                result: null
             });
         });
     })
     .catch(err => {
         console.log(err);
         res.status(200).json({
-            status: false,
-            result: "Error finding project"
+            success: false,
+            message: "Error finding project",
+            result: null
         });
     });
     
@@ -359,10 +365,10 @@ router.post('/compare', (req, res, next) => {
     let idOne = req.body.first;
     let idTwo = req.body.second;
 
-    Statistic.find({project: idOne})
+    Statistic.aggregate([{$match : {"project" : ObjectId(idOne)}}, {$sort : { timestamp : -1}}, {$limit : 1}])
     .exec()
     .then(res1 => {
-        Statistic.find({project: idTwo})
+        Statistic.aggregate([{$match : {"project" : ObjectId(idTwo)}}, {$sort : { timestamp : -1}}, {$limit : 1}])
         .exec()
         .then(res2 => {
 
@@ -370,23 +376,26 @@ router.post('/compare', (req, res, next) => {
                 firstProject : res1,
                 secondProject : res2
             }
-            res.send(200).json({
-                status: true,
+            res.status(200).json({
+                success: true,
+                message: "Successfully retrieved statistics",
                 result: obj
-            })
+            });
             
         })
         .catch(err2 => {
             res.status(200).json({
-                status: false,
-                result : "Error finding second project"
+                success: false,
+                message: "Error finding second project",
+                result: null
             })
         });
     })
     .catch(err1 => {
         res.status(200).json({
-            status: false,
-            result : "Error finding first project"
+            success: false,
+            messsage: "Error finding first project",
+            result: null
         });
     });
 });
@@ -401,20 +410,155 @@ router.post('/compare', (req, res, next) => {
 router.post('/getStatistics', (req, res, next) => {
     let id = req.body.id;
 
-    Statistic.find({project: id})
+    Statistic.aggregate([{$match : {"project" : ObjectId(req.body.id)}}, {$sort : { timestamp : -1}}, {$limit : 1}])
     .exec()
     .then(res1 => {
         res.status(200).json({
-            status : true,
-            result : res1
+            success: true,
+            message: "Successfully retrieved statistics",
+            result: res1
         });
     })
     .catch(err1 => {
         res.status(200).json({
-            status: false,
+            success: false,
             result : "Error finding first project"
         });
     });
 });
+
+
+/***
+    * request for getUserStatistics (analyse/getUserStatistics) route ()
+    * 
+    * this function aggregates the data on all users in the DB and returns a json object with the results
+    * the data is read from the Database inside the User model
+*/
+router.post('/getUserStatistics', (req, res, next) => {
+    
+    User.find()
+    .exec()
+    .then(res1 => {
+        console.log(res1.length);
+        let userNum = res1.length;
+        let numToday = 0;
+        for (let i = 0; i < userNum; i++)
+        {
+            if (res1[i].created === undefined) continue;
+            if (isCurrentDate(res1[i].created))
+                numToday++;
+        }
+
+        //let total = 0;
+
+        //for (let i = 0; i < userNum; i++)
+        //{
+        //    if (res1[i].projects === null)
+        //        continue;
+
+        //    total += res1[i].projects.length;
+        //}
+
+        Project.count({})
+        .exec()
+        .then(res2 => {
+            console.log(res2);
+            let total = res2;
+            let avgProjPerUser = total / userNum;
+
+            const obj = {
+                totalUsers : userNum,
+                todayUsers : numToday,
+                averageProjectsPerUser : avgProjPerUser
+            }
+            res.status(200).json({
+                success: true,
+                message: "Successfully retrieved User Statistics",
+                result: obj
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(200).json({
+                success: false,
+                result : "Failed to count projects"
+            });
+        });
+
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(200).json({
+            success: false,
+            result : "Error finding users"
+        });
+    });
+});
+
+/***
+    * request for getProjectStatistics (analyse/getProjectStatistics) route ()
+    * 
+    * this function aggregates the data on all projects in the DB and returns a json object with the results
+    * the data is read from the Database inside the Project and Statistics model
+*/
+
+router.post('/getProjectStatistics', (req, res, next) => {
+    Project.count({})
+    .exec()
+    .then(res1 => {
+        let projNum = res1;
+        console.log(res1);
+        Statistic.count({})
+        .exec()
+        .then(res2 => {
+            console.log(res2);
+            let projAnalysedTotal = res2;
+            Statistic.aggregate([{$group: {_id: null, total : {$sum: '$mean'}}}])
+            .exec()
+            .then((result)=>{
+                const returnObject = {
+                    totalProjects : projNum,
+                    totalTimesAnalysed : projAnalysedTotal,
+                    totalAverageSentiment : result[0]["total"]
+                }
+                console.log(returnObject);
+                res.status(200).json({
+                    success: true,
+                    message: "Successfully retrieved Project Statistics",
+                    result: returnObject
+                });
+            }).catch((err)=>{
+                console.log(err);
+                res.status(500).json({
+                    success: false,
+                    message: "Error occurred finding statistics",
+                    result: null
+                });
+            })
+        })
+        .catch(err2 => {
+            console.log(err2);
+            res.status(500).json({
+                success: false,
+                message: "Error occurred finding statistics",
+                result: null
+            });
+        });
+    })
+    .catch(err => {
+        res.status(200).json({
+            success: false,
+            message: "Error finding projects",
+            result: null
+        });
+    });
+});
+
+
+function isCurrentDate(d)
+{
+    const today = new Date();
+    return today.getDate() == d.getDate() && today.getMonth() == d.getMonth() && today.getFullYear() == d.getFullYear();
+}
 
 module.exports = router;

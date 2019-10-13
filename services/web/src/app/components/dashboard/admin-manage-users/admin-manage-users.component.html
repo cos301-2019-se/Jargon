@@ -8,8 +8,14 @@
               <div class="container-fluid m-0 wrapper rounded">
                 <div class="row rounded mt-2">
                   <div class="col-12 ml-0 pl-0">
-                    <h2 class=" display-5 text-black">MANAGE USERS</h2>
+                    <div class="row">
+                      <h2 class="display-5 text-black mr-4">MANAGE USERS</h2> 
+                      <div class="spinner-border mt-1" role="status" *ngIf="isLoading">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
                   </div>
+                  
                   <div class="container-fluid mx-auto m-0 ">
                     <div class="wrapper-outer">
                       <div class="main">
@@ -20,11 +26,10 @@
                                 <div class="row">
                                   <div class="md-form col-10">
                                     <input type="text" id="form1" class="form-control">
-                                    <!-- <button class="btn btn-outline-primary float-right">Hello</button> -->
                                     <label for="form1" id="form-label">Search</label>
                                   </div>
                                   <br>
-                                  <div class="col-12">
+                                  <div class="col-12" *ngIf="!isLoading">
                                     <div class="row" *ngFor="let userRow of users; let i = index">
                                       <div class="card profile-card-5 col-lg-3 col-md-5 col-12 mx-3 mt-5 px-0" *ngFor="let user of users[i]">
                                         <div class="row">
@@ -35,18 +40,22 @@
                                           </div>
                                         </div>
                                         <div class="card-body pt-0">
-                                          <div class="float-left">
-                                            <h5 class="card-title text-light">{{user.name}} {{user.surname}}</h5>
-                                            <p class="card-text">15 Projects</p>
-                                          </div>
-                                          <div class="dropdown float-right">
-                                            <div class="ellipsis" type="" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                              <i class="fas fa-ellipsis-v"></i>
+                                          <div class="row">
+                                            <div class="col-auto">
+                                              <h5 class="card-title text-light">{{user.name}} {{user.surname}}</h5>
+                                              <p class="card-text">15 Projects</p>
                                             </div>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#myModal" (click)="onViewUserClick(user)"><i class="fas fa-eye mr-3"></i>View user</a>
-                                              <div class="dropdown-divider"></div>
-                                              <a class="dropdown-item" href="#"><i class="fas fa-trash mr-3"></i>Remove user</a>
+                                            <div class="col-auto ml-auto">
+                                              <div class="dropdown float-right">
+                                                <div class="ellipsis" type="" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                  <i class="fas fa-ellipsis-v"></i>
+                                                </div>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                  <a class="dropdown-item" data-toggle="modal" data-target="#myModal" (click)="onViewUserClick(user)"><i class="fas fa-eye mr-3"></i>View user</a>
+                                                  <div class="dropdown-divider"></div>
+                                                  <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal2"><i class="fas fa-trash mr-3"></i>Remove user</a>
+                                                </div>
+                                              </div>
                                             </div>
                                           </div>
                                         </div>
@@ -73,8 +82,8 @@
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
+    <div class="modal-content modal-content-color">
+      <div class="modal-header modal-header-color">
         <h5>User Details</h5>
         <button type="button" class="text-light" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -104,3 +113,25 @@
     </div>
   </div>
 </div>
+
+<!-- Confirmtion modal -->
+
+<div class="modal fade text-dark" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirm Removal</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you would like to remove this user?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal" (click)="onRemoveUserClick()"><i class="mr-3 fas fa-check"></i>Confirm</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="mr-3 fas fa-ban"></i>Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>

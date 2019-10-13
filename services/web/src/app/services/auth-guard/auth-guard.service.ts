@@ -13,6 +13,7 @@ export class AuthGuardService {
   public canActivate() {
     const token = this.globalService.getTokenValue();
     if (token == undefined || token == null) {
+      this.globalService.logout();
       this.router.navigateByUrl("/login");
       return false;
     }

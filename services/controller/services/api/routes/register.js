@@ -38,15 +38,17 @@ router.post('/', (req, res, next) => {
     .then(result => {
         console.log(result);
         res.status(200).json({
-            message: "Handled post request to /register",
+            message: "Successfully registered",
             success: true,
-            createdProduct: result
+            result: null
         });
     })
     .catch(err =>{
         console.log(err);
         res.status(500).json({
-            error : "Could not register to Jargon."
+            message: "Failed to register",
+            success: false,
+            result: null
         });
     })
 });

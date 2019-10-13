@@ -47,7 +47,7 @@
                           <ul class="pagination">
                             <li class="page-item"><a class="page-link" (click)="onPreviousClick()">Previous</a></li>
 
-                            <li *ngFor="let page of pages; let i = index" class="page-item"><a [ngClass]="i == pageIndex ? 'active_page' : 'inactive_page'" class="page-link" (click)="onPageClick(i)">{{i+1}}</a></li>
+                            <li *ngFor="let page of pages; let i = index" class="page-item"><a [ngClass]="page == pageIndex ? 'active_page' : 'inactive_page'" class="page-link" (click)="onPageClick(page)">{{page}}</a></li>
 
                             <li class="page-item"><a class="page-link" (click)="onNextClick()">Next</a></li>
                           </ul>

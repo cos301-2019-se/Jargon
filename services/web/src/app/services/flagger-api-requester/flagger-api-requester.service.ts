@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FlagData } from '../../interfaces/flagger/flag-data';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FlaggerApiRequesterService {
-  apiURL = 'http://localhost:3002';
+
+  apiURL = environment.urlFlagger;
 
   constructor(private httpClient: HttpClient) {}
 
@@ -16,6 +18,6 @@ export class FlaggerApiRequesterService {
         ...flaggedData
       ]
     };
-    return this.httpClient.post(`${this.apiURL}/flag/add`, body);
+    return this.httpClient.post(`${this.apiURL}/add`, body);
   }
 }

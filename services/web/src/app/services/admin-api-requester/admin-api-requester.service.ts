@@ -3,13 +3,15 @@ import { GlobalService } from '../global-service/global-service.service';
 import { HttpClient } from '@angular/common/http';
 import { RegisterDetails, User } from '../../interfaces/login-register/login-register';
 import { Project } from '../../interfaces/project/project';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminApiRequesterService {
 
-  apiURL = 'http://localhost:3000/admin';
+  apiURL = environment.urlAdmin;
+
   constructor(private httpClient : HttpClient) {}
 
   public createAdminUser(registerDetail: RegisterDetails) {
@@ -42,6 +44,13 @@ export class AdminApiRequesterService {
     return this.httpClient.post(`${this.apiURL}/updateProject`, project)
   }
 
+  public deleteProject(projectId: string) {
+    const body = {
+      id: projectId
+    };
+    return this.httpClient.post(`${this.apiURL}//deleteProjectAdmin`, body);
+  }
+
   public getUser() {
     const body = {};
     return this.httpClient.post(`${this.apiURL}/getUser`, body);
@@ -59,8 +68,8 @@ export class AdminApiRequesterService {
         {'propName': 'surname', 'value': user.surname},
         {'propName': 'email', 'value': user.email},
         {'propName': 'username', 'value': user.username},
-        {'propName': 'password', 'value': user.password},
-        {'propName': 'passwordConfirm', 'value': user.passwordConfirm}
+        // {'propName': 'password', 'value': user.password},
+        // {'propName': 'passwordConfirm', 'value': user.passwordConfirm}
       ]
     };
     return this.httpClient.post(`${this.apiURL}/editUser`, body);
@@ -74,8 +83,8 @@ export class AdminApiRequesterService {
         {'propName': 'surname', 'value': user.surname},
         {'propName': 'email', 'value': user.email},
         {'propName': 'username', 'value': user.username},
-        {'propName': 'password', 'value': user.password},
-        {'propName': 'passwordConfirm', 'value': user.passwordConfirm}
+        // {'propName': 'password', 'value': user.password},
+        // {'propName': 'passwordConfirm', 'value': user.passwordConfirm}
       ]
     };
     return this.httpClient.post(`${this.apiURL}/editUserAdmin`, body);

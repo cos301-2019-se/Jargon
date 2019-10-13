@@ -10,8 +10,8 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },                                  
   { path: 'register', component: RegisterComponent },                            
-  { path: 'dashboard', loadChildren: './components/dashboard/dashboard.module#DashboardModule', 
-      canActivate: [AuthGuardService] },
+  { path: 'dashboard', loadChildren: './components/dashboard/dashboard.module#DashboardModule'}, 
+      // canActivate: [AuthGuardService] },
   { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];
 

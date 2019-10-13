@@ -1,11 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Project } from '../../../../interfaces/project/project';
-import { SharedProjectService } from '../../../../services/shared-project/shared-project.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Form, NgForm } from '@angular/forms';
-import { ProjectApiRequesterService } from '../../../../services/project-api-requester/project-api-requester.service';
 import { AdminApiRequesterService } from '../../../../services/admin-api-requester/admin-api-requester.service';
 import { SharedAdminProjectService } from '../../../../services/shared-admin-project/shared-admin-project.service';
+import { ApiResponse } from '../../../../interfaces/api-response/api-response';
 
 @Component({
   selector: 'app-admin-manage-project-info',
@@ -26,7 +24,8 @@ export class AdminManageProjectInfoComponent implements OnInit {
 
   constructor(private sharedAdminProjectService: SharedAdminProjectService, 
       private adminApiRequester: AdminApiRequesterService,
-      private activeRoute: ActivatedRoute) {
+      private activeRoute: ActivatedRoute,
+      private router: Router) {
   }
 
   ngOnInit() {
@@ -121,6 +120,30 @@ export class AdminManageProjectInfoComponent implements OnInit {
 
     this.projectSnapshot = JSON.parse(JSON.stringify(this.project));
     this.projectSnapshot = Object.assign(new Project, this.projectSnapshot);
+  }
+
+  onRemoveProjectClick() {
+    this.adminApiRequester.deleteProject(this.project._id).subscribe(
+      (response: ApiResponse) => {
+        if (response == undefined || response == null || !response.success) {
+          return;
+        }
+
+        let tempProjects = this.sharedAdminProjectService.getProjects();
+        let index = -1;
+        for (let i = 0; i < tempProjects.length; ++i) {
+          if (tempProjects[i]._id == this.project._id) {
+            index = i;
+            break;
+          }
+        }
+        if (index >= 0) {
+          tempProjects.splice(index, 1);
+          this.sharedAdminProjectService.setProjects(tempProjects);
+        }
+        this.router.navigateByUrl('/dashboard/manage-projects/project-initial');
+      }
+    );
   }
 
 }

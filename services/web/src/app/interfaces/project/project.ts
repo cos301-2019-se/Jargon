@@ -9,6 +9,7 @@ export class Project {
     public status: boolean = false;
     public trackTime: number = 0;
     public whitelist: string[] = [];
+    public size: number = 0;
     public _id: string = "";
 
     compare(object: Project) : boolean {
@@ -65,6 +66,7 @@ export class Run {
 
 export class SocialData {
     public tweetID: string = "";
+    public tweetText: string = "";
     public tweetObject: DataObject = null;
     public tweetSentiment: number = 0.0;
 }

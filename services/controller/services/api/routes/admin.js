@@ -47,25 +47,27 @@ router.post('/createAdminUser', (req, res, next) => {
                 });
                 user
                 .save()
-                .then(result => {
-                    console.log(result);
+                .then(_result => {
+                    console.log(_result);
                     res.status(200).json({
-                        message: "Handled post request to /createAdminUser",
+                        message: "Successfully created admin user",
                         success: true,
-                        createdProduct: result
+                        result: null
                     });
                 })
                 .catch(err =>{
                     console.log(err);
                     res.status(500).json({
-                        error: "Could not register"
+                        message: "Failed to create admin user",
+                        success: false,
+                        result: null
                     });
                 })
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "Unauthorised to use this function.",
-                    createdProduct: null
+                    message: "User does not have sufficient privileges",
+                    result: null
                 });
             }
         }
@@ -103,19 +105,25 @@ router.post('/deleteUser', (req, res, next) => {
                 .exec()
                 .then(result => {
                     console.log(result);
-                    res.status(200).json(result);
+                    res.status(200).json({
+                        success: true,
+                        message: "Successfully deleted user",
+                        result: null
+                    });
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error: "Could not register"
+                        message: "Failed to delete user",
+                        success: false,
+                        result: null
                     });
                 });
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "Unauthorised to use this function.",
-                    createdProduct: null
+                    message: "User does not have sufficient privileges",
+                    result: null
                 });
             }
         }
@@ -137,36 +145,178 @@ router.post('/basicAllProjects', (req, res, next) => {
             res.status(401).json({});
         }else{
             if(tokenPlainText.admin == true){
-                Project.find()
+                Project.find({"deleted" : false}, "_id project_name whitelist blacklist source trackTime created createdBy deleted status")
                 .exec()
                 .then(results => {
+                    const allProj = results;
                     const retProjects = [];
-                    let simplify = results.forEach((proj)=>{
-                        let tempProj = {};
-                        tempProj["_id"] = proj["_id"];
-                        tempProj["project_name"] = proj["project_name"];
-                        tempProj["whitelist"] = proj["whitelist"];
-                        tempProj["blacklist"] = proj["blacklist"];
-                        tempProj["source"] = proj["source"];
-                        tempProj["trackTime"] = proj["trackTime"];
-                        tempProj["created"] = proj["created"];
-                        tempProj["createdBy"] = proj["createdBy"];
-                        retProjects.push(tempProj);
-                    });
-                    console.log(retProjects);
-                    res.status(200).json(retProjects);           
+                    let count = 0;
+                    if(results.length>0){
+                        let simplify = results.forEach((proj)=>{
+                            Project.aggregate([{$match: {_id: mongoose.Types.ObjectId(proj["_id"])}}, {$project: {data: {$size: '$data'}}}])
+                            .exec()
+                            .then(result_ => {
+                                let tempProj = {};
+                                tempProj["_id"] = proj["_id"];
+                                tempProj["project_name"] = proj["project_name"];
+                                tempProj["whitelist"] = proj["whitelist"];
+                                tempProj["blacklist"] = proj["blacklist"];
+                                tempProj["source"] = proj["source"];
+                                tempProj["trackTime"] = proj["trackTime"];
+                                tempProj["created"] = proj["created"];
+                                tempProj["createdBy"] = proj["createdBy"];
+                                tempProj["size"] = result_[0]['data'];
+                                retProjects.push(tempProj);
+                                count++;
+                                if(count==allProj.length){
+                                    console.log(retProjects);
+                                    res.status(200).json({
+                                        success: true,
+                                        message: "Successfully retrieved projects",
+                                        result: retProjects
+                                    });
+                                }
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                                res.status(500).json({
+                                    message: "Failed to retrieve projects",
+                                    success: false,
+                                    result: null
+                                });
+                            });
+                        });
+                    }else{
+                        res.status(200).json({
+                            success: true,
+                            message: "Successfully retrieved projects",
+                            result: [] 
+                        });
+                    }           
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error: "Could not register"
+                        message: "Failed to retrieve projects",
+                        success: false,
+                        result: null
                     });
                 });
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "Unauthorised to use this function.",
-                    createdProduct: null
+                    message: "User does not have sufficient privileges",
+                    result: null
+                });
+            }
+        }
+    })
+});
+
+/***
+* request for tweets (/tweets) page (string id)
+* 
+* this function searches for a certain project by its id, and returns
+* an array of tweets stored in that project based on the page and count specified
+*/
+router.post('/tweetsAdmin', (req, res, next) => {
+    const projectID = req.body.id;
+    const page = req.body.page;
+    const count = req.body.count;
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(401).json({});
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(401).json({});
+        }else{
+            if(tokenPlainText.admin==true){
+                Project.aggregate([{$match: {_id: mongoose.Types.ObjectId(projectID)}}, {$project: {data: {$size: '$data'}}}])
+                .exec()
+                .then(result_ => {
+                    let size = result_[0]['data'];
+                    let firstIndex = (page-1)*count;
+                    let lastIndex = (page*count)-1; 
+                    if(firstIndex<size){
+                        if(lastIndex<size){
+                            Project.find({"_id" : projectID, "deleted" : false}, {data: {$slice: [firstIndex, (lastIndex-firstIndex+1)]}})
+                            .exec()
+                            .then((result_) => {
+                                let returnArray = [];
+                                result_[0]["data"].forEach((element)=>{
+                                    let tempObject = {}
+                                    tempObject["tweetID"] = element["tweetID"];
+                                    tempObject["tweetSentiment"] = element["tweetSentiment"];
+                                    tempObject["tweetText"] = element["tweetObject"]["text"];
+                                    tempObject["id"] = element["id"];
+                                    returnArray.push(tempObject);
+                                })
+                                console.log(returnArray);
+                                res.status(200).json({
+                                    message: "Successfully retrieved data",
+                                    success: true,
+                                    result: returnArray
+                                });
+                            })
+                            .catch(() => {
+                                console.log(err);
+                                res.status(500).json({
+                                    message: "Failed to retrieve data",
+                                    success: false,
+                                    result: null
+                                });
+                            });
+                        }else{
+                            Project.find({"_id" : projectID, "deleted" : false}, {data: {$slice: [firstIndex, (size-firstIndex+1)]}})
+                            .exec()
+                            .then(() => {
+                                let returnArray = [];
+                                result_[0]["data"].forEach((element)=>{
+                                    let tempObject = {}
+                                    tempObject["tweetID"] = element["tweetID"];
+                                    tempObject["tweetSentiment"] = element["tweetSentiment"];
+                                    tempObject["tweetText"] = element["tweetObject"]["text"];
+                                    tempObject["id"] = element["id"];
+                                    returnArray.push(tempObject);
+                                })
+                                console.log(returnArray);
+                                res.status(200).json({
+                                    message: "Successfully retrieved data",
+                                    success: true,
+                                    result: returnArray
+                                });
+                            })
+                            .catch(() => {
+                                console.log(err);
+                                res.status(500).json({
+                                    message: "Failed to retrieve data",
+                                    success: false,
+                                    result: null
+                                });
+                            });
+                        }
+                    }else{
+                        res.status(200).json({
+                            success: false,
+                            message: "Invalid index given",
+                            result: []
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json({
+                        message: "Failed to retrieve data",
+                        success: false,
+                        result: null
+                    });
+                });
+            }else{
+                res.status(200).json({
+                    success: false,
+                    message: "User does not have sufficient privileges",
+                    result: null
                 });
             }
         }
@@ -192,22 +342,36 @@ router.post('/detailedAllProjects', (req, res, next) => {
                 .exec()
                 .then(results => {
                     const retProjects = [];
-                    results.forEach((project)=>{
-                        retProjects.push(project);
-                    });
-                    res.status(200).json(retProjects);
+                    if(results.length>0){
+                        results.forEach((project)=>{
+                            retProjects.push(project);
+                        });
+                        res.status(200).json({
+                            success: true,
+                            message: "Successfully retrieved projects",
+                            result: retProjects
+                        });
+                    }else{
+                        res.status(200).json({
+                            success: true,
+                            message: "Successfully retrieved projects",
+                            result: []
+                        });
+                    }
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error: "Could not register"
+                        message: "Failed to retrieve projects",
+                        success: false,
+                        result: null
                     });
                 });
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "Unauthorised to use this function.",
-                    createdProduct: null
+                    message: "User does not have sufficient privileges",
+                    result: null
                 });
             }
         }
@@ -235,19 +399,25 @@ router.post('/detailedSearch', (req, res, next) => {
                 .exec()
                 .then(result => {
                     console.log(result);
-                    res.status(200).json(result);
+                    res.status(200).json({
+                        success: true,
+                        message: "Successfully retrieved project",
+                        result: result
+                    });
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error: "Could not register"
+                        message: "Failed to retrieve project",
+                        success: false,
+                        result: null
                     });
                 });
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "Unauthorised to use this function.",
-                    createdProduct: null
+                    message: "User does not have sufficient privileges",
+                    result: null
                 });
             }
         }
@@ -289,19 +459,27 @@ router.post('/editUser', (req, res, next) => {
                 .exec()
                 .then(result => {
                     console.log(result);
-                    res.status(200).json(result);
+                    res.status(200).json({
+                        success: true,
+                        message: "Successfully edited user",
+                        result: null
+                    });
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error : "Could not perform action."
+                        message: "Failed to edit user",
+                        success: false,
+                        result: null
                     });
                 });
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to edit user",
+                    success: false,
+                    result: null
                 });
             });
         }
@@ -332,7 +510,7 @@ router.post('/editUserAdmin', (req, res, next) => {
                     let updateVals = {};
                     for (const vals of req.body.updateValues){
                         if(!((vals.propName=="_id"))){
-                            if(vals.propName=="password"){
+                            if((vals.propName=="password")&&(vals.propName!="")){
                                 let saltToSave = bcrypt.genSaltSync();
                                 let passwordToSave = bcrypt.hashSync(vals.value, saltToSave);
                                 updateVals[vals.propName] = passwordToSave;
@@ -347,25 +525,34 @@ router.post('/editUserAdmin', (req, res, next) => {
                     .exec()
                     .then(result => {
                         console.log(result);
-                        res.status(200).json(result);
+                        res.status(200).json({
+                            success: true,
+                            message: "Successfully edited user",
+                            result: null
+                        });
                     })
                     .catch(err => {
                         console.log(err);
                         res.status(500).json({
-                            error : "Could not perform action."
+                            message: "Failed to edit user",
+                            success: false,
+                            result: null
                         });
                     });
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error : "Could not perform action."
+                        message: "Failed to edit user",
+                        success: false,
+                        result: null
                     });
                 });
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "Unauthorised to use this function."
+                    message: "User does not have sufficient privileges",
+                    result: null
                 });
             }
         }
@@ -389,19 +576,25 @@ router.post('/getUser', (req, res, next) => {
         }else{
             User.findById(tokenPlainText.id)
             .exec()
-            .then(result => {
-                console.log(result);
+            .then(_result => {
+                console.log(_result);
                 res.status(200).json({
-                    "name" : result["name"],
-                    "surname" : result["surname"],
-                    "email" : result["email"],
-                    "username" : result["username"]
+                    message: "Successfully retrieved user",
+                    success: true,
+                    result: {
+                    "name" : _result["name"],
+                    "surname" : _result["surname"],
+                    "email" : _result["email"],
+                    "username" : _result["username"]
+                    }
                 });
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to retrieve user",
+                    success: false,
+                    result: null
                 });
             });
         }
@@ -440,20 +633,159 @@ router.post('/getUserAdmin', (req, res, next) => {
                         retUsers.push(tempUser);
                     });
                     console.log(retUsers);
-                    res.status(200).json(retUsers);
+                    res.status(200).json({
+                        message: "Successfully retrieved users",
+                        success: true,
+                        result: retUsers
+                    });
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error : "Could not perform action."
+                        message: "Failed to retrieve users",
+                        success: false,
+                        result: null
                     });
                 });
             }else{
                 res.status(200).json({
                     success: false,
-                    message: "Unauthorised to use this function."
+                    message: "User does not have sufficient privileges",
+                    result: null
                 });
             }
+        }
+    })
+});
+
+/***
+    * request for edit (/edit) projects page (value array)
+    * 
+    * This function receives an array of values that need to updated for a 
+    * certain project as well as the id of a certain project. The projects 
+    * specific values are then updated with the new values.
+    */
+   router.post('/editProjectAdmin', (req, res, next) => {
+    const id = req.body.id;
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(401).json({});
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(401).json({});
+        }else{
+            Project.findById(id)
+            .exec()
+            .then(result => {
+                if(tokenPlainText.admin==true){
+                    console.log("authenticated successfully.")
+                    let updateVals = {};
+                    for (const vals of req.body.updateValues){
+                        updateVals[vals.propName] = vals.value;
+                    }
+                    Project.updateOne({ _id: id }, { $set: updateVals })
+                    .exec()
+                    .then(_result => {
+                        console.log(_result);
+                        res.status(200).json({
+                            message: "Successfully edited project",
+                            success: true,
+                            result: null
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({
+                            message: "Failed to edit project",
+                            success: false,
+                            result: null
+                        });
+                    });
+                }else{
+                    res.status(200).json({
+                        success: false,
+                        message: "User does not have sufficient privileges",
+                        result: null
+                    });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    message: "Failed to edit project",
+                    success: false,
+                    result: null
+                });
+            });
+        }
+    })
+});
+
+/***
+* request for delete (/delete) projects page ()
+* 
+* This function receives a specific project's id and
+* deletes this project in the database
+*/
+router.post('/deleteProjectAdmin', (req, res, next) => {
+    const id = req.body.id;
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(401).json({});
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(401).json({});
+        }else{
+            Project.findById(id)
+            .exec()
+            .then(result => {
+                if(tokenPlainText.admin==true){
+                    console.log("authenticated successfully.")
+                    let updateValues = [
+                        {
+                            "propName" : "deleted",
+                            "value" : true
+                        }
+                    ]
+                    let updateVals = {};
+                    for (const vals of updateValues){
+                        updateVals[vals.propName] = vals.value;
+                    }
+                    Project.update({ _id: id }, {$set: updateVals})
+                    .exec()
+                    .then(result => {
+                        res.status(200).json({
+                            message: "Successfully deleted project",
+                            success: true,
+                            result: null
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({
+                            message: "Failed to delete project",
+                            success: false,
+                            result: null
+                        });
+                    });
+                }else{
+                    res.status(200).json({
+                        success: false,
+                        message: "User does not have sufficient privileges",
+                        result: null
+                    });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    message: "Failed to delete project",
+                    success: false,
+                    result: null
+                });
+            });
         }
     })
 });

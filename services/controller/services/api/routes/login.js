@@ -31,53 +31,58 @@ router.post('/', (req, res, next) => {
                     jwt.sign({id: data[0]._id, admin: data[0].admin}, jwtConfig.secret, {expiresIn: 86400}, (err, _token) => {
                         if(err){
                             res.status(200).json({
-                                status : false,
-                                result : "Could not sign in",
-                                authenticated : false,
-                                token: null,
-                                admin: false
+                                message: "Failed to log in",
+                                success : false,
+                                result : null
                             });
                         }else{
+                            safeData = {
+                                "_id" : data[0]._id,
+                                "name" : data[0].name,
+                                "surname" : data[0].surname,
+                                "email" : data[0].email,
+                                "username" : data[0].username,
+                                "deleted" : data[0].deleted,
+                                "admin" : data[0].admin,
+                                "projects" : data[0].projects
+                            }
                             res.status(200).json({
-                                status : true,
-                                result : "Logged in successfully",
-                                authenticated : true,
-                                token: _token,
-                                admin: data[0].admin
+                                message : "Successfully logged in",
+                                success : true,
+                                result : {
+                                    user : safeData,
+                                    token : _token
+                                } 
                             });   
                         }
                     });
                 }else{
                     res.status(200).json({
-                        status : false,
-                        result : "Incorrect username or password",
-                        authenticated : false,
-                        token: null,
-                        admin: false
+                        message : "Incorrect username or password",
+                        success : false,
+                        result : null
                     });
                 }
             }else{
                 res.status(200).json({
-                    status : false,
-                    result : "Incorrect username or password",
-                    authenticated : false,
-                    token: null,
-                    admin: false
+                    message : "Incorrect username or password",
+                    success : false,
+                    result : null
                 });
             }
         }else{
             res.status(200).json({
-                status: false,
-                result: "Incorrect username or password",
-                authenticated : false,
-                token: null,
-                admin: false
+                message : "Incorrect username or password",
+                success : false,
+                result : null
             });
         }
     })
     .catch(err => {
         res.status(500).json({
-            error : "Could not log into Jargon."
+            message : "Failed to log in",
+            success : false,
+            result : null
         });
     });
 });

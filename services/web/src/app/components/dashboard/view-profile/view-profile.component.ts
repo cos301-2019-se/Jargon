@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AdminApiRequesterService } from '../../../services/admin-api-requester/admin-api-requester.service';
 import { User } from '../../../interfaces/login-register/login-register';
 import { NotifierService } from 'angular-notifier';
+import { ApiResponse } from '../../../interfaces/api-response/api-response';
 
 @Component({
   selector: 'app-view-profile',
@@ -15,23 +16,21 @@ export class ViewProfileComponent implements OnInit {
 
   isReadOnly: boolean = true;
 
-  private readonly notifier: NotifierService;
-
   constructor(private adminApiRequester: AdminApiRequesterService, 
       private notifierService: NotifierService) {
-    this.notifier = notifierService;
   }
 
   ngOnInit() {
     this.adminApiRequester.getUser().subscribe(
-      (res: User) => {
-        if (res == undefined || res == null) {
+      (response: ApiResponse) => {
+        if (response == undefined || response == null) {
           return;
         }
-        this.user.email = res.email;
-        this.user.name = res.name;
-        this.user.username = res.username;
-        this.user.surname = res.surname;
+        let user = response.result;
+        this.user.email = user.email;
+        this.user.name = user.name;
+        this.user.username = user.username;
+        this.user.surname = user.surname;
 
         this.userSnapshot.email = this.user.email;
         this.userSnapshot.name = this.user.name;

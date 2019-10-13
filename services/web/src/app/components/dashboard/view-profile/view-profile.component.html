@@ -34,7 +34,7 @@
                                       <div class="row">
                                         <div class="col-12">
                                           <div class="card-img-block row">
-                                            <img src="http://identicon-1132.appspot.com/graemecoetzee123?s=30&p=8&f=svg" class="mx-auto" width=150 height=150 alt="">
+                                            <img src="http://identicon-1132.appspot.com/{{ user.username }}?s=30&p=8&f=svg" class="mx-auto" width=150 height=150 alt="">
                                           </div>
                                         </div>
                                       </div>
@@ -49,10 +49,10 @@
                                               <i class="fas fa-ellipsis-v"></i>
                                             </div>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                              <a class="dropdown-item" (click)="onEditClick()"><i class="fas fa-cog mr-3"></i>Edit Details</a>
+                                              <a class="dropdown-item"  (click)="onEditClick()"><i class="fas fa-cog mr-3"></i>Edit Details</a>
                                               <!-- <a class="dropdown-item" href="#"><i class="fas fa-clipboard mr-3"></i>View projects</a> -->
                                               <div class="dropdown-divider"></div>
-                                              <a class="dropdown-item" ><i class="fas fa-trash mr-3"></i>Remove account</a>
+                                              <a class="dropdown-item"><i class="fas fa-trash mr-3"></i>Remove account</a>
                                             </div>
                                           </div>
                                         </div>

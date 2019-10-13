@@ -455,14 +455,18 @@ function startRMQ(res){
                 }
                 if(y<result[0]['data'].length){
                     console.log("sending message");
-                    sock.emit("datasend", result[0]['data'][y]);
+                    let returnObject = {
+                        tweetText: result[0]['data'][y]['tweetObject']['text'],
+                        tweetSentiment: result[0]['data'][y]['tweetSentiment']
+                    };
+                    sock.emit("datasend", returnObject);
                 }else if(ids[1]=="/t"){
                     console.log("termination character");
                 }
             })
             setTimeout(() => {
                 sock.disconnect();
-            }, 15000);
+            }, 4788000);
 
         }, {
             noAck: true
@@ -479,7 +483,7 @@ function startRMQ(res){
 * 
 * this function returns a an array of simplified, less detailed projects
 */
-router.get('/basicTokenized', (req, res, next) => {
+router.post('/basicTokenized', (req, res, next) => {
     let token = req.headers['x-access-token'];
     if(!token){
         res.status(401).json({});
@@ -488,31 +492,77 @@ router.get('/basicTokenized', (req, res, next) => {
         if(err){
             res.status(401).json({});
         }else{
-            Project.find()
+            Project.find( {"createdBy" : tokenPlainText.id, "deleted" : false}, "_id project_name whitelist blacklist source trackTime created createdBy deleted status")
             .exec()
             .then(results => {
+                console.log(results);
+                const allProj = results;
                 const retProjects = [];
-                let simplify = results.forEach((proj)=>{
-                    if(proj["createdBy"]==tokenPlainText.id){
-                        let tempProj = {};
-                        tempProj["_id"] = proj["_id"];
-                        tempProj["project_name"] = proj["project_name"];
-                        tempProj["whitelist"] = proj["whitelist"];
-                        tempProj["blacklist"] = proj["blacklist"];
-                        tempProj["source"] = proj["source"];
-                        tempProj["trackTime"] = proj["trackTime"];
-                        tempProj["created"] = proj["created"];
-                        tempProj["createdBy"] = proj["createdBy"];
-                        retProjects.push(tempProj);
-                    }
-                });
-                console.log(retProjects);
-                res.status(200).json(retProjects);           
+                let count = 0;
+                if(results.length>0){
+                    let simplify = results.forEach((proj)=>{
+                        if(proj["deleted"]==false){
+                            Project.aggregate([{$match: {_id: mongoose.Types.ObjectId(proj["_id"])}}, {$project: {data: {$size: '$data'}}}])
+                            .exec()
+                            .then(result_ => {
+                                let tempProj = {};
+                                tempProj["_id"] = proj["_id"];
+                                tempProj["project_name"] = proj["project_name"];
+                                tempProj["whitelist"] = proj["whitelist"];
+                                tempProj["blacklist"] = proj["blacklist"];
+                                tempProj["source"] = proj["source"];
+                                tempProj["trackTime"] = proj["trackTime"];
+                                tempProj["created"] = proj["created"];
+                                tempProj["createdBy"] = proj["createdBy"];
+                                tempProj["deleted"] = proj["deleted"];
+                                tempProj["status"] = proj["status"];
+                                tempProj["size"] = result_[0]['data'];
+                                retProjects.push(tempProj);
+                                count++;
+                                if(count==allProj.length){
+                                    console.log(retProjects);
+                                    res.status(200).json({
+                                        success: true,
+                                        message: "Successfully retrieved projects",
+                                        result: retProjects
+                                    });
+                                }
+                            })
+                            .catch((err)=>{
+                                console.log(err);
+                                res.status(500).json({
+                                    message: "Failed to retrieve projects",
+                                    success: false,
+                                    result: null
+                                });
+                            })
+                        }else{
+                            count++;
+                            console.log("project is soft deleted.");
+                            if(count==allProj.length){
+                                console.log(retProjects);
+                                res.status(200).json({
+                                    success: true,
+                                    message: "Successfully retrieved projects",
+                                    result: retProjects
+                                });
+                            }
+                        }
+                    });
+                }else{
+                    res.status(200).json({
+                        success: true,
+                        message: "Successfully retrieved projects",
+                        result: [] 
+                    });
+                }          
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to retrieve projects",
+                    success: false,
+                    result: null
                 });
             });
         }
@@ -524,7 +574,7 @@ router.get('/basicTokenized', (req, res, next) => {
     * 
     * this function mirrors the default root function for legacy use cases
     */
-   router.get('/detailedTokenized', (req, res, next) => {
+   router.post('/detailedTokenized', (req, res, next) => {
     let token = req.headers['x-access-token'];
     if(!token){
         res.status(401).json({});
@@ -533,21 +583,28 @@ router.get('/basicTokenized', (req, res, next) => {
         if(err){
             res.status(401).json({});
         }else{
-            Project.find()
+            console.log();
+            Project.find( {"createdBy" : tokenPlainText.id}, "_id project_name whitelist blacklist source trackTime created createdBy deleted")
             .exec()
             .then(results => {
                 const retProjects = [];
                 results.forEach((project)=>{
-                    if(project["createdBy"]==tokenPlainText.id){
+                    if(proj["deleted"]==false){
                         retProjects.push(project);
                     }
                 });
-                res.status(200).json(retProjects);
+                res.status(200).json({
+                    success: true,
+                    message: "Successfully retrieved projects",
+                    result: retProjects 
+                });
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to retrieve projects",
+                    success: false,
+                    result: null
                 });
             });
         }
@@ -572,23 +629,143 @@ router.get('/basicTokenized', (req, res, next) => {
             }else{
                 Project.findById(id)
                 .exec()
-                .then(result => {
-                    if(result["createdBy"]==tokenPlainText.id){
-                        console.log(result);
-                        res.status(200).json(result);
+                .then(result_ => {
+                    if((result_["createdBy"]==tokenPlainText.id)&&(result_["deleted"]==false)){
+                        console.log(result_);
+                        res.status(200).json({
+                            message: "Successfully retrieved project",
+                            success: true,
+                            result: result_ 
+                        });
                     }else{
-                        res.status(200).json({authenticated: false});
+                        res.status(200).json({
+                            message: "Failed to retrieve project",
+                            success: false,
+                            result: null
+                        });
                     }
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(500).json({
-                        error : "Could not perform action."
+                        message: "Failed to retrieve project",
+                        success: false,
+                        result: null
                     });
                 });
             }
         })
   });
+
+/***
+* request for tweets (/tweets) page (string id)
+* 
+* this function searches for a certain project by its id, and returns
+* an array of tweets stored in that project based on the page and count specified
+*/
+router.post('/tweets', (req, res, next) => {
+    const projectID = req.body.id;
+    const page = req.body.page;
+    const count = req.body.count;
+    let token = req.headers['x-access-token'];
+    if(!token){
+        res.status(401).json({});
+    }
+    jwt.verify(token, jwtConfig.secret, (err, tokenPlainText)=>{
+        if(err){
+            res.status(401).json({});
+        }else{
+            Project.aggregate([{$match: {_id: mongoose.Types.ObjectId(projectID)}}, {$project: {data: {$size: '$data'}}}])
+            .exec()
+            .then(result_ => {
+                let size = result_[0]['data'];
+                let firstIndex = (page-1)*count;
+                let lastIndex = (page*count)-1; 
+                if(firstIndex<size){
+                    if(lastIndex<size){
+                        Project.find({"_id" : projectID, "createdBy" : tokenPlainText.id, "deleted" : false}, {data: {$slice: [firstIndex, (lastIndex-firstIndex+1)]}})
+                        .exec()
+                        .then((result_) => {
+                            let returnArray = [];
+                            result_[0]["data"].forEach((element)=>{
+                                let tempObject = {}
+                                tempObject["tweetID"] = element["tweetID"];
+                                tempObject["tweetSentiment"] = element["tweetSentiment"];
+                                tempObject["tweetText"] = element["tweetObject"]["text"];
+                                tempObject["id"] = element["id"];
+                                returnArray.push(tempObject);
+                            })
+                            console.log(returnArray);
+                            res.status(200).json({
+                                message: "Successfully retrieved data",
+                                success: true,
+                                result: returnArray 
+                            });
+                        })
+                        .catch(() => {
+                            console.log(err);
+                            res.status(500).json({
+                                message: "Failed to retrieve data",
+                                success: false,
+                                result: null
+                            });
+                        });
+                    }else{
+                        Project.find({"_id" : projectID, "createdBy" : tokenPlainText.id, "deleted" : false}, {data: {$slice: [firstIndex, (size-firstIndex+1)]}})
+                        .exec()
+                        .then(() => {
+                            let returnArray = [];
+                            result_[0]["data"].forEach((element)=>{
+                                let tempObject = {}
+                                tempObject["tweetID"] = element["tweetID"];
+                                tempObject["tweetSentiment"] = element["tweetSentiment"];
+                                tempObject["tweetText"] = element["tweetObject"]["text"];
+                                tempObject["id"] = element["id"];
+                                returnArray.push(tempObject);
+                            })
+                            console.log(returnArray);
+                            res.status(200).json({
+                                message: "Successfully retrieved data",
+                                success: true,
+                                result: returnArray
+                            });
+                        })
+                        .catch(() => {
+                            console.log(err);
+                            res.status(500).json({
+                                message: "Failed to retrieve data",
+                                success: false,
+                                result: null
+                            });
+                        });
+                    }
+                }else{
+                    if(page==1){
+                        res.status(200).json({
+                            success: true,
+                            message: "No tweets saved yet",
+                            result: []
+                        });
+                    }else{
+                        res.status(200).json({
+                            success: false,
+                            message: "Invalid index given",
+                            result: []
+                        });
+                    }
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    message: "Failed to retrieve data",
+                    success: false,
+                    result: null
+                });
+            });
+        }
+    })
+});
 
 /***
     * request for create (/create) projects page (string project_name, source,
@@ -615,23 +792,27 @@ router.get('/basicTokenized', (req, res, next) => {
                 source: req.body.source,
                 status : false,
                 trackTime: req.body.trackTime,
-                data: null,
-                dataSentiment: null,
+                data: [],
+                dataSentiment: [],
                 createdBy: plainTextToken.id,
-                runs: []
+                runs: [],
+                deleted: false
             });
             project
             .save()
             .then(result => {
                 res.status(200).json({
-                    message: "Handling POST requests to /projects/create",
-                    createdProduct: result
+                    message: "Successfully created project",
+                    success: true,
+                    result: null
                 });
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to create project",
+                    success: false,
+                    result: null
                 });
             });
         }
@@ -658,7 +839,7 @@ router.get('/basicTokenized', (req, res, next) => {
             Project.findById(id)
             .exec()
             .then(result => {
-                if(result["createdBy"]==tokenPlainText.id){
+                if((result["createdBy"]==tokenPlainText.id)&&(result["deleted"]==false)){
                     console.log("authenticated successfully.")
                     let updateVals = {};
                     for (const vals of req.body.updateValues){
@@ -668,24 +849,34 @@ router.get('/basicTokenized', (req, res, next) => {
                     .exec()
                     .then(result => {
                         console.log(result);
-                        res.status(200).json(result);
+                        res.status(200).json({
+                            message: "Successfully edited project",
+                            success: true,
+                            result: null
+                        });
                     })
                     .catch(err => {
                         console.log(err);
                         res.status(500).json({
-                            error : "Could not perform action."
+                            message: "Failed to edit project",
+                            success: false,
+                            result: null
                         });
                     });
                 }else{
                     res.status(200).json({
-                        authenticated: false
+                        message: "Failed to edit project",
+                        success: false,
+                        result: null
                     });
                 }
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to edit project",
+                    success: false,
+                    result: null
                 });
             });
         }
@@ -711,29 +902,49 @@ router.post('/deleteTokenized', (req, res, next) => {
             Project.findById(id)
             .exec()
             .then(result => {
-                if(result["createdBy"]==tokenPlainText.id){
+                if((result["createdBy"]==tokenPlainText.id)&&(result["deleted"]==false)){
                     console.log("authenticated successfully.")
-                    Project.remove({ _id: id })
+                    let updateValues = [
+                        {
+                            "propName" : "deleted",
+                            "value" : true
+                        }
+                    ]
+                    let updateVals = {};
+                    for (const vals of updateValues){
+                        updateVals[vals.propName] = vals.value;
+                    }
+                    Project.update({ _id: id }, {$set: updateVals})
                     .exec()
                     .then(result => {
-                        res.status(200).json(result);
+                        res.status(200).json({
+                            message: "Successfully deleted project",
+                            success: true,
+                            result: null
+                        });
                     })
                     .catch(err => {
                         console.log(err);
                         res.status(500).json({
-                            error: err
+                            message: "Failed to delete project",
+                            success: false,
+                            result: null
                         });
                     });
                 }else{
                     res.status(200).json({
-                        authenticated: false
+                        message: "Failed to delete project",
+                        success: false,
+                        result: null
                     });
                 }
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json({
-                    error : "Could not perform action."
+                    message: "Failed to delete project",
+                    success: false,
+                    result: null
                 });
             });
         }
@@ -765,7 +976,7 @@ router.post('/deleteTokenized', (req, res, next) => {
                 Project.find({_id : id})
                 .exec()
                 .then((result)=>{
-                    if(result["createdBy"]==tokenPlainText.id){
+                    if((result[0]["createdBy"]==tokenPlainText.id)&&(result[0]["deleted"]==false)){
                         result[0].status = true;
                         result[0].save().then(
                             ()=>{
@@ -794,7 +1005,11 @@ router.post('/deleteTokenized', (req, res, next) => {
                                     });
                                     listenerRes.on("end", () => {
                                         responseString = JSON.parse(responseString);
-                                        res.status(200).json(responseString);
+                                        res.status(200).json({
+                                            message: "Successfully ran project",
+                                            success: true,
+                                            result: responseString
+                                        });
                                     });
                                 });
                                 listenerReq.write(postBodyString);
@@ -802,20 +1017,28 @@ router.post('/deleteTokenized', (req, res, next) => {
                             }
                         )
                     }else{
-                        res.status(200).json({authenticated: false});
+                        res.status(200).json({
+                            message: "Failed to run project",
+                            success: false,
+                            result: null
+                        });
                     }
                 }).catch((err) => {
                     console.log(err);
                     res.status(500).json({
-                        error : "Could not perform action."
+                        message: "Failed to run project",
+                        success: false,
+                        result: null
                     });
                 }) 
             }
         })  
     } catch (error) {
-        console.log(err);
+        console.log(error);
         res.status(500).json({
-            error : "Could not perform action."
+            message: "Failed to run project",
+            success: false,
+            result: null
         });
     }
 });

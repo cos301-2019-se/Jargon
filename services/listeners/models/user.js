@@ -8,7 +8,12 @@ const userSchema = mongoose.Schema({
     username : String,
     password : String,
     admin : Boolean,
-    projects : [{type : mongoose.Schema.Types.ObjectId, ref : 'Project'}]
+    projects : [{type : mongoose.Schema.Types.ObjectId, ref : 'Project'}],
+    deleted: Boolean,
+    created: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 module.exports = mongoose.model('User', userSchema);
