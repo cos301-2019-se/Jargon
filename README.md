@@ -21,4 +21,4 @@ Slack (link reserved for team members) | N/A | Project communications tool
 
 ### [Meet the Team](documentation/TEAM.md)
 
-### [The Project](services/TEAM.md)
+### [The Project](services/README.md)
