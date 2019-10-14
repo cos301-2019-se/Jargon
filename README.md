@@ -20,3 +20,5 @@ Slack (link reserved for team members) | N/A | Project communications tool
 ### [Introduction](documentation/presentation/syntactic-sugar-jargon-intro.pdf)
 
 ### [Meet the Team](documentation/TEAM.md)
+
+### [The Project](services/TEAM.md)
