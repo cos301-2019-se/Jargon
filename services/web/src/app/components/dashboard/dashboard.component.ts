@@ -49,9 +49,9 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.globalService.getUserValue();
-    this.directories.push([
-      { caption: "Home", path: "dashboard/home", icon: "fa-home" },
-    ]);
+    // this.directories.push([
+    //   { caption: "Home", path: "dashboard/home", icon: "fa-home" },
+    // ]);
     this.directories.push([
       { caption: "Projects", path: "dashboard/projects", icon: "fa-clipboard" },
       { caption: "Create Project", path: "dashboard/create-project", icon: "fa-tasks" },

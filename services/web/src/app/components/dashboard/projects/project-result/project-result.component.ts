@@ -404,8 +404,21 @@ export class ProjectResultComponent implements OnInit {
 
             this.dataHistogram = [...this.dataHistogram];
 
-            let maxHisto = Math.max(...this.projectAnalysis.graphs.histogram);
-            this.primaryXAxisHistogram.interval = maxHisto/4;
+            let maxHisto = Math.ceil(Math.max(...this.projectAnalysis.graphs.histogram)/4);
+            // this.primaryXAxisHistogram.interval = maxHisto/4;
+            
+            this.primaryYAxisHistogram = {
+              minimum: 0, interval: 50,
+              title: 'Frequency',
+              titleStyle: {
+                color: 'white',
+                size: '18px'
+              },
+              labelStyle: {
+                color: 'white',
+                size: '16px',
+              }
+            };
 
             this.piedata = [];
 
